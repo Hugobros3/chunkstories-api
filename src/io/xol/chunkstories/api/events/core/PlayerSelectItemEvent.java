@@ -1,5 +1,6 @@
 package io.xol.chunkstories.api.events.core;
 
+import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.plugin.server.Player;
@@ -8,7 +9,7 @@ import io.xol.chunkstories.api.plugin.server.Player;
 //http://chunkstories.xyz
 //http://xol.io
 
-public class PlayerLogoutEvent extends Event
+public class PlayerSelectItemEvent extends Event
 {
 	// Every event class has to have this
 	
@@ -27,16 +28,26 @@ public class PlayerLogoutEvent extends Event
 	// Specific event code
 	
 	public Player player;
-	public String connectionMessage;
+	public Entity playerEntity;
+	public int newSlot;
 	
-	public PlayerLogoutEvent(Player player)
+	public PlayerSelectItemEvent(Player player, Entity playerEntity, int newSlot)
 	{
 		this.player = player;
-		this.connectionMessage = "#FFFF00"+player+" left the server";
+		this.playerEntity = playerEntity;
+		this.newSlot = newSlot;
 	}
 
 	public Player getPlayer()
 	{
 		return player;
 	}
+	
+	@Override
+	public void defaultBehaviour()
+	{
+		System.out.println("Asking to select slot "+newSlot);
+		playerEntity.getInventory().setSelectedSlot(newSlot);
+	}
+	
 }

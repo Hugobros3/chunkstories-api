@@ -1,19 +1,26 @@
 package io.xol.chunkstories.api.plugin.server;
 
 import io.xol.chunkstories.api.Location;
-import io.xol.chunkstories.entity.Entity;
+import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.server.tech.CommandEmitter;
 
 //(c) 2015-2016 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface Player
+public interface Player extends CommandEmitter
 {
 	/**
 	 * Returns the username of the player
 	 * @return
 	 */
 	public String getName();
+
+	/**
+	 * Returns the displayable name of the player (including things like tags, color etc)
+	 * @return
+	 */
+	public String getDisplayName();
 	
 	/**
 	 * Returns the entity this player is controlling
@@ -22,10 +29,14 @@ public interface Player
 	public Entity getControlledEntity();
 	
 	/**
+	 * Sets the entity this player has control over (and tells him)
+	 */
+	public void setControlledEntity(Entity entity);
+	/**
 	 * Sends a text message to this player chat
 	 * @param msg
 	 */
-	public void sendTextMessage(String msg);
+	public void sendMessage(String msg);
 	
 	/**
 	 * Gets the location of the user
