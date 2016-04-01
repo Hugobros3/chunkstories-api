@@ -14,6 +14,7 @@ public interface Player extends CommandEmitter
 	 * Returns the username of the player
 	 * @return
 	 */
+	@Override
 	public String getName();
 
 	/**
@@ -36,19 +37,20 @@ public interface Player extends CommandEmitter
 	 * Sends a text message to this player chat
 	 * @param msg
 	 */
+	@Override
 	public void sendMessage(String msg);
 	
 	/**
 	 * Gets the location of the user
 	 * @return a {@link Location} object
 	 */
-	public Location getPosition();
+	public Location getLocation();
 	
 	/**
 	 * Sets the location of the user
 	 * @param l a {@link Location} object
 	 */
-	public void setPosition(Location l);
+	public void setLocation(Location l);
 	
 	/**
 	 * Kicks the player

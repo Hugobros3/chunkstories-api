@@ -1,12 +1,14 @@
 package io.xol.chunkstories.api.entity;
 
 import io.xol.chunkstories.api.Location;
+import io.xol.chunkstories.api.plugin.server.Player;
+import io.xol.chunkstories.api.rendering.Light;
+import io.xol.chunkstories.api.world.WorldInterface;
+import io.xol.chunkstories.item.inventory.CSFSerializable;
 import io.xol.chunkstories.item.inventory.InventoryHolder;
 import io.xol.chunkstories.physics.CollisionBox;
 import io.xol.chunkstories.renderer.Camera;
-import io.xol.chunkstories.renderer.DefferedLight;
-import io.xol.chunkstories.world.ChunkHolder;
-import io.xol.chunkstories.world.World;
+import io.xol.chunkstories.world.chunk.ChunkHolder;
 import io.xol.engine.math.lalgb.Vector3d;
 import io.xol.engine.model.RenderingContext;
 
@@ -14,10 +16,8 @@ import io.xol.engine.model.RenderingContext;
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface Entity extends InventoryHolder
+public interface Entity extends InventoryHolder, CSFSerializable
 {
-	public void setPosition(double x, double y, double z);
-
 	/**
 	 * Returns the location of the entity
 	 * @return
@@ -32,7 +32,7 @@ public interface Entity extends InventoryHolder
 	
 	public ChunkHolder getChunkHolder();
 	
-	public World getWorld();
+	public WorldInterface getWorld();
 
 	public void tick();
 
@@ -44,11 +44,9 @@ public interface Entity extends InventoryHolder
 	
 	public Vector3d moveWithCollisionRestrain(double mx, double my, double mz, boolean writeCollisions);
 
-	public DefferedLight[] getLights();
+	public Light[] getLights();
 	
 	public CollisionBox[] getTranslatedCollisionBoxes();
-
-	public boolean renderable();
 
 	public void render(RenderingContext context);
 
@@ -61,4 +59,11 @@ public interface Entity extends InventoryHolder
 	public long getUUID();
 	
 	public void delete();
+
+	/**
+	 * Returns true unless it should be invisible to some players or all
+	 * Exemple : dead/removed entity, invisible admin
+	 * @return
+	 */
+	public boolean shouldBeTrackedBy(Player player);
 }
