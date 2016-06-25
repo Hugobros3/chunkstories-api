@@ -1,14 +1,21 @@
-package io.xol.chunkstories.api.plugin.server;
+package io.xol.chunkstories.api.server;
 
 import io.xol.chunkstories.api.Location;
+import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.server.tech.CommandEmitter;
+import io.xol.chunkstories.api.entity.components.Subscriber;
+import io.xol.chunkstories.api.net.PacketDestinator;
+import io.xol.chunkstories.api.net.PacketSender;
+import io.xol.chunkstories.api.plugin.commands.CommandEmitter;
 
 //(c) 2015-2016 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface Player extends CommandEmitter
+/**
+ * This interface is a player connected to a server, viewed from that server.
+ */
+public interface Player extends CommandEmitter, Controller, Subscriber, PacketDestinator, PacketSender
 {
 	/**
 	 * Returns the username of the player
@@ -52,6 +59,8 @@ public interface Player extends CommandEmitter
 	 */
 	public void setLocation(Location l);
 	
+	public void setFlying(boolean flying);
+	
 	/**
 	 * Kicks the player
 	 * @param reason
@@ -59,4 +68,8 @@ public interface Player extends CommandEmitter
 	public void kickPlayer(String reason);
 	
 	public boolean isConnected();
+
+	public boolean hasSpawned();
+
+	public void updateTrackedEntities();
 }

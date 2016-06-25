@@ -3,16 +3,18 @@ package io.xol.chunkstories.api.entity;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 import io.xol.chunkstories.api.Location;
-import io.xol.chunkstories.api.plugin.server.Player;
-import io.xol.chunkstories.api.rendering.Light;
-import io.xol.chunkstories.api.world.WorldInterface;
+import io.xol.chunkstories.api.entity.components.EntityComponent;
+import io.xol.chunkstories.api.entity.components.Subscriber;
+import io.xol.chunkstories.api.server.Player;
+import io.xol.chunkstories.api.world.Region;
+import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.item.inventory.CSFSerializable;
-import io.xol.chunkstories.item.inventory.InventoryHolder;
+import io.xol.chunkstories.physics.Collidable;
 import io.xol.chunkstories.physics.CollisionBox;
 import io.xol.chunkstories.renderer.Camera;
-import io.xol.chunkstories.world.chunk.ChunkHolder;
 import io.xol.engine.math.lalgb.Vector3d;
 import io.xol.engine.model.RenderingContext;
 
@@ -20,7 +22,7 @@ import io.xol.engine.model.RenderingContext;
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface Entity extends InventoryHolder, CSFSerializable
+public interface Entity extends Collidable, CSFSerializable
 {
 	/**
 	 * Returns the location of the entity
@@ -38,13 +40,13 @@ public interface Entity extends InventoryHolder, CSFSerializable
 	 * Return the entity's current chunk holder
 	 * @return
 	 */
-	public ChunkHolder getChunkHolder();
+	public Region getChunkHolder();
 	
 	/**
 	 * Return the entity's world
 	 * @return
 	 */
-	public WorldInterface getWorld();
+	public World getWorld();
 
 	/**
 	 * Updates the entity, ran at 60Hz by default
@@ -56,19 +58,18 @@ public interface Entity extends InventoryHolder, CSFSerializable
 	public Vector3d moveWithCollisionRestrain(Vector3d vec);
 	
 	public Vector3d moveWithCollisionRestrain(double mx, double my, double mz, boolean writeCollisions);
-
+	
 	/**
-	 * Depreacated
+	 * Returns the entitie's AABBs to their position
 	 * @return
 	 */
-	@Deprecated
-	public Light[] getLights();
+	public CollisionBox[] getTranslatedCollisionBoxes();
 	
 	/**
 	 * Returns the entitie's AABBs
 	 * @return
 	 */
-	public CollisionBox[] getTranslatedCollisionBoxes();
+	public CollisionBox[] getCollisionBoxes();
 
 	/**
 	 * Renders the entity using the context
@@ -98,9 +99,16 @@ public interface Entity extends InventoryHolder, CSFSerializable
 	public long getUUID();
 	
 	/**
-	 * Remove the entity from it's world and mark it for deletion (since Java requires to manually remove all references)
+	 * Sets the UUID of the entity. Reserved for internals, trying to set/change the UUID after it's been results in an exception.
+	 * @return
 	 */
-	public void delete();
+	public void setUUID(long uuid);
+	
+	/**
+	 * Remove the entity from it's world and mark it for deletion (since Java requires to manually remove all references)
+	 * @return false if already removed
+	 */
+	public boolean removeFromWorld();
 
 	/**
 	 * Returns true unless it should be invisible to some players or all
@@ -129,4 +137,12 @@ public interface Entity extends InventoryHolder, CSFSerializable
 	 * @throws IOException
 	 */
 	public void saveCSF(DataOutputStream stream) throws IOException;
+	
+	public Iterator<Subscriber> getAllSubscribers();
+	
+	public boolean subscribe(Subscriber subscriber);
+	public boolean unsubscribe(Subscriber subscriber);
+	
+	public EntityComponent getComponents();
+	
 }

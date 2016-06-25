@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.world;
 
-import io.xol.chunkstories.world.World;
+import io.xol.chunkstories.world.WorldImplementation;
 import io.xol.chunkstories.world.chunk.CubicChunk;
 
 //(c) 2015-2016 XolioWare Interactive
@@ -9,11 +9,11 @@ import io.xol.chunkstories.world.chunk.CubicChunk;
 
 public abstract class WorldGenerator
 {
-	protected World world;
+	protected WorldImplementation world;
 
-	public void initialize(World w)
+	public void initialize(WorldImplementation world)
 	{
-		world = w;
+		this.world = world;
 	}
 
 	/**
@@ -28,13 +28,13 @@ public abstract class WorldGenerator
 	/**
 	 * Returns the data {@link VoxelFormat} for summary generation
 	 * @param x coordinates in world-space
-	 * @param y
+	 * @param z
 	 * @return
 	 */
-	public abstract int getDataAt(int x, int y);
+	public abstract int getTopDataAt(int x, int z);
 
 	/**
-	 * Returns the height for summary generation
+	 * Returns the initial height for summary generation
 	 * @param x
 	 * @param z
 	 * @return
