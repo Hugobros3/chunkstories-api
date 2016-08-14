@@ -1,10 +1,11 @@
 package io.xol.chunkstories.api.entity.interfaces;
 
 import io.xol.chunkstories.api.Location;
-import io.xol.chunkstories.api.entity.ClientController;
+import io.xol.chunkstories.api.entity.ClientSideController;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
+import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.core.entity.components.EntityComponentController;
 
 //(c) 2015-2016 XolioWare Interactive
@@ -15,16 +16,21 @@ import io.xol.chunkstories.core.entity.components.EntityComponentController;
  * Defines an entity as controllable by players, this is used to allow the Client to send controls to the entity and the
  * server to update the client about it's entity status.
  */
-public interface EntityControllable extends Entity
+public interface EntityControllable extends Entity, EntityUnsaveable
 {
 	public EntityComponentController getControllerComponent();
 	
-	public void moveCamera(ClientController controller);
+	public default Controller getController()
+	{
+		return getControllerComponent().getController();
+	}
 	
 	/**
-	 * Clientside controller tick, called before
+	 * Clientside controller tick, called before the main tick() call on clients, supposed to handle the bulk of interactions
 	 */
-	public void tick(ClientController controller);
+	public void tickClient(ClientSideController controller);
+
+	public void setupCamera(ClientSideController controller);
 	
 	/**
 	 * If this entity has the ability to select blocks, this method should return said block
@@ -34,4 +40,9 @@ public interface EntityControllable extends Entity
 	public Location getBlockLookingAt(boolean inside);
 	
 	public boolean handleInteraction(Input input, Controller controller);
+	
+	public default boolean shouldSaveIntoRegion()
+	{
+		return getController() == null;
+	}
 }

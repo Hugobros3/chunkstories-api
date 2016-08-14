@@ -2,12 +2,22 @@ package io.xol.chunkstories.api.world;
 
 import java.util.Iterator;
 
+import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
+import io.xol.chunkstories.api.particles.ParticlesManager;
+import io.xol.chunkstories.api.rendering.DecalsManager;
+import io.xol.chunkstories.api.sound.SoundManager;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
-import io.xol.chunkstories.physics.particules.Particle;
-import io.xol.chunkstories.world.chunk.CubicChunk;
+import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.chunk.ChunkHolder;
+import io.xol.chunkstories.api.world.chunk.WorldUser;
+import io.xol.chunkstories.api.world.chunk.ChunksIterator;
+import io.xol.chunkstories.api.world.chunk.Region;
+import io.xol.chunkstories.api.world.heightmap.RegionSummaries;
+
+import io.xol.chunkstories.world.WorldInfo;
 import io.xol.engine.math.lalgb.Vector3d;
 
 //(c) 2015-2016 XolioWare Interactive
@@ -16,9 +26,39 @@ import io.xol.engine.math.lalgb.Vector3d;
 
 public interface World
 {
-	/*
-	 * Entities management
+	
+	public WorldInfo getWorldInfo();
+	
+	public WorldGenerator getGenerator();
+	
+	/** Returns the GameLogic thread this world runs on */
+	public GameLogic getGameLogic();
+	
+	/**
+	 * @return The height of the world, default worlds are 1024
 	 */
+	public default int getMaxHeight()
+	{
+		return getWorldInfo().getSize().heightInChunks * 32;
+	}
+
+	/**
+	 * @return The size of the side of the world, divided by 32
+	 */
+	public default int getSizeInChunks()
+	{
+		return getWorldInfo().getSize().sizeInChunks;
+	}
+
+	/**
+	 * @return The size of the side of the world
+	 */
+	public default double getWorldSize()
+	{
+		return getSizeInChunks() * 32;
+	}
+	
+	/* Entity management */
 	
 	/**
 	 * Adds an entity to the world, the entity location is supposed to be already defined
@@ -36,14 +76,7 @@ public interface World
 	 * Removes an entity from the world, based on UUID
 	 * @param entity
 	 */
-	public boolean removeEntity(long uuid);
-
-	/**
-	 * Returns an iterator containing all the loaded entities.
-	 * Supposedly thread-safe
-	 * @return
-	 */
-	public Iterator<Entity> getAllLoadedEntities();
+	public boolean removeEntityByUUID(long uuid);
 
 	/**
 	 * @param entityID a valid UUID
@@ -51,185 +84,180 @@ public interface World
 	 */
 	public Entity getEntityByUUID(long uuid);
 
-	/*
-	 * World parameters
-	 */
-	
 	/**
-	 * As of the current version of the game, this is internally set to 1024
-	 * @return
+	 * Returns an iterator containing all the loaded entities.
+	 * Supposedly thread-safe
 	 */
-	public int getMaxHeight();
+	public Iterator<Entity> getAllLoadedEntities();
 
-	/**
-	 * Return the world size devided by 32.
-	 * @return
-	 */
-	public int getSizeInChunks();
-
-	/**
-	 * Return the world size (length of each square side)
-	 * @return
-	 */
-	public double getWorldSize();
-
-	/*
-	 * Get data
-	 */
+	/* Direct voxel data accessors */
 	
 	/**
 	 * Returns the block data at the specified location
-	 * Will try to load/generate the chunks if not alreay in ram
 	 * @return The raw block data, see {@link VoxelFormat}
 	 */
-	public int getDataAt(Location location);
+	public int getVoxelData(Vector3d location);
 
 	/**
 	 * Returns the block data at the specified location
-	 * @param load If set to false, will *not* try to load the chunk if it's not present and will instead return 0
 	 * @return The raw block data, see {@link VoxelFormat}
 	 */
-	public int getDataAt(Location location, boolean load);
-
-	/**
-	 * Returns the block data at the specified location
-	 * Will try to load/generate the chunks if not alreay in ram
-	 * @return The raw block data, see {@link VoxelFormat}
-	 */
-	public int getDataAt(int x, int y, int z);
-
-	/**
-	 * Returns the block data at the specified location
-	 * @param load If set to false, will *not* try to load the chunk if it's not present and will instead return 0
-	 * @return The raw block data, see {@link VoxelFormat}
-	 */
-	public int getDataAt(int x, int y, int z, boolean load);
-
-	/*
-	 * Set data
-	 */
+	public int getVoxelData(int x, int y, int z);
 	
 	/**
 	 * Sets the block data at the specified location
-	 * Will try to load/generate the chunks if not alreay in ram
 	 * @param data The new data to set the block to, see {@link VoxelFormat}
 	 */
-	public void setDataAt(int x, int y, int z, int data);
-
-	/**
-	 * Sets the block data at the specified location
-	 * Will try to load/generate the chunks if not alreay in ram
-	 * @param data The new data to set the block to, see {@link VoxelFormat}
-	 */
-	public void setDataAt(Location location, int data);
+	public void setVoxelData(int x, int y, int z, int data);
 
 	/**
 	 * Sets the block data at the specified location
 	 * @param data The new data to set the block to, see {@link VoxelFormat}
-	 * @param load If set to false, will *not* try to load the chunk if it's not present
 	 */
-	public void setDataAt(Location location, int data, boolean load);
-
-	/**
-	 * Sets the block data at the specified location
-	 * @param data The new data to set the block to, see {@link VoxelFormat}
-	 * @param load If set to false, will *not* try to load the chunk if it's not present
-	 */
-	public void setDataAt(int x, int y, int z, int data, boolean load);
+	public void setVoxelData(Location location, int data);
 	
 	/**
 	 * Method to call when it's an entity that do the action to set the voxel data
 	 * @param data The new data to set the block to, see {@link VoxelFormat}
 	 */
-	public void setDataAt(Location location, int data, Entity entity);
+	public void setVoxelData(Location location, int data, Entity entity);
 
 	/**
 	 * Method to call when it's an entity that do the action to set the voxel data
 	 * @param data The new data to set the block to, see {@link VoxelFormat}
 	 */
-	public void setDataAt(int x, int y, int z, int data, Entity entity);
+	public void setVoxelData(int x, int y, int z, int data, Entity entity);
 
 	/**
-	 * Only sets the data, don't trigger any logic, rendering etc
-	 * @param data
-	 * @param load
+	 * Only sets the data, don't trigger any logic
 	 */
-	public void setDataAtWithoutUpdates(int x, int y, int z, int data, boolean load);
+	public void setVoxelDataWithoutUpdates(int x, int y, int z, int data);
 	
-	/*
-	 * Voxel light
-	 */
+	/* Voxel lightning helper functions */
 	
 	/**
-	 * @return The sun light level of the block per {@link VoxelFormat} ( 0-15 ) using either getDataAt if the chunk is loaded or
+	 * @return The sun light level of the block per {@link VoxelFormat} ( 0-15 ) using either getVoxelDataAt if the chunk is loaded or
 	 * the heightmap ( y <= heightmapLevel(x, z) ? 0 : 15 )
 	 */
-	public int getSunlightLevel(int x, int y, int z);
-	
-	public int getSunlightLevel(Location location);
+	public int getSunlightLevelWorldCoordinates(int x, int y, int z);
 	
 	/**
-	 * @return Returns the block light level of the block per {@link VoxelFormat} ( 0-15 ) using getDataAt ( if the chunk isn't loaded it will return a zero. )
+	 * @return The sun light level of the block per {@link VoxelFormat} ( 0-15 ) using either getVoxelDataAt if the chunk is loaded or
+	 * the heightmap ( y <= heightmapLevel(x, z) ? 0 : 15 )
 	 */
-	public int getBlocklightLevel(int x, int y, int z);
-
-	public int getBlocklightLevel(Location location);
-
-	/*
-	 * Chunks
-	 */
-	
-	public ChunksIterator getAllLoadedChunks();
+	public int getSunlightLevelLocation(Location location);
 	
 	/**
-	 * Unloads forcefully a chunk
-	 * @param c
-	 * @param save
+	 * @return Returns the block light level of the block per {@link VoxelFormat} ( 0-15 ) using getVoxelDataAt ( if the chunk isn't loaded it will return a zero. )
 	 */
-	public void removeChunk(CubicChunk c, boolean save);
-
-	public void removeChunk(int chunkX, int chunkY, int chunkZ, boolean save);
+	public int getBlocklightLevelWorldCoordinates(int x, int y, int z);
 
 	/**
-	 * Unloads bits of the map not required by anyone
+	 * @return Returns the block light level of the block per {@link VoxelFormat} ( 0-15 ) using getVoxelDataAt ( if the chunk isn't loaded it will return a zero. )
 	 */
-	public void trimRemovableChunks();
+	public int getBlocklightLevelLocation(Location location);
+	
+	/* Chunks */
+	
 	/**
-	 * @param chunkX
-	 * @param chunkY
-	 * @param chunkZ
-	 * @return True if the chunk is loaded
+	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
+	 * users either unregisters or gets garbage collected and it's reference nulls out.
+	 */
+	public ChunkHolder aquireChunkHolderLocation(WorldUser user, Location location);
+	
+	/**
+	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
+	 * users either unregisters or gets garbage collected and it's reference nulls out.
+	 */
+	public ChunkHolder aquireChunkHolderWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
+
+	/**
+	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
+	 * users either unregisters or gets garbage collected and it's reference nulls out.
+	 */
+	public ChunkHolder aquireChunkHolder(WorldUser user, int chunkX, int chunkY, int chunkZ);
+	
+	/**
+	 * Returns true if a chunk was loaded. Not recommanded nor intended to use as a replacement for a '== null' check after getChunk() because of the load/unload
+	 * mechanisms !
 	 */
 	public boolean isChunkLoaded(int chunkX, int chunkY, int chunkZ);
 	
 	/**
-	 * Loads or replaces an entire chunk with another
-	 * @param chunk
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
 	 */
-	public void setChunk(CubicChunk chunk);
+	public Chunk getChunk(int chunkX, int chunkY, int chunkZ);
+
+	/**
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
+	 */
+	public Chunk getChunkWorldCoordinates(int worldX, int worldY, int worldZ);
 	
 	/**
-	 * Returns null or a chunk. If the load flag is set to true, it will also try to load it ingame
-	 * @param load
-	 * @return
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
 	 */
-	public CubicChunk getChunk(int chunkX, int chunkY, int chunkZ, boolean load);
-
-	public Region getRegion(int regionX, int regionY, int regionZ);
+	public Chunk getChunkWorldCoordinates(Location location);
 	
-	/*
-	 * Global methods
+	/**
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
 	 */
+	public ChunksIterator getAllLoadedChunks();
+	
+	/* Regions */
+	
+	/**
+	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 *  either unregisters or gets garbage collected and it's reference nulls out.
+	 */
+	public Region aquireRegion(WorldUser user, int regionX, int regionY, int regionZ);
+	
+	/**
+	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 *  either unregisters or gets garbage collected and it's reference nulls out.
+	 */
+	public Region aquireRegionChunkCoordinates(WorldUser user, int chunkX, int chunkY, int chunkZ);
+	
+	/**
+	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 *  either unregisters or gets garbage collected and it's reference nulls out.
+	 */
+	public Region aquireRegionWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
+	
+	/**
+	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 *  either unregisters or gets garbage collected and it's reference nulls out.
+	 */
+	public Region aquireRegionLocation(WorldUser user, Location location);
+	
+	/**
+	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 */
+	public Region getRegion(int regionX, int regionY, int regionZ);
+
+	/**
+	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 */
+	public Region getRegionChunkCoordinates(int chunkX, int chunkY, int chunkZ);
+	
+	/**
+	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 */
+	public Region getRegionWorldCoordinates(int worldX, int worldY, int worldZ);
+	
+	/**
+	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 */
+	public Region getRegionLocation(Location location);
+
+	/* Region Summaries */
+	
+	public RegionSummaries getRegionsSummariesHolder();
 	
 	/**
 	 * For dirty hacks that need so
 	 */
+	//TODO put that in WorldClient
 	public void redrawEverything();
-
-	/**
-	 * Unloads everything
-	 */
-	public void unloadEverything();
 
 	/**
 	 * Blocking method saving all loaded chunks
@@ -241,10 +269,6 @@ public interface World
 	 */
 	public void destroy();
 
-	public boolean isRaining();
-
-	public void setWeather(boolean isRaining);
-
 	public Location getDefaultSpawnLocation();
 
 	/**
@@ -253,12 +277,30 @@ public interface World
 	 */
 	public void setTime(long time);
 
+	public long getTime();
+
+	/**
+	 * The weather is represented by a normalised float value
+	 * 0.0 equals dead dry
+	 * 0.2 equals sunny
+	 * 0.4 equals overcast
+	 * 0.5 equals foggy/cloudy
+	 * >0.5 rains
+	 * 0.8 max rain intensity
+	 * 0.9 lightning
+	 * 1.0 hurricane
+	 * @return
+	 */
+	public float getWeather();
+
+	public void setWeather(float overcastFactor);
+
 	/**
 	 * Game-logic function. Not something you'd be supposed to call
 	 */
 	public void tick();
-
-	public WorldGenerator getGenerator();
+	
+	public long getTicksElapsed();
 
 	/**
 	 * Called when some controllable entity try to interact with the world
@@ -266,9 +308,7 @@ public interface World
 	 */
 	public boolean handleInteraction(Entity entity, Location blockLocation, Input input);
 	
-	/*
-	 * Raytracers and methods to grab entities
-	 */
+	/* Raytracers and methods to grab entities */
 	
 	/**
 	 * Raytraces throught the world to find a solid block
@@ -285,6 +325,13 @@ public interface World
 	public Location raytraceSolidOuter(Vector3d initialPosition, Vector3d direction, double limit);
 	
 	/**
+	 * Raytraces throught the world to find a solid or selectable block
+	 * @param limit Between 0 and a finite number
+	 * @return The exact location of the intersection or null if it didn't found one
+	 */
+	public Location raytraceSelectable(Location initialPosition, Vector3d direction, double limit);
+	
+	/**
 	 * Takes into account the voxel terrain and will stop at a solid block, <b>warning</b> limit can't be == -1 !
 	 * @param limit Between 0 and a finite number
 	 * @return Returns all entities that intersects with the ray within the limit, ordered nearest to furthest
@@ -298,11 +345,11 @@ public interface World
 	 */
 	public Iterator<Entity> raytraceEntitiesIgnoringVoxels(Vector3d initialPosition, Vector3d direction, double limit);
 	
-	/*
-	 * Fx
-	 */
+	/* Various managers */
 	
-	public void addParticle(Particle particle);
+	public DecalsManager getDecalsManager();
+	
+	public ParticlesManager getParticlesManager();
 
-	public void playSoundEffect(String soundEffect, Location location, float pitch, float gain);
+	public SoundManager getSoundManager();
 }

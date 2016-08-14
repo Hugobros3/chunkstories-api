@@ -1,8 +1,6 @@
-package io.xol.chunkstories.api.world;
+package io.xol.chunkstories.api.world.chunk;
 
 import java.util.Iterator;
-
-import io.xol.chunkstories.world.chunk.CubicChunk;
 
 //(c) 2015-2016 XolioWare Interactive
 //http://chunkstories.xyz
@@ -13,7 +11,7 @@ import io.xol.chunkstories.world.chunk.CubicChunk;
  * @author Hugo
  *
  */
-public interface ChunksIterator extends Iterator<CubicChunk>
+public interface ChunksIterator extends Iterator<Chunk>
 {
 
 }
