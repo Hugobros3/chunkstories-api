@@ -12,11 +12,11 @@ import io.xol.chunkstories.api.server.Player;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Region;
 import io.xol.chunkstories.core.entity.components.EntityComponentPosition;
+import io.xol.chunkstories.core.entity.components.EntityComponentVelocity;
 import io.xol.chunkstories.item.inventory.CSFSerializable;
 import io.xol.chunkstories.physics.Collidable;
 import io.xol.chunkstories.physics.CollisionBox;
 import io.xol.chunkstories.renderer.Camera;
-import io.xol.engine.graphics.RenderingContext;
 import io.xol.engine.math.lalgb.Vector3d;
 
 //(c) 2015-2016 XolioWare Interactive
@@ -64,6 +64,8 @@ public interface Entity extends Collidable, CSFSerializable
 	
 	public Vector3d moveWithCollisionRestrain(double mx, double my, double mz, boolean writeCollisions);
 	
+	public EntityComponentVelocity getVelocityComponent();
+	
 	/**
 	 * Returns the entitie's AABBs to their position
 	 * @return
@@ -75,17 +77,6 @@ public interface Entity extends Collidable, CSFSerializable
 	 * @return
 	 */
 	public CollisionBox[] getCollisionBoxes();
-
-	/**
-	 * Renders the entity using the context
-	 * @param context
-	 */
-	public void render(RenderingContext context);
-
-	/**
-	 * Used in debug mode only
-	 */
-	public void debugDraw();
 	
 	/**
 	 * Called when controlling/viewing an entity
@@ -138,6 +129,8 @@ public interface Entity extends Collidable, CSFSerializable
 	public boolean hasSpawned();
 	
 	public void markHasSpawned();
+	
+	public boolean isEntityOnGround();
 	
 	/**
 	 * Loads the object state from the stream, implying the ID has already been read in the stream.

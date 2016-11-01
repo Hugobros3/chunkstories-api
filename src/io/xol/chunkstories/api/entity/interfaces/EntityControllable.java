@@ -5,7 +5,6 @@ import io.xol.chunkstories.api.entity.ClientSideController;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.core.entity.components.EntityComponentController;
 
 //(c) 2015-2016 XolioWare Interactive
@@ -28,7 +27,7 @@ public interface EntityControllable extends Entity, EntityUnsaveable
 	/**
 	 * Clientside controller tick, called before the main tick() call on clients, supposed to handle the bulk of interactions
 	 */
-	public void tickClient(ClientSideController controller);
+	public void tickClientController(ClientSideController controller);
 
 	public void setupCamera(ClientSideController controller);
 	
