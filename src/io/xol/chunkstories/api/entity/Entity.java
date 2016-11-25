@@ -3,14 +3,15 @@ package io.xol.chunkstories.api.entity;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
 import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.server.Player;
+import io.xol.chunkstories.api.utils.IterableIterator;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Region;
+import io.xol.chunkstories.core.entity.components.EntityComponentExistence;
 import io.xol.chunkstories.core.entity.components.EntityComponentPosition;
 import io.xol.chunkstories.core.entity.components.EntityComponentVelocity;
 import io.xol.chunkstories.item.inventory.CSFSerializable;
@@ -25,6 +26,8 @@ import io.xol.engine.math.lalgb.Vector3d;
 
 public interface Entity extends Collidable, CSFSerializable
 {
+	public EntityComponentExistence getComponentExistence();
+	
 	public EntityComponentPosition getEntityComponentPosition();
 	
 	/**
@@ -147,7 +150,7 @@ public interface Entity extends Collidable, CSFSerializable
 	 */
 	public void saveCSF(DataOutputStream stream) throws IOException;
 	
-	public Iterator<Subscriber> getAllSubscribers();
+	public IterableIterator<Subscriber> getAllSubscribers();
 	
 	public boolean subscribe(Subscriber subscriber);
 	public boolean unsubscribe(Subscriber subscriber);
