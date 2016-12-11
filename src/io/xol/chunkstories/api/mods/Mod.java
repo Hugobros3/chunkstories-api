@@ -16,15 +16,13 @@ public interface Mod
 	 * Returns only the version defined in this mod.
 	 * Returns null if the asset couln't be found
 	 */
-	Asset getAssetByName(String name);
+	public Asset getAssetByName(String name);
 
-	/**
-	 * Iterates over this mod's assets
-	 */
-	IterableIterator<Asset> assets();
+	/** Iterates over this mod's assets */
+	public IterableIterator<Asset> assets();
 
-	ModInfo getModInfo();
+	public ModInfo getModInfo();
 
-	String getMD5Hash();
+	public String getMD5Hash();
 
 }

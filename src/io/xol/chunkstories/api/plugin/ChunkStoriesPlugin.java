@@ -1,42 +1,21 @@
 package io.xol.chunkstories.api.plugin;
 
-import io.xol.chunkstories.api.client.ClientInterface;
-import io.xol.chunkstories.api.plugin.commands.Command;
-import io.xol.chunkstories.api.plugin.commands.CommandEmitter;
-import io.xol.chunkstories.api.plugin.commands.CommandHandler;
-import io.xol.chunkstories.api.server.ServerInterface;
+import io.xol.chunkstories.api.plugin.context.PluginExecutionContext;
 
 //(c) 2015-2016 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public abstract class ChunkStoriesPlugin implements CommandHandler
+public abstract class ChunkStoriesPlugin
 {
-	protected ServerInterface serverI;
-	protected ClientInterface clientI;
+	protected final PluginExecutionContext pluginExecutionContext;
 	
-	private PluginManager pluginManager;
-	private PluginInformation pluginInformation;
+	private final PluginInformation pluginInformation;
 	
-	protected final void initialize(PluginManager pluginManager, PluginInformation jar)
+	public ChunkStoriesPlugin(PluginInformation pluginInformation, PluginExecutionContext pluginExecutionContext)
 	{
-		this.pluginManager = pluginManager;
-		this.pluginInformation = jar;
-	}
-	
-	public void setServer(ServerInterface server)
-	{
-		this.serverI = server;
-	}
-	
-	public ServerInterface getServer()
-	{
-		return serverI;
-	}
-	
-	public PluginManager getPluginsManager()
-	{
-		return pluginManager;
+		this.pluginInformation = pluginInformation;
+		this.pluginExecutionContext = pluginExecutionContext;
 	}
 	
 	public PluginInformation getPluginInformation()
@@ -44,10 +23,14 @@ public abstract class ChunkStoriesPlugin implements CommandHandler
 		return pluginInformation;
 	}
 	
-	public boolean handleCommand(CommandEmitter sender, Command cmd, String[] arguments)
+	public PluginExecutionContext getPluginExecutionContext()
 	{
-		System.out.println("Someone left the default command handler !");
-		return false;
+		return pluginExecutionContext;
+	}
+	
+	public PluginManager getPluginManager()
+	{
+		return pluginExecutionContext.getPluginManager();
 	}
 	
 	public abstract void onEnable();
@@ -55,8 +38,6 @@ public abstract class ChunkStoriesPlugin implements CommandHandler
 
 	public String getName()
 	{
-		if(pluginInformation == null)
-			return "you were adopted";
 		return pluginInformation.getName();
 	}
 }

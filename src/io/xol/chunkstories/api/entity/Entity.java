@@ -10,11 +10,11 @@ import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.server.Player;
 import io.xol.chunkstories.api.utils.IterableIterator;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.WorldAuthority;
 import io.xol.chunkstories.api.world.chunk.Region;
 import io.xol.chunkstories.core.entity.components.EntityComponentExistence;
 import io.xol.chunkstories.core.entity.components.EntityComponentPosition;
 import io.xol.chunkstories.core.entity.components.EntityComponentVelocity;
-import io.xol.chunkstories.item.inventory.CSFSerializable;
 import io.xol.chunkstories.physics.Collidable;
 import io.xol.chunkstories.physics.CollisionBox;
 import io.xol.chunkstories.renderer.Camera;
@@ -24,7 +24,7 @@ import io.xol.engine.math.lalgb.Vector3d;
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface Entity extends Collidable, CSFSerializable
+public interface Entity extends Collidable
 {
 	public EntityComponentExistence getComponentExistence();
 	
@@ -57,8 +57,9 @@ public interface Entity extends Collidable, CSFSerializable
 	/**
 	 * Updates the entity, ran at 60Hz by default
 	 */
-	public void tick();
+	public void tick(WorldAuthority authorityType);
 
+	//TODO refactor these properly
 	public void moveWithoutCollisionRestrain(Vector3d delta);
 	
 	public void moveWithoutCollisionRestrain(double mx, double my, double mz);
@@ -134,22 +135,7 @@ public interface Entity extends Collidable, CSFSerializable
 	public void markHasSpawned();
 	
 	public boolean isEntityOnGround();
-	
-	/**
-	 * Loads the object state from the stream, implying the ID has already been read in the stream.
-	 * If you're initializing an entity from a stream, first create the proper entity type
-	 * @param stream
-	 * @throws IOException
-	 */
-	public void loadCSF(DataInputStream stream) throws IOException;
-
-	/**
-	 * Writes the entity's description, including ID.
-	 * @param stream
-	 * @throws IOException
-	 */
-	public void saveCSF(DataOutputStream stream) throws IOException;
-	
+		
 	public IterableIterator<Subscriber> getAllSubscribers();
 	
 	public boolean subscribe(Subscriber subscriber);
