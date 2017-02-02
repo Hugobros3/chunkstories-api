@@ -1,21 +1,23 @@
 package io.xol.chunkstories.api.voxel;
 
+import io.xol.chunkstories.api.Content;
+import io.xol.chunkstories.api.item.ItemPile;
 import io.xol.chunkstories.api.material.Material;
 import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.item.ItemPile;
 import io.xol.chunkstories.physics.CollisionBox;
 import io.xol.chunkstories.renderer.VoxelContext;
 import io.xol.chunkstories.voxel.VoxelTexture;
 import io.xol.chunkstories.voxel.models.VoxelRenderer;
-import io.xol.chunkstories.world.WorldImplementation;
-import io.xol.engine.math.lalgb.Vector3d;
+import io.xol.engine.math.lalgb.vector.dp.Vector3dm;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
 public interface Voxel
 {
+	public Content.Voxels store();
+	
 	/**
 	 * Get the assignated ID for this voxel
 	 */
@@ -115,9 +117,9 @@ public interface Voxel
 	/**
 	 * Overload of getTranslatedCollisionBoxes with a vector3d
 	 */
-	public default CollisionBox[] getTranslatedCollisionBoxes(WorldImplementation world, Vector3d position)
+	public default CollisionBox[] getTranslatedCollisionBoxes(World world, Vector3dm position)
 	{
-		return getTranslatedCollisionBoxes(world, (int)position.getX(), (int)position.getY(), (int)position.getZ());
+		return getTranslatedCollisionBoxes(world, (int)(double)position.getX(), (int)(double)position.getY(), (int)(double)position.getZ());
 	}
 	
 	/**
@@ -136,7 +138,7 @@ public interface Voxel
 	 * 
 	 * @return
 	 */
-	public boolean isAffectedByWind();
+	//public boolean isAffectedByWind();
 
 	/**
 	 * @return Returns an array of ItemPiles to use in creative inventory

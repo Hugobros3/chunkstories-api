@@ -1,22 +1,25 @@
 package io.xol.chunkstories.api.server;
 
-import java.util.Iterator;
+import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.plugin.PluginManager;
-import io.xol.chunkstories.api.plugin.context.PluginExecutionContext;
+import io.xol.chunkstories.api.utils.IterableIterator;
+import io.xol.chunkstories.api.world.WorldMaster;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface ServerInterface extends PluginExecutionContext
+public interface ServerInterface extends GameContext
 {
-	public Iterator<Player> getConnectedPlayers();
+	public IterableIterator<Player> getConnectedPlayers();
 
-	public Player getPlayer(String string);
+	public Player getPlayerByName(String string);
 	
 	public Player getPlayerByUUID(long UUID);
 
 	public PluginManager getPluginManager();
 
 	public void broadcastMessage(String message);
+
+	public WorldMaster getWorld();
 }

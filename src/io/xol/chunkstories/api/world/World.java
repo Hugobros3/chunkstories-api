@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.world;
 
 import java.util.Iterator;
 
+import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
@@ -17,23 +18,23 @@ import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.chunk.ChunksIterator;
 import io.xol.chunkstories.api.world.chunk.Region;
 import io.xol.chunkstories.api.world.heightmap.RegionSummaries;
+import io.xol.engine.math.lalgb.vector.dp.Vector3dm;
 
-import io.xol.chunkstories.world.WorldInfo;
-import io.xol.engine.math.lalgb.Vector3d;
-
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
 public interface World
 {
-	
 	public WorldInfo getWorldInfo();
 	
 	public WorldGenerator getGenerator();
 	
 	/** Returns the GameLogic thread this world runs on */
 	public GameLogic getGameLogic();
+	
+	/** Returns the GameContext this world lives in */
+	public GameContext getGameContext();
 	
 	/**
 	 * @return The height of the world, default worlds are 1024
@@ -97,7 +98,7 @@ public interface World
 	 * Returns the block data at the specified location
 	 * @return The raw block data, see {@link VoxelFormat}
 	 */
-	public int getVoxelData(Vector3d location);
+	public int getVoxelData(Vector3dm location);
 
 	/**
 	 * Returns the block data at the specified location
@@ -271,6 +272,8 @@ public interface World
 	public void destroy();
 
 	public Location getDefaultSpawnLocation();
+	
+	public void setDefaultSpawnLocation(Location location);
 
 	/**
 	 * Sets the time of the World. By default the time is set at 5000 and it uses a 10.000 cycle, 0 being midnight and 5000 being midday
@@ -316,35 +319,35 @@ public interface World
 	 * @param limit Between 0 and a finite number
 	 * @return The exact location of the intersection or null if it didn't found one
 	 */
-	public Location raytraceSolid(Vector3d initialPosition, Vector3d direction, double limit);
+	public Location raytraceSolid(Vector3dm initialPosition, Vector3dm direction, double limit);
 	
 	/**
 	 * Raytraces throught the world to find a solid block
 	 * @param limit Between 0 and a finite number
 	 * @return The exact location of the step just before the intersection ( as to get the adjacent block ) or null if it didn't found one
 	 */
-	public Location raytraceSolidOuter(Vector3d initialPosition, Vector3d direction, double limit);
+	public Location raytraceSolidOuter(Vector3dm initialPosition, Vector3dm direction, double limit);
 	
 	/**
 	 * Raytraces throught the world to find a solid or selectable block
 	 * @param limit Between 0 and a finite number
 	 * @return The exact location of the intersection or null if it didn't found one
 	 */
-	public Location raytraceSelectable(Location initialPosition, Vector3d direction, double limit);
+	public Location raytraceSelectable(Location initialPosition, Vector3dm direction, double limit);
 	
 	/**
 	 * Takes into account the voxel terrain and will stop at a solid block, <b>warning</b> limit can't be == -1 !
 	 * @param limit Between 0 and a finite number
 	 * @return Returns all entities that intersects with the ray within the limit, ordered nearest to furthest
 	 */
-	public Iterator<Entity> rayTraceEntities(Vector3d initialPosition, Vector3d direction, double limit);
+	public Iterator<Entity> rayTraceEntities(Vector3dm initialPosition, Vector3dm direction, double limit);
 
 	/**
 	 * Ignores any terrain
 	 * @param limit Either -1 or between 0 and a finite number
 	 * @return Returns all entities that intersects with the ray within the limit, ordered nearest to furthest
 	 */
-	public Iterator<Entity> raytraceEntitiesIgnoringVoxels(Vector3d initialPosition, Vector3d direction, double limit);
+	public Iterator<Entity> raytraceEntitiesIgnoringVoxels(Vector3dm initialPosition, Vector3dm direction, double limit);
 	
 	/* Various managers */
 	

@@ -1,15 +1,15 @@
 package io.xol.chunkstories.api.particles;
 
-import io.xol.engine.math.lalgb.Vector3f;
+import io.xol.engine.math.lalgb.vector.sp.Vector3fm;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
 /**
  * Particle data is at least a vector3f
  */
-public class ParticleData extends Vector3f
+public class ParticleData extends Vector3fm
 {
 	boolean ded = false;
 	

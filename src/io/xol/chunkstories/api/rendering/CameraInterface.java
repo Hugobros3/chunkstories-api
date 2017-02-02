@@ -1,23 +1,33 @@
 package io.xol.chunkstories.api.rendering;
 
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
+import io.xol.chunkstories.physics.CollisionBox;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-import io.xol.engine.math.lalgb.Vector3d;
-import io.xol.engine.math.lalgb.Vector3f;
+import io.xol.engine.math.lalgb.vector.Vector3;
+import io.xol.engine.math.lalgb.vector.dp.Vector3dm;
+import io.xol.engine.math.lalgb.vector.sp.Vector3fm;
+
+//(c) 2015-2017 XolioWare Interactive
+//http://chunkstories.xyz
+//http://xol.io
 
 public interface CameraInterface
 {
-	public boolean isBoxInFrustrum(Vector3f center, Vector3f dimensions);
+	public boolean isBoxInFrustrum(Vector3<Float> center, Vector3<Float> dimensions);
+	
+	public boolean isBoxInFrustrum(CollisionBox box);
 
 	public void setupShader(ShaderInterface shaderProgram);
 
-	public Vector3f getViewDirection();
+	public Vector3fm getViewDirection();
 
-	public Vector3d getCameraPosition();
+	public Vector3<Double> getCameraPosition();
+	
+	public void setCameraPosition(Vector3dm pos);
 
-	public Vector3f transform3DCoordinate(Vector3f vector3f);
+	public Vector3fm transform3DCoordinate(Vector3fm vector3f);
 }

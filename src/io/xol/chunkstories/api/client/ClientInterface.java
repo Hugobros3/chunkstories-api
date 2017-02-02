@@ -1,26 +1,22 @@
 package io.xol.chunkstories.api.client;
 
-import io.xol.chunkstories.api.entity.ClientSideController;
+import io.xol.chunkstories.api.GameContext;
+import io.xol.chunkstories.api.entity.PlayerClient;
 import io.xol.chunkstories.api.entity.Inventory;
 import io.xol.chunkstories.api.particles.ParticlesManager;
-import io.xol.chunkstories.api.plugin.PluginManager;
-import io.xol.chunkstories.api.plugin.commands.CommandEmitter;
-import io.xol.chunkstories.api.plugin.context.PluginExecutionContext;
 import io.xol.chunkstories.api.rendering.effects.DecalsManager;
 import io.xol.chunkstories.api.sound.SoundManager;
 import io.xol.chunkstories.api.world.WorldClient;
 
 import io.xol.chunkstories.world.WorldClientCommon;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface ClientInterface extends PluginExecutionContext, CommandEmitter
+public interface ClientInterface extends GameContext
 {
-	public ClientSideController getClientSideController();
-	
-	public PluginManager getPluginManager();
+	public PlayerClient getPlayer();
 
 	/** Prints some text into the client chat */
 	public void printChat(String textToPrint);
@@ -42,7 +38,7 @@ public interface ClientInterface extends PluginExecutionContext, CommandEmitter
 	 * @param otherInventory If not null, opens this other inventory as well
 	 */
 	public void openInventory(Inventory otherInventory);
-
+	
 	/**
 	 * @return Is the game GUI in focus or obstructed by other things ?
 	 */

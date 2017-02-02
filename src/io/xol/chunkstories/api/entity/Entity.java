@@ -1,9 +1,5 @@
 package io.xol.chunkstories.api.entity;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
 import io.xol.chunkstories.api.entity.components.Subscriber;
@@ -15,16 +11,15 @@ import io.xol.chunkstories.api.world.chunk.Region;
 import io.xol.chunkstories.core.entity.components.EntityComponentExistence;
 import io.xol.chunkstories.core.entity.components.EntityComponentPosition;
 import io.xol.chunkstories.core.entity.components.EntityComponentVelocity;
-import io.xol.chunkstories.physics.Collidable;
 import io.xol.chunkstories.physics.CollisionBox;
 import io.xol.chunkstories.renderer.Camera;
-import io.xol.engine.math.lalgb.Vector3d;
+import io.xol.engine.math.lalgb.vector.dp.Vector3dm;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface Entity extends Collidable
+public interface Entity
 {
 	public EntityComponentExistence getComponentExistence();
 	
@@ -60,13 +55,17 @@ public interface Entity extends Collidable
 	public void tick(WorldAuthority authorityType);
 
 	//TODO refactor these properly
-	public void moveWithoutCollisionRestrain(Vector3d delta);
+	public void moveWithoutCollisionRestrain(Vector3dm delta);
 	
 	public void moveWithoutCollisionRestrain(double mx, double my, double mz);
 	
-	public Vector3d moveWithCollisionRestrain(Vector3d vec);
+	public Vector3dm moveWithCollisionRestrain(Vector3dm vec);
 	
-	public Vector3d moveWithCollisionRestrain(double mx, double my, double mz, boolean writeCollisions);
+	public Vector3dm moveWithCollisionRestrain(double mx, double my, double mz);
+	
+	public Vector3dm canMoveWithCollisionRestrain(Vector3dm delta);
+	
+	public boolean isOnGround();
 	
 	public EntityComponentVelocity getVelocityComponent();
 	
@@ -74,13 +73,13 @@ public interface Entity extends Collidable
 	 * Returns the entitie's AABBs to their position
 	 * @return
 	 */
-	public CollisionBox[] getTranslatedCollisionBoxes();
+	public CollisionBox getTranslatedBoundingBox();
 	
 	/**
 	 * Returns the entitie's AABBs
 	 * @return
 	 */
-	public CollisionBox[] getCollisionBoxes();
+	public CollisionBox getBoundingBox();
 	
 	/**
 	 * Called when controlling/viewing an entity
@@ -111,7 +110,7 @@ public interface Entity extends Collidable
 	 * Remove the entity from it's world and mark it for deletion (since Java requires to manually remove all references)
 	 * @return false if already removed
 	 */
-	public boolean removeFromWorld();
+	//public boolean removeFromWorld();
 
 	/**
 	 * Returns true unless it should be invisible to some players or all
@@ -133,8 +132,6 @@ public interface Entity extends Collidable
 	public boolean hasSpawned();
 	
 	public void markHasSpawned();
-	
-	public boolean isEntityOnGround();
 		
 	public IterableIterator<Subscriber> getAllSubscribers();
 	
@@ -142,5 +139,7 @@ public interface Entity extends Collidable
 	public boolean unsubscribe(Subscriber subscriber);
 	
 	public EntityComponent getComponents();
+
+	public CollisionBox[] getCollisionBoxes();
 	
 }

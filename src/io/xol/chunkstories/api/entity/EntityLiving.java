@@ -2,9 +2,11 @@ package io.xol.chunkstories.api.entity;
 
 import io.xol.chunkstories.api.entity.interfaces.EntityAnimated;
 import io.xol.chunkstories.api.entity.interfaces.EntityRotateable;
+import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.entity.EntityRenderable;
+import io.xol.engine.math.lalgb.vector.dp.Vector3dm;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
@@ -24,12 +26,35 @@ public interface EntityLiving extends Entity, EntityRenderable, EntityRotateable
 	 * @param damage
 	 * @return Damage effectivly taken
 	 */
-	public float damage(DamageCause cause, float damage);
+	public float damage(DamageCause damageCause, float damage);
+	
+	public float damage(DamageCause damageCause, HitBox damageZone, float damage);
+	
+	public interface HitBox {
+
+		public void draw(RenderingInterface renderingInterface);
+		
+		public Vector3dm lineIntersection(Vector3dm lineStart, Vector3dm lineDirection);
+
+		public String getName();
+	}
+	
+	public HitBox[] getHitBoxes();
 	
 	/**
 	 * Returns null if this entity was never hurt, the last offender if it did
 	 */
 	public DamageCause getLastDamageCause();
+	
+	public static DamageCause DAMAGE_CAUSE_FALL = new DamageCause() {
+
+		@Override
+		public String getName()
+		{
+			return "damage.fall";
+		}
+		
+	};
 	
 	/**
 	 * Returns true if the entity is dead

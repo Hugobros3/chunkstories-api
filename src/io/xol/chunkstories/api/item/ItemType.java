@@ -1,6 +1,8 @@
 package io.xol.chunkstories.api.item;
 
-//(c) 2015-2016 XolioWare Interactive
+import io.xol.chunkstories.api.Content;
+
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
@@ -19,6 +21,8 @@ public interface ItemType
 	 * @return The name this item is declared by
 	 */
 	public String getInternalName();
+	
+	public Content.ItemsTypes store();
 
 	public int getSlotsWidth();
 

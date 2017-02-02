@@ -8,10 +8,9 @@ import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.world.WorldAuthority;
-import io.xol.chunkstories.item.ItemPile;
 import io.xol.chunkstories.item.renderer.DefaultItemRenderer;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
 // http://xol.io
 

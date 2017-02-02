@@ -1,12 +1,12 @@
 package io.xol.chunkstories.api.sound;
 
-import java.nio.FloatBuffer;
 import java.util.Iterator;
 
-import io.xol.engine.math.lalgb.Vector3d;
-import io.xol.engine.math.lalgb.Vector3f;
+import io.xol.engine.math.lalgb.vector.dp.Vector3dm;
+import io.xol.engine.math.lalgb.vector.sp.Vector3fm;
 
-//(c) 2015-2016 XolioWare Interactive
+
+//(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
 // http://xol.io
 
@@ -27,25 +27,25 @@ public interface SoundManager
 	}
 	
 	/** Overloads playSoundEffect with a vector3f instead of individual components and default attenuation */
-	public default SoundSource playSoundEffect(String soundEffect, Vector3f location, float pitch, float gain)
+	public default SoundSource playSoundEffect(String soundEffect, Vector3fm location, float pitch, float gain)
 	{
-		return this.playSoundEffect(soundEffect, location.x, location.y, location.z, pitch, gain);
+		return this.playSoundEffect(soundEffect, location.getX(), location.getY(), location.getZ(), pitch, gain);
 	}
 
 	/** Overloads playSoundEffect with a vector3d instead of individual components and default attenuation */
-	public default SoundSource playSoundEffect(String soundEffect, Vector3d location, float pitch, float gain)
+	public default SoundSource playSoundEffect(String soundEffect, Vector3dm location, float pitch, float gain)
 	{
 		return this.playSoundEffect(soundEffect, location.getX(), location.getY(), location.getZ(), pitch, gain);
 	}
 	
 	/** Overloads playSoundEffect with a vector3f instead of individual components */
-	public default SoundSource playSoundEffect(String soundEffect, Vector3f location, float pitch, float gain, float attStart, float attEnd)
+	public default SoundSource playSoundEffect(String soundEffect, Vector3fm location, float pitch, float gain, float attStart, float attEnd)
 	{
-		return this.playSoundEffect(soundEffect, location.x, location.y, location.z, pitch, gain, attStart, attEnd);
+		return this.playSoundEffect(soundEffect, location.getX(), location.getY(), location.getZ(), pitch, gain, attStart, attEnd);
 	}
 	
 	/** Overloads playSoundEffect with a vector3d instead of individual components */
-	public default SoundSource playSoundEffect(String soundEffect, Vector3d location, float pitch, float gain, float attStart, float attEnd)
+	public default SoundSource playSoundEffect(String soundEffect, Vector3dm location, float pitch, float gain, float attStart, float attEnd)
 	{
 		return this.playSoundEffect(soundEffect, location.getX(), location.getY(), location.getZ(), pitch, gain, attStart, attEnd);
 	}
@@ -136,10 +136,5 @@ public interface SoundManager
 	 */
 	public abstract boolean setEffectForSlot(int slot, SoundEffect effect);
 
-	public abstract void setListenerPosition(float x, float y, float z, FloatBuffer rot);
-	
-	public default void setListenerPosition(double d, double e, double f, FloatBuffer listenerOrientation)
-	{
-		setListenerPosition((float)d, (float)e, (float)f, listenerOrientation);
-	}
+	public abstract void setListenerPosition(float x, float y, float z, Vector3fm lookAt, Vector3fm up);
 }

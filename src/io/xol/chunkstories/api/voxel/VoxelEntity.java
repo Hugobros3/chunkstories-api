@@ -1,5 +1,6 @@
 package io.xol.chunkstories.api.voxel;
 
+import io.xol.chunkstories.api.Content;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.EntityVoxel;
@@ -9,7 +10,7 @@ import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.chunk.Region;
 import io.xol.chunkstories.voxel.VoxelDefault;
 
-//(c) 2015-2016 XolioWare Interactive
+//(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
@@ -18,14 +19,14 @@ import io.xol.chunkstories.voxel.VoxelDefault;
  */
 public abstract class VoxelEntity extends VoxelDefault implements VoxelLogic, VoxelInteractive
 {
-	public VoxelEntity(int id, String name)
+	public VoxelEntity(Content.Voxels store, int id, String name)
 	{
-		super(id, name);
+		super(store, id, name);
 	}
 	
 	public Entity getVoxelEntity(Location location)
 	{
-		return getVoxelEntity(location.getWorld(), (int)location.getX(), (int)location.getY(), (int)location.getZ());
+		return getVoxelEntity(location.getWorld(), (int)(double)location.getX(), (int)(double)location.getY(), (int)(double)location.getZ());
 	}
 	
 	public EntityVoxel getVoxelEntity(World world, int worldX, int worldY, int worldZ)
@@ -67,7 +68,7 @@ public abstract class VoxelEntity extends VoxelDefault implements VoxelLogic, Vo
 			return;
 		
 		Entity voxelEntity = getVoxelEntity(world, x, y, z);
-		voxelEntity.removeFromWorld();
+		world.removeEntity(voxelEntity);
 		
 		//System.out.println("removed voxel entity");
 	}
