@@ -8,7 +8,6 @@ import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.world.WorldAuthority;
-import io.xol.chunkstories.item.renderer.DefaultItemRenderer;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
@@ -18,12 +17,9 @@ public class Item
 {
 	private final ItemType type;
 	
-	protected ItemRenderer itemRenderer;
-	
 	public Item(ItemType type)
 	{
 		this.type = type;
-		itemRenderer = new DefaultItemRenderer(this);
 	}
 	
 	public ItemType getType()
@@ -36,9 +32,11 @@ public class Item
 		return type.getInternalName();
 	}
 	
-	public ItemRenderer getItemRenderer()
+	/** Returns null by default, you can have custom Item renderers just by returning an Item renderer here. */
+	public ItemRenderer getCustomItemRenderer(ItemRenderer fallbackRenderer)
 	{
-		return itemRenderer;
+		// return new MyFancyCustomRenderer(fallbackRenderer);
+		return null;
 	}
 	
 	/**
@@ -80,33 +78,10 @@ public class Item
 		return "./items/icons/"+getInternalName()+".png";
 	}
 	
-	/**
-	 * Returns the assignated ID for this item.
-	 * @return
-	 */
+	/** Returns the assignated ID for this item. */
 	public final int getID()
 	{
 		return type.getID();
-	}
-	
-	// ----- Begin get/set hell -----
-	
-	/**
-	 * Items in chunk stories can take up more than one slot.
-	 * @return How many slots this items use, horizontally
-	 */
-	public int getSlotsWidth()
-	{
-		return type.getSlotsWidth();
-	}
-
-	/**
-	 * Items in chunk stories can take up more than one slot.
-	 * @return How many slots this items use, vertically
-	 */
-	public int getSlotsHeight()
-	{
-		return type.getSlotsHeight();
 	}
 	
 	public String getInternalName()
@@ -114,33 +89,11 @@ public class Item
 		return type.getInternalName();
 	}
 
-	/**
-	 * Defines the maximal 'amount' an ItemPile can have of this item.
-	 * @return
-	 */
-	public int getMaxStackSize()
-	{
-		return type.getMaxStackSize();
-	}
-
-	/**
-	 * Called on loading an ItemPile containing this item, usefull for loading stuff into the itemData of the pile.
-	 * @param stream
-	 * @throws IOException
-	 */
+	/** Unsafe, called upon loading this item from a stream. If you do use it, PLEASE ensure you remember how many bytes you read/write and be consistent, else you break the savefile */
 	public void load(DataInputStream stream) throws IOException
-	{
-		
-	}
+	{ }
 	
-	/**
-	 * See load()
-	 * @param stream
-	 * @throws IOException
-	 */
+	/** See load(). */
 	public void save(DataOutputStream stream) throws IOException
-	{
-		
-	}
-	// ----- End get/set hell -----
+	{ }
 }
