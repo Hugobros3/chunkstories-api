@@ -17,9 +17,6 @@ version = '106'
 group = 'io.xol.chunkstories'
 description = 'Open API for the game \'Chunk Stories\''
 
-dependencies {
-}
-
 compileJava {
     //options.encoding = 'UTF-8'
 	
@@ -27,15 +24,9 @@ compileJava {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
-def someFile = file('build/somefile.txt')
-
-artifacts {
-//	archives someFile
-}
-
 jar {
+//I don't like numbers in my jars
 version = null
-//archiveName = 'api.jar'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
