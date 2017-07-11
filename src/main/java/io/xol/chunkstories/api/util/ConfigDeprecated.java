@@ -1,41 +1,54 @@
 package io.xol.chunkstories.api.util;
 
+import java.util.Iterator;
+
+/** A crappy interface for something I wrote in the early days */
 public interface ConfigDeprecated {
 
+	/** Forcibly reloads the configuration file */
 	public void load();
 
+	/** Forcibly saves the configuration file */
 	public void save();
 
-	public int getIntProp(String s, String a);
+	public String getString(String property, String defaultValue);
 
-	public String getProp(String s, String a);
+	public String getString(String property);
+	
+	public int getInteger(String property);
 
-	public String getString(String s);
+	public int getInteger(String property, int defaultValue);
 
-	public int getInteger(String s, int intProp);
+	public boolean getBoolean(String property);
+	
+	public boolean getBoolean(String property, boolean defaultValue);
 
-	public boolean getBoolean(String string, boolean booleanProp);
+	public float getFloat(String property);
 
-	public float getFloat(String s);
+	public float getFloat(String property, float defaultValue);
 
-	public float getFloat(String s, float f);
+	public double getDouble(String property);
 
-	public double getDouble(String s);
+	public double getDouble(String property, double defaultValue);
 
-	public double getDouble(String s, double d);
+	public long getLong(String property);
+	
+	public long getLong(String property, long defaultValue);
 
-	public long getLong(String s, long l);
+	public void setString(String property, String value);
 
-	public void setString(String p, String d);
+	public void setInteger(String property, int value);
 
-	public void setInteger(String p, int i);
+	public void setLong(String property, long value);
 
-	public void setLong(String p, long l);
+	public void setDouble(String property, double value);
 
-	public void setDouble(String p, double d);
-
-	public void setFloat(String p, float f);
+	public void setFloat(String property, float value);
 
 	public boolean isFieldSet(String string);
+	
+	public void removeFieldValue(String string);
+	
+	public Iterator<String> getFieldsSet();
 
 }

@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.world;
 
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.util.IterableIterator;
+import io.xol.chunkstories.api.util.concurrency.Fence;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -17,6 +18,12 @@ public interface WorldMaster extends World
 	public IterableIterator<Player> getPlayers();
 	
 	public Player getPlayerByName(String playerName);
+	
+	/** Returns the folder where the world files are on disk. */
+	public String getFolderPath();
+	
+	/** Stops the logic thread that calls the tick() method. Returns a fence that traverses once that thread is effecitvely dead. */
+	public Fence stopLogic();
 	
 	/**
 	 * Plays a soundEffect to all clients except once, typical use if sounds played locally by a player that can't suffer any lag for him
