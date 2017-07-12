@@ -4,9 +4,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.joml.Vector2f;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
-import io.xol.chunkstories.api.math.vector.sp.Vector2fm;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
 import io.xol.chunkstories.api.world.WorldMaster;
@@ -20,7 +22,7 @@ public class EntityComponentRotation extends EntityComponent
 	private float rotationHorizontal = 0f;
 	private float rotationVertical = 0f;
 	
-	private Vector2fm rotationImpulse = new Vector2fm();
+	private Vector2f rotationImpulse = new Vector2f();
 	
 	public EntityComponentRotation(Entity entity, EntityComponent previous)
 	{
@@ -40,15 +42,15 @@ public class EntityComponentRotation extends EntityComponent
 	/**
 	 * @return A vector3d for the direction
 	 */
-	public Vector3dm getDirectionLookingAt()
+	public Vector3dc getDirectionLookingAt()
 	{
-		Vector3dm direction = new Vector3dm();
+		Vector3d direction = new Vector3d();
 
 		double a = ((-getHorizontalRotation()) / 360f * 2 * Math.PI);
 		double b = ((getVerticalRotation()) / 360f * 2 * Math.PI);
-		direction.setX(-Math.sin(a) * Math.cos(b));
-		direction.setY(-Math.sin(b));
-		direction.setZ(-Math.cos(a) * Math.cos(b));
+		direction.x = (-Math.sin(a) * Math.cos(b));
+		direction.y = (-Math.sin(b));
+		direction.z = (-Math.cos(a) * Math.cos(b));
 
 		return direction.normalize();
 	}
@@ -94,15 +96,15 @@ public class EntityComponentRotation extends EntityComponent
 	 */
 	public void applyInpulse(double inpulseHorizontal, double inpulseVertical)
 	{
-		rotationImpulse.add(new Vector2fm((float)inpulseHorizontal, (float)inpulseVertical));
+		rotationImpulse.add(new Vector2f((float)inpulseHorizontal, (float)inpulseVertical));
 	}
 	
 	/**
 	 * Reduces the acceleration and returns it
 	 */
-	public Vector2fm tickInpulse()
+	public Vector2f tickInpulse()
 	{
-		rotationImpulse.scale(0.50f);
+		rotationImpulse.mul(0.50f);
 		if(rotationImpulse.length() < 0.05)
 			rotationImpulse.set(0.0f, 0.0f);
 		return rotationImpulse;

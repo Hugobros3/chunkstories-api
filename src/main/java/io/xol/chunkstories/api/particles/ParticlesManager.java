@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.particles;
 
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
+import org.joml.Vector3dc;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -8,7 +8,7 @@ import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 
 public interface ParticlesManager
 {
-	public void spawnParticleAtPosition(String particleTypeName, Vector3dm position);
+	public void spawnParticleAtPosition(String particleTypeName, Vector3dc position);
 	
-	public void spawnParticleAtPositionWithVelocity(String particleTypeName, Vector3dm position, Vector3dm velocity);
+	public void spawnParticleAtPositionWithVelocity(String particleTypeName, Vector3dc position, Vector3dc velocity);
 }

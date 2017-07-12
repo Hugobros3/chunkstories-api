@@ -4,10 +4,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.net.packets.PacketVelocityDelta;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
@@ -23,53 +25,53 @@ public class EntityComponentVelocity extends EntityComponent
 		super(entity, previous);
 	}
 
-	private Vector3dm velocity = new Vector3dm();
+	private Vector3d velocity = new Vector3d();
 	
-	public Vector3dm getVelocity()
+	public Vector3d getVelocity()
 	{
 		return velocity;
 	}
 
-	public void setVelocity(Vector3dm velocity)
+	public void setVelocity(Vector3dc velocity)
 	{
-		this.velocity.setX(velocity.getX());
-		this.velocity.setY(velocity.getY());
-		this.velocity.setZ(velocity.getZ());
+		this.velocity.x = (velocity.x());
+		this.velocity.y = (velocity.y());
+		this.velocity.z = (velocity.z());
 		
 		this.pushComponentEveryone();
 	}
 
 	public void setVelocity(double x, double y, double z)
 	{
-		this.velocity.setX(x);
-		this.velocity.setY(y);
-		this.velocity.setZ(z);
+		this.velocity.x = (x);
+		this.velocity.y = (y);
+		this.velocity.z = (z);
 		
 		this.pushComponentEveryone();
 	}
 
 	public void setVelocityX(double x)
 	{
-		this.velocity.setX(x);
+		this.velocity.x = (x);
 		
 		this.pushComponentEveryone();
 	}
 
 	public void setVelocityY(double y)
 	{
-		this.velocity.setY(y);
+		this.velocity.y = (y);
 		
 		this.pushComponentEveryone();
 	}
 
 	public void setVelocityZ(double z)
 	{
-		this.velocity.setZ(z);
+		this.velocity.z = (z);
 		
 		this.pushComponentEveryone();
 	}
 
-	public void addVelocity(Vector3dm delta)
+	public void addVelocity(Vector3dc delta)
 	{
 		this.velocity.add(delta);
 		
@@ -88,23 +90,23 @@ public class EntityComponentVelocity extends EntityComponent
 
 	public void addVelocity(double x, double y, double z)
 	{
-		this.addVelocity(new Vector3dm(x, y, z));
+		this.addVelocity(new Vector3d(x, y, z));
 	}
 
 	@Override
 	protected void push(StreamTarget destinator, DataOutputStream dos) throws IOException
 	{
-		dos.writeDouble(velocity.getX());
-		dos.writeDouble(velocity.getY());
-		dos.writeDouble(velocity.getZ());
+		dos.writeDouble(velocity.x());
+		dos.writeDouble(velocity.y());
+		dos.writeDouble(velocity.z());
 	}
 
 	@Override
 	protected void pull(StreamSource from, DataInputStream dis) throws IOException
 	{
-		velocity.setX(dis.readDouble());
-		velocity.setY(dis.readDouble());
-		velocity.setZ(dis.readDouble());
+		velocity.x = (dis.readDouble());
+		velocity.y = (dis.readDouble());
+		velocity.z = (dis.readDouble());
 		
 		this.pushComponentEveryoneButController();
 	}

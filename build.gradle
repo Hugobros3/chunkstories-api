@@ -12,10 +12,15 @@ apply plugin: 'java-library'
 apply plugin: 'maven'
 
 //TODO Make version depend on Git ?
-version = '107'
+version = '108'
 
 group = 'io.xol.chunkstories'
 description = 'Open API for the game \'Chunk Stories\''
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
 
 compileJava {
     //options.encoding = 'UTF-8'
@@ -25,8 +30,12 @@ compileJava {
 }
 
 jar {
-//I don't like numbers in my jars
-version = null
+	//I don't like numbers in my jars
+	version = null
+}
+
+dependencies {
+	compile group: 'org.joml', name: 'joml', version: '1.9.3'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

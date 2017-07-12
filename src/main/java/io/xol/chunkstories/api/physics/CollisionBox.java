@@ -1,7 +1,9 @@
 package io.xol.chunkstories.api.physics;
 
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.Content.Voxels;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -48,11 +50,11 @@ public final class CollisionBox implements Collidable
 		return this;
 	}
 
-	public CollisionBox translate(Vector3dm vec3)
+	public CollisionBox translate(Vector3dc vec3)
 	{
-		xpos += vec3.getX();
-		ypos += vec3.getY();
-		zpos += vec3.getZ();
+		xpos += vec3.x();
+		ypos += vec3.y();
+		zpos += vec3.z();
 		return this;
 	}
 
@@ -78,13 +80,13 @@ public final class CollisionBox implements Collidable
 		return false;
 	}
 
-	boolean inBox(Vector3dm hit, Vector3dm B1, Vector3dm B2, int axis)
+	boolean inBox(Vector3dc hit, Vector3dc B1, Vector3dc B2, int axis)
 	{
-		if (axis == 1 && hit.getZ() > B1.getZ() && hit.getZ() < B2.getZ() && hit.getY() > B1.getY() && hit.getY() < B2.getY())
+		if (axis == 1 && hit.z() > B1.z() && hit.z() < B2.z() && hit.y() > B1.y() && hit.y() < B2.y())
 			return true;
-		if (axis == 2 && hit.getZ() > B1.getZ() && hit.getZ() < B2.getZ() && hit.getX() > B1.getX() && hit.getX() < B2.getX())
+		if (axis == 2 && hit.z() > B1.z() && hit.z() < B2.z() && hit.x() > B1.x() && hit.x() < B2.x())
 			return true;
-		if (axis == 3 && hit.getX() > B1.getX() && hit.getX() < B2.getX() && hit.getY() > B1.getY() && hit.getY() < B2.getY())
+		if (axis == 3 && hit.x() > B1.x() && hit.x() < B2.x() && hit.y() > B1.y() && hit.y() < B2.y())
 			return true;
 		return false;
 	}
@@ -94,30 +96,31 @@ public final class CollisionBox implements Collidable
 	 * 
 	 * @return The collision point, or NULL.
 	 */
-	public Vector3dm lineIntersection(Vector3dm lineStart, Vector3dm lineDirection)
+	public Vector3dc lineIntersection(Vector3dc lineStart, Vector3dc lineDirectionIn)
 	{
 		double minDist = 0.0;
 		double maxDist = 256d;
 		
-		Vector3dm min = new Vector3dm(xpos, ypos, zpos);
-		Vector3dm max = new Vector3dm(xpos + xw, ypos + h, zpos + zw);
+		Vector3d min = new Vector3d(xpos, ypos, zpos);
+		Vector3d max = new Vector3d(xpos + xw, ypos + h, zpos + zw);
 		
+		Vector3d lineDirection = new Vector3d(lineDirectionIn);
 		lineDirection.normalize();
 		
-		Vector3dm invDir = new Vector3dm(1f / lineDirection.getX(), 1f / lineDirection.getY(), 1f / lineDirection.getZ());
+		Vector3d invDir = new Vector3d(1f / lineDirection.x(), 1f / lineDirection.y(), 1f / lineDirection.z());
 
-		boolean signDirX = invDir.getX() < 0;
-		boolean signDirY = invDir.getY() < 0;
-		boolean signDirZ = invDir.getZ() < 0;
+		boolean signDirX = invDir.x() < 0;
+		boolean signDirY = invDir.y() < 0;
+		boolean signDirZ = invDir.z() < 0;
 
-		Vector3dm bbox = signDirX ? max : min;
-		double tmin = (bbox.getX() - lineStart.getX()) * invDir.getX();
+		Vector3d bbox = signDirX ? max : min;
+		double tmin = (bbox.x() - lineStart.x()) * invDir.x();
 		bbox = signDirX ? min : max;
-		double tmax = (bbox.getX() - lineStart.getX()) * invDir.getX();
+		double tmax = (bbox.x() - lineStart.x()) * invDir.x();
 		bbox = signDirY ? max : min;
-		double tymin = (bbox.getY() - lineStart.getY()) * invDir.getY();
+		double tymin = (bbox.y() - lineStart.y()) * invDir.y();
 		bbox = signDirY ? min : max;
-		double tymax = (bbox.getY() - lineStart.getY()) * invDir.getY();
+		double tymax = (bbox.y() - lineStart.y()) * invDir.y();
 
 		if ((tmin > tymax) || (tymin > tmax)) {
 			return null;
@@ -130,9 +133,9 @@ public final class CollisionBox implements Collidable
 		}
 
 		bbox = signDirZ ? max : min;
-		double tzmin = (bbox.getZ() - lineStart.getZ()) * invDir.getZ();
+		double tzmin = (bbox.z() - lineStart.z()) * invDir.z();
 		bbox = signDirZ ? min : max;
-		double tzmax = (bbox.getZ() - lineStart.getZ()) * invDir.getZ();
+		double tzmax = (bbox.z() - lineStart.z()) * invDir.z();
 
 		if ((tmin > tzmax) || (tzmin > tmax)) {
 			return null;
@@ -145,9 +148,9 @@ public final class CollisionBox implements Collidable
 		}
 		if ((tmin < maxDist) && (tmax > minDist)) {
 			
-			Vector3dm intersect = new Vector3dm(lineStart);
+			Vector3d intersect = new Vector3d(lineStart);
 			
-			intersect.add(lineDirection.clone().normalize().scale(tmin));
+			intersect.add(lineDirection.mul(tmin));
 			return intersect;
 			//return Vector3dm.add(lineStart, lineDirection.clone().normalize().scale(tmin), null);
 			

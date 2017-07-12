@@ -1,14 +1,15 @@
 package io.xol.chunkstories.api;
 
-import io.xol.chunkstories.api.math.vector.Vector3;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public class Location extends Vector3dm
+public class Location extends Vector3d
 {
 	World world;
 	
@@ -18,17 +19,17 @@ public class Location extends Vector3dm
 		this.world = world;
 	}
 	
-	public Location(World world, Vector3<Double> position)
+	public Location(World world, Vector3dc position)
 	{
-		this(world, position.getX(), position.getY(), position.getZ());
+		this(world, position.x(), position.y(), position.z());
 	}
 
 	public Location(Location location)
 	{
 		this.world = location.getWorld();
-		this.setX(location.getX());
-		this.setY(location.getY());
-		this.setZ(location.getZ());
+		this.x = (location.x);
+		this.y = (location.y);
+		this.z = (location.z);
 	}
 	
 	public World getWorld()

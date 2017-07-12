@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.particles;
 
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
+import org.joml.Vector3fc;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -8,5 +8,5 @@ import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 
 public interface ParticleDataWithVelocity
 {
-	public void setVelocity(Vector3dm vel);
+	public void setVelocity(Vector3fc vel);
 }

@@ -1,7 +1,8 @@
 package io.xol.chunkstories.api.world.chunk;
 
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.world.World;
@@ -31,7 +32,7 @@ public interface Chunk
 	 */
 	public int getVoxelData(int x, int y, int z);
 	
-	public ChunkVoxelContext peek(Vector3dm location);
+	public ChunkVoxelContext peek(Vector3dc location);
 	
 	public ChunkVoxelContext peek(int x, int y, int z);
 	

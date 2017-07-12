@@ -1,12 +1,13 @@
 package io.xol.chunkstories.api.rendering;
 
+import org.joml.Matrix4f;
+
 import io.xol.chunkstories.api.client.ClientContent.TexturesLibrary;
 import io.xol.chunkstories.api.client.ClientInterface;
 import io.xol.chunkstories.api.client.ClientRenderingConfig;
 import io.xol.chunkstories.api.exceptions.rendering.AttributeNotPresentException;
 import io.xol.chunkstories.api.exceptions.rendering.InvalidShaderException;
 import io.xol.chunkstories.api.exceptions.rendering.ShaderCompileException;
-import io.xol.chunkstories.api.math.Matrix4f;
 import io.xol.chunkstories.api.rendering.lightning.Light;
 import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
 import io.xol.chunkstories.api.rendering.pipeline.AttributesConfiguration;

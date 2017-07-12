@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.physics;
 
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
+import org.joml.Vector3dc;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -10,5 +10,5 @@ public interface Collidable
 {
 	public boolean collidesWith(Collidable box);
 	
-	public Vector3dm lineIntersection(Vector3dm lineStart, Vector3dm lineDirection);
+	public Vector3dc lineIntersection(Vector3dc lineStart, Vector3dc lineDirection);
 }

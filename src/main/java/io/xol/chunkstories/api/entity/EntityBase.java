@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
 import io.xol.chunkstories.api.entity.components.EntityComponentExistence;
@@ -12,7 +15,6 @@ import io.xol.chunkstories.api.entity.components.EntityComponentVelocity;
 import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.exceptions.IllegalUUIDChangeException;
 import io.xol.chunkstories.api.input.Input;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
@@ -109,17 +111,17 @@ public abstract class EntityBase implements Entity
 	@Override
 	public void moveWithoutCollisionRestrain(double mx, double my, double mz)
 	{
-		Vector3dm pos = new Vector3dm(positionComponent.getLocation());
-		pos.setX(pos.getX() + mx);
-		pos.setY(pos.getY() + my);
-		pos.setZ(pos.getZ() + mz);
+		Vector3d pos = new Vector3d(positionComponent.getLocation());
+		pos.x = (pos.x() + mx);
+		pos.y = (pos.y() + my);
+		pos.z = (pos.z() + mz);
 		positionComponent.setPosition(pos);
 	}
 
 	@Override
-	public void moveWithoutCollisionRestrain(Vector3dm delta)
+	public void moveWithoutCollisionRestrain(Vector3dc delta)
 	{
-		Vector3dm pos = new Vector3dm(positionComponent.getLocation());
+		Vector3d pos = new Vector3d(positionComponent.getLocation());
 		pos.add(delta);
 		positionComponent.setPosition(pos);
 	}
@@ -140,17 +142,17 @@ public abstract class EntityBase implements Entity
 	}
 
 	@Override
-	public Vector3dm moveWithCollisionRestrain(Vector3dm delta)
+	public Vector3dc moveWithCollisionRestrain(Vector3dc delta)
 	{
-		Vector3dm movementLeft = world.collisionsManager().runEntityAgainstWorldVoxels(this, this.getLocation(), delta);
-		this.moveWithoutCollisionRestrain(delta.getX() - movementLeft.getX(), delta.getY() - movementLeft.getY(), delta.getZ() - movementLeft.getZ());
+		Vector3dc movementLeft = world.collisionsManager().runEntityAgainstWorldVoxels(this, this.getLocation(), delta);
+		this.moveWithoutCollisionRestrain(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(), delta.z() - movementLeft.z());
 		return movementLeft;
 	}
 
 	@Override
-	public Vector3dm moveWithCollisionRestrain(double mx, double my, double mz)
+	public Vector3dc moveWithCollisionRestrain(double mx, double my, double mz)
 	{
-		return moveWithCollisionRestrain(new Vector3dm(mx, my, mz));
+		return moveWithCollisionRestrain(new Vector3d(mx, my, mz));
 	}
 
 	/**
@@ -158,7 +160,7 @@ public abstract class EntityBase implements Entity
 	 * 
 	 * @return The remaining distance in each dimension if he got stuck ( with vec3(0.0, 0.0, 0.0) meaning it can move without colliding with anything )
 	 */
-	public Vector3dm canMoveWithCollisionRestrain(Vector3dm delta)
+	public Vector3dc canMoveWithCollisionRestrain(Vector3dc delta)
 	{
 		return world.collisionsManager().runEntityAgainstWorldVoxels(this, this.getLocation(), delta);
 	}
@@ -168,12 +170,12 @@ public abstract class EntityBase implements Entity
 	 * @param from Change the origin of the movement from the default ( current entity position )
 	 * @return The remaining distance in each dimension if he got stuck ( with vec3(0.0, 0.0, 0.0) meaning it can move without colliding with anything )
 	 */
-	public Vector3dm canMoveWithCollisionRestrain(Vector3dm from, Vector3dm delta)
+	public Vector3dc canMoveWithCollisionRestrain(Vector3dc from, Vector3dc delta)
 	{
 		return world.collisionsManager().runEntityAgainstWorldVoxels(this, from, delta);
 	}
 	
-	private static final Vector3dm onGroundTest_ = new Vector3dm(0.0, -0.01, 0.0);
+	private static final Vector3dc onGroundTest_ = new Vector3d(0.0, -0.01, 0.0);
 
 	@Override
 	public boolean isOnGround()
@@ -203,7 +205,7 @@ public abstract class EntityBase implements Entity
 	@Override
 	public void setupCamera(RenderingInterface renderingInterface)
 	{
-		renderingInterface.getCamera().setCameraPosition(new Vector3dm(positionComponent.getLocation()));
+		renderingInterface.getCamera().setCameraPosition(new Vector3d(positionComponent.getLocation()));
 		
 		//Default FOV
 		renderingInterface.getCamera().setFOV(renderingInterface.renderingConfig().getFov());

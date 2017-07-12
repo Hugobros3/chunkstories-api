@@ -1,12 +1,12 @@
 package io.xol.chunkstories.api.world;
 
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
-import io.xol.chunkstories.api.math.vector.Vector3;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.particles.ParticlesManager;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.effects.DecalsManager;
@@ -94,7 +94,7 @@ public interface World
 	public IterableIterator<Entity> getAllLoadedEntities();
 	
 	/** Returns an iterator containing all the entities from within the box defined by center and boxSize */
-	public NearEntitiesIterator getEntitiesInBox(Vector3<Double> center, Vector3<Double> boxSize);
+	public NearEntitiesIterator getEntitiesInBox(Vector3dc center, Vector3dc boxSize);
 	
 	interface NearEntitiesIterator extends IterableIterator<Entity> {
 		
@@ -108,7 +108,7 @@ public interface World
 	 * Returns the block data at the specified location
 	 * @return The raw block data, see {@link VoxelFormat}
 	 */
-	public int getVoxelData(Vector3dm location);
+	public int getVoxelData(Vector3dc location);
 
 	/**
 	 * Returns the block data at the specified location
@@ -122,7 +122,7 @@ public interface World
 		public Location getLocation();
 	}
 	
-	public WorldVoxelContext peek(Vector3dm location);
+	public WorldVoxelContext peek(Vector3dc location);
 	
 	public WorldVoxelContext peek(int x, int y, int z);
 	

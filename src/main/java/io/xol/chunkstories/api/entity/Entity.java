@@ -1,5 +1,7 @@
 package io.xol.chunkstories.api.entity;
 
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
 import io.xol.chunkstories.api.entity.components.EntityComponentExistence;
@@ -7,7 +9,6 @@ import io.xol.chunkstories.api.entity.components.EntityComponentPosition;
 import io.xol.chunkstories.api.entity.components.EntityComponentVelocity;
 import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.input.Input;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
@@ -49,15 +50,15 @@ public interface Entity
 	public boolean handleInteraction(Entity entity, Input input);
 
 	//TODO refactor these properly
-	public void moveWithoutCollisionRestrain(Vector3dm delta);
+	public void moveWithoutCollisionRestrain(Vector3dc delta);
 	
 	public void moveWithoutCollisionRestrain(double mx, double my, double mz);
 	
-	public Vector3dm moveWithCollisionRestrain(Vector3dm vec);
+	public Vector3dc moveWithCollisionRestrain(Vector3dc vec);
 	
-	public Vector3dm moveWithCollisionRestrain(double mx, double my, double mz);
+	public Vector3dc moveWithCollisionRestrain(double mx, double my, double mz);
 	
-	public Vector3dm canMoveWithCollisionRestrain(Vector3dm delta);
+	public Vector3dc canMoveWithCollisionRestrain(Vector3dc delta);
 	
 	public boolean isOnGround();
 	

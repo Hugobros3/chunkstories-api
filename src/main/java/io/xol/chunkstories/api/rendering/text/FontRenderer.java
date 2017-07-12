@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.rendering.text;
 
-import io.xol.chunkstories.api.math.vector.sp.Vector4fm;
+import org.joml.Vector4fc;
 
 public interface FontRenderer {
 	/** Will try to create the requested font in said size, if not found or fails will return defaultFont */
@@ -13,11 +13,11 @@ public interface FontRenderer {
 	
 	public void drawString(Font font, float x, float y, String whatchars, float scale);
 	
-	public void drawString(Font font, float x, float y, String whatchars, float scale, Vector4fm color);
+	public void drawString(Font font, float x, float y, String whatchars, float scale, Vector4fc color);
 	
-	public void drawStringWithShadow(Font font, float x, float y, String whatchars, float scaleX, float scaleY, Vector4fm color);
+	public void drawStringWithShadow(Font font, float x, float y, String whatchars, float scaleX, float scaleY, Vector4fc color);
 	
-	public void drawStringWithShadow(Font font, float x, float y, String whatchars, float scaleX, float scaleY, float clipX, Vector4fm color);
+	public void drawStringWithShadow(Font font, float x, float y, String whatchars, float scaleX, float scaleY, float clipX, Vector4fc color);
 	
 	//public void drawString(Font font, float x, float y, String whatchars, float scaleX, float scaleY, int format);
 	

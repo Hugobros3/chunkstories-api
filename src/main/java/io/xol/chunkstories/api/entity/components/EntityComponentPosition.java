@@ -4,9 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
 import io.xol.chunkstories.api.world.World;
@@ -44,11 +45,11 @@ public class EntityComponentPosition extends EntityComponent
 		this.pushComponentEveryone();
 	}
 	
-	public void setPosition(Vector3dm position)
+	public void setPosition(Vector3dc position)
 	{
-		this.pos.setX(position.getX());
-		this.pos.setY(position.getY());
-		this.pos.setZ(position.getZ());
+		this.pos.x = (position.x());
+		this.pos.y = (position.y());
+		this.pos.z = (position.z());
 		
 		checkPositionAndUpdateHolder();
 
@@ -58,9 +59,9 @@ public class EntityComponentPosition extends EntityComponent
 	
 	public void setPosition(double x, double y, double z)
 	{
-		this.pos.setX(x);
-		this.pos.setY(y);
-		this.pos.setZ(z);
+		this.pos.x = (x);
+		this.pos.y = (y);
+		this.pos.z = (z);
 		
 		checkPositionAndUpdateHolder();
 
@@ -91,9 +92,9 @@ public class EntityComponentPosition extends EntityComponent
 	@Override
 	public void push(StreamTarget to, DataOutputStream dos) throws IOException
 	{
-		dos.writeDouble(pos.getX());
-		dos.writeDouble(pos.getY());
-		dos.writeDouble(pos.getZ());
+		dos.writeDouble(pos.x());
+		dos.writeDouble(pos.y());
+		dos.writeDouble(pos.z());
 	}
 
 	@Override
@@ -102,9 +103,9 @@ public class EntityComponentPosition extends EntityComponent
 		if(pos == null)
 			pos = new Location(this.entity.getWorld(), 0, 0, 0);
 		
-		pos.setX(dis.readDouble());
-		pos.setY(dis.readDouble());
-		pos.setZ(dis.readDouble());
+		pos.x = (dis.readDouble());
+		pos.y = (dis.readDouble());
+		pos.z = (dis.readDouble());
 		
 		checkPositionAndUpdateHolder();
 		
@@ -123,19 +124,19 @@ public class EntityComponentPosition extends EntityComponent
 	 */
 	protected final boolean checkPositionAndUpdateHolder()
 	{
-		pos.setX(pos.getX() % entity.getWorld().getWorldSize());
-		pos.setZ(pos.getZ() % entity.getWorld().getWorldSize());
-		if (pos.getX() < 0)
-			pos.setX(pos.getX() + entity.getWorld().getWorldSize());
-		if (pos.getZ() < 0)
-			pos.setZ(pos.getZ() + entity.getWorld().getWorldSize());
-		int regionX = (int) (pos.getX() / (32 * 8));
-		int regionY = (int) (pos.getY() / (32 * 8));
+		pos.x = (pos.x() % entity.getWorld().getWorldSize());
+		pos.z = (pos.z() % entity.getWorld().getWorldSize());
+		if (pos.x() < 0)
+			pos.x = (pos.x() + entity.getWorld().getWorldSize());
+		if (pos.z() < 0)
+			pos.z = (pos.z() + entity.getWorld().getWorldSize());
+		int regionX = (int) (pos.x() / (32 * 8));
+		int regionY = (int) (pos.y() / (32 * 8));
 		if (regionY < 0)
 			regionY = 0;
 		if (regionY > entity.getWorld().getMaxHeight() / (32 * 8))
 			regionY = entity.getWorld().getMaxHeight() / (32 * 8);
-		int regionZ = (int) (pos.getZ() / (32 * 8));
+		int regionZ = (int) (pos.z() / (32 * 8));
 		
 		//Don't touch updates once the entity was removed
 		if(!entity.exists())

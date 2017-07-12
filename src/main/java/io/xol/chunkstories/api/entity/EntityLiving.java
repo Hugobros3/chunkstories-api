@@ -1,8 +1,9 @@
 package io.xol.chunkstories.api.entity;
 
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.entity.interfaces.EntityAnimated;
 import io.xol.chunkstories.api.entity.interfaces.EntityRotateable;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.entity.EntityRenderable;
 
@@ -34,7 +35,7 @@ public interface EntityLiving extends Entity, EntityRenderable, EntityRotateable
 
 		public void draw(RenderingInterface renderingInterface);
 		
-		public Vector3dm lineIntersection(Vector3dm lineStart, Vector3dm lineDirection);
+		public Vector3dc lineIntersection(Vector3dc lineStart, Vector3dc lineDirection);
 
 		public String getName();
 	}

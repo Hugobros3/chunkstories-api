@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.rendering.effects;
 
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
+import org.joml.Vector3dc;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -8,5 +8,5 @@ import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 
 public interface DecalsManager
 {
-	public void drawDecal(Vector3dm position, Vector3dm orientation, Vector3dm size, String decalName);
+	public void drawDecal(Vector3dc position, Vector3dc orientation, Vector3dc size, String decalName);
 }

@@ -1,8 +1,7 @@
 package io.xol.chunkstories.api.math;
 
-import io.xol.chunkstories.api.math.vector.Vector3;
-import io.xol.chunkstories.api.math.vector.operations.VectorCrossProduct;
-import io.xol.chunkstories.api.math.vector.sp.Vector3fm;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
@@ -13,7 +12,7 @@ import io.xol.chunkstories.api.math.vector.sp.Vector3fm;
  */
 public class MatrixHelper
 {
-	public static Matrix4f getOrthographicMatrix(float left, float right, float bottom, float top, float near, float far)
+	/*public static Matrix4f getOrthographicMatrix(float left, float right, float bottom, float top, float near, float far)
 	{
 		Matrix4f matrix = new Matrix4f();
 		float width = right - left;
@@ -32,19 +31,19 @@ public class MatrixHelper
 	public static Matrix4f getLookAtMatrix(Vector3<?> position, Vector3<Float> direction, Vector3<Float> up)
 	{
 		if(direction.getY() == 1.0f || direction.getY() == -1.0f)
-			up = new Vector3fm(1.0f, 0.0f, 0.0f);
+			up = new Vector3f(1.0f, 0.0f, 0.0f);
 		
 		Vector3<Float> positionSP = position.castToSinglePrecision();
 		//System.out.println(positionSP);
 		
 		Matrix4f matrix = new Matrix4f();
-		matrix.setIdentity();
-		Vector3fm f = new Vector3fm(direction);
-		Vector3fm u = new Vector3fm();
-		Vector3fm s = new Vector3fm();
+		matrix.identity();
+		Vector3f f = new Vector3f(direction);
+		Vector3f u = new Vector3f();
+		Vector3f s = new Vector3f();
 		
 		f.sub(positionSP);
-		//Vector3fm.sub(direction, position, f);
+		//Vector3f.sub(direction, position, f);
 		f.normalize();
 		VectorCrossProduct.cross33(f, up, s);
 		s.normalize();
@@ -79,5 +78,5 @@ public class MatrixHelper
 		matrix.m31 = 0.5f;
 		matrix.m32 = 0.5f;
 		return matrix;
-	}
+	}*/
 }

@@ -1,6 +1,7 @@
 package io.xol.chunkstories.api.particles;
 
-import io.xol.chunkstories.api.math.vector.sp.Vector3fm;
+import org.joml.Vector3f;
+
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.BlendMode;
 import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingMode;
@@ -35,7 +36,7 @@ public abstract class ParticleTypeHandler {
 	/**
 	 * Particle data is at least a vector3f
 	 */
-	public class ParticleData extends Vector3fm
+	public class ParticleData extends Vector3f
 	{
 		boolean ded = false;
 		

@@ -1,10 +1,11 @@
 package io.xol.chunkstories.api.voxel;
 
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.Content;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.material.Material;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
@@ -123,8 +124,8 @@ public class Voxel
 	/**
 	 * Overload of getTranslatedCollisionBoxes with a vector3d
 	 */
-	public CollisionBox[] getTranslatedCollisionBoxes(World world, Vector3dm position) {
-		return getTranslatedCollisionBoxes(world, (int)(double)position.getX(), (int)(double)position.getY(), (int)(double)position.getZ());
+	public CollisionBox[] getTranslatedCollisionBoxes(World world, Vector3dc position) {
+		return getTranslatedCollisionBoxes(world, (int)position.x(), (int)position.y(), (int)position.z());
 	}
 	
 	/**

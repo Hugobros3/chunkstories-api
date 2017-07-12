@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.math;
 
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
-import io.xol.chunkstories.api.math.vector.sp.Vector3fm;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -38,21 +38,21 @@ public class Math2
 		return (float)mixd(a, b, f);
 	}
 	
-	public static Vector3fm mix(Vector3fm a, Vector3fm b, double f)
+	public static Vector3f mix(Vector3f a, Vector3f b, double f)
 	{
-		Vector3fm vec = new Vector3fm();
-		vec.setX(mix(a.getX(), b.getX(), f));
-		vec.setY(mix(a.getY(), b.getY(), f));
-		vec.setZ(mix(a.getZ(), b.getZ(), f));
+		Vector3f vec = new Vector3f();
+		vec.x = (mix(a.x, b.x, f));
+		vec.y = (mix(a.y, b.y, f));
+		vec.z = (mix(a.z, b.z, f));
 		return vec;
 	}
 	
-	public static Vector3dm mix(Vector3dm a, Vector3dm b, double f)
+	public static Vector3d mix(Vector3d a, Vector3d b, double f)
 	{
-		Vector3dm vec = new Vector3dm();
-		vec.setX(mixd(a.getX(), b.getX(), f));
-		vec.setY(mixd(a.getY(), b.getY(), f));
-		vec.setZ(mixd(a.getZ(), b.getZ(), f));
+		Vector3d vec = new Vector3d();
+		vec.x = (mixd(a.x, b.x, f));
+		vec.y = (mixd(a.y, b.y, f));
+		vec.z = (mixd(a.z, b.z, f));
 		return vec;
 	}
 

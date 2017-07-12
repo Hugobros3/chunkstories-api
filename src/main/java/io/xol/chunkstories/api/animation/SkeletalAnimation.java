@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.animation;
 
-import io.xol.chunkstories.api.math.Matrix4f;
+import org.joml.Matrix4f;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

@@ -4,10 +4,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.joml.Vector3d;
+import org.joml.Vector3dc;
+
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
 import io.xol.chunkstories.api.exceptions.PacketProcessingException;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSynchPrepared;
@@ -27,25 +29,25 @@ public class PacketVelocityDelta extends PacketSynchPrepared
 		
 	}
 	
-	public PacketVelocityDelta(Vector3dm delta)
+	public PacketVelocityDelta(Vector3dc delta)
 	{
 		this.delta = delta;
 	}
 	
-	private Vector3dm delta;
+	private Vector3dc delta;
 	
 	@Override
 	public void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
-		out.writeDouble(delta.getX());
-		out.writeDouble(delta.getY());
-		out.writeDouble(delta.getZ());
+		out.writeDouble(delta.x());
+		out.writeDouble(delta.y());
+		out.writeDouble(delta.z());
 	}
 
 	@Override
 	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException, PacketProcessingException
 	{
-		delta = new Vector3dm(in.readDouble(), in.readDouble(), in.readDouble());
+		Vector3d delta = new Vector3d(in.readDouble(), in.readDouble(), in.readDouble());
 		
 		EntityControllable entity = ((ClientPacketsProcessor)processor).getContext().getPlayer().getControlledEntity();
 		if(entity != null)

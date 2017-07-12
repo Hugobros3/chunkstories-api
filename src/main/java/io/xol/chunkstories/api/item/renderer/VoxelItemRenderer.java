@@ -5,13 +5,14 @@ import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
-import io.xol.chunkstories.api.math.Matrix4f;
-import io.xol.chunkstories.api.math.vector.sp.Vector3fm;
-import io.xol.chunkstories.api.math.vector.sp.Vector4fm;
 import io.xol.chunkstories.api.rendering.lightning.Light;
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
@@ -189,11 +190,11 @@ public class VoxelItemRenderer extends ItemRenderer
 		program.setUniform2f("screenSize", renderingContext.getWindow().getWidth(), renderingContext.getWindow().getHeight());
 		program.setUniform2f("dekal", screenPositionX + pile.getItem().getType().getSlotsWidth() * slotSize / 2, screenPositionY + pile.getItem().getType().getSlotsHeight() * slotSize / 2);
 		program.setUniform1f("scaling", slotSize / 1.65f);
-		transformation.setIdentity();
-		transformation.scale(new Vector3fm(-1f, 1f, 1f));
-		transformation.rotate(toRad(-22.5f), new Vector3fm(1.0f, 0.0f, 0.0f));
-		transformation.rotate(toRad(45f), new Vector3fm(0.0f, 1.0f, 0.0f));
-		transformation.translate(new Vector3fm(-0.5f, -0.5f, -0.5f));
+		transformation.identity();
+		transformation.scale(new Vector3f(-1f, 1f, 1f));
+		transformation.rotate(toRad(-22.5f), new Vector3f(1.0f, 0.0f, 0.0f));
+		transformation.rotate(toRad(45f), new Vector3f(0.0f, 1.0f, 0.0f));
+		transformation.translate(new Vector3f(-0.5f, -0.5f, -0.5f));
 		
 		program.setUniformMatrix4f("transformation", transformation);
 		Voxel voxel = ((ItemVoxel) pile.getItem()).getVoxel();
@@ -451,8 +452,8 @@ public class VoxelItemRenderer extends ItemRenderer
 	public void renderItemInWorld(RenderingInterface context, ItemPile pile, World world, Location location, Matrix4f handTransformation)
 	{
 		float s = 0.45f;
-		handTransformation.scale(new Vector3fm(s, s, s));
-		handTransformation.translate(new Vector3fm(-0.25f, -0.5f, -0.5f));
+		handTransformation.scale(new Vector3f(s, s, s));
+		handTransformation.translate(new Vector3f(-0.25f, -0.5f, -0.5f));
 		context.setObjectMatrix(handTransformation);
 		Voxel voxel = ((ItemVoxel) pile.getItem()).getVoxel();
 		if (voxel == null)
@@ -463,10 +464,12 @@ public class VoxelItemRenderer extends ItemRenderer
 		//Add a light only on the opaque pass
 		if (((ItemVoxel) pile.getItem()).getVoxel().getLightLevel(0x00) > 0 && context.getWorldRenderer().getCurrentRenderingPass() == RenderingPass.NORMAL_OPAQUE)
 		{
-			Vector4fm lightposition = new Vector4fm(0.0, 0.0, 0.0, 1.0);
-			Matrix4f.transform(handTransformation, lightposition, lightposition);
+			Vector4f lightposition = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 			
-			Light heldBlockLight = new Light(new Vector3fm(0.5f, 0.45f, 0.4f).scale(2.0f), new Vector3fm(lightposition.getX(), lightposition.getY(), lightposition.getZ()), 15f);
+			handTransformation.transform(lightposition);
+			//Matrix4f.transform(handTransformation, lightposition, lightposition);
+			
+			Light heldBlockLight = new Light(new Vector3f(0.5f, 0.45f, 0.4f).mul(2.0f), new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()), 15f);
 			context.getLightsRenderer().queueLight(heldBlockLight);	
 			
 			//If we hold a light source, prepare the shader accordingly

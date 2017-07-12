@@ -1,6 +1,7 @@
 package io.xol.chunkstories.api.rendering;
 
-import io.xol.chunkstories.api.math.vector.sp.Vector3fm;
+import org.joml.Vector3fc;
+
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -12,7 +13,7 @@ import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
  */
 public interface SkyboxRenderer {
 	
-	public Vector3fm getSunPosition();
+	public Vector3fc getSunPosition();
 	
 	public void render(RenderingInterface renderingContext);
 	

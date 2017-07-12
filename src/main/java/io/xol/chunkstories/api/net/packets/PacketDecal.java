@@ -4,9 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.joml.Vector3d;
+
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.exceptions.PacketProcessingException;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSynchPrepared;
 import io.xol.chunkstories.api.net.PacketsProcessor;
@@ -20,43 +21,43 @@ import io.xol.chunkstories.api.net.PacketSender;
 public class PacketDecal extends PacketSynchPrepared
 {
 	public String decalName;
-	public Vector3dm position;
-	public Vector3dm orientation;
-	public Vector3dm size;
+	public Vector3d position;
+	public Vector3d orientation;
+	public Vector3d size;
 
 	@Override
 	public void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
 		out.writeUTF(decalName);
-		out.writeDouble(position.getX());
-		out.writeDouble(position.getY());
-		out.writeDouble(position.getZ());
-		out.writeDouble(orientation.getX());
-		out.writeDouble(orientation.getY());
-		out.writeDouble(orientation.getZ());
-		out.writeDouble(size.getX());
-		out.writeDouble(size.getY());
-		out.writeDouble(size.getZ());
+		out.writeDouble(position.x());
+		out.writeDouble(position.y());
+		out.writeDouble(position.z());
+		out.writeDouble(orientation.x());
+		out.writeDouble(orientation.y());
+		out.writeDouble(orientation.z());
+		out.writeDouble(size.x());
+		out.writeDouble(size.y());
+		out.writeDouble(size.z());
 	}
 
 	@Override
 	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException, PacketProcessingException
 	{
 		decalName = in.readUTF();
-		position = new Vector3dm();
-		position.setX(in.readDouble());
-		position.setY(in.readDouble());
-		position.setZ(in.readDouble());
+		position = new Vector3d();
+		position.x = (in.readDouble());
+		position.y = (in.readDouble());
+		position.z = (in.readDouble());
 
-		orientation = new Vector3dm();
-		orientation.setX(in.readDouble());
-		orientation.setY(in.readDouble());
-		orientation.setZ(in.readDouble());
+		orientation = new Vector3d();
+		orientation.x = (in.readDouble());
+		orientation.y = (in.readDouble());
+		orientation.z = (in.readDouble());
 
-		size = new Vector3dm();
-		size.setX(in.readDouble());
-		size.setY(in.readDouble());
-		size.setZ(in.readDouble());
+		size = new Vector3d();
+		size.x = (in.readDouble());
+		size.y = (in.readDouble());
+		size.z = (in.readDouble());
 		
 		if(processor instanceof ClientPacketsProcessor)
 		{

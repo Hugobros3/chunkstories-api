@@ -1,11 +1,10 @@
 package io.xol.chunkstories.api.voxel.textures;
 
-import io.xol.chunkstories.api.math.vector.sp.Vector4fm;
+import org.joml.Vector4fc;
 
 public interface VoxelTexture
 {
-
-	Vector4fm getColor();
+	Vector4fc getColor();
 
 	int getAtlasS();
 
@@ -16,5 +15,4 @@ public interface VoxelTexture
 	int getTextureScale();
 
 	String getName();
-
 }

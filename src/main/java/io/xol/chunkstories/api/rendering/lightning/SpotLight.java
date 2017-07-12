@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.rendering.lightning;
 
-import io.xol.chunkstories.api.math.vector.Vector3;
+import org.joml.Vector3fc;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -8,7 +8,7 @@ import io.xol.chunkstories.api.math.vector.Vector3;
 
 public class SpotLight extends Light
 {
-	public SpotLight(Vector3<Float> color, Vector3<Float> position, float decay, float angle, Vector3<Float> direction)
+	public SpotLight(Vector3fc color, Vector3fc position, float decay, float angle, Vector3fc direction)
 	{
 		super(color, position, decay);
 		this.angle = angle;
@@ -16,7 +16,7 @@ public class SpotLight extends Light
 	}
 
 	public float angle;
-	public Vector3<Float> direction;
+	public Vector3fc direction;
 
 	public float getAngle()
 	{
@@ -28,12 +28,12 @@ public class SpotLight extends Light
 		this.angle = angle;
 	}
 
-	public Vector3<Float> getDirection()
+	public Vector3fc getDirection()
 	{
 		return direction;
 	}
 
-	public void setDirection(Vector3<Float> direction)
+	public void setDirection(Vector3fc direction)
 	{
 		this.direction = direction;
 	}

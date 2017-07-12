@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.math;
 
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
-import io.xol.chunkstories.api.math.vector.operations.VectorCrossProduct;
+import org.joml.Matrix4f;
+import org.joml.Vector3d;
 
 /* This file is part of the ChunkStories WIP API.
  * Licensing is yet to be decided, please check out the github page for
@@ -11,24 +11,24 @@ import io.xol.chunkstories.api.math.vector.operations.VectorCrossProduct;
 public class Quaternion4d
 {
 	public double s;
-	public Vector3dm v;
+	public Vector3d v;
 	
 	public Quaternion4d()
 	{
 		s = 0.0;
-		v = new Vector3dm(0.0);
+		v = new Vector3d(0.0);
 	}
 	
-	public Quaternion4d(double s, Vector3dm v)
+	public Quaternion4d(double s, Vector3d v)
 	{
 		this.s = s;
-		this.v = v.clone();
+		this.v = new Vector3d(v);
 	}
 	
 	public Quaternion4d(Quaternion4d quat)
 	{
 		this.s = quat.s;
-		this.v = new Vector3dm(quat.v);
+		this.v = new Vector3d(quat.v);
 	}
 	
 	public Quaternion4d add(Quaternion4d quat)
@@ -50,7 +50,7 @@ public class Quaternion4d
 	public Quaternion4d scale(double scalar)
 	{
 		s *= scalar;
-		v.scale(scalar);
+		v.mul(scalar);
 		return this;
 	}
 	
@@ -67,24 +67,24 @@ public class Quaternion4d
 		// [ Sa.Sb - a.b ,
 		out.s = a.s * b.s - a.v.dot(b.v);
 		// Sa.b + Sb.a + a x b ]
-		Vector3dm aBv = b.v.clone().scale(a.s);
-		Vector3dm vBa = a.v.clone().scale(b.s);
+		Vector3d aBv = new Vector3d(b.v).mul(a.s);
+		Vector3d vBa = new Vector3d(a.v).mul(b.s);
 		
-		out.v = aBv.add(vBa).add(VectorCrossProduct.cross33(a.v, b.v));
-		//out.v = Vector3dm.add(aBv, vBa, null).add(Vector3dm.cross(a.v, b.v));
+		out.v = aBv.add(vBa).add(a.v.cross(b.v));
+		//out.v = Vector3d.add(aBv, vBa, null).add(Vector3d.cross(a.v, b.v));
 		
 		return out;
 	}
 	
 	public Quaternion4d conjugate()
 	{
-		return new Quaternion4d(s, v.clone().negate());
+		return new Quaternion4d(s, new Vector3d(v).negate());
 	}
 	
 	public double norm()
 	{
 		return Math.sqrt(s * s + v.dot(v) * v.dot(v));
-		//return Math.sqrt(s * s + Vector3dm.dot(v, v) * Vector3dm.dot(v, v));
+		//return Math.sqrt(s * s + Vector3d.dot(v, v) * Vector3d.dot(v, v));
 	}
 	
 	public Quaternion4d normalize()
@@ -103,16 +103,16 @@ public class Quaternion4d
 	
 	public static double dot(Quaternion4d a, Quaternion4d b)
 	{
-		return a.s * b.s + a.v.getX() * b.v.getX() + a.v.getY() * b.v.getY() + a.v.getZ() * b.v.getZ();
+		return a.s * b.s + a.v.x * b.v.x + a.v.y * b.v.y + a.v.z * b.v.z;
 	}
 	
-	public static Quaternion4d fromAxisAngle(Vector3dm axis, double angle)
+	public static Quaternion4d fromAxisAngle(Vector3d axis, double angle)
 	{
 		angle /= 2.0;
-		return new Quaternion4d(Math.cos(angle), axis.clone().scale(Math.sin(angle)));
+		return new Quaternion4d(Math.cos(angle), new Vector3d(axis).mul(Math.sin(angle)));
 	}
 	
-	public static Vector3dm rotate(Vector3dm vector, Vector3dm axis, double angle)
+	public static Vector3d rotate(Vector3d vector, Vector3d axis, double angle)
 	{
 		//Make quaternion out of the vector
 		Quaternion4d p = new Quaternion4d(0.0, vector);
@@ -186,23 +186,23 @@ public class Quaternion4d
 	{
 		Matrix4f matrix = new Matrix4f();
 
-		double n = v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ() + s * s;
+		double n = v.x * v.x + v.y * v.y + v.z * v.z + s * s;
 		double ss = (n > 0.0f) ? (2.0f / n) : 0.0f;
         
-		double xs = v.getX() * ss, ys = v.getY() * ss, zs = v.getZ() * ss;
+		double xs = v.x * ss, ys = v.y * ss, zs = v.z * ss;
 		double wx = s * xs, wy = s * ys, wz = s * zs;
-		double xx = v.getX() * xs, xy = v.getX() * ys, xz = v.getX() * zs;
-		double yy = v.getY() * ys, yz = v.getY() * zs, zz = v.getZ() * zs;
+		double xx = v.x * xs, xy = v.x * ys, xz = v.x * zs;
+		double yy = v.y * ys, yz = v.y * zs, zz = v.z * zs;
         
-        matrix.m00 = (float) ( 1.0f - (yy + zz ) );
-        matrix.m10 = (float) ( xy - wz );
-        matrix.m20 = (float) ( xz + wy );
-        matrix.m01 = (float) ( xy + wz );
-        matrix.m11 = (float) ( 1.0f - ( xx + zz ) );
-        matrix.m21 = (float) ( yz - wx );
-        matrix.m02 = (float) ( xz - wy );
-        matrix.m12 = (float) ( yz + wx );
-        matrix.m22 = (float) ( 1.0f - ( xx + yy ) );
+        matrix.m00((float) ( 1.0f - (yy + zz ) ));
+        matrix.m10((float) ( xy - wz ));
+        matrix.m20((float) ( xz + wy ));
+        matrix.m01((float) ( xy + wz ));
+        matrix.m11((float) ( 1.0f - ( xx + zz ) ));
+        matrix.m21((float) ( yz - wx ));
+        matrix.m02((float) ( xz - wy ));
+        matrix.m12((float) ( yz + wx ));
+        matrix.m22((float) ( 1.0f - ( xx + yy ) ));
         
         return matrix;
 	}

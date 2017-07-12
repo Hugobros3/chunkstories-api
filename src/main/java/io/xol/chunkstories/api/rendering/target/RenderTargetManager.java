@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.rendering.target;
 
-import io.xol.chunkstories.api.math.vector.sp.Vector4fm;
+import org.joml.Vector4fc;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -36,7 +36,7 @@ public interface RenderTargetManager
 	 * Clears the color render target (if bound) to the color specified
 	 * Giving a null Vector4fm is assummed to mean Vector4fm(0, 0, 0, 0);
 	 */
-	public void clearBoundRenderTargetColor(Vector4fm color);
+	public void clearBoundRenderTargetColor(Vector4fc color);
 	
 	/**
 	 * Enables or disable the depth mask ( wether or not depth information is written )

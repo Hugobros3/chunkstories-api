@@ -1,8 +1,8 @@
 package io.xol.chunkstories.api.rendering;
 
-import io.xol.chunkstories.api.math.vector.Vector3;
-import io.xol.chunkstories.api.math.vector.dp.Vector3dm;
-import io.xol.chunkstories.api.math.vector.sp.Vector3fm;
+import org.joml.Vector3dc;
+import org.joml.Vector3fc;
+
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
 
@@ -12,23 +12,23 @@ import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
 
 public interface CameraInterface
 {
-	public boolean isBoxInFrustrum(Vector3<Float> center, Vector3<Float> dimensions);
+	public boolean isBoxInFrustrum(Vector3fc center, Vector3fc dimensions);
 	
 	public boolean isBoxInFrustrum(CollisionBox box);
 
 	public void setupShader(ShaderInterface shaderProgram);
 
-	public Vector3<Double> getCameraPosition();
+	public Vector3dc getCameraPosition();
 	
-	public void setCameraPosition(Vector3dm pos);
+	public void setCameraPosition(Vector3dc pos);
 
-	public Vector3fm getViewDirection();
+	public Vector3fc getViewDirection();
 	
 	public float getFOV();
 	
 	public void setFOV(float fov);
 
-	public Vector3fm transform3DCoordinate(Vector3fm vector3f);
+	public Vector3fc transform3DCoordinate(Vector3fc vector3f);
 
 	void setRotationZ(float rotationZ);
 
