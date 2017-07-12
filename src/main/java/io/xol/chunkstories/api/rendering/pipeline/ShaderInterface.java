@@ -18,26 +18,34 @@ public interface ShaderInterface
 	public String getShaderName();
 
 	public void setUniform1i(String uniformName, int uniformData);
+
+	public void setUniform1f(String uniformName, float uniformData);
 	
 	public void setUniform1f(String uniformName, double uniformData);
+
+	public void setUniform2f(String uniformName, float uniformData_x, float uniformData_y);
 	
 	public void setUniform2f(String uniformName, double uniformData_x, double uniformData_y);
 	
 	public void setUniform2f(String uniformName, Vector2fc uniformData);
 	
-	public void setUniform2d(String uniformName, Vector2dc uniformData);
+	public void setUniform2f(String uniformName, Vector2dc uniformData);
+
+	public void setUniform3f(String uniformName, float uniformData_x, float uniformData_y, float uniformData_z);
 	
 	public void setUniform3f(String uniformName, double uniformData_x, double uniformData_y, double uniformData_z);
 	
 	public void setUniform3f(String uniformName, Vector3fc uniformData);
 	
-	public void setUniform3d(String uniformName, Vector3dc uniformData);
+	public void setUniform3f(String uniformName, Vector3dc uniformData);
+
+	public void setUniform4f(String uniformName, float uniformData_x, float uniformData_y, float uniformData_z, float uniformData_w);
 	
 	public void setUniform4f(String uniformName, double uniformData_x, double uniformData_y, double uniformData_z, double uniformData_w);
 	
 	public void setUniform4f(String uniformName, Vector4fc uniformData);
 
-	public void setUniform4d(String uniformName, Vector4dc uniformData);
+	public void setUniform4f(String uniformName, Vector4dc uniformData);
 	
 	public void setUniformMatrix4f(String uniformName, Matrix4fc uniformData);
 	

@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.animation;
 
-import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 
@@ -16,12 +16,12 @@ public interface SkeletonAnimator
 	/**
 	 * Used to draw the debug bone armature
 	 */
-	public Matrix4f getBoneHierarchyTransformationMatrix(String nameOfEndBone, double animationTime);
+	public Matrix4fc getBoneHierarchyTransformationMatrix(String nameOfEndBone, double animationTime);
 
 	/**
 	 * Used to draw deformed mesh parts in OpenGL
 	 */
-	public Matrix4f getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, double animationTime);
+	public Matrix4fc getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, double animationTime);
 	
 	/**
 	 * Used to hide body parts and/or do multipass rendering

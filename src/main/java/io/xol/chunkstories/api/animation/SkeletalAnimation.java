@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.animation;
 
-import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -10,13 +10,13 @@ import org.joml.Matrix4f;
 public interface SkeletalAnimation extends SkeletonAnimator {
 
 	/** How is that bone offset to the center of the model */
-	public Matrix4f getOffsetMatrix(String boneName);
+	public Matrix4fc getOffsetMatrix(String boneName);
 	
 	public SkeletonBone getBone(String boneName);
 	
 	public interface SkeletonBone {
 
-		public Matrix4f getTransformationMatrix(double animationTime);
+		public Matrix4fc getTransformationMatrix(double animationTime);
 		
 		public SkeletonBone getParent();
 

@@ -23,9 +23,9 @@ public interface Mouse {
 		public int amount();
 	}
 	
-	public float getCursorX();
+	public double getCursorX();
 	
-	public float getCursorY();
+	public double getCursorY();
 	
 	public void setMouseCursorLocation(double x, double y);
 	
