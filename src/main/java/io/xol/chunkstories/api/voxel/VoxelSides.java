@@ -29,6 +29,12 @@ public enum VoxelSides
 	TOP,
 	BOTTOM;
 	
+	private static VoxelSides[] oppsiteSide = new VoxelSides[] {RIGHT, BACK, LEFT, FRONT, BOTTOM, TOP};
+	
+	public VoxelSides getOppositeSide() {
+		return oppsiteSide[this.ordinal()];
+	}
+	
 	/**
 	 * Returns the Chunk Stories side from the minecraft metadata of the following objects, no top/bottom direction allowed
 	 */
