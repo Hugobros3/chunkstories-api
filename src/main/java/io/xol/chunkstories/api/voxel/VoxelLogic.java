@@ -35,6 +35,7 @@ public interface VoxelLogic
 	
 	/**
 	 * Called when a voxel implementing this interface is changed ( but the voxel type remains the same )
+	 * @param voxelData The old data being replaced
 	 * @param voxelData Complete new data being applied
 	 * @param entity If modified by an entity
 	 * 
@@ -42,5 +43,5 @@ public interface VoxelLogic
 	 * 
 	 * @return The modified data to actually place there
 	 */
-	public int onModification(World world, int x, int y, int z, int voxelData, Entity entity) throws IllegalBlockModificationException;
+	public int onModification(World world, int x, int y, int z, int formerData, int voxelData, Entity entity) throws IllegalBlockModificationException;
 }
