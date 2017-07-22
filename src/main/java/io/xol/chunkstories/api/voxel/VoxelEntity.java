@@ -70,7 +70,7 @@ public abstract class VoxelEntity extends Voxel implements VoxelLogic, VoxelInte
 	}
 
 	@Override
-	public int onModification(World world, int x, int y, int z, int voxelData, Entity entity) throws IllegalBlockModificationException
+	public int onModification(World world, int x, int y, int z, int formerData, int voxelData, Entity entity) throws IllegalBlockModificationException
 	{
 		if(entity != null)
 			throw new IllegalBlockModificationException("Entities can't fiddle with "+this.getClass().getSimpleName());
