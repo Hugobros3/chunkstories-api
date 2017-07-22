@@ -1,7 +1,6 @@
 package io.xol.chunkstories.api.events.rendering;
 
 import io.xol.chunkstories.api.events.Event;
-import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.WorldRenderer;
 import io.xol.chunkstories.api.world.World;
@@ -10,30 +9,14 @@ import io.xol.chunkstories.api.world.World;
 //http://chunkstories.xyz
 //http://xol.io
 
-public class WorldPostRenderingEvent extends Event
+/** Called upon entering some rendering states */
+public abstract class WorldRenderingEvent extends Event
 {
-	// Every event class has to have this
+	private final World world;
+	private final WorldRenderer worldRenderer;
+	private final RenderingInterface renderingInterface;
 	
-	static EventListeners listeners = new EventListeners(WorldPostRenderingEvent.class);
-	
-	@Override
-	public EventListeners getListeners()
-	{
-		return listeners;
-	}
-	
-	public static EventListeners getListenersStatic()
-	{
-		return listeners;
-	}
-	
-	// Specific event code
-
-	private World world;
-	private WorldRenderer worldRenderer;
-	private RenderingInterface renderingInterface;
-	
-	public WorldPostRenderingEvent(World world, WorldRenderer worldRenderer, RenderingInterface renderingInterface)
+	public WorldRenderingEvent(World world, WorldRenderer worldRenderer, RenderingInterface renderingInterface)
 	{
 		super();
 		this.world = world;
