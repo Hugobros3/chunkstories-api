@@ -1,5 +1,6 @@
 package io.xol.chunkstories.api.events.client;
 
+import io.xol.chunkstories.api.client.ClientInterface;
 import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.input.Input;
@@ -28,16 +29,19 @@ public class ClientInputReleasedEvent extends Event
 
 	// Specific event code
 	
-	public ClientInputReleasedEvent(Input input)
-	{
+	public ClientInputReleasedEvent(ClientInterface client, Input input) {
+		this.client = client;
 		this.input = input;
 	}
-	
-	Input input;
-	
-	public Input getInput()
-	{
-		return input;
+
+	private final ClientInterface client;
+	private final Input input;
+
+	public ClientInterface getClient() {
+		return client;
 	}
 
+	public Input getInput() {
+		return input;
+	}
 }
