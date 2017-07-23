@@ -47,7 +47,7 @@ public abstract class VoxelEntity extends Voxel implements VoxelLogic, VoxelInte
 	protected abstract EntityVoxel createVoxelEntity(World world, int x, int y, int z);
 
 	@Override
-	public int onPlace(World world, int x, int y, int z, int voxelData, Entity entity)
+	public int onPlace(World world, int x, int y, int z, int voxelData, Entity entity) throws IllegalBlockModificationException
 	{
 		if(!(world instanceof WorldMaster))
 			return voxelData;
@@ -60,7 +60,7 @@ public abstract class VoxelEntity extends Voxel implements VoxelLogic, VoxelInte
 	}
 
 	@Override
-	public void onRemove(World world, int x, int y, int z, int voxelData, Entity entity)
+	public void onRemove(World world, int x, int y, int z, int voxelData, Entity entity) throws IllegalBlockModificationException
 	{
 		if(!(world instanceof WorldMaster))
 			return;
