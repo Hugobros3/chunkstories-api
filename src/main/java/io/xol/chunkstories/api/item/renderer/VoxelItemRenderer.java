@@ -451,6 +451,12 @@ public class VoxelItemRenderer extends ItemRenderer
 	@Override
 	public void renderItemInWorld(RenderingInterface context, ItemPile pile, World world, Location location, Matrix4f handTransformation)
 	{
+		if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon)
+		{
+			fallbackRenderer.renderItemInWorld(context, pile, world, location, handTransformation);
+			return;
+		}
+		
 		float s = 0.45f;
 		handTransformation.scale(new Vector3f(s, s, s));
 		handTransformation.translate(new Vector3f(-0.25f, -0.5f, -0.5f));
