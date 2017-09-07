@@ -134,6 +134,10 @@ public interface RenderingInterface
 	 */
 	public RenderingCommand draw(Primitive primitive, int startAt, int count);
 	
+	/** For instanced rendering */
+	public RenderingCommand draw(Primitive primitive, int startAt, int count, int instances);
+	
+	/** Equivalent to glMultiDrawArrays */
 	public RenderingCommand drawMany(Primitive primitive, int... startAndCountPairs);
 
 	/** Renders a fullsize quad for whole-screen effects */

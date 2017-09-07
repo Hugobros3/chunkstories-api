@@ -53,9 +53,17 @@ public interface VertexBuffer {
 	 */
 	public boolean isDataPresent();
 
+	/** The easy way to feed vertex shaders */
 	public AttributeSource asAttributeSource(VertexFormat format, int dimensions);
 
+	/** The more verbose way */
 	public AttributeSource asAttributeSource(VertexFormat format, int dimensions, int stride, long offset);
+	
+	/** The instanced way */
+	public AttributeSource asAttributeSource(VertexFormat format, int dimensions, int stride, long offset, int divisor);
+	
+	/** Attribute source for ivec/int vertex shader inputs */
+	public AttributeSource asIntegerAttributeSource(VertexFormat format, int dimensions, int stride, long offset, int divisor);
 
 	public long getVramUsage();
 

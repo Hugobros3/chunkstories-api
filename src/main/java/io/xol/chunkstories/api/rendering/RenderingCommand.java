@@ -31,5 +31,6 @@ public interface RenderingCommand extends Renderable
 	/**
 	 * Used to automatically instanciate similar rendering commands
 	 */
-	public boolean canMerge(RenderingCommand renderingCommand);
+	//Not actually used, renderer is too complex already, instead we'll encourage modders to optimize their DC.
+	//public boolean canMerge(RenderingCommand renderingCommand);
 }
