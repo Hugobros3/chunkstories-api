@@ -18,6 +18,7 @@ public enum TextureFormat
 	DEPTH_RENDERBUFFER(GL_DEPTH_COMPONENT32, GL_DEPTH_COMPONENT, GL_FLOAT, 4),
 	//Summary data
 	RED_32F(GL_R32F, GL_RED, GL_FLOAT, 4),
+	RED_16I(GL_R16UI, GL_RED_INTEGER, GL_INT, 2),
 	//
 	RGBA_3x10_2(GL_RGB10_A2, GL_RGBA, GL_UNSIGNED_BYTE, 4),
 	//
@@ -38,6 +39,9 @@ public enum TextureFormat
 		public static final int GL_RED = 0x1903;
 		public static final int GL_RGB10_A2 = 0x8059;
 		public static final int GL_RGBA32F = 0x8814;
+		public static final int GL_R16UI = 0x8234;
+		public static final int GL_INT = 0x1404;
+		public static final int GL_RED_INTEGER = 0x8d94;
 	}
 	
 	TextureFormat(int internalFormat, int format, int type, int bytesUsed)

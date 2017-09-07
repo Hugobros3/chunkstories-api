@@ -20,6 +20,7 @@ import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.DepthTes
 import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.PolygonFillMode;
 import io.xol.chunkstories.api.rendering.target.RenderTargetManager;
 import io.xol.chunkstories.api.rendering.text.FontRenderer;
+import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.rendering.textures.Cubemap;
 import io.xol.chunkstories.api.rendering.textures.Texture1D;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
@@ -64,6 +65,8 @@ public interface RenderingInterface
 	public TexturingConfiguration bindTexture2D(String textureSamplerName, Texture2D texture);
 	
 	public TexturingConfiguration bindCubemap(String cubemapSamplerName, Cubemap cubemapTexture);
+	
+	public TexturingConfiguration bindArrayTexture(String textureSamplerName, ArrayTexture texture);
 
 	public TexturesLibrary textures();
 	

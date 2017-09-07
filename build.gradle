@@ -12,7 +12,7 @@ apply plugin: 'java-library'
 apply plugin: 'maven'
 
 //TODO Make version depend on Git ?
-version = '109'
+version = '110'
 
 group = 'io.xol.chunkstories'
 description = 'Open API for the game \'Chunk Stories\''
@@ -26,13 +26,15 @@ compileJava {
     //options.encoding = 'UTF-8'
 	
 	//Do we need this ?
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 jar {
 	//I don't like numbers in my jars
 	version = null
 }
+
+compileJava.options.debugOptions.debugLevel = "source,lines,vars"
 
 dependencies {
 	compile group: 'org.joml', name: 'joml', version: '1.9.3'

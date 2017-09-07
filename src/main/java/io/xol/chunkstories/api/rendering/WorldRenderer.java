@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.rendering;
 
 import io.xol.chunkstories.api.particles.ParticlesRenderer;
 import io.xol.chunkstories.api.rendering.effects.DecalsRenderer;
+import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.world.WorldClient;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -44,10 +45,51 @@ public interface WorldRenderer
 	/** Returns null or a valid element of RenderingPasses */
 	public RenderingPass getCurrentRenderingPass();
 	
-	public FarTerrainMeshRenderer getFarTerrainRenderer();
+	public FarTerrainRenderer getFarTerrainRenderer();
 	
-	interface FarTerrainMeshRenderer {
-		public void markFarTerrainMeshDirty();
+	/** Takes charge of rendering distant region summaries using only 2D data */
+	interface FarTerrainRenderer {
+		
+		/** Tells the far terrain renderer to trash it's (mesh) data and to rebuild it anew */
+		public default void markFarTerrainMeshDirty() {
+			//Only relevant if the far terrain actually meshes anything on the CPU
+		}
+		
+		/** Renders the terrain using this renderer and an optional mask */
+		public void renderTerrain(RenderingInterface renderer, ReadyVoxelMeshesMask mask);
+		
+		public default void destroy() {
+			//You should free whatever ressources you use there
+		}
+		
+		/** Stops the far terrain system to draw what is already shown using actual voxel data */
+		interface ReadyVoxelMeshesMask {
+			
+			/** Default implementations of the FarTerrainRenderer subdivide each region in 8x8 slabs that coincide with the world data chunks, and that have a min/max height
+				parameter pre-computed. This methods allows to check whether or not that data is present. You don't have to implement it, this interface is reference only.
+			 */
+			public boolean shouldMaskSlab(int chunkX, int chunkZ, int min, int max);
+		}
+	}
+	
+	public SummariesTexturesHolder getSummariesTexturesHolder();
+	
+	/** Takes charge of keeping the summaries data in VRAM and gives you an index to them 
+	 *  Hint: Array Textures.
+	 * */
+	interface SummariesTexturesHolder {
+		
+		/** Returns -1 if the summary isn't available in VRAM, an index between 0 and 80 (included) if it is */
+		public int getSummaryIndex(int regionX, int regionZ);
+		
+		/** Notifies new data is available for the following region */
+		public void warnDataHasArrived(int regionX, int regionZ);
+		
+		public ArrayTexture getHeightsArrayTexture();
+		
+		public ArrayTexture getTopVoxelsArrayTexture();
+		
+		public void destroy();
 	}
 
 	public DecalsRenderer getDecalsRenderer();

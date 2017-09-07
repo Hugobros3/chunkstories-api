@@ -19,7 +19,7 @@ public interface TexturingConfiguration
 	 * Returns the currently bound 2D textures
 	 * @return
 	 */
-	public Map<String, Texture2D> getBoundTextures2D();
+	//public Map<String, Texture2D> getBoundTextures2D();
 	
 	/**
 	 * Used by RenderingCommands to determine if they can be merged together and instanced
