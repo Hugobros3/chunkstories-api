@@ -30,12 +30,12 @@ import io.xol.chunkstories.api.voxel.VoxelSides.Corners;
 import io.xol.chunkstories.api.voxel.models.ChunkMeshDataSubtypes.LodLevel;
 import io.xol.chunkstories.api.voxel.models.ChunkMeshDataSubtypes.ShadingType;
 import io.xol.chunkstories.api.voxel.models.ChunkRenderer;
-import io.xol.chunkstories.api.voxel.models.RenderByteBuffer;
 import io.xol.chunkstories.api.voxel.models.ChunkRenderer.ChunkRenderContext;
-import io.xol.chunkstories.api.voxel.models.ChunkRenderer.ChunkRenderContext.VoxelLighter;
 import io.xol.chunkstories.api.voxel.models.VoxelBakerCubic;
 import io.xol.chunkstories.api.voxel.models.VoxelBakerHighPoly;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
+import io.xol.chunkstories.api.voxel.models.layout.BaseLayoutBaker;
+import io.xol.chunkstories.api.voxel.models.layout.IntricateLayoutBaker;
 import io.xol.chunkstories.api.world.VoxelContext;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.DummyChunk;
@@ -251,203 +251,6 @@ public class VoxelItemRenderer extends ItemRenderer
 		renderVoxel(renderingContext, voxel, model, bri);
 	}
 	
-	private class EditedTexCoordsRenderByteBuffer extends RenderByteBuffer {
-
-		public EditedTexCoordsRenderByteBuffer(ByteBuffer byteBuffer)
-		{
-			super(byteBuffer);
-		}
-		
-		@Override
-		public void addVerticeInt(int i0, int i1, int i2)
-		{
-			//System.out.println("addVerticeInt("+i0+","+i1+","+i2+")");
-			this.addVerticeFloat(i0, i1, i2);
-		}
-		
-		@Override
-		public void addTexCoordInt(int i0, int i1)
-		{
-			byteBuffer.putFloat(i0 / 32768f);
-			byteBuffer.putFloat(i1 / 32768f);
-		}
-		
-		@Override
-		public void addColors(float[] t)
-		{
-		}
-		
-		@Override
-		public void addColors(byte a, byte b, byte c)
-		{
-		}
-		
-		@Override
-		public void addColors(float f0, float f1, float f2)
-		{
-		}
-		
-		@Override
-		public void addColorsAuto(VoxelLighter voxelLighter, Corners corner)
-		{
-		}
-		
-		@Override
-		public void addColorsSpecial(float[] t, int extended)
-		{
-		}
-		
-		@Override
-		public void addColorsSpecial(float f0, float f1, float f2, int extended)
-		{
-		}
-	}
-
-	private void renderVoxel(RenderingInterface renderingContext, Voxel voxel, VoxelRenderer voxelRenderer, VoxelContext bri)
-	{
-		/*VoxelModelLoaded model = null;
-		if (voxelRenderer instanceof VoxelModelLoaded)
-			model = (VoxelModelLoaded) voxelRenderer;
-		else
-			return;*/
-
-		if (!voxelItemsModelBuffer.containsKey(bri.getMetaData() + 16 * voxel.getId()))
-		{
-			//Wow calm down satan with your huge-ass models
-			ByteBuffer buffer = ByteBuffer.allocateDirect(16384).order(ByteOrder.nativeOrder()); //BufferUtils.createByteBuffer(16384);
-			RenderByteBuffer rbbuf = new EditedTexCoordsRenderByteBuffer(buffer);
-			
-			ChunkRenderer chunkRenderer = new ChunkRenderer() {
-
-				@Override
-				public VoxelBakerHighPoly getHighpolyBakerFor(LodLevel lodLevel, ShadingType renderPass)
-				{
-					return rbbuf;
-				}
-
-				@Override
-				public VoxelBakerCubic getLowpolyBakerFor(LodLevel lodLevel, ShadingType renderPass)
-				{
-					return rbbuf;
-				}
-				
-			};
-			
-			//System.out.println("Rendering fake block into buffer for item voxel ");
-			
-			voxelRenderer.renderInto(chunkRenderer, bakingContext, new DummyChunk() {
-				
-				@Override
-				public int getVoxelData(int x, int y, int z)
-				{
-					if(x == 0 && y == 0 && z == 0)
-						return bri.getData();
-					return 0;
-				}
-				
-			}, bri);
-			//model.renderInto(rbbuf, bakingContext, bri, new DummyChunk(), 0, 0, 0);
-			
-			buffer.flip();
-			
-			/*if(voxel.getName().equals("pineleaves"))
-			{
-				byte[] ok = new byte[buffer.remaining()];
-				buffer.get(ok);
-				
-				buffer.flip();
-				System.out.println(ok.length);
-				
-				//System.out.println(Base64.getEncoder().encodeToString(ok));
-				
-				//864
-				for(int nn = 0; nn < 864; nn+=24)
-				{
-					int n = nn;
-					
-					float foo2 = Float.intBitsToFloat(ok[n + 3] ^ ok[n+2]<<8 ^ ok[n+1]<<16 ^ ok[n+0]<<24 );
-					n+=4;
-					float foo22 = Float.intBitsToFloat(ok[n + 3] ^ ok[n+2]<<8 ^ ok[n+1]<<16 ^ ok[n+0]<<24 );
-					n+=4;
-					float foo23 = Float.intBitsToFloat(ok[n + 3] ^ ok[n+2]<<8 ^ ok[n+1]<<16 ^ ok[n+0]<<24 );
-					
-					System.out.println(foo2+":"+foo22+":"+foo23);
-
-
-					byte[] bytes = new byte[] {ok[n + 0], ok[n + 1], ok[n + 2], ok[ n + 3]};
-					float f = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).getFloat();
-					System.out.println(f);
-					
-					// 1.0 = 1065353216 = 0x3F800000
-					
-					int fuck = ok[n + 0] | ok[n+1]<<8 | ok[n+2]<<16 | ok[n+3]<<24;
-					int fock = ok[n + 0] ^ ok[n+1]<<8 ^ ok[n+2]<<16 ^ ok[n+3]<<24;
-					
-					int aa = ok[n + 3] << 24;
-					System.out.println(aa + " : "+(0xFF & ok[n + 0]) +" " + (0xFF & ok[n + 1]) + " " + (0xFF & ok[n + 2]) + " " + (0xFF & ok[ n + 3]));
-					
-					System.out.println("fuck: "+fuck + " fock: "+fock + " [0]:" + ok[n + 3]);
-					
-					float foo1 = Float.intBitsToFloat((0xFF & ok[n+0]) | (0xFF & ok[n+1])<<8 | (0xFF & ok[n+2])<<16 | (0xFF & ok[n+3])<<24 );
-					n+=4;
-					float foo12 = Float.intBitsToFloat((0xFF & ok[n+0]) | (0xFF & ok[n+1])<<8 | (0xFF & ok[n+2])<<16 | (0xFF & ok[n+3])<<24 );
-					n+=4;
-					float foo13 = Float.intBitsToFloat((0xFF & ok[n+0]) | (0xFF & ok[n+1])<<8 | (0xFF & ok[n+2])<<16 | (0xFF & ok[n+3])<<24 );
-					n+=4;
-					float foo14 = Float.intBitsToFloat((0xFF & ok[n+0]) | (0xFF & ok[n+1])<<8 | (0xFF & ok[n+2])<<16 | (0xFF & ok[n+3])<<24 );
-					n+=4;
-					float foo15 = Float.intBitsToFloat((0xFF & ok[n+0]) | (0xFF & ok[n+1])<<8 | (0xFF & ok[n+2])<<16 | (0xFF & ok[n+3])<<24 );
-					n+=4;
-					float foo16 = Float.intBitsToFloat((0xFF & ok[n+0]) | (0xFF & ok[n+1])<<8 | (0xFF & ok[n+2])<<16 | (0xFF & ok[n+3])<<24 );
-					
-					System.out.println(foo1+":"+foo12+":"+foo13+":"+foo14+":"+foo15+":"+foo16);
-					
-					float foo = Float.intBitsToFloat(ok[n] ^ ok[n+1]<<8 ^ ok[n+2]<<16 ^ ok[n+3]<<24 );
-					System.out.println(foo);
-					
-					n+=4;
-					foo = Float.intBitsToFloat(ok[n] ^ ok[n+1]<<8 ^ ok[n+2]<<16 ^ ok[n+3]<<24 );
-					System.out.println(foo);
-					
-					n+=4;
-					foo = Float.intBitsToFloat(ok[n] ^ ok[n+1]<<8 ^ ok[n+2]<<16 ^ ok[n+3]<<24 );
-					System.out.println(foo);
-					
-
-					n+=4;
-					foo = Float.intBitsToFloat(ok[n] ^ ok[n+1]<<8 ^ ok[n+2]<<16 ^ ok[n+3]<<24 );
-					System.out.println(foo);
-					
-					n+=4;
-					foo = Float.intBitsToFloat(ok[n] ^ ok[n+1]<<8 ^ ok[n+2]<<16 ^ ok[n+3]<<24 );
-					System.out.println(foo);
-				}
-			}*/
-			
-			VertexBuffer mesh = renderingContext.newVertexBuffer();
-			mesh.uploadData(buffer);
-			
-			voxelItemsModelBuffer.put(bri.getMetaData() + 16 * voxel.getId(), mesh);
-		}
-		
-		
-		if (voxelItemsModelBuffer.containsKey(bri.getMetaData() + 16 * voxel.getId()))
-		{
-			VertexBuffer mesh = voxelItemsModelBuffer.get(bri.getMetaData() + 16 * voxel.getId());
-			
-			renderingContext.bindAttribute("vertexIn", mesh.asAttributeSource(VertexFormat.FLOAT, 3, 24, 0));
-			renderingContext.bindAttribute("texCoordIn", mesh.asAttributeSource(VertexFormat.FLOAT, 2, 24, 12));
-			renderingContext.bindAttribute("normalIn", mesh.asAttributeSource(VertexFormat.U1010102, 4, 24, 20));
-			
-			renderingContext.draw(Primitive.TRIANGLE, 0, (int) (mesh.getVramUsage() / 24));
-		}
-	}
-
-	private float toRad(float f)
-	{
-		return (float) (f / 180 * Math.PI);
-	}
-
 	@Override
 	public void renderItemInWorld(RenderingInterface context, ItemPile pile, World world, Location location, Matrix4f handTransformation)
 	{
@@ -473,7 +276,6 @@ public class VoxelItemRenderer extends ItemRenderer
 			Vector4f lightposition = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 			
 			handTransformation.transform(lightposition);
-			//Matrix4f.transform(handTransformation, lightposition, lightposition);
 			
 			Light heldBlockLight = new Light(new Vector3f(0.5f, 0.45f, 0.4f).mul(2.0f), new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()), 15f);
 			context.getLightsRenderer().queueLight(heldBlockLight);	
@@ -518,9 +320,7 @@ public class VoxelItemRenderer extends ItemRenderer
 			}
 			
 		};
-		//VoxelContext bri = new VoxelContextOlder(VoxelFormat.format(voxel.getId(), ((ItemVoxel) pile.getItem()).getVoxelMeta(), 15, voxel.getLightLevel(0)), 0, 0, 0);
 		
-		//bri.voxelType = VoxelsStore.get().getVoxelById(bri.data);
 		VoxelRenderer model = voxel.getVoxelRenderer(bri);
 		if (model == null)
 		{
@@ -529,4 +329,111 @@ public class VoxelItemRenderer extends ItemRenderer
 		renderVoxel(context, voxel, model, bri);
 	}
 
+	/** The purpose of this class is to bake the voxel mesh by itself in a single VBO used by the item render, and that uses a specific layout */
+	private class VoxelInHandLayoutBaker extends IntricateLayoutBaker implements VoxelBakerCubic {
+		
+		VoxelInHandLayoutBaker(ClientContent content, ByteBuffer output) {
+			super(content, output);
+		}
+
+		@Override
+		//We don't care about saving a few bytes since the point is to fill a buffer with the data from a single block
+		public void beginVertex(int i0, int i1, int i2)
+		{
+			this.beginVertex(i0, i1, i2);
+		}
+
+		@Override
+		public void endVertex() {
+			output.putFloat(currentVertex.x);
+			output.putFloat(currentVertex.y);
+			output.putFloat(currentVertex.z);
+			
+			//We divide by 32768f because that's the max size of our atlas ( and thus int coordinates assume a 32768 pixel wide and tall atlas )
+			//The blocks-specific shader knows to divide the texture coordinates, but the general-purpose Entity shader this uses doesn't
+			output.putFloat((currentTexture.getAtlasS() + texCoords.x * currentTexture.getAtlasOffset()) / 32768f );
+			output.putFloat((currentTexture.getAtlasT() + texCoords.y * currentTexture.getAtlasOffset()) / 32768f );
+			
+			//1010102 Layout, 3 float components ( precision overkill ? ) + 2-bit flag for wavy grass etc
+			int n0 = BaseLayoutBaker.floatToUnsigned10Bit(normal.x);
+			int n1 = BaseLayoutBaker.floatToUnsigned10Bit(normal.y);
+			int n2 = BaseLayoutBaker.floatToUnsigned10Bit(normal.z);
+			output.putInt(BaseLayoutBaker.pack1010102(n0, n1, n2, wavyFlag ? 3 : 0));
+		}
+		
+		/*@Override
+		public void addTexCoordInt(int i0, int i1)
+		{
+			byteBuffer.putFloat(i0 / 32768f);
+			byteBuffer.putFloat(i1 / 32768f);
+		}*/
+	}
+
+	private void renderVoxel(RenderingInterface renderingContext, Voxel voxel, VoxelRenderer voxelRenderer, VoxelContext bri)
+	{
+		//If we did not already cache this model
+		if (!voxelItemsModelBuffer.containsKey(bri.getMetaData() + 16 * voxel.getId()))
+		{
+			//Generous allocation
+			//TODO Jemalloc all the things
+			ByteBuffer buffer = ByteBuffer.allocateDirect(16384).order(ByteOrder.nativeOrder()); //BufferUtils.createByteBuffer(16384);
+			VoxelInHandLayoutBaker specialSauce = new VoxelInHandLayoutBaker(this.content, buffer);
+			
+			//Dummy objects that point to our special sauce
+			ChunkRenderer chunkRenderer = new ChunkRenderer() {
+
+				@Override
+				public VoxelBakerHighPoly getHighpolyBakerFor(LodLevel lodLevel, ShadingType renderPass)
+				{
+					return specialSauce;
+				}
+
+				@Override
+				public VoxelBakerCubic getLowpolyBakerFor(LodLevel lodLevel, ShadingType renderPass)
+				{
+					return specialSauce;
+				}
+				
+			};
+			
+			//Render into a dummy chunk ( containing only that one voxel we want )
+			voxelRenderer.renderInto(chunkRenderer, bakingContext, new DummyChunk() {
+				
+				@Override
+				public int getVoxelData(int x, int y, int z)
+				{
+					if(x == 0 && y == 0 && z == 0)
+						return bri.getData();
+					return 0;
+				}
+				
+			}, bri);
+			
+			
+			//Flip the buffer and upload it
+			buffer.flip();
+			VertexBuffer mesh = renderingContext.newVertexBuffer();
+			mesh.uploadData(buffer);
+			
+			voxelItemsModelBuffer.put(bri.getMetaData() + 16 * voxel.getId(), mesh);
+		}
+		
+		//Fail-safe in case above step fails ?
+		if (voxelItemsModelBuffer.containsKey(bri.getMetaData() + 16 * voxel.getId()))
+		{
+			VertexBuffer mesh = voxelItemsModelBuffer.get(bri.getMetaData() + 16 * voxel.getId());
+			
+			//This is why we needed VoxelInHandLayoutBaker!
+			renderingContext.bindAttribute("vertexIn", mesh.asAttributeSource(VertexFormat.FLOAT, 3, 24, 0));
+			renderingContext.bindAttribute("texCoordIn", mesh.asAttributeSource(VertexFormat.FLOAT, 2, 24, 12));
+			renderingContext.bindAttribute("normalIn", mesh.asAttributeSource(VertexFormat.U1010102, 4, 24, 20));
+			
+			renderingContext.draw(Primitive.TRIANGLE, 0, (int) (mesh.getVramUsage() / 24));
+		}
+	}
+
+	private float toRad(float f)
+	{
+		return (float) (f / 180 * Math.PI);
+	}
 }

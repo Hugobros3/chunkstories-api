@@ -1,5 +1,9 @@
 package io.xol.chunkstories.api.voxel.models;
 
+//(c) 2015-2017 XolioWare Interactive
+//http://chunkstories.xyz
+//http://xol.io
+
 /** Chunk meshes are made of sections containing various data types */
 public final class ChunkMeshDataSubtypes {
 

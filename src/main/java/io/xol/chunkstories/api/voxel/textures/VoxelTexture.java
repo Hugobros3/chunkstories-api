@@ -4,15 +4,23 @@ import org.joml.Vector4fc;
 
 public interface VoxelTexture
 {
-	Vector4fc getColor();
+	/** Return the average color for this voxel texture */
+	public Vector4fc getColor();
 
-	int getAtlasS();
+	/** At which pixel (X) in the atlas does this texture start */
+	public int getAtlasS();
 
-	int getAtlasT();
+	/** At which pixel (Y) in the atlas does this texture start */
+	public int getAtlasT();
 
-	int getAtlasOffset();
+	/** How many pixels wide is the texture */
+	public int getAtlasOffset();
 
-	int getTextureScale();
+	/** How many blocks does this texture span */
+	public int getTextureScale();
+	
+	/** How many animation frames is there for this ? ( ration of height/width in the texture )*/
+	public int getAnimationFrames();
 
-	String getName();
+	public String getName();
 }
