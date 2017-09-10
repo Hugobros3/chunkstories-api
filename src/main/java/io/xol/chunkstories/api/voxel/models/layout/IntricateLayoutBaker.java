@@ -2,8 +2,9 @@ package io.xol.chunkstories.api.voxel.models.layout;
 
 import java.nio.ByteBuffer;
 
-import org.joml.Vector3d;
+import org.joml.Vector3dc;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.voxel.models.ChunkMeshDataSubtypes.VertexLayout;
@@ -22,12 +23,12 @@ public class IntricateLayoutBaker extends BaseLayoutBaker implements VoxelBakerH
 	
 	protected Vector3f currentVertex = new Vector3f();
 	
-	protected IntricateLayoutBaker(ClientContent content, ByteBuffer output) {
+	public IntricateLayoutBaker(ClientContent content, ByteBuffer output) {
 		super(content, output);
 	}
 
 	@Override
-	protected void reset() {
+	public void reset() {
 		currentVertex.set(0f);
 	}
 
@@ -37,12 +38,12 @@ public class IntricateLayoutBaker extends BaseLayoutBaker implements VoxelBakerH
 	}
 
 	@Override
-	public void beginVertex(Vector3f vertex) {
+	public void beginVertex(Vector3fc vertex) {
 		this.currentVertex.set(vertex);
 	}
 
 	@Override
-	public void beginVertex(Vector3d vertex) {
+	public void beginVertex(Vector3dc vertex) {
 		this.currentVertex.set(vertex);
 	}
 
@@ -61,8 +62,8 @@ public class IntricateLayoutBaker extends BaseLayoutBaker implements VoxelBakerH
 		output.putShort((short) (currentTexture.getAtlasT() + texCoords.y * currentTexture.getAtlasOffset()));
 		
 		//The voxel light data + another byte of padding
-		output.put(sunLight);
 		output.put(blockLight);
+		output.put(sunLight);
 		output.put(ao);
 		output.put((byte)0x00);
 		

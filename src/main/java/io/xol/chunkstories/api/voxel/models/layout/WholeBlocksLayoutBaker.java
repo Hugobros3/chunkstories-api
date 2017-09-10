@@ -19,7 +19,7 @@ public class WholeBlocksLayoutBaker extends BaseLayoutBaker implements VoxelBake
 	
 	protected int i0, i1, i2;
 	
-	protected WholeBlocksLayoutBaker(ClientContent content, ByteBuffer output) {
+	public WholeBlocksLayoutBaker(ClientContent content, ByteBuffer output) {
 		super(content, output);
 	}
 
@@ -54,8 +54,8 @@ public class WholeBlocksLayoutBaker extends BaseLayoutBaker implements VoxelBake
 		output.putShort((short) (currentTexture.getAtlasT() + texCoords.y * currentTexture.getAtlasOffset()));
 		
 		//The voxel light data + another byte of padding
-		output.put(sunLight);
 		output.put(blockLight);
+		output.put(sunLight);
 		output.put(ao);
 		output.put((byte)0x00);
 		

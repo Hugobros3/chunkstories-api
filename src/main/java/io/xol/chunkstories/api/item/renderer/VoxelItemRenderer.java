@@ -340,7 +340,7 @@ public class VoxelItemRenderer extends ItemRenderer
 		//We don't care about saving a few bytes since the point is to fill a buffer with the data from a single block
 		public void beginVertex(int i0, int i1, int i2)
 		{
-			this.beginVertex(i0, i1, i2);
+			this.beginVertex((float)i0, (float)i1, (float)i2);
 		}
 
 		@Override

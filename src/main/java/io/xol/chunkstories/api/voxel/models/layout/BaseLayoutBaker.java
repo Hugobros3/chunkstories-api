@@ -37,8 +37,10 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 		this.output = output;
 		
 		this.defaultTexture = content.voxels().textures().getVoxelTextureByName("notex");
+		this.currentTexture = defaultTexture;
 		
-		this.reset();
+		//Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java
+		//this.reset();
 	}
 	
 	protected byte sunLight, blockLight, ao;
@@ -47,7 +49,7 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 	protected Vector3f normal = new Vector3f();
 	protected boolean wavyFlag;
 	
-	protected void reset() {
+	public void reset() {
 		sunLight = 15;
 		blockLight = 0;
 		ao = 0;
@@ -111,8 +113,8 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 	
 	public static final int floatToUnsigned10Bit(float f) {
 		int i = (int) (512 + f * 512);
-		if(i > 1024)
-			return 1024;
+		if(i > 1023)
+			return 1023;
 		else if(i < 0)
 			return 0;
 		

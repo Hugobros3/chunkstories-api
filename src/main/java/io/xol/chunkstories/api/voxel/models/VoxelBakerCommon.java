@@ -10,36 +10,35 @@ import io.xol.chunkstories.api.voxel.models.ChunkRenderer.ChunkRenderContext.Vox
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
 /**
- * Abstract.
- * Used to bake static voxel mesh into, each family of function must be called in order ( vert, tex, col, norm ) 3 times to form triangles
+ * Provides you with means to draw geometry in a buffer, which is then laid out in a specific format by *LayoutBaker in the
+ * {@link io.xol.chunkstories.api.voxel.models.layout} package.
+ * This class groups methods common to both VoxelBakerCubic and VoxelBakerHighpoly
  */
 public interface VoxelBakerCommon
 {
-	/*public void addTexCoordInt(int i0, int i1);
-
-	public void addColors(float[] t);
+	//public void beginVertex(coordinates) // <-- Implemented in subclasses
 	
-	public void addColors(byte sunLight, byte blockLight, byte ao);
-
-	public void addColorsSpecial(float[] t, int extended);
-
-	public void addColors(float f0, float f1, float f2);
-
-	public void addColorsSpecial(float f0, float f1, float f2, int extended);
-
-	public void addNormalsInt(int i0, int i1, int i2, byte extra);*/
-	
+	/** Provides the 4-bit sun and voxel light levels, as well as an "ao" term. */
 	public void setVoxelLight(byte sunLight, byte blockLight, byte ao);
 
+	/** Automatically obtains those values from a specific corner */
 	public void setVoxelLightAuto(VoxelLighter voxelLighter, Corners corner);
 	
+	/** Selects a specific texture */
 	public void usingTexture(VoxelTexture voxelTexture);
 	
+	/** Texture coordinates WITHIN the specified VoxelTexture ( atlas/array texture stuff is handled internally ) */
 	public void setTextureCoordinates(float s, float t);
 	
+	/** Defines the normal for this vertex */
 	public void setNormal(float x, float y, float z);
 	
+	/** Enables/disable the wavy grass effect */
 	public void setWavyFlag(boolean wavy);
 	
+	/** Emmits the vertex based on the providen data */
 	public abstract void endVertex();
+	
+	/** Reset any previously modified value/flag to it's default. */
+	public void reset();
 }

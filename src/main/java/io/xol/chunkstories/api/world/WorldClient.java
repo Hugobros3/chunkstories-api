@@ -15,5 +15,7 @@ public interface WorldClient extends World
 {
 	public ClientInterface getClient();
 	
+	public ClientInterface getGameContext();
+	
 	public WorldRenderer getWorldRenderer();
 }
