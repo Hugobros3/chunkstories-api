@@ -2,11 +2,13 @@ package io.xol.chunkstories.api.particles;
 
 import org.joml.Vector3f;
 
+import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.BlendMode;
 import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingMode;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
+import io.xol.chunkstories.api.world.VoxelContext;
 import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -53,6 +55,34 @@ public abstract class ParticleTypeHandler {
 		public boolean isDed()
 		{
 			return ded;
+		}
+		
+		/** Helper method for particles to check their collisions efficiently and concisely */
+		public boolean isCollidingAgainst(World world) {
+			return isCollidingAgainst(world, x, y, z);
+		}
+
+		/** Helper method for particles to check their collisions efficiently and concisely */
+		public boolean isCollidingAgainst(World world, float x, float y, float z) {
+			
+			VoxelContext peek = world.peek((int)x, (int)y, (int)z);
+			
+			if (peek.getVoxel().getId() > 0 && peek.getVoxel().getType().isSolid())
+			{
+				//Fast check if the voxel is just a solid block
+				//TODO isOpaque doesn't mean that exactly, create a new type variable that represents that specific trait
+				if (peek.getVoxel().getType().isOpaque())
+					return true;
+				
+				//Else iterate over each box that make up that block
+				CollisionBox[] boxes = peek.getVoxel().getTranslatedCollisionBoxes(world, (int) x, (int) y, (int) z);
+				if (boxes != null)
+					for (CollisionBox box : boxes)
+						if (box.isPointInside(x, y, z))
+							return true;
+
+			}
+			return false;
 		}
 	}
 	
