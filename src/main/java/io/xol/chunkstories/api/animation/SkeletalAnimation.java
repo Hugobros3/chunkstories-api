@@ -15,11 +15,17 @@ public interface SkeletalAnimation extends SkeletonAnimator {
 	public SkeletonBone getBone(String boneName);
 	
 	public interface SkeletonBone {
+		
+		/** Return the offset of this bone to the animation origin bone */
+		public Matrix4fc getOffsetMatrix();
 
+		/** The transformation matrix for this bone alone */
 		public Matrix4fc getTransformationMatrix(double animationTime);
 		
+		/** Boneless Bones */
 		public SkeletonBone getParent();
 
+		/** Bameless Bones */
 		public String getName();
 	}
 }

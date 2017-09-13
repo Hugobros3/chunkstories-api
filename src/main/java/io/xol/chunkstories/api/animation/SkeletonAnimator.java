@@ -19,7 +19,7 @@ public interface SkeletonAnimator
 	public Matrix4fc getBoneHierarchyTransformationMatrix(String nameOfEndBone, double animationTime);
 
 	/**
-	 * Used to draw deformed mesh parts in OpenGL
+	 * Used to draw deformed mesh parts
 	 */
 	public Matrix4fc getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, double animationTime);
 	
