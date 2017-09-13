@@ -1,5 +1,6 @@
 package io.xol.chunkstories.api.entity;
 
+import io.xol.chunkstories.api.Content.EntityTypes;
 import io.xol.chunkstories.api.content.NamedWithProperties;
 import io.xol.chunkstories.api.world.World;
 
@@ -14,4 +15,6 @@ public interface EntityType extends NamedWithProperties
 	public short getId();
 	
 	public Entity create(World world);
+	
+	public EntityTypes store();
 }
