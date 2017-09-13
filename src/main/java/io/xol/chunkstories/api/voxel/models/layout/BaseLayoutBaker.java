@@ -29,6 +29,18 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 	
 	protected ByteBuffer output;
 	
+	/** If you want to make your own layout baker that does not use a ByteBuffer */
+	public BaseLayoutBaker(ClientContent content) {
+		this.content = content;
+		
+		this.defaultTexture = content.voxels().textures().getVoxelTextureByName("notex");
+		this.currentTexture = defaultTexture;
+		
+		//Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java
+		//this.reset();
+	}
+	
+	/** Used by subclasses */
 	BaseLayoutBaker(ClientContent content, ByteBuffer output) {
 		if(output == null)
 			throw new NullPointerException();
