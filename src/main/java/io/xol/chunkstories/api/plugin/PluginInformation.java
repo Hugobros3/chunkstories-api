@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.exceptions.plugins.PluginCreationException;
-import io.xol.chunkstories.api.plugin.commands.Command;
+import io.xol.chunkstories.api.plugin.commands.PluginCommand;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -23,7 +23,7 @@ public interface PluginInformation
 
 	public ChunkStoriesPlugin createInstance(GameContext pluginExecutionContext) throws PluginCreationException;
 
-	public Collection<Command> getCommands();
+	public Collection<PluginCommand> getCommands();
 	
 	public File getDirectory();
 	

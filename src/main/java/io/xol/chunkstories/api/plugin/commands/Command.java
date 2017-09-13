@@ -4,25 +4,20 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.xol.chunkstories.api.plugin.PluginInformation;
-
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
+/** A command is a special token the game uses to call the execution of a certain tool */
 public class Command
 {
-	private PluginInformation plugin;
+	protected final String name;
+	protected final Set<String> aliases = new HashSet<String>();
 	
-	private final String name;
-	private Set<String> aliases = new HashSet<String>();
-	
-	private CommandHandler handler = null;
+	protected CommandHandler handler = null;
 
-	public Command(PluginInformation plugin, String name)
+	public Command(String name)
 	{
-		this.plugin = plugin;
-		
 		this.name = name;
 		this.aliases.add(name);
 	}
@@ -36,12 +31,6 @@ public class Command
 	{
 		return name;
 	}
-	
-	public PluginInformation getPlugin()
-	{
-		return plugin;
-	}
-
 	public void setHandler(CommandHandler commandHandler)
 	{
 		this.handler = commandHandler;

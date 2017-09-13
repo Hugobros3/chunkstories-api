@@ -12,7 +12,21 @@ import io.xol.chunkstories.api.world.WorldMaster;
 
 public interface ServerInterface extends GameContext
 {
-	public IterableIterator<Player> getConnectedPlayers();
+	/** Returns the (public) IP the server is joinable at */
+	public String getPublicIp();
+	
+	/** Returns how many seconds this server has been running for */
+	public long getUptime();
+	
+	public UserPrivileges getUserPrivileges();
+	
+	/** Returns players <b>logged in</b> */
+	public ConnectedPlayers getConnectedPlayers();
+	
+	interface ConnectedPlayers extends IterableIterator<Player> {
+		/** Returns how many players are connected, might change over time, this number is unrelated to the iterator state */
+		public int count();
+	}
 
 	public Player getPlayerByName(String string);
 	
@@ -20,11 +34,15 @@ public interface ServerInterface extends GameContext
 
 	public PluginManager getPluginManager();
 
+	/** Obtains the current permissions manager */
 	public PermissionsManager getPermissionsManager();
 	
+	/** Installs a custom permissions manager */
 	public void installPermissionsManager(PermissionsManager permissionsManager);
 	
 	public void broadcastMessage(String message);
 
 	public WorldMaster getWorld();
+	
+	public void reloadConfig();
 }
