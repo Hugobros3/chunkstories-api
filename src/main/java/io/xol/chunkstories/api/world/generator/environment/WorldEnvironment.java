@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.world;
+package io.xol.chunkstories.api.world.generator.environment;
 
 import org.joml.Vector3dc;
 import org.joml.Vector3fc;

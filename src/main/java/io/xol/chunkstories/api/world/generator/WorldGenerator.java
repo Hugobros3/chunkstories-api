@@ -1,7 +1,9 @@
-package io.xol.chunkstories.api.world;
+package io.xol.chunkstories.api.world.generator;
 
 import io.xol.chunkstories.api.Content.WorldGenerators.WorldGeneratorType;
+import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.generator.environment.WorldEnvironment;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz

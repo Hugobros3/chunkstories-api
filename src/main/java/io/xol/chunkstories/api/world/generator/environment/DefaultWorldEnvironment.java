@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.world;
+package io.xol.chunkstories.api.world.generator.environment;
 
 import org.joml.Vector3dc;
 import org.joml.Vector3f;
@@ -7,6 +7,8 @@ import org.joml.Vector3fc;
 import io.xol.chunkstories.api.math.Math2;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
+import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.WorldInfo;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

@@ -19,7 +19,7 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.models.VoxelModel;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.api.world.WorldGenerator;
+import io.xol.chunkstories.api.world.generator.WorldGenerator;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
