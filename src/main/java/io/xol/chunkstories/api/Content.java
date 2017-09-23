@@ -162,9 +162,11 @@ public interface Content
 		
 		public Iterator<WorldGeneratorType> all();
 		
+		/** Contains the parameters stated in a 'generator' section of a .generators config file */
 		public interface WorldGeneratorType extends NamedWithProperties {
 			public String getName();
 			
+			/** Calls the constructor of whatever WorldGenerator you asked for */
 			public WorldGenerator createForWorld(World world);
 		}
 

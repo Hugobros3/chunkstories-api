@@ -4,11 +4,14 @@ package io.xol.chunkstories.api.content;
 //http://chunkstories.xyz
 //http://xol.io
 
+/** Describes a configuration section within a configuration file.<br/>
+ *  Has a name, and contains properties you can query.
+ */
 public interface NamedWithProperties
 {
 	public String getName();
 	
-	/** Resolves a property from the arguments defined in the .items file */
+	/** Resolves a property from the arguments defined in the file. Returns null if it was not. */
 	public String resolveProperty(String propertyName);
 	
 	/** Do the same as above but provides a default fallback value instead of null, in case said property isn't defined. */
