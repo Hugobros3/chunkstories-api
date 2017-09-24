@@ -40,7 +40,7 @@ public class DefaultWorldEnvironment implements WorldEnvironment {
 		
 		sunColorSunny = loadVec3f(world.getWorldInfo(), "sunColorSunny", "1.0 1.0 1.0");
 		sunColorMoody = loadVec3f(world.getWorldInfo(), "sunColorMoody", "0.5 0.5 0.5");
-		shadowColorSunny = loadVec3f(world.getWorldInfo(), "shadowColorSunny", "0.0000 0.1725 0.2941");
+		shadowColorSunny = loadVec3f(world.getWorldInfo(), "shadowColorSunny", "0.2500 0.3362 0.3970");
 		shadowColorMoody = loadVec3f(world.getWorldInfo(), "shadowColorMoody", "0.3 0.3 0.3");
 	}
 	

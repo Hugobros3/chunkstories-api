@@ -33,6 +33,6 @@ public interface WorldEnvironment {
 		
 		shader.setUniform1f("shadowStrength", 1.0f);
 		shader.setUniform3f("sunColor", getSunlightColor(cameraPosition));
-		shader.setUniform3f("sunColor", getShadowColor(cameraPosition));
+		shader.setUniform3f("shadowColor", getShadowColor(cameraPosition));
 	}
 }
