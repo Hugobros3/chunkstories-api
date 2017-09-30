@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import io.xol.chunkstories.api.Content;
 import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
+import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
 import io.xol.chunkstories.api.rendering.textures.Cubemap;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;
@@ -18,8 +19,6 @@ public interface ClientContent extends Content
 	public ClientInterface getClient();
 	
 	public ClientMeshLibrary meshes();
-	
-	public TexturesLibrary textures();
 	
 	public ClientVoxels voxels();
 	public interface ClientVoxels extends Voxels {
@@ -40,7 +39,8 @@ public interface ClientContent extends Content
 			public Voxels parent();
 		}
 	}
-	
+
+	public TexturesLibrary textures();
 	public interface TexturesLibrary {
 
 		public Texture2D nullTexture();
@@ -50,6 +50,18 @@ public interface ClientContent extends Content
 		public Texture2D newTexture2D(TextureFormat type, int width, int height);
 		
 		public Cubemap getCubemap(String cubemapName);
+		
+		public ClientContent parent();
+	}
+	
+	public ShadersLibrary shaders();
+	public interface ShadersLibrary {
+
+		public ShaderInterface getShaderProgram(String shaderName);
+		
+		public void reloadShader(String shaderName);
+		
+		public void reloadAllShaders();
 		
 		public ClientContent parent();
 	}

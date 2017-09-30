@@ -3,7 +3,6 @@ package io.xol.chunkstories.api.rendering;
 import io.xol.chunkstories.api.particles.ParticlesRenderer;
 import io.xol.chunkstories.api.rendering.effects.DecalsRenderer;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
-import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 import io.xol.chunkstories.api.world.WorldClient;
 
 //(c) 2015-2017 XolioWare Interactive

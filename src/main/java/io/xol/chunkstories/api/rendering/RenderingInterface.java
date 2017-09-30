@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.rendering;
 
 import org.joml.Matrix4f;
 
+import io.xol.chunkstories.api.client.ClientContent.ShadersLibrary;
 import io.xol.chunkstories.api.client.ClientContent.TexturesLibrary;
 import io.xol.chunkstories.api.client.ClientInterface;
 import io.xol.chunkstories.api.client.ClientRenderingConfig;
@@ -45,6 +46,8 @@ public interface RenderingInterface
 	public RenderTargetManager getRenderTargetManager();
 	
 	/* Shaders */
+	
+	public ShadersLibrary shaders();
 	
 	public ShaderInterface useShader(String shaderName) throws InvalidShaderException, ShaderCompileException;
 	
