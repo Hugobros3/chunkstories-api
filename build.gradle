@@ -36,8 +36,13 @@ jar {
 
 compileJava.options.debugOptions.debugLevel = "source,lines,vars"
 
+configurations {
+    deployerJars
+}
+
 dependencies {
 	compile group: 'org.joml', name: 'joml', version: '1.9.3'
+    deployerJars "org.apache.maven.wagon:wagon-ssh:2.12" //<-- fuck this fuck this fuck this
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -50,23 +55,38 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+//Bundle that with the API jar :)
 artifacts {
     archives sourcesJar
     archives javadocJar
 }
 
 javadoc {
+	//Our current javadoc isn't exactly too compliant :')
 	failOnError = false
 }
 
 //Create a properties.gradle with login credentials to use this.
-if(hasProperty('uploadArtifactUsername')) {
+//Watch out: wagon-ssh is an old mess and WILL NOT TAKE EdDSA host keys
+//You MUST ask the server for one of those and replace whatever you had for it in known_hosts
+if(hasProperty('uploadUsername')) {
 	println 'Login credentials found'
 	uploadArchives {
 		repositories {
 				mavenDeployer {
-					repository(url: "http://maven.xol.io/repository/public/") {
-						authentication(userName: uploadArtifactUsername, password: uploadArtifactPassword)
+       				configuration = configurations.deployerJars	
+					
+					if(project.hasProperty('uploadPrivateKey')) {
+						println 'Found private key'
+						repository(url: "scp://xol.io/home/maven-user/maven-repo") {				
+							authentication(userName: uploadUsername, privateKey: uploadPrivateKey)
+		    			}
+					}
+					else {
+						println 'Found password'
+						repository(url: "scp://xol.io/home/maven-user/maven-repo") {				
+							authentication(userName: uploadUsername, password: uploadPassword)
+		    			}
 					}
 				}
 		}
