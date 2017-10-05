@@ -19,7 +19,7 @@ repositories {
 }
 
 compileJava {
-	//options.encoding = 'UTF-8'
+	options.encoding = 'UTF-8'
 
 	//Do we need this ?
 	//options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
