@@ -161,25 +161,33 @@ public interface World
 	/* Voxel lightning helper functions */
 	
 	/**
+	 * @deprecated Use peek().
 	 * @return The sun light level of the block per {@link VoxelFormat} ( 0-15 ) using either getVoxelDataAt if the chunk is loaded or
 	 * the heightmap ( y <= heightmapLevel(x, z) ? 0 : 15 )
 	 */
+	@Deprecated
 	public int getSunlightLevelWorldCoordinates(int x, int y, int z);
 	
 	/**
+	 * @deprecated Use peek().
 	 * @return The sun light level of the block per {@link VoxelFormat} ( 0-15 ) using either getVoxelDataAt if the chunk is loaded or
 	 * the heightmap ( y <= heightmapLevel(x, z) ? 0 : 15 )
 	 */
+	@Deprecated
 	public int getSunlightLevelLocation(Location location);
 	
 	/**
+	 * @deprecated Use peek().
 	 * @return Returns the block light level of the block per {@link VoxelFormat} ( 0-15 ) using getVoxelDataAt ( if the chunk isn't loaded it will return a zero. )
 	 */
+	@Deprecated
 	public int getBlocklightLevelWorldCoordinates(int x, int y, int z);
 
 	/**
+	 * @deprecated Use peek().
 	 * @return Returns the block light level of the block per {@link VoxelFormat} ( 0-15 ) using getVoxelDataAt ( if the chunk isn't loaded it will return a zero. )
 	 */
+	@Deprecated
 	public int getBlocklightLevelLocation(Location location);
 	
 	/* Chunks */

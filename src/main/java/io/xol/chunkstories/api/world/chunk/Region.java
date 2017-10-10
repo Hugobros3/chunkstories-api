@@ -57,8 +57,6 @@ public interface Region
 
 	public boolean isUnused();
 
-	//public boolean removeChunk(int chunkX, int chunkY, int chunkZ);
-
 	/** Will be traversable once the file representing the region at the time of calling this is done writing. */
 	public Fence save();
 

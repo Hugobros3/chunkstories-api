@@ -44,6 +44,14 @@ public interface VoxelContext
 	public default int getMetaData() {
 		return VoxelFormat.meta(getData());
 	}
+	
+	public default int getSunlight() {
+		return VoxelFormat.sunlight(getData());
+	}
+	
+	public default int getBlocklight() {
+		return VoxelFormat.blocklight(getData());
+	}
 
 	public default CollisionBox[] getTranslatedCollisionBoxes() {
 		return getVoxel().getTranslatedCollisionBoxes(getWorld(), getX(), getY(), getZ());
