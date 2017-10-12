@@ -7,7 +7,8 @@ import java.util.Iterator;
 //http://xol.io
 
 /**
- * Java spec workarround
+ * Java silly spec workarround ( syntax sugar )
+ * I want to be allowed to 'for(Object o : iterator)'.
  */
 public interface IterableIterator<T> extends Iterator<T>, Iterable<T>
 {

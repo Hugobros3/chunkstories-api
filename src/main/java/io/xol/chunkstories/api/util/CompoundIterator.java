@@ -1,0 +1,42 @@
+package io.xol.chunkstories.api.util;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+public class CompoundIterator<T> implements IterableIterator<T> {
+
+	private final Iterator<Iterator<T>> iteratorOfiterators;
+	private Iterator<T> currentIterator = null;
+	
+	public CompoundIterator(Collection<Iterator<T>> listOfIterators) {
+		this.iteratorOfiterators = listOfIterators.iterator();
+	}
+	
+	@Override
+	public boolean hasNext() {
+		
+		while(true) {
+			if(currentIterator == null || !currentIterator.hasNext()) {
+				if(iteratorOfiterators.hasNext())
+					currentIterator = iteratorOfiterators.next();
+				else
+					return false;
+			}
+			
+			if(currentIterator.hasNext())
+				return true;
+		}
+	}
+
+	@Override
+	public T next() {
+		//No failsafe yet if someone spams next() without checking hasNext()
+		return currentIterator.next();
+	}
+
+	@Override
+	public void remove() {
+		currentIterator.remove();
+	}
+	
+}

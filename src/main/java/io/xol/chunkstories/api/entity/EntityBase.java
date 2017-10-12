@@ -40,7 +40,7 @@ public abstract class EntityBase implements Entity
 
 	// Basic components every entity should have
 	final protected EntityComponentExistence existenceComponent;
-	final protected EntityComponentPosition positionComponent;
+	final public EntityComponentPosition positionComponent;
 	
 	public EntityBase(EntityType entityType, Location location) {
 		this.entityType = entityType;
