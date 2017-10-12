@@ -36,19 +36,4 @@ public class Location extends Vector3d
 	{
 		return world;
 	}
-
-	public void setWorld(World world)
-	{
-		this.world = world;
-	}
-
-	public int getVoxelDataAtLocation()
-	{
-		return world.getVoxelData(this);
-	}
-
-	public void setVoxelDataAtLocation(int voxelData)
-	{
-		world.setVoxelData(this, voxelData);
-	}
 }

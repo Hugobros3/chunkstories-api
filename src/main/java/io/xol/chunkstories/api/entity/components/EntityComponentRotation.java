@@ -28,6 +28,11 @@ public class EntityComponentRotation extends EntityComponent
 	{
 		super(entity, previous);
 	}
+	
+	public EntityComponentRotation(Entity entity)
+	{
+		super(entity);
+	}
 
 	public float getHorizontalRotation()
 	{

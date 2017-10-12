@@ -11,7 +11,7 @@ import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
 import io.xol.chunkstories.api.entity.components.EntityComponentExistence;
 import io.xol.chunkstories.api.entity.components.EntityComponentPosition;
-import io.xol.chunkstories.api.entity.components.EntityComponentVelocity;
+import io.xol.chunkstories.api.entity.components.EntityComponentVoxelPosition;
 import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.exceptions.IllegalUUIDChangeException;
 import io.xol.chunkstories.api.input.Input;
@@ -20,7 +20,8 @@ import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.api.world.chunk.Region;
+import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
@@ -31,35 +32,25 @@ public abstract class EntityBase implements Entity
 	final private EntityType entityType;
 	final protected World world;
 	
-	//The entity UUID is set to -1 so when added to a World the World assigns it a proper one
+	// The entity UUID is set to -1 so when added to a World the World assigns it a proper one
 	private long entityUUID = -1;
 	private boolean hasSpawned = false;
 	
-	//The eID is just a cache to speed up classname<->serialized id resolution
-	//private final short eID;
-	
-	//Multiplayer players or other agents that chose to be notified when components of the entity are changed
+	// Multiplayer players or other agents that chose to be notified when components of the entity are changed
 	final private Set<Subscriber> subscribers = new HashSet<Subscriber>();
 
-	//Basic components every entity should have
+	// Basic components every entity should have
 	final protected EntityComponentExistence existenceComponent;
 	final protected EntityComponentPosition positionComponent;
-	final protected EntityComponentVelocity velocityComponent;
 	
-	public EntityBase(EntityType entityType, World world, double x, double y, double z)
-	{
-		this.world = world;
+	public EntityBase(EntityType entityType, Location location) {
+		this.entityType = entityType;
+		this.world = location.getWorld();
 
 		//Components have to be initialized in constructor explicitly
 		existenceComponent = new EntityComponentExistence(this, null);
-		positionComponent = new EntityComponentPosition(this, existenceComponent);
-		velocityComponent = new EntityComponentVelocity(this, positionComponent);
 		
-		positionComponent.setWorld(world);
-		positionComponent.setPosition(x, y, z);
-		
-		//@see: eID field declaration
-		this.entityType = entityType;//world.getGameContext().getContent().entities().getEntityIdByClassname(this.getClass().getName());
+		positionComponent = new EntityComponentPosition(this, location);
 	}
 	
 	public EntityComponentExistence getComponentExistence()
@@ -67,20 +58,15 @@ public abstract class EntityBase implements Entity
 		return this.existenceComponent;
 	}
 
-	public EntityComponentPosition getEntityComponentPosition()
+	/*public EntityComponentPosition getEntityComponentPosition()
 	{
 		return positionComponent;
-	}
+	}*/
 
 	@Override
 	public Location getLocation()
 	{
 		return positionComponent.getLocation();
-	}
-
-	public EntityComponentVelocity getVelocityComponent()
-	{
-		return velocityComponent;
 	}
 	
 	@Override
@@ -96,9 +82,9 @@ public abstract class EntityBase implements Entity
 	}
 
 	@Override
-	public Region getRegion()
+	public Chunk getChunk()
 	{
-		return positionComponent.getRegionWithin();
+		return positionComponent.getChunkWithin();
 	}
 
 	// Ran each tick
@@ -129,8 +115,8 @@ public abstract class EntityBase implements Entity
 	@Override
 	public String toString()
 	{
-		return "[" + this.getClass().getSimpleName() + ": holderExists: " + (positionComponent.getRegionWithin() != null) + " ,position : " + positionComponent.getLocation() + " UUID : " + entityUUID + " Type: " + this.getType().getName() + " Region:"
-				+ this.positionComponent.getRegionWithin() + " ]";
+		return "[" + this.getClass().getSimpleName() + ": holderExists: " + (positionComponent.getChunkWithin() != null) + " ,position : " + positionComponent.getLocation() + " UUID : " + entityUUID + " Type: " + this.getType().getName() + " Chunk:"
+				+ this.positionComponent.getChunkWithin() + " ]";
 	}
 
 	double clampDouble(double d)

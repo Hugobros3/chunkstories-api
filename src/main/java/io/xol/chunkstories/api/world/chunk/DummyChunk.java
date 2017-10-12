@@ -3,9 +3,13 @@ package io.xol.chunkstories.api.world.chunk;
 import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
+import io.xol.chunkstories.api.exceptions.world.WorldException;
+import io.xol.chunkstories.api.exceptions.world.voxel.IllegalBlockModificationException;
 import io.xol.chunkstories.api.util.IterableIterator;
-import io.xol.chunkstories.api.voxel.VoxelFormat;
+import io.xol.chunkstories.api.voxel.components.VoxelComponents;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.dummy.DummyContext;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -46,22 +50,6 @@ public class DummyChunk implements Chunk
 	}
 
 	@Override
-	public int getVoxelData(int x, int y, int z)
-	{
-		return VoxelFormat.changeSunlight(0, 15);
-	}
-
-	@Override
-	public void setVoxelDataWithUpdates(int x, int y, int z, int data)
-	{
-	}
-
-	@Override
-	public void setVoxelDataWithoutUpdates(int x, int y, int z, int data)
-	{
-	}
-
-	@Override
 	public void computeVoxelLightning(boolean considerAdjacentChunks)
 	{
 	}
@@ -74,28 +62,6 @@ public class DummyChunk implements Chunk
 
 	@Override
 	public void markInNeedForLightningUpdate()
-	{
-	}
-
-	@Override
-	public int getSunLight(int x, int y, int z)
-	{
-		return 15;
-	}
-
-	@Override
-	public int getBlockLight(int x, int y, int z)
-	{
-		return 0;
-	}
-
-	@Override
-	public void setSunLight(int x, int y, int z, int level)
-	{
-	}
-
-	@Override
-	public void setBlockLight(int x, int y, int z, int level)
 	{
 	}
 
@@ -134,12 +100,60 @@ public class DummyChunk implements Chunk
 	@Override
 	public ChunkVoxelContext peek(Vector3dc location)
 	{
-		return null;
+		return peek((int)location.x(), (int)location.y(), (int)location.z());
 	}
 
 	@Override
 	public ChunkVoxelContext peek(int x, int y, int z)
 	{
-		return null;
+		return new DummyContext(this, x, y, z, peekSimple(x, y, z));
+	}
+
+	@Override
+	public int peekSimple(int x, int y, int z) {
+		
+		//Return zero by default
+		return 0;
+	}
+
+	@Override
+	public ChunkVoxelContext poke(int x, int y, int z, int newVoxelData, WorldModificationCause cause)
+			throws WorldException {
+		throw new IllegalBlockModificationException(peek(x,y,z), "This is a dummy chunk, you can't edit any block.");
+	}
+
+	@Override
+	public ChunkVoxelContext pokeSilently(int x, int y, int z, int newVoxelData) throws WorldException {
+		return poke(x, y, z, newVoxelData, null);
+	}
+
+	@Override
+	public void pokeSimple(int x, int y, int z, int newVoxelData) {
+		//Do nothing
+	}
+
+	@Override
+	public void pokeSimpleSilently(int x, int y, int z, int newVoxelData) {
+		//Do nothing
+	}
+
+	@Override
+	public VoxelComponents components(int worldX, int worldY, int worldZ) {
+		throw new UnsupportedOperationException("components()");
+	}
+
+	@Override
+	public ChunkHolder holder() {
+		throw new UnsupportedOperationException("holder()");
+	}
+
+	@Override
+	public void addEntity(Entity entity) {
+		throw new UnsupportedOperationException("addEntity()");
+	}
+
+	@Override
+	public void removeEntity(Entity entity) {
+		throw new UnsupportedOperationException("removeEntity()");
 	}
 }

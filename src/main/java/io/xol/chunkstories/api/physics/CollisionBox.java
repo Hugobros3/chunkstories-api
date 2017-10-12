@@ -3,7 +3,6 @@ package io.xol.chunkstories.api.physics;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
-import io.xol.chunkstories.api.Content.Voxels;
 import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -60,22 +59,22 @@ public final class CollisionBox implements Collidable
 
 	public boolean collidesWith(World world)
 	{
-		Voxels store = world.getGameContext().getContent().voxels();
-		if (store.getVoxelById(world.getVoxelData((int) (xpos + xw), (int) (ypos + h), (int) (zpos + zw))).getType().isSolid())
+		//TODO actually iterate over the space rather than assuming a small volume
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getType().isSolid())
 			return true;
-		if (store.getVoxelById(world.getVoxelData((int) (xpos + xw), (int) (ypos), (int) (zpos + zw))).getType().isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos), (int) (zpos + zw)).getVoxel().getType().isSolid())
 			return true;
-		if (store.getVoxelById(world.getVoxelData((int) (xpos), (int) (ypos + h), (int) (zpos + zw))).getType().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getType().isSolid())
 			return true;
-		if (store.getVoxelById(world.getVoxelData((int) (xpos), (int) (ypos), (int) (zpos + zw))).getType().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos), (int) (zpos + zw)).getVoxel().getType().isSolid())
 			return true;
-		if (store.getVoxelById(world.getVoxelData((int) (xpos + xw), (int) (ypos + h), (int) (zpos))).getType().isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos)).getVoxel().getType().isSolid())
 			return true;
-		if (store.getVoxelById(world.getVoxelData((int) (xpos + xw), (int) (ypos), (int) (zpos))).getType().isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos), (int) (zpos)).getVoxel().getType().isSolid())
 			return true;
-		if (store.getVoxelById(world.getVoxelData((int) (xpos), (int) (ypos + h), (int) (zpos))).getType().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos + h), (int) (zpos)).getVoxel().getType().isSolid())
 			return true;
-		if (store.getVoxelById(world.getVoxelData((int) (xpos), (int) (ypos), (int) (zpos))).getType().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos), (int) (zpos)).getVoxel().getType().isSolid())
 			return true;
 		return false;
 	}
@@ -208,14 +207,4 @@ public final class CollisionBox implements Collidable
 
 		return false;
 	}
-
-	/*public boolean collidesWith(Entity entity)
-	{
-		CollisionBox[] entityBoxes = entity.getTranslatedCollisionBoxes();
-		if (entityBoxes != null)
-			for (CollisionBox entityBox : entityBoxes)
-				if (entityBox.collidesWith(entityBox))
-					return true;
-		return false;
-	}*/
 }

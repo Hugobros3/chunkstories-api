@@ -3,7 +3,6 @@ package io.xol.chunkstories.api.world.chunk;
 import java.util.Iterator;
 
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.EntityVoxel;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.world.World;
 
@@ -29,18 +28,6 @@ public interface Region
 	boolean unregisterUser(WorldUser user);
 	
 	/**
-	 * Called when the entity is now within this region's influence
-	 * @return If it was added successfully
-	 */
-	public boolean addEntityToRegion(Entity entity);
-	
-	/**
-	 * Called when the entity is no longer within this region's influence
-	 * @return If it was removed successfully
-	 */
-	public boolean removeEntityFromRegion(Entity entity);
-	
-	/**
 	 * @return An iterator over each entity within this region
 	 */
 	Iterator<Entity> getEntitiesWithinRegion();
@@ -64,6 +51,4 @@ public interface Region
 	public Fence unloadAndSave();
 
 	public World getWorld();
-
-	public EntityVoxel getEntityVoxelAt(int worldX, int worldY, int worldZ);
 }

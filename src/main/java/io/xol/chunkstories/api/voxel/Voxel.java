@@ -114,7 +114,7 @@ public class Voxel
 	 * @return An array of CollisionBox or null.
 	 */
 	public CollisionBox[] getTranslatedCollisionBoxes(World world, int x, int y, int z) {
-		CollisionBox[] boxes = getCollisionBoxes(world.peek(x, y, z));
+		CollisionBox[] boxes = getCollisionBoxes(world.peekSafely(x, y, z));
 		if (boxes != null)
 			for (CollisionBox b : boxes)
 				b.translate(x, y, z);

@@ -4,9 +4,6 @@ import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
-import io.xol.chunkstories.api.entity.components.EntityComponentExistence;
-import io.xol.chunkstories.api.entity.components.EntityComponentPosition;
-import io.xol.chunkstories.api.entity.components.EntityComponentVelocity;
 import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.physics.CollisionBox;
@@ -14,7 +11,7 @@ import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.api.world.chunk.Region;
+import io.xol.chunkstories.api.world.chunk.Chunk;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -27,18 +24,14 @@ public interface Entity
 	 */
 	public EntityType getType();
 	
-	public EntityComponentExistence getComponentExistence();
-	
-	public EntityComponentPosition getEntityComponentPosition();
-	
 	/** @return the location of the entity */
 	public Location getLocation();
 	
 	/** Sets the location of the entity */
 	public void setLocation(Location loc);
 	
-	/** @return the entity's current chunk holder */
-	public Region getRegion();
+	/** @return the entity's current chunk */
+	public Chunk getChunk();
 	
 	/** @return the entity's world */
 	public World getWorld();
@@ -63,7 +56,7 @@ public interface Entity
 	public boolean isOnGround();
 	
 	//TODO Does all entities need that for real ?
-	public EntityComponentVelocity getVelocityComponent();
+	//public EntityComponentVelocity getVelocityComponent();
 	
 	/** @return the entitie's AABBs to their position */
 	public CollisionBox getTranslatedBoundingBox();

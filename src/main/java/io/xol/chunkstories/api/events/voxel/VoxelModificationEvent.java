@@ -23,10 +23,10 @@ public class VoxelModificationEvent extends VoxelEvent
 	
 	// Specific event code
 
-	final VoxelModificationCause modificationCause;
+	final WorldModificationCause modificationCause;
 	int newData;
 	
-	public VoxelModificationEvent(VoxelContext context, int data, VoxelModificationCause cause)
+	public VoxelModificationEvent(VoxelContext context, int data, WorldModificationCause cause)
 	{
 		super(context);
 		this.newData = data;
@@ -43,24 +43,24 @@ public class VoxelModificationEvent extends VoxelEvent
 		this.newData = newData;
 	}
 
-	public VoxelModificationCause getModificationCause()
+	public WorldModificationCause getModificationCause()
 	{
 		return modificationCause;
 	}
 
-	public Modifiation getModification() {
+	public ModifiationType getModification() {
 		if(VoxelFormat.id(getVoxel().getData()) == 0)
-			return Modifiation.PLACEMENT;
+			return ModifiationType.PLACEMENT;
 		else
 		{
 			if(VoxelFormat.id(newData) == 0)
-				return Modifiation.DESTRUCTION;
+				return ModifiationType.DESTRUCTION;
 			else
-				return Modifiation.REPLACEMENT;
+				return ModifiationType.REPLACEMENT;
 		}
 	}
 	
-	public enum Modifiation {
+	public enum ModifiationType {
 		DESTRUCTION,
 		PLACEMENT,
 		REPLACEMENT;

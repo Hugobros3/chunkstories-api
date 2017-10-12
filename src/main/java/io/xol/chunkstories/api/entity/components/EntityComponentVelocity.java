@@ -24,6 +24,11 @@ public class EntityComponentVelocity extends EntityComponent
 	{
 		super(entity, previous);
 	}
+	
+	public EntityComponentVelocity(Entity entity)
+	{
+		super(entity);
+	}
 
 	private Vector3d velocity = new Vector3d();
 	

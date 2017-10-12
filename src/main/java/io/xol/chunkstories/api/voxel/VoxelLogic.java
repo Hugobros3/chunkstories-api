@@ -1,8 +1,8 @@
 package io.xol.chunkstories.api.voxel;
 
-import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.exceptions.IllegalBlockModificationException;
-import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
+import io.xol.chunkstories.api.exceptions.world.WorldException;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -22,7 +22,7 @@ public interface VoxelLogic
 	 * 
 	 * @return The modified data to actually place there
 	 */
-	public int onPlace(World world, int x, int y, int z, int voxelData, Entity entity) throws IllegalBlockModificationException;
+	public int onPlace(ChunkVoxelContext context, int voxelData, WorldModificationCause cause) throws WorldException;
 	
 	/**
 	 * Called when a voxel implementing this interface is removed
@@ -31,7 +31,7 @@ public interface VoxelLogic
 	 * 
 	 * @throws IllegalBlockModificationException If we want to prevent it
 	 */
-	public void onRemove(World world, int x, int y, int z, int voxelData, Entity entity) throws IllegalBlockModificationException;
+	public void onRemove(ChunkVoxelContext context, int voxelData, WorldModificationCause cause) throws WorldException;
 	
 	/**
 	 * Called when a voxel implementing this interface is changed ( but the voxel type remains the same )
@@ -43,5 +43,5 @@ public interface VoxelLogic
 	 * 
 	 * @return The modified data to actually place there
 	 */
-	public int onModification(World world, int x, int y, int z, int formerData, int voxelData, Entity entity) throws IllegalBlockModificationException;
+	public int onModification(ChunkVoxelContext context, int voxelData, WorldModificationCause cause) throws WorldException;
 }

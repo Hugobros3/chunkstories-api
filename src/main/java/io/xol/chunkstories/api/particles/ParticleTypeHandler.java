@@ -65,7 +65,7 @@ public abstract class ParticleTypeHandler {
 		/** Helper method for particles to check their collisions efficiently and concisely */
 		public boolean isCollidingAgainst(World world, float x, float y, float z) {
 			
-			VoxelContext peek = world.peek((int)x, (int)y, (int)z);
+			VoxelContext peek = world.peekSafely((int)x, (int)y, (int)z);
 			
 			if (peek.getVoxel().getId() > 0 && peek.getVoxel().getType().isSolid())
 			{

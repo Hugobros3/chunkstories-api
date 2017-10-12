@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.events.voxel;
 
-public interface VoxelModificationCause
+public interface WorldModificationCause
 {
 	public String getName();
 }

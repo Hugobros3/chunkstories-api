@@ -9,6 +9,7 @@ import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
+import io.xol.chunkstories.api.entity.interfaces.EntityWithVelocity;
 import io.xol.chunkstories.api.exceptions.PacketProcessingException;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
@@ -50,10 +51,10 @@ public class PacketVelocityDelta extends PacketSynchPrepared
 		Vector3d delta = new Vector3d(in.readDouble(), in.readDouble(), in.readDouble());
 		
 		EntityControllable entity = ((ClientPacketsProcessor)processor).getContext().getPlayer().getControlledEntity();
-		if(entity != null)
+		if(entity != null && entity instanceof EntityWithVelocity)
 		{
 			System.out.println("Debug: received velocity delta "+delta);
-			entity.getVelocityComponent().addVelocity(delta);
+			((EntityWithVelocity) entity).getVelocityComponent().addVelocity(delta);
 		}
 	}
 

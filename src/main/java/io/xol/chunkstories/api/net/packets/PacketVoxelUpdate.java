@@ -1,14 +1,18 @@
 package io.xol.chunkstories.api.net.packets;
 
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
+import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSynchPrepared;
 import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.voxel.components.VoxelComponent;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 import io.xol.chunkstories.api.net.PacketSender;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Map.Entry;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -19,33 +23,64 @@ import java.io.IOException;
  */
 public class PacketVoxelUpdate extends PacketSynchPrepared
 {
-	public int x, y, z;
-	public int data;
+	public PacketVoxelUpdate() {
+		
+	}
+	
+	public PacketVoxelUpdate(ChunkVoxelContext context) {
+		this.context = context;
+	}
+	
+	private ChunkVoxelContext context;
+	//public int x, y, z;
+	//public int data;
 	
 	@Override
 	public void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
-		out.writeInt(x);
-		out.writeInt(y);
-		out.writeInt(z);
-		out.writeInt(data);
+		out.writeInt(context.getX());
+		out.writeInt(context.getY());
+		out.writeInt(context.getZ());
+		out.writeInt(context.getData());
+		
+		for(Entry<String, VoxelComponent> entry : context.components().all()) {
+			out.writeByte((byte)0x01);
+			out.writeUTF(entry.getKey());
+			entry.getValue().push(destinator, out);
+		}
+		
 		//No further information
 		out.writeByte((byte)0x00);
 	}
 
 	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException
 	{
-		x = in.readInt();
-		y = in.readInt();
-		z = in.readInt();
-		data = in.readInt();
-		byte osef = in.readByte();
-		assert osef == 0x00;
-		
 		if(processor instanceof ClientPacketsProcessor)
 		{
 			ClientPacketsProcessor cpp = (ClientPacketsProcessor)processor;
-			cpp.getWorld().setVoxelData(x, y, z, data);
+			
+			int x = in.readInt();
+			int y = in.readInt();
+			int z = in.readInt();
+			int data = in.readInt();
+			byte osef = in.readByte();
+			
+
+			try {
+				ChunkVoxelContext context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, data, null);
+				
+				while(osef != 0) {
+					String componentName = in.readUTF();
+					context.components().get(componentName).pull(sender, in);
+					osef = in.readByte();
+				}
+	
+			} catch (WorldException e) {
+				
+			}
+		}
+		else {
+			//Fail hard
 		}
 	}
 }

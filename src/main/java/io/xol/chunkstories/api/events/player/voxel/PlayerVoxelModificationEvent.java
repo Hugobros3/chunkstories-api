@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.events.player.voxel;
 
 import io.xol.chunkstories.api.events.EventListeners;
-import io.xol.chunkstories.api.events.voxel.VoxelModificationCause;
+import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.events.voxel.VoxelModificationEvent;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.world.VoxelContext;
@@ -26,7 +26,7 @@ public class PlayerVoxelModificationEvent extends VoxelModificationEvent
 	// Specific event code
 	final Player player;
 	
-	public PlayerVoxelModificationEvent(VoxelContext context, int data, VoxelModificationCause cause, Player player)
+	public PlayerVoxelModificationEvent(VoxelContext context, int data, WorldModificationCause cause, Player player)
 	{
 		super(context, data, cause);
 		this.player = player;

@@ -281,7 +281,7 @@ public class VoxelItemRenderer extends ItemRenderer
 			context.getLightsRenderer().queueLight(heldBlockLight);	
 			
 			//If we hold a light source, prepare the shader accordingly
-			context.currentShader().setUniform2f("worldLightIn", ((ItemVoxel) pile.getItem()).getVoxel().getLightLevel(0x00), world.getSunlightLevelLocation(location));
+			context.currentShader().setUniform2f("worldLightIn", ((ItemVoxel) pile.getItem()).getVoxel().getLightLevel(0x00), world.peekSafely(location).getSunlight());
 		}
 		
 		Texture2D texture = content.voxels().textures().getDiffuseAtlasTexture();
@@ -400,7 +400,7 @@ public class VoxelItemRenderer extends ItemRenderer
 			voxelRenderer.renderInto(chunkRenderer, bakingContext, new DummyChunk() {
 				
 				@Override
-				public int getVoxelData(int x, int y, int z)
+				public int peekSimple(int x, int y, int z)
 				{
 					if(x == 0 && y == 0 && z == 0)
 						return bri.getData();

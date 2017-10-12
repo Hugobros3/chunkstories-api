@@ -6,6 +6,8 @@ import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
+import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.particles.ParticlesManager;
 import io.xol.chunkstories.api.physics.CollisionBox;
@@ -104,92 +106,67 @@ public interface World
 	}
 
 	/* Direct voxel data accessors */
-	
-	/**
-	 * Returns the block data at the specified location
-	 * @return The raw block data, see {@link VoxelFormat}
-	 */
-	public int getVoxelData(Vector3dc location);
 
-	/**
-	 * Returns the block data at the specified location
-	 * @return The raw block data, see {@link VoxelFormat}
-	 */
-	public int getVoxelData(int x, int y, int z);
-
-	public interface WorldVoxelContext extends VoxelContext {
+	public interface WorldVoxelContext extends EditableVoxelContext {
 		public World getWorld();
 		
 		public Location getLocation();
 	}
 	
-	public WorldVoxelContext peek(Vector3dc location);
-	
-	public WorldVoxelContext peek(int x, int y, int z);
-	
 	/**
-	 * Sets the block data at the specified location
-	 * @param data The new data to set the block to, see {@link VoxelFormat}
+	 * Get the data contained in this cell as full 32-bit data format ( see {@link VoxelFormat})
+	 * @return the data contained in this chunk as full 32-bit data format ( see {@link VoxelFormat})
+	 * @throws WorldException if it couldn't peek the world at the specified location for some reason
 	 */
-	public void setVoxelData(int x, int y, int z, int data);
-
-	/**
-	 * Sets the block data at the specified location
-	 * @param data The new data to set the block to, see {@link VoxelFormat}
-	 */
-	public void setVoxelData(Location location, int data);
+	public WorldVoxelContext peek(int x, int y, int z) throws WorldException;
+	
+	/** Convenient overload of peek() to take a Vector3dc derivative ( ie: a Location object ) */
+	public WorldVoxelContext peek(Vector3dc location) throws WorldException;
 	
 	/**
-	 * Method to call when it's an entity that do the action to set the voxel data
-	 * @param data The new data to set the block to, see {@link VoxelFormat}
+	 * Safely calls peek() and returns a WorldVoxelContext no matter what.
+	 * Zeroes-out if the normal peek() would have failed.
 	 */
-	public void setVoxelData(Location location, int data, Entity entity);
+	public WorldVoxelContext peekSafely(int x, int y, int z);
+	
+	/** Convenient overload of peekSafely() to take a Vector3dc derivative ( ie: a Location object ) */
+	public WorldVoxelContext peekSafely(Vector3dc location);
+	
+	/** 
+	 * Alternative to peek() that does not create any VoxelContext object<br/>
+	 * <b>Does not throw exceptions</b>, instead safely returns zero upon failure.
+	 * */
+	public int peekSimple(int x, int y, int z);
 
 	/**
-	 * Method to call when it's an entity that do the action to set the voxel data
-	 * @param data The new data to set the block to, see {@link VoxelFormat}
+	 * Sets the data for this block
+	 * Takes a full 32-bit data format ( see {@link VoxelFormat})
+	 * It will also trigger lightning and such updates
+	 * @param data The raw block data, see {@link VoxelFormat}
+	 * @throws WorldException if it couldn't poke the world at the specified location for some reason
 	 */
-	public void setVoxelData(int x, int y, int z, int data, Entity entity);
+	public WorldVoxelContext poke(int x, int y, int z, int newVoxelData, WorldModificationCause cause) throws WorldException;
+	
+	/** 
+	 * Does the same as {@link #poke(x,y,z,d)} but does not trigger any updates.
+	 */
+	public WorldVoxelContext pokeSilently(int x, int y, int z, int newVoxelData) throws WorldException;
 
-	/**
-	 * Only sets the data, don't trigger any logic
+	/** 
+	 * Does the same as {@link #poke(x,y,z,d)} but without creating any VoxelContext object<br/>
+	 * <b>Does not throw exceptions</b>, instead fails silently.
+	 * <b>Does not take a cause argument.</b>, instead use the slower poke() method
 	 */
-	public void setVoxelDataWithoutUpdates(int x, int y, int z, int data);
+	public void pokeSimple(int x, int y, int z, int newVoxelData);
+	
+	/** 
+	 * Does the same as {@link #poke(x,y,z,d)} but without creating any VoxelContext object or triggering any updates<br/>
+	 * <b>Does not throw exceptions</b>, instead fails silently.
+	 */
+	public void pokeSimpleSilently(int x, int y, int z, int newVoxelData);
 
 	public IterableIterator<VoxelContext> getVoxelsWithin(CollisionBox boundingBox);
-	
-	/* Voxel lightning helper functions */
-	
-	/**
-	 * @deprecated Use peek().
-	 * @return The sun light level of the block per {@link VoxelFormat} ( 0-15 ) using either getVoxelDataAt if the chunk is loaded or
-	 * the heightmap ( y <= heightmapLevel(x, z) ? 0 : 15 )
-	 */
-	@Deprecated
-	public int getSunlightLevelWorldCoordinates(int x, int y, int z);
-	
-	/**
-	 * @deprecated Use peek().
-	 * @return The sun light level of the block per {@link VoxelFormat} ( 0-15 ) using either getVoxelDataAt if the chunk is loaded or
-	 * the heightmap ( y <= heightmapLevel(x, z) ? 0 : 15 )
-	 */
-	@Deprecated
-	public int getSunlightLevelLocation(Location location);
-	
-	/**
-	 * @deprecated Use peek().
-	 * @return Returns the block light level of the block per {@link VoxelFormat} ( 0-15 ) using getVoxelDataAt ( if the chunk isn't loaded it will return a zero. )
-	 */
-	@Deprecated
-	public int getBlocklightLevelWorldCoordinates(int x, int y, int z);
 
-	/**
-	 * @deprecated Use peek().
-	 * @return Returns the block light level of the block per {@link VoxelFormat} ( 0-15 ) using getVoxelDataAt ( if the chunk isn't loaded it will return a zero. )
-	 */
-	@Deprecated
-	public int getBlocklightLevelLocation(Location location);
-	
 	/* Chunks */
 	
 	/**

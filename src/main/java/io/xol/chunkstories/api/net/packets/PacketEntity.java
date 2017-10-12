@@ -47,7 +47,7 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 	{
 		//If the entity no longer exists, we make sure we tell the player so he doesn't spawn it again
 		if(!entityToUpdate.exists())
-			entityToUpdate.getComponentExistence().pushComponentInStream(destinator, this.getSynchPacketOutputStream());
+			entityToUpdate.getComponents().pushComponentInStream(destinator, this.getSynchPacketOutputStream());
 		
 		//Write a 0 to mark the end of the components updates
 		this.getSynchPacketOutputStream().writeInt(0);
@@ -61,18 +61,12 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 		entityUUID = in.readLong();
 		entityTypeID = in.readShort();
 		
-		//System.out.println("PacketEntity");
-		
 		if(entityTypeID == -1)
 			return;
-		
-		//System.out.println("entityTypeID"+entityTypeID);
 		
 		World world = processor.getWorld();
 		if(world == null)
 			return;
-		
-		//System.out.println("world"+world);
 		
 		Entity entity = world.getEntityByUUID(this.entityUUID);
 		
@@ -86,7 +80,7 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 					entities().
 					getEntityTypeById(entityTypeID).
 					create(processor.getWorld());
-					//Entities.newEntity(processor.getWorld(), this.entityTypeID);
+			
 			entity.setUUID(entityUUID);
 			
 			addToWorld = true;
@@ -96,16 +90,12 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 		//Loop throught all components
 		while(componentId != 0)
 		{
-			//if(processor.getWorld() instanceof WorldClient)
-			//	System.out.println("OKKKKKKKKKKKKKK cId"+componentId);
-			
 			try {
 				entity.getComponents().tryPullComponentInStream(componentId, sender, in);
 			}
 			catch(UnknownComponentException e) {
 				
 				processor.getContext().logger().log(e.getMessage(), LogType.INTERNAL, LogLevel.WARN);
-				//ChunkStoriesLogger.getInstance().log(e.getMessage(), LogType.INTERNAL, LogLevel.WARN);
 			}
 			componentId = in.readInt();
 		}

@@ -10,9 +10,8 @@ import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
-import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
-import io.xol.chunkstories.api.world.chunk.Region;
+import io.xol.chunkstories.api.world.chunk.Chunk;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -20,18 +19,20 @@ import io.xol.chunkstories.api.world.chunk.Region;
 
 public class EntityComponentPosition extends EntityComponent
 {
-	public EntityComponentPosition(Entity entity, EntityComponent next)
+	public EntityComponentPosition(Entity entity, Location location)
 	{
-		super(entity, next);
+		super(entity);
+		this.pos = location;
 	}
 
 	//private SafeWriteLock safetyLock = new SafeWriteLock();
-	private Location pos = new Location(entity.getWorld(), 0, 0, 0);
-	private Region regionWithin;
+	private Location pos;// = new Location(entity.getWorld(), 0, 0, 0);
+	private Chunk chunkWithin;
 	
 	public void setLocation(Location location)
 	{	
 		assert location != null;
+		assert location.getWorld() == pos.getWorld();
 		
 		this.pos = location;
 
@@ -68,13 +69,6 @@ public class EntityComponentPosition extends EntityComponent
 		//Same logic as above, refactoring should be done for clarity tho
 		this.pushComponentEveryone();
 	}
-	
-	public void setWorld(World world)
-	{
-		this.pos.setWorld(world);
-
-		checkPositionAndUpdateHolder();
-	}
 
 	public Location getLocation()
 	{
@@ -84,9 +78,9 @@ public class EntityComponentPosition extends EntityComponent
 		return new Location(pos.getWorld(), pos);
 	}
 	
-	public Region getRegionWithin()
+	public Chunk getChunkWithin()
 	{
-		return regionWithin;
+		return chunkWithin;
 	}
 
 	@Override
@@ -114,7 +108,7 @@ public class EntityComponentPosition extends EntityComponent
 			pushComponentEveryoneButController();
 	}
 	
-	public void trySnappingToRegion()
+	public void trySnappingToChunk()
 	{
 		checkPositionAndUpdateHolder();
 	}
@@ -124,19 +118,32 @@ public class EntityComponentPosition extends EntityComponent
 	 */
 	protected final boolean checkPositionAndUpdateHolder()
 	{
-		pos.x = (pos.x() % entity.getWorld().getWorldSize());
-		pos.z = (pos.z() % entity.getWorld().getWorldSize());
+		double worldSize = entity.getWorld().getWorldSize();
+		
+		pos.x = pos.x() % worldSize;
+		pos.z = pos.z() % worldSize;
+		
+		// Loop arround the world
 		if (pos.x() < 0)
-			pos.x = (pos.x() + entity.getWorld().getWorldSize());
+			pos.x = pos.x() + worldSize;
+		else if(pos.x() > worldSize)
+			pos.x = pos.x() % worldSize;
+		
 		if (pos.z() < 0)
-			pos.z = (pos.z() + entity.getWorld().getWorldSize());
-		int regionX = (int) (pos.x() / (32 * 8));
-		int regionY = (int) (pos.y() / (32 * 8));
-		if (regionY < 0)
-			regionY = 0;
-		if (regionY > entity.getWorld().getMaxHeight() / (32 * 8))
-			regionY = entity.getWorld().getMaxHeight() / (32 * 8);
-		int regionZ = (int) (pos.z() / (32 * 8));
+			pos.z = pos.z() + worldSize;
+		else if(pos.z() > worldSize)
+			pos.z = pos.z() % worldSize;
+		
+		// Get local chunk co-ordinate
+		int chunkX = (int) (pos.x() / (32));
+		int chunkY = (int) (pos.y() / (32));
+		int chunkZ = (int) (pos.z() / (32));
+		
+		// Bound the entity to exist within the confines of the world
+		if (chunkY < 0)
+			chunkY = 0;
+		if (chunkY > entity.getWorld().getMaxHeight() / (32))
+			chunkY = entity.getWorld().getMaxHeight() / (32);
 		
 		//Don't touch updates once the entity was removed
 		if(!entity.exists())
@@ -146,19 +153,19 @@ public class EntityComponentPosition extends EntityComponent
 		if(!entity.hasSpawned())
 			return false;
 		
-		if (regionWithin != null && regionWithin.getRegionX() == regionX && regionWithin.getRegionY() == regionY && regionWithin.getRegionZ() == regionZ)
+		if (chunkWithin != null && chunkWithin.getChunkX() == chunkX && chunkWithin.getChunkY() == chunkY && chunkWithin.getChunkZ() == chunkZ)
 		{
 			return false; // Nothing to do !
 		}
 		else
 		{
-			if(regionWithin != null)
-				regionWithin.removeEntityFromRegion(entity);
+			if(chunkWithin != null)
+				chunkWithin.removeEntity(entity);
 		
-			regionWithin = entity.getWorld().getRegionChunkCoordinates(regionX * 8, regionY * 8, regionZ * 8);
+			chunkWithin = entity.getWorld().getChunk(chunkX, chunkY, chunkZ);
 			//When the region is loaded, add this entity to it.
-			if(regionWithin != null)// && regionWithin.isDiskDataLoaded())
-				regionWithin.addEntityToRegion(entity);
+			if(chunkWithin != null)// && regionWithin.isDiskDataLoaded())
+				chunkWithin.addEntity(entity);
 			
 			return true;
 		}

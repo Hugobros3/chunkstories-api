@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.entity.interfaces;
 
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.components.EntityComponentCreativeMode;
-import io.xol.chunkstories.api.events.voxel.VoxelModificationCause;
+import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -22,7 +22,7 @@ public interface EntityCreative extends Entity
 		getCreativeModeComponent().set(creativeMode);
 	}
 
-	public static final VoxelModificationCause CREATIVE_MODE = new VoxelModificationCause() {
+	public static final WorldModificationCause CREATIVE_MODE = new WorldModificationCause() {
 
 		@Override
 		public String getName()

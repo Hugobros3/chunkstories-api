@@ -11,8 +11,10 @@ import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
 import io.xol.chunkstories.api.entity.interfaces.EntityCreative;
+import io.xol.chunkstories.api.entity.interfaces.EntityWorldModifier;
 import io.xol.chunkstories.api.events.player.voxel.PlayerVoxelModificationEvent;
-import io.xol.chunkstories.api.events.voxel.VoxelModificationCause;
+import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
+import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.item.renderer.ItemRenderer;
@@ -30,7 +32,7 @@ import io.xol.chunkstories.api.world.WorldMaster;
 /**
  * An item that contains voxels
  */
-public class ItemVoxel extends Item implements VoxelModificationCause
+public class ItemVoxel extends Item implements WorldModificationCause
 {
 	private final Content.Voxels store;
 	
@@ -82,60 +84,78 @@ public class ItemVoxel extends Item implements VoxelModificationCause
 	@Override
 	public boolean onControllerInput(Entity entity, ItemPile pile, Input input, Controller controller)
 	{
-		if (entity.getWorld() instanceof WorldMaster && input.getName().equals("mouse.right"))
-		{
-			EntityControllable playerEntity = (EntityControllable) entity;
-			int voxelID = voxel.getId();
-			
-			boolean isEntityCreativeMode = (entity instanceof EntityCreative) && (((EntityCreative) entity).isCreativeMode());
-
-			Location blockLocation = null;
-			blockLocation = playerEntity.getBlockLookingAt(false);
-			int data2write = VoxelFormat.format(voxelID, voxelMeta, 0, 0);
-			
-			if (blockLocation != null)
+		try {
+			if (entity.getWorld() instanceof WorldMaster && input.getName().equals("mouse.right"))
 			{
-				//int selectedBlockPreviousData = user.getWorld().getDataAt(selectedBlock);
-				//Adding blocks should not erase light if the block's not opaque
-				if (store.getVoxelById(data2write).getType().isOpaque())
+				//Require entities to be of the right kind
+				if(!(entity instanceof EntityWorldModifier))
+					return true;
+				
+				if(!(entity instanceof EntityControllable))
+					return true;
+				
+				EntityWorldModifier modifierEntity = (EntityWorldModifier) entity;
+				EntityControllable playerEntity = (EntityControllable) entity;
+				int voxelID = voxel.getId();
+				
+				boolean isEntityCreativeMode = (entity instanceof EntityCreative) && (((EntityCreative) entity).isCreativeMode());
+	
+				Location blockLocation = null;
+				blockLocation = playerEntity.getBlockLookingAt(false);
+				int data2write = VoxelFormat.format(voxelID, voxelMeta, 0, 0);
+				
+				if (blockLocation != null)
 				{
-					data2write = VoxelFormat.changeSunlight(data2write, 0);
-					data2write = VoxelFormat.changeBlocklight(data2write, 0);
+					//int selectedBlockPreviousData = user.getWorld().getDataAt(selectedBlock);
+					//Adding blocks should not erase light if the block's not opaque
+					if (store.getVoxelById(data2write).getType().isOpaque())
+					{
+						data2write = VoxelFormat.changeSunlight(data2write, 0);
+						data2write = VoxelFormat.changeBlocklight(data2write, 0);
+					}
+					
+					//Glowy stuff should glow
+					if(store.getVoxelById(data2write).getLightLevel(data2write) > 0)
+						data2write = VoxelFormat.changeBlocklight(data2write, store.getVoxelById(data2write).getLightLevel(data2write));
+						
+					// Player events mod
+					if(controller instanceof Player) {
+						Player player = (Player)controller;
+						VoxelContext ctx = entity.getWorld().peek(blockLocation);
+						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, data2write, isEntityCreativeMode ? EntityCreative.CREATIVE_MODE : this, player);
+						
+						//Anyone has objections ?
+						entity.getWorld().getGameContext().getPluginManager().fireEvent(event);
+						
+						if(event.isCancelled())
+							return true;
+					}
+					
+					entity.getWorld().poke((int)blockLocation.x, (int)blockLocation.y, (int)blockLocation.z, data2write, modifierEntity);
+					
+					//entity.getWorld().setVoxelData(blockLocation, data2write, entity);
+					
+					// Decrease stack size
+					if(!isEntityCreativeMode) {
+						int currentAmount = pile.getAmount();
+						currentAmount--;
+						pile.setAmount(currentAmount);
+					}
 				}
-				
-				//Glowy stuff should glow
-				if(store.getVoxelById(data2write).getLightLevel(data2write) > 0)
-					data2write = VoxelFormat.changeBlocklight(data2write, store.getVoxelById(data2write).getLightLevel(data2write));
-					
-				// Player events mod
-				if(controller instanceof Player) {
-					Player player = (Player)controller;
-					VoxelContext ctx = entity.getWorld().peek(blockLocation);
-					PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, data2write, isEntityCreativeMode ? EntityCreative.CREATIVE_MODE : this, player);
-					
-					//Anyone has objections ?
-					entity.getWorld().getGameContext().getPluginManager().fireEvent(event);
-					
-					if(event.isCancelled())
-						return true;
-				}
-				
-				entity.getWorld().setVoxelData(blockLocation, data2write, entity);
-				
-				// Decrease stack size
-				if(!isEntityCreativeMode) {
-					int currentAmount = pile.getAmount();
-					currentAmount--;
-					pile.setAmount(currentAmount);
+				else
+				{
+					//No space found :/
+					return true;
 				}
 			}
-			else
-			{
-				//No space found :/
-				return true;
-			}
+			
 		}
+		catch(WorldException e) {
+			
+		}
+		
 		return false;
+
 	}
 
 	@Override
