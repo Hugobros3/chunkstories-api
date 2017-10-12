@@ -11,7 +11,6 @@ import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
 import io.xol.chunkstories.api.entity.components.EntityComponentExistence;
 import io.xol.chunkstories.api.entity.components.EntityComponentPosition;
-import io.xol.chunkstories.api.entity.components.EntityComponentVoxelPosition;
 import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.exceptions.IllegalUUIDChangeException;
 import io.xol.chunkstories.api.input.Input;
