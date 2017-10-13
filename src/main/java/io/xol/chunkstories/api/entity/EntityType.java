@@ -1,8 +1,8 @@
 package io.xol.chunkstories.api.entity;
 
 import io.xol.chunkstories.api.Content.EntityTypes;
+import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.content.NamedWithProperties;
-import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -14,7 +14,7 @@ public interface EntityType extends NamedWithProperties
 	
 	public short getId();
 	
-	public Entity create(World world);
+	public Entity create(Location location);
 	
 	public EntityTypes store();
 }

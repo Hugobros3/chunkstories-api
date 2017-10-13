@@ -1,5 +1,6 @@
 package io.xol.chunkstories.api.net.packets;
 
+import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.exceptions.UnknownComponentException;
@@ -71,6 +72,8 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 		Entity entity = world.getEntityByUUID(this.entityUUID);
 		
 		boolean addToWorld = false;
+		
+		//TODO this should be done explicitely by dedicated packet/packet flags
 		//Create an entity if the servers tells you to do so
 		if(entity == null)
 		{
@@ -79,7 +82,7 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 					getContent().
 					entities().
 					getEntityTypeById(entityTypeID).
-					create(processor.getWorld());
+					create(new Location(world, 0, 0, 0)); // This is technically wrong
 			
 			entity.setUUID(entityUUID);
 			
@@ -100,6 +103,7 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 			componentId = in.readInt();
 		}
 		
+		//Add to world if it was missing and we didn't receive the despawn flag
 		if(addToWorld && entity.exists())
 		{
 			//Only the WorldMaster is allowed to spawn new entities in the world
