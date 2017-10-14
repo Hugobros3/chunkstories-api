@@ -2,7 +2,6 @@ package io.xol.chunkstories.api.voxel;
 
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
-import io.xol.chunkstories.api.world.World.WorldVoxelContext;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 
 //(c) 2015-2017 XolioWare Interactive

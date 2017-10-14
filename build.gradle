@@ -18,6 +18,27 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	useEclipseCompiler = true
+}
+
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url 'https://jitpack.io' }
+	}
+
+	dependencies {
+		classpath 'com.github.johni0702:gradle-ecj-plugin:master-SNAPSHOT'
+	}
+}
+
+if(ext.useEclipseCompiler) {
+	apply plugin: 'de.johni0702.ecj'
+	
+	println "Using ECJ compiler"
+}
+
 compileJava {
 	options.encoding = 'UTF-8'
 

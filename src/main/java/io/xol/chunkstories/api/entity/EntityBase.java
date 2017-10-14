@@ -20,7 +20,6 @@ import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
-import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
@@ -56,11 +55,6 @@ public abstract class EntityBase implements Entity
 	{
 		return this.existenceComponent;
 	}
-
-	/*public EntityComponentPosition getEntityComponentPosition()
-	{
-		return positionComponent;
-	}*/
 
 	@Override
 	public Location getLocation()
@@ -272,7 +266,6 @@ public abstract class EntityBase implements Entity
 			{
 				return this;
 			}};
-		
 	}
 
 	@Override
