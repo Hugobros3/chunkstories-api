@@ -2,6 +2,7 @@ package io.xol.chunkstories.api;
 
 import io.xol.chunkstories.api.plugin.PluginManager;
 import io.xol.chunkstories.api.util.ChunkStoriesLogger;
+import io.xol.chunkstories.api.workers.Tasks;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -13,6 +14,9 @@ public interface GameContext
 
 	/** Accesses the pluginManager */
 	public PluginManager getPluginManager();
+	
+	/** Returns an interface to schedule work on */
+	public Tasks tasks();
 	
 	/** Prints some text, usefull for debug purposes */
 	public void print(String message);

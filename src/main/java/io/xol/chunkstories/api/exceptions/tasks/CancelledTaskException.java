@@ -17,5 +17,4 @@ public class CancelledTaskException extends RuntimeException {
 	}
 
 	private static final long serialVersionUID = 5157397465657644674L;
-
 }
