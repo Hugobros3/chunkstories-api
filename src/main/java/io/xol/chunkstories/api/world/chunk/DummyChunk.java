@@ -50,22 +50,6 @@ public class DummyChunk implements Chunk
 	}
 
 	@Override
-	public void computeVoxelLightning(boolean considerAdjacentChunks)
-	{
-	}
-
-	@Override
-	public boolean needsLightningUpdates()
-	{
-		return false;
-	}
-
-	@Override
-	public void markInNeedForLightningUpdate()
-	{
-	}
-
-	@Override
 	public boolean isAirChunk()
 	{
 		return true;
@@ -155,5 +139,11 @@ public class DummyChunk implements Chunk
 	@Override
 	public void removeEntity(Entity entity) {
 		throw new UnsupportedOperationException("removeEntity()");
+	}
+
+	@Override
+	public ChunkLightUpdater lightBaker() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
