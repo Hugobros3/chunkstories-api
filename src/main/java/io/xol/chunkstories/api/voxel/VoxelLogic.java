@@ -31,7 +31,7 @@ public interface VoxelLogic
 	 * 
 	 * @throws IllegalBlockModificationException If we want to prevent it
 	 */
-	public void onRemove(ChunkVoxelContext context, int voxelData, WorldModificationCause cause) throws WorldException;
+	public void onRemove(ChunkVoxelContext context, WorldModificationCause cause) throws WorldException;
 	
 	/**
 	 * Called when a voxel implementing this interface is changed ( but the voxel type remains the same )

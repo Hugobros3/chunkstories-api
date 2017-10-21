@@ -19,7 +19,7 @@ public interface WorldRenderer
 	public void renderWorld(RenderingInterface renderingInterface);
 	
 	/** Blits that buffer back */
-	public void blitFinalImage(RenderingInterface renderingInterface);
+	public void blitFinalImage(RenderingInterface renderingInterface, boolean hideGui);
 
 	/** Tells the chunks renderer to rebuilt it's PVS set */
 	public void flagChunksModified();
