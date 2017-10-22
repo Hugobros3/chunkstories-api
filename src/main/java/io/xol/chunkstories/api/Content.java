@@ -17,6 +17,7 @@ import io.xol.chunkstories.api.particles.ParticleTypeHandler;
 import io.xol.chunkstories.api.util.ChunkStoriesLogger;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.models.VoxelModel;
+import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.generator.WorldGenerator;
@@ -79,6 +80,8 @@ public interface Content
 
 			public Voxels parent();
 		}
+		
+		public VoxelRenderer getDefaultVoxelRenderer();
 	}
 	
 	public ItemsTypes items();

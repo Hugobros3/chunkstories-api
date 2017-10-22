@@ -21,10 +21,19 @@ public class Voxel
 	final protected VoxelType type;
 	final protected Content.Voxels store;
 	
+	protected VoxelRenderer voxelRenderer;
+	
 	public Voxel(VoxelType type)
 	{
 		this.type = type;
 		this.store = type.store();
+
+		//By default the 'VoxelRenderer' is just wether or not we set-up a model in the .voxels definitions file
+		if(type.getVoxelModel() != null)
+			this.voxelRenderer = type.getVoxelModel();
+		//No custom model defined ? Use the default renderer.
+		else
+			this.voxelRenderer = type.store().getDefaultVoxelRenderer();
 	}
 	
 	/** Contains the information parsed from the .voxels file */
@@ -48,8 +57,7 @@ public class Voxel
 
 	/** @return The custom rendered used or null if default */
 	public VoxelRenderer getVoxelRenderer(VoxelContext info) {
-		//By default the 'VoxelRenderer' is just wether or not we set-up a model in the .voxels definitions file
-		return type.getVoxelModel();
+		return voxelRenderer;
 	}
 	
 	/** Can this Voxel be selected in creative mode ? (or is it skipped ?) */
