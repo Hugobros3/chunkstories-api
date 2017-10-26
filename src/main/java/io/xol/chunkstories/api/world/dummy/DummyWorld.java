@@ -20,6 +20,7 @@ import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldCollisionsManager;
 import io.xol.chunkstories.api.world.WorldInfo;
 import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 import io.xol.chunkstories.api.world.chunk.ChunkHolder;
 import io.xol.chunkstories.api.world.chunk.ChunksIterator;
 import io.xol.chunkstories.api.world.chunk.Region;
@@ -103,13 +104,13 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public WorldVoxelContext peek(int x, int y, int z) throws WorldException {
+	public ChunkVoxelContext peek(int x, int y, int z) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public WorldVoxelContext peek(Vector3dc location) throws WorldException {
+	public ChunkVoxelContext peek(Vector3dc location) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -17,6 +17,7 @@ import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 import io.xol.chunkstories.api.world.chunk.ChunkHolder;
 import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.generator.WorldGenerator;
@@ -118,10 +119,10 @@ public interface World
 	 * @return the data contained in this chunk as full 32-bit data format ( see {@link VoxelFormat})
 	 * @throws WorldException if it couldn't peek the world at the specified location for some reason
 	 */
-	public WorldVoxelContext peek(int x, int y, int z) throws WorldException;
+	public ChunkVoxelContext peek(int x, int y, int z) throws WorldException;
 	
 	/** Convenient overload of peek() to take a Vector3dc derivative ( ie: a Location object ) */
-	public WorldVoxelContext peek(Vector3dc location) throws WorldException;
+	public ChunkVoxelContext peek(Vector3dc location) throws WorldException;
 	
 	/**
 	 * Safely calls peek() and returns a WorldVoxelContext no matter what.

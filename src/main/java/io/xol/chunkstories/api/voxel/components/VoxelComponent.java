@@ -19,6 +19,10 @@ public abstract class VoxelComponent {
 		return holder;
 	}
 	
+	public final String name() {
+		return holder.name(this);
+	}
+	
 	/** Pushes the component to every client subscribed to the chunk owning this voxel */
 	public void pushComponentEveryone() {
 		throw new UnsupportedOperationException("pushComponentEveryone()");

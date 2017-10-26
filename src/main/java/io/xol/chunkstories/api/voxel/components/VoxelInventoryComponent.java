@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import io.xol.chunkstories.api.item.inventory.BasicInventory;
+import io.xol.chunkstories.api.item.inventory.InventoryHolder;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
 
@@ -12,13 +13,20 @@ import io.xol.chunkstories.api.serialization.StreamTarget;
 //http://chunkstories.xyz
 //http://xol.io
 
-public class VoxelInventoryComponent extends VoxelComponent {
+public class VoxelInventoryComponent extends VoxelComponent implements InventoryHolder {
 
 	private BasicInventory inventory;
 	
-	public VoxelInventoryComponent(VoxelComponents holder, BasicInventory inventory) {
+	public VoxelInventoryComponent(VoxelComponents holder,  int width, int height) {
 		super(holder);
-		this.inventory = inventory;
+		this.inventory = new BasicInventory(width, height) {
+
+			@Override
+			public InventoryHolder getHolder() {
+				return VoxelInventoryComponent.this;
+			}
+			
+		};
 	}
 
 	@Override
