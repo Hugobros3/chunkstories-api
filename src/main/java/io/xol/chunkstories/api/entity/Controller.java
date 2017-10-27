@@ -23,8 +23,6 @@ public interface Controller extends Subscriber, WorldUser
 	
 	public boolean setControlledEntity(EntityControllable entityControllable);
 	
-	public void updateUsedWorldBits();
-	
 	public SoundManager getSoundManager();
 
 	public ParticlesManager getParticlesManager();

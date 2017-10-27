@@ -4,7 +4,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import io.xol.chunkstories.api.world.WorldMaster;
+import io.xol.chunkstories.api.world.World;
+
+//(c) 2015-2017 XolioWare Interactive
+//http://chunkstories.xyz
+//http://xol.io
 
 /** Used for async world streaming */
 public abstract class PacketWorldStreaming extends Packet {
@@ -22,7 +26,7 @@ public abstract class PacketWorldStreaming extends Packet {
 		
 	}
 	
-	public PacketWorldStreaming(WorldMaster world)
+	public PacketWorldStreaming(World world)
 	{
 		worldID = UNUSED;
 	}
