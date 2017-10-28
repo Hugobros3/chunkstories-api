@@ -8,7 +8,7 @@ import io.xol.chunkstories.api.rendering.GameWindow;
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface PlayerClient extends Player
+public interface LocalPlayer extends Player
 {
 	/** Returns the client playing */
 	public ClientInterface getClient();
