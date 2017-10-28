@@ -10,7 +10,7 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
 import io.xol.chunkstories.api.exceptions.UnauthorizedClientActionException;
 import io.xol.chunkstories.api.player.Player;
-import io.xol.chunkstories.api.player.PlayerClient;
+import io.xol.chunkstories.api.player.LocalPlayer;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
 import io.xol.chunkstories.api.world.WorldClientNetworkedRemote;
@@ -76,7 +76,7 @@ public class EntityComponentController extends EntityComponent
 			return;
 		}
 		
-		PlayerClient player = ((ClientInterface)entity.getWorld().getGameContext()).getPlayer();
+		LocalPlayer player = ((ClientInterface)entity.getWorld().getGameContext()).getPlayer();
 		assert player != null;
 		
 		if (isControllerNotNull)

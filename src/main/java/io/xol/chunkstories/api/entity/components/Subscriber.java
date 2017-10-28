@@ -36,11 +36,4 @@ public interface Subscriber extends StreamTarget
 	public void pushPacket(Packet packet);
 
 	public boolean isSubscribedTo(Entity entity);
-	
-	/*public boolean equals(Object o)
-	{
-		if(o instanceof Subscriber)
-			return ((Subscriber)o).getUUID() == getUUID();
-		return false;
-	}*/
 }

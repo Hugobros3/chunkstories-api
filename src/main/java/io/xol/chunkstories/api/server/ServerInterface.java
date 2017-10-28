@@ -20,13 +20,10 @@ public interface ServerInterface extends GameContext
 	
 	public UserPrivileges getUserPrivileges();
 	
-	/** Returns players <b>logged in</b> */
-	public ConnectedPlayers getConnectedPlayers();
+	/** @return The players that are <b>logged in</b> */
+	public IterableIterator<Player> getConnectedPlayers();
 	
-	interface ConnectedPlayers extends IterableIterator<Player> {
-		/** Returns how many players are connected, might change over time, this number is unrelated to the iterator state */
-		public int count();
-	}
+	public int getConnectedPlayersCount();
 
 	public Player getPlayerByName(String string);
 	

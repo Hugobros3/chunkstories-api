@@ -15,63 +15,42 @@ import io.xol.chunkstories.api.world.World;
 //http://chunkstories.xyz
 //http://xol.io
 
-/**
- * This interface is a player connected to a server, viewed from that server.
- */
+/** Represents a player (Remote or Local) as the once calling shots */
 public interface Player extends CommandEmitter, Controller, Subscriber, PacketDestinator, PacketSender
 {
-	/**
-	 * Returns the username of the player
-	 * @return
-	 */
-	@Override
+	/** @return the username of the player */
 	public String getName();
 
-	/**
-	 * Returns the displayable name of the player (including things like tags, color etc)
-	 * @return
-	 */
+	/** @return the displayable name of the player (including things like tags, color etc) */
 	public String getDisplayName();
 	
-	/**
-	 * Returns the entity this player is controlling
-	 * @return
-	 */
-	public EntityControllable getControlledEntity();
-	
-	/**
-	 * Sets the entity this player has control over (and tells him)
-	 * @return 
-	 */
-	public boolean setControlledEntity(EntityControllable entity);
-	/**
-	 * Sends a text message to this player chat
-	 * @param msg
-	 */
-	@Override
-	public void sendMessage(String msg);
-	
-	/**
-	 * Gets the location of the user
-	 * @return a {@link Location} object
-	 */
-	public Location getLocation();
-	
-	/**
-	 * Sets the location of the user
-	 * @param l a {@link Location} object
-	 */
-	public void setLocation(Location l);
-	
-	public boolean isConnected();
-
-	public boolean hasSpawned();
-
-	public void updateTrackedEntities();
-
-	public GameContext getContext();
-	
+	/** @return The {@link World} the entity belongs to. */
 	public World getWorld();
 
+	/** @return The {@link GameContext context} the world, and thus the entity belongs to. */
+	public GameContext getContext();
+	
+	/** @return the entity this player is controlling */
+	public EntityControllable getControlledEntity();
+	
+	/** Sets the entity this player has control over (and tells him) */
+	public boolean setControlledEntity(EntityControllable entity);
+	
+	/** Sends a text message to this player chat */
+	public void sendMessage(String msg);
+	
+	/** @return The {@link Location} of this player in his world */
+	public Location getLocation();
+	
+	/** Sets the {@link Location} of the user. Warning, can't change the world he's in with this method ! */
+	public void setLocation(Location l);
+	
+	/** @return True once the player connection was interrupted */
+	public boolean isConnected();
+
+	/** @return True once the player has been spawned inside it's {@link World}. */
+	public boolean hasSpawned();
+	
+	/** Helper method: Tries to open the specified inventory for the following player */
 	public void openInventory(Inventory inventory);
 }

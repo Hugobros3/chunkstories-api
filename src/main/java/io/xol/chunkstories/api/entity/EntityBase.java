@@ -144,6 +144,11 @@ public abstract class EntityBase implements Entity
 		return world.collisionsManager().runEntityAgainstWorldVoxels(this, this.getLocation(), delta);
 	}
 
+	@Override
+	public Vector3dc canMoveWithCollisionRestrain(double dx, double dy, double dz) {
+		return canMoveWithCollisionRestrain(new Vector3d(dx, dy, dz));
+	}
+
 	/**
 	 * Does the hitboxes computations to determine if that entity could move that delta
 	 * @param from Change the origin of the movement from the default ( current entity position )
@@ -268,7 +273,7 @@ public abstract class EntityBase implements Entity
 			}};
 	}
 
-	@Override
+	/** Internal method called by a subscriber ( like a {@link Player} ... ) when he subscribe() to this entity */
 	public final boolean subscribe(Subscriber subscriber)
 	{
 		//If it didn't already contain the subscriber ...
@@ -279,7 +284,7 @@ public abstract class EntityBase implements Entity
 		return false;
 	}
 
-	@Override
+	/** Internal method called by a subscriber ( like a {@link Player} ... ) when he unsubscribe() to this entity */
 	public final boolean unsubscribe(Subscriber subscriber)
 	{
 		//If it did contain the subscriber

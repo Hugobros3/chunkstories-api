@@ -19,10 +19,11 @@ import io.xol.chunkstories.api.world.chunk.Chunk;
 
 public interface Entity
 {
-	/**
-	 * Return the object representing the declaration of this entity in a .entities file
-	 */
+	/** Return the object representing the declaration of this entity in a .entities file */
 	public EntityType getType();
+	
+	/** @return the entity's world */
+	public World getWorld();
 	
 	/** @return the location of the entity */
 	public Location getLocation();
@@ -30,39 +31,35 @@ public interface Entity
 	/** Sets the location of the entity */
 	public void setLocation(Location loc);
 	
-	/** @return the entity's current chunk */
+	/** @return the entity's current chunk. Might return null ! */
 	public Chunk getChunk();
-	
-	/** @return the entity's world */
-	public World getWorld();
 
-	/** Updates the entity, ran at 60Hz by default */
+	/** Updates the entity, called at a rate of 60Hz by default */
 	public void tick();
 
 	/** Called when trying to interact with an entity. Returning 'true' will stop the interaction chain and won't allow anything further to interact with it. */
 	public boolean handleInteraction(Entity entity, Input input);
 
-	//TODO refactor these properly
+	/** Moves the entity by 'delta', ignoring any collision information. */
 	public void moveWithoutCollisionRestrain(Vector3dc delta);
 	
-	public void moveWithoutCollisionRestrain(double mx, double my, double mz);
+	/** Overload for {@link #moveWithoutCollisionRestrain(Vector3dc delta)} */
+	public void moveWithoutCollisionRestrain(double dx, double dy, double dz);
 	
-	public Vector3dc moveWithCollisionRestrain(Vector3dc vec);
+	/** Tries to move the entity by 'delta', will slide arround obstacles as best as it can and then return (the initial delta - the distance actually accomplished) */
+	public Vector3dc moveWithCollisionRestrain(Vector3dc delta);
+
+	/** Overload for {@link #moveWithCollisionRestrain(Vector3dc delta)} */
+	public Vector3dc moveWithCollisionRestrain(double dx, double dy, double dz);
 	
-	public Vector3dc moveWithCollisionRestrain(double mx, double my, double mz);
-	
+	/** Same as {@link #moveWithCollisionRestrain(Vector3dc delta)} but doesn't actually move anything, just checks */
 	public Vector3dc canMoveWithCollisionRestrain(Vector3dc delta);
+
+	/** Overload for {@link #canMoveWithCollisionRestrain(Vector3dc delta)} */
+	public Vector3dc canMoveWithCollisionRestrain(double dx, double dy, double dz);
 	
+	/** Checks wether or not the entity can slide one block down */
 	public boolean isOnGround();
-	
-	//TODO Does all entities need that for real ?
-	//public EntityComponentVelocity getVelocityComponent();
-	
-	/** @return the entitie's AABBs to their position */
-	public CollisionBox getTranslatedBoundingBox();
-	
-	/** @return the entitie's AABBs */
-	public CollisionBox getBoundingBox();
 	
 	/**
 	 * Called when controlling/viewing an entity
@@ -77,36 +74,33 @@ public interface Entity
 	public void setUUID(long uuid);
 	
 	/**
-	 * Remove the entity from it's world and mark it for deletion (since Java requires to manually remove all references)
-	 * @return false if already removed
-	 */
-	//public boolean removeFromWorld();
-
-	/**
-	 * Returns true unless it should be invisible to some players or all
+	 * @return true unless it should be invisible to some players or all
 	 * Exemple : dead/removed entity, invisible admin
-	 * @return
 	 */
 	public boolean shouldBeTrackedBy(Player player);
 
 	/** @return false once the entity has been removed from the world */
 	public boolean exists();
 
-	/**
-	 * Returns true once the entity has been added into the world
-	 * @return
-	 */
+	/** @return true once the entity has been added into the world */
 	public boolean hasSpawned();
 	
-	public void markHasSpawned();
-		
+	/** @return An iterator for all the subscribers that track the changes to this entity */
 	public IterableIterator<Subscriber> getAllSubscribers();
 	
+	/* Internal stuff, not really something you'd have to mess with
 	public boolean subscribe(Subscriber subscriber);
-	public boolean unsubscribe(Subscriber subscriber);
+	public boolean unsubscribe(Subscriber subscriber);*/
 	
+	/** Return the first component registered ( you can iterate on them since they are a linked list structure ). */
 	public EntityComponent getComponents();
 
+	/** @return The actual list of collision (=>solid) boxes for this entity. Can return null or an empty array. */
 	public CollisionBox[] getCollisionBoxes();
 	
+	/** @return the entity AABB translated to its position */
+	public CollisionBox getTranslatedBoundingBox();
+	
+	/** @return the entity bounding box ( for rendering, presence detection etc, but not collision ! ) */
+	public CollisionBox getBoundingBox();
 }

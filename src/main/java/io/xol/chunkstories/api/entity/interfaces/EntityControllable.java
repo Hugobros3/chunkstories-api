@@ -5,7 +5,7 @@ import io.xol.chunkstories.api.entity.components.EntityComponentController;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
-import io.xol.chunkstories.api.player.PlayerClient;
+import io.xol.chunkstories.api.player.LocalPlayer;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
@@ -27,10 +27,10 @@ public interface EntityControllable extends Entity, EntityUnsaveable
 	/**
 	 * Clientside controller tick, called before the main tick() call on clients, supposed to handle the bulk of interactions
 	 */
-	public void tickClientController(PlayerClient controller);
+	public void tickClientController(LocalPlayer controller);
 
 	/** Called by the RENDERING thread, each frame. Usefull for stuff like camera control maybe ? */
-	public void onEachFrame(PlayerClient controller);
+	public void onEachFrame(LocalPlayer controller);
 	
 	/**
 	 * If this entity has the ability to select blocks, this method should return said block
