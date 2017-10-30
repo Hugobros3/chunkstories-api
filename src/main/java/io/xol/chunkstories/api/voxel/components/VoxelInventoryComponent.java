@@ -6,8 +6,12 @@ import java.io.IOException;
 
 import io.xol.chunkstories.api.item.inventory.BasicInventory;
 import io.xol.chunkstories.api.item.inventory.InventoryHolder;
+import io.xol.chunkstories.api.item.inventory.ItemPile;
+import io.xol.chunkstories.api.net.packets.PacketInventoryPartialUpdate;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
+import io.xol.chunkstories.api.server.RemotePlayer;
+import io.xol.chunkstories.api.world.chunk.WorldUser;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -25,6 +29,23 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 			public InventoryHolder getHolder() {
 				return VoxelInventoryComponent.this;
 			}
+
+			@Override
+			public void refreshCompleteInventory() {
+				VoxelInventoryComponent.this.pushComponentEveryone();
+			}
+
+			@Override
+			public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
+				for(WorldUser user : VoxelInventoryComponent.this.holder().getChunk().holder().getChunkUsers()) {
+					if(user instanceof RemotePlayer) {
+						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(this, x, y, pileChanged);
+						RemotePlayer player = (RemotePlayer)user;
+						player.pushPacket(packet);
+					}
+				}
+			}
+			
 			
 		};
 	}
