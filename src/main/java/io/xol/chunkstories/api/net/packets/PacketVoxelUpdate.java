@@ -31,22 +31,34 @@ public class PacketVoxelUpdate extends PacketSynchPrepared
 		this.context = context;
 	}
 	
+	public PacketVoxelUpdate(ChunkVoxelContext context, VoxelComponent componentToUpdate) {
+		this.context = context;
+		this.componentToUpdate = componentToUpdate;
+	}
+	
 	private ChunkVoxelContext context;
-	//public int x, y, z;
-	//public int data;
+	
+	private VoxelComponent componentToUpdate;
 	
 	@Override
-	public void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
 		out.writeInt(context.getX());
 		out.writeInt(context.getY());
 		out.writeInt(context.getZ());
 		out.writeInt(context.getData());
 		
-		for(Entry<String, VoxelComponent> entry : context.components().all()) {
+		if(componentToUpdate == null) {
+			for(Entry<String, VoxelComponent> entry : context.components().all()) {
+				out.writeByte((byte)0x01);
+				out.writeUTF(entry.getKey());
+				entry.getValue().push(destinator, out);
+			}
+		}
+		else {
 			out.writeByte((byte)0x01);
-			out.writeUTF(entry.getKey());
-			entry.getValue().push(destinator, out);
+			out.writeUTF(componentToUpdate.name());
+			componentToUpdate.push(destinator, out);
 		}
 		
 		//No further information

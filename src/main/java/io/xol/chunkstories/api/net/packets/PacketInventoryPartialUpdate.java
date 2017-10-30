@@ -40,7 +40,7 @@ public class PacketInventoryPartialUpdate extends PacketSynchPrepared
 	}
 
 	@Override
-	public void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
 		InventoryTranslator.writeInventoryHandle(out, inventory);
 

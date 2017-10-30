@@ -1,7 +1,6 @@
 package io.xol.chunkstories.api.world.chunk;
 
-import java.util.Iterator;
-
+import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -37,7 +36,7 @@ public interface ChunkHolder
 	public int getChunkCoordinateY();
 	public int getChunkCoordinateZ();
 	
-	public Iterator<WorldUser> getChunkUsers();
+	public IterableIterator<WorldUser> getChunkUsers();
 	
 	/**
 	 * @return True if the user has successfully been added to the holder, false if it was already inside

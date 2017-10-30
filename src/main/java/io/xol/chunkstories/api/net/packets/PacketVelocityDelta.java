@@ -38,7 +38,7 @@ public class PacketVelocityDelta extends PacketSynchPrepared
 	private Vector3dc delta;
 	
 	@Override
-	public void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
 		out.writeDouble(delta.x());
 		out.writeDouble(delta.y());

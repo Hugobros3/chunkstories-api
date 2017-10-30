@@ -4,9 +4,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import io.xol.chunkstories.api.player.Player;
+import io.xol.chunkstories.api.net.packets.PacketVoxelUpdate;
 import io.xol.chunkstories.api.serialization.StreamSource;
 import io.xol.chunkstories.api.serialization.StreamTarget;
+import io.xol.chunkstories.api.server.RemotePlayer;
+import io.xol.chunkstories.api.world.chunk.WorldUser;
 
 public abstract class VoxelComponent {
 	private final VoxelComponents holder;
@@ -25,12 +27,17 @@ public abstract class VoxelComponent {
 	
 	/** Pushes the component to every client subscribed to the chunk owning this voxel */
 	public void pushComponentEveryone() {
-		throw new UnsupportedOperationException("pushComponentEveryone()");
+		for(WorldUser user : holder.getChunk().holder().getChunkUsers()) {
+			if(user instanceof RemotePlayer) {
+				pushComponent((RemotePlayer)user);
+			}
+		}
 	}
 	
 	/** Pushes the component to a specific player */
-	public void pushComponent(Player player) {
-		throw new UnsupportedOperationException("pushComponent(player)");
+	public void pushComponent(RemotePlayer player) {
+		PacketVoxelUpdate packet = new PacketVoxelUpdate(holder.getChunk().peek(holder.getX(), holder.getY(), holder.getZ()), this);
+		player.pushPacket(packet);
 	}
 	
 	public abstract void push(StreamTarget destinator, DataOutputStream dos) throws IOException;

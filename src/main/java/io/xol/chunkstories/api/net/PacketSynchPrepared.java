@@ -11,9 +11,9 @@ public abstract class PacketSynchPrepared extends PacketSynch implements PacketP
 {	
 	public void prepare(PacketDestinator destinator) throws IOException
 	{
-		this.sendIntoBuffer(destinator, this.getSynchPacketOutputStream());
+		this.fillInternalBuffer(destinator, this.getSynchPacketOutputStream());
 		this.finalizeSynchPacket();
 	}
 	
-	public abstract void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException;
+	public abstract void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException;
 }

@@ -39,7 +39,7 @@ public class PacketDecal extends PacketSynchPrepared
 	}
 
 	@Override
-	public void sendIntoBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
 		out.writeUTF(decalName);
 		out.writeDouble(position.x());
