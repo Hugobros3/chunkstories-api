@@ -32,7 +32,7 @@ public abstract class VoxelEvent extends CancellableEvent
 	}
 
 	/** Returns the context before the voxel destruction */
-	public VoxelContext getVoxel()
+	public VoxelContext getContext()
 	{
 		return context;
 	}

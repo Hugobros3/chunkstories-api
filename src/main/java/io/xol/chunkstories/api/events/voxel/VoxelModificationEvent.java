@@ -49,7 +49,7 @@ public class VoxelModificationEvent extends VoxelEvent
 	}
 
 	public ModifiationType getModification() {
-		if(VoxelFormat.id(getVoxel().getData()) == 0)
+		if(VoxelFormat.id(getContext().getData()) == 0)
 			return ModifiationType.PLACEMENT;
 		else
 		{
