@@ -51,6 +51,9 @@ public interface ClientContent extends Content
 		
 		public Cubemap getCubemap(String cubemapName);
 		
+		/** Drops all textures loaded in VRAM */
+		public void reloadAll();
+		
 		public ClientContent parent();
 	}
 	
@@ -61,7 +64,7 @@ public interface ClientContent extends Content
 		
 		public void reloadShader(String shaderName);
 		
-		public void reloadAllShaders();
+		public void reloadAll();
 		
 		public ClientContent parent();
 	}

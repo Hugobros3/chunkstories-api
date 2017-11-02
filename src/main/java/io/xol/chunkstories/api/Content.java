@@ -40,6 +40,12 @@ public interface Content
 	 *  More advanced options for obtaining assets are avaible using the ModsManager class */
 	public Asset getAsset(String assetName);
 	
+	/** 
+	 * Reloads everything. Warning: might not be appropriate as this will reload classes you will most likely have instanced into objects, causing weird
+	 * errors if you do this while in a world.
+	 */
+	public void reload();
+	
 	public Materials materials();
 	public interface Materials {
 		
