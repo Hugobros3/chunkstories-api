@@ -9,9 +9,12 @@ import io.xol.chunkstories.api.net.PacketPrepared;
 import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSynch;
 import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.player.Player;
+import io.xol.chunkstories.api.server.RemotePlayer;
 import io.xol.chunkstories.api.util.ChunkStoriesLogger.LogLevel;
 import io.xol.chunkstories.api.util.ChunkStoriesLogger.LogType;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.WorldMaster;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -77,16 +80,21 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 		//Create an entity if the servers tells you to do so
 		if(entity == null)
 		{
-			entity = processor.getWorld().
-					getGameContext().
-					getContent().
-					entities().
-					getEntityTypeById(entityTypeID).
-					create(new Location(world, 0, 0, 0)); // This is technically wrong
-			
-			entity.setUUID(entityUUID);
-			
-			addToWorld = true;
+			if(world instanceof WorldMaster && sender instanceof RemotePlayer) {
+				((Player) sender).sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
+				return;
+			} else {
+				entity = processor.getWorld().
+						getGameContext().
+						getContent().
+						entities().
+						getEntityTypeById(entityTypeID).
+						create(new Location(world, 0, 0, 0)); // This is technically wrong
+				
+				entity.setUUID(entityUUID);
+				
+				addToWorld = true;
+			}
 		}
 		
 		int componentId = in.readInt();
