@@ -10,9 +10,9 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
 import io.xol.chunkstories.api.exceptions.UnknownComponentException;
 import io.xol.chunkstories.api.net.packets.PacketEntity;
-import io.xol.chunkstories.api.serialization.OfflineSerializedData;
-import io.xol.chunkstories.api.serialization.StreamSource;
-import io.xol.chunkstories.api.serialization.StreamTarget;
+import io.xol.chunkstories.api.world.serialization.OfflineSerializedData;
+import io.xol.chunkstories.api.world.serialization.StreamSource;
+import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

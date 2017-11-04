@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.particles;
 
-import io.xol.chunkstories.api.Content;
+import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.NamedWithProperties;
 
 //(c) 2015-2017 XolioWare Interactive

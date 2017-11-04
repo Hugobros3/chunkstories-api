@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.mesh;
 
+import io.xol.chunkstories.api.content.Asset;
 import io.xol.chunkstories.api.exceptions.content.MeshLoadException;
-import io.xol.chunkstories.api.mods.Asset;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

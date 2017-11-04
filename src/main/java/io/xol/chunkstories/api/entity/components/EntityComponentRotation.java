@@ -9,9 +9,9 @@ import org.joml.Vector3d;
 import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.serialization.StreamSource;
-import io.xol.chunkstories.api.serialization.StreamTarget;
 import io.xol.chunkstories.api.world.WorldMaster;
+import io.xol.chunkstories.api.world.serialization.StreamSource;
+import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.world.generator;
 
-import io.xol.chunkstories.api.Content.WorldGenerators.WorldGeneratorType;
+import io.xol.chunkstories.api.content.Content.WorldGenerators.WorldGeneratorType;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.generator.environment.DefaultWorldEnvironment;

@@ -1,21 +1,19 @@
-package io.xol.chunkstories.api;
+package io.xol.chunkstories.api.content;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 import io.xol.chunkstories.api.animation.SkeletalAnimation;
-import io.xol.chunkstories.api.content.NamedWithProperties;
+import io.xol.chunkstories.api.content.mods.ModsManager;
 import io.xol.chunkstories.api.entity.EntityType;
 import io.xol.chunkstories.api.exceptions.net.UnknowPacketException;
 import io.xol.chunkstories.api.item.ItemType;
-import io.xol.chunkstories.api.material.Material;
 import io.xol.chunkstories.api.mesh.MeshLibrary;
-import io.xol.chunkstories.api.mods.Asset;
-import io.xol.chunkstories.api.mods.ModsManager;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.particles.ParticleTypeHandler;
 import io.xol.chunkstories.api.util.ChunkStoriesLogger;
 import io.xol.chunkstories.api.voxel.Voxel;
+import io.xol.chunkstories.api.voxel.materials.Material;
 import io.xol.chunkstories.api.voxel.models.VoxelModel;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;

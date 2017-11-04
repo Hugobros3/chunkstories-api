@@ -17,8 +17,8 @@ import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.net.packets.PacketInventoryPartialUpdate;
 import io.xol.chunkstories.api.player.Player;
-import io.xol.chunkstories.api.serialization.StreamSource;
-import io.xol.chunkstories.api.serialization.StreamTarget;
+import io.xol.chunkstories.api.world.serialization.StreamSource;
+import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz

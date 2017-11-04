@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.compatibility;
+package io.xol.chunkstories.api.util.compatibility;
 
 import io.xol.chunkstories.api.math.HexTools;
 

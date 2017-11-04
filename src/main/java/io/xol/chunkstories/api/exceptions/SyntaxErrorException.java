@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.exceptions;
 
 import java.io.File;
 
-import io.xol.chunkstories.api.mods.Asset;
+import io.xol.chunkstories.api.content.Asset;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

@@ -2,11 +2,11 @@ package io.xol.chunkstories.api.voxel;
 
 import org.joml.Vector3dc;
 
-import io.xol.chunkstories.api.Content;
+import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
-import io.xol.chunkstories.api.material.Material;
 import io.xol.chunkstories.api.physics.CollisionBox;
+import io.xol.chunkstories.api.voxel.materials.Material;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.VoxelContext;

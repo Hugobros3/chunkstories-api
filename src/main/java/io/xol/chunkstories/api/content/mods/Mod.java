@@ -1,5 +1,6 @@
-package io.xol.chunkstories.api.mods;
+package io.xol.chunkstories.api.content.mods;
 
+import io.xol.chunkstories.api.content.Asset;
 import io.xol.chunkstories.api.util.IterableIterator;
 
 //(c) 2015-2017 XolioWare Interactive

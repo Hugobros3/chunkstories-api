@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.mods;
+package io.xol.chunkstories.api.content.mods;
 
 import io.xol.chunkstories.api.content.NamedWithProperties;
 

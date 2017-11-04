@@ -1,8 +1,10 @@
-package io.xol.chunkstories.api.mods;
+package io.xol.chunkstories.api.content;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import io.xol.chunkstories.api.content.mods.Mod;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

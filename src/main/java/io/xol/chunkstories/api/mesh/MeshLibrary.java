@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.mesh;
 
-import io.xol.chunkstories.api.Content;
+import io.xol.chunkstories.api.content.Content;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

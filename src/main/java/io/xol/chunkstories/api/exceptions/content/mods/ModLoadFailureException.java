@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.exceptions.content.mods;
 
-import io.xol.chunkstories.api.mods.Mod;
+import io.xol.chunkstories.api.content.mods.Mod;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

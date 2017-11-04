@@ -1,5 +1,6 @@
 package io.xol.chunkstories.api;
 
+import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.plugin.PluginManager;
 import io.xol.chunkstories.api.util.ChunkStoriesLogger;
 import io.xol.chunkstories.api.workers.Tasks;

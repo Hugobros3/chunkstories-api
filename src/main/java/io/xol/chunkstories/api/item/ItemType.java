@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.item;
 
-import io.xol.chunkstories.api.Content;
+import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.NamedWithProperties;
 import io.xol.chunkstories.api.item.renderer.ItemRenderer;
 

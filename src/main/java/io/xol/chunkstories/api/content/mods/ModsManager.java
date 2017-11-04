@@ -1,8 +1,9 @@
-package io.xol.chunkstories.api.mods;
+package io.xol.chunkstories.api.content.mods;
 
 import java.util.Collection;
 import java.util.Iterator;
 
+import io.xol.chunkstories.api.content.Asset;
 import io.xol.chunkstories.api.exceptions.content.mods.NotAllModsLoadedException;
 
 //(c) 2015-2017 XolioWare Interactive

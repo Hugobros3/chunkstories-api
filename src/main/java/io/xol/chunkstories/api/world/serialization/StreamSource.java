@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.serialization;
+package io.xol.chunkstories.api.world.serialization;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

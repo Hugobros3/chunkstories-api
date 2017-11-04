@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.ai;
+package io.xol.chunkstories.api.entity.ai;
 
 import io.xol.chunkstories.api.entity.Entity;
 

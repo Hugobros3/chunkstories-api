@@ -1,7 +1,6 @@
-package io.xol.chunkstories.api.player;
+package io.xol.chunkstories.api.client;
 
-import io.xol.chunkstories.api.client.ClientInputsManager;
-import io.xol.chunkstories.api.client.ClientInterface;
+import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.rendering.GameWindow;
 
 //(c) 2015-2017 XolioWare Interactive

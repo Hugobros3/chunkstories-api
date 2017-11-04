@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.material;
+package io.xol.chunkstories.api.voxel.materials;
 
 import io.xol.chunkstories.api.content.NamedWithProperties;
 

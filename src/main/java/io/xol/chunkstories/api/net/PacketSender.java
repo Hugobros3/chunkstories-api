@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.net;
 
-import io.xol.chunkstories.api.serialization.StreamSource;
+import io.xol.chunkstories.api.world.serialization.StreamSource;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
