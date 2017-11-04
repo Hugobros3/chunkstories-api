@@ -8,21 +8,41 @@ import static io.xol.chunkstories.api.rendering.textures.TextureFormat.GL_Abstra
 
 public enum TextureFormat
 {
-	//For diffuse buffer
+	/** Classic OpenGL format: 8-bit per component, 4 components 32-bit per pixel. */
 	RGBA_8BPP(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, 4),
-	//For shaded buffer
+	
+	/** "HDR" format for the default renderbuffer, uses 3 floating-point component */
 	RGB_HDR(GL_R11F_G11F_B10F, GL_RGB, GL_FLOAT, 4),
-	//Shadow maps
-	DEPTH_SHADOWMAP(GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT, 3),
-	//Main render depth
+
+	/** High precision depth format (32-bit) */
 	DEPTH_RENDERBUFFER(GL_DEPTH_COMPONENT32, GL_DEPTH_COMPONENT, GL_FLOAT, 4),
-	//Summary data
+	
+	/** Lesser precision depth format (24-bit) */
+	DEPTH_SHADOWMAP(GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT, 3),
+	
+	/** One component of 32-bit floating point (very precise) */
 	RED_32F(GL_R32F, GL_RED, GL_FLOAT, 4),
+	
+	/** One component of 16-bit integers */
 	RED_16I(GL_R16UI, GL_RED_INTEGER, GL_INT, 2),
-	//
+
+	/** 10 bits for RGB, two for alpha. Normalized. */
 	RGBA_3x10_2(GL_RGB10_A2, GL_RGBA, GL_UNSIGNED_BYTE, 4),
-	//
+	
+	/** Very high precision HDR format, fully fat 32-bit per component, slow ! */
 	RGBA_32F(GL_RGBA32F, GL_RGBA, GL_FLOAT, 16),
+
+	/** Two 8-bit components (unsigned, normalized) */
+	RGB_8(GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, 3),
+	
+	/** Two 8-bit components (unsigned, normalized) */
+	RG_8(GL_RG8, GL_RG, GL_UNSIGNED_BYTE, 2),
+
+	/** A single 8-bit component (unsigned, normalized) */
+	RED_8(GL_R8, GL_RG, GL_UNSIGNED_BYTE, 1),
+	
+	/** A single 8-bit component (unsigned) */
+	RED_8UI(GL_R8UI, GL_RED_INTEGER, GL_INT, 1),
 	;
 
 	//Removes LWJGL dependency
@@ -40,6 +60,12 @@ public enum TextureFormat
 		public static final int GL_RGB10_A2 = 0x8059;
 		public static final int GL_RGBA32F = 0x8814;
 		public static final int GL_R16UI = 0x8234;
+		public static final int GL_R8UI = 0x8232;
+		public static final int GL_R8 = 33321;
+		public static final int GL_RG8 = 33323;
+		public static final int GL_RG = 33319;
+		public static final int GL_RGB8 = 32849;
+		//public static final int GL_R8 = ;
 		public static final int GL_INT = 0x1404;
 		public static final int GL_RED_INTEGER = 0x8d94;
 	}
