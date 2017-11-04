@@ -59,6 +59,8 @@ configurations {
 
 dependencies {
 	compile group: 'org.joml', name: 'joml', version: '1.9.3'
+	compile group: 'io.xol.enklume', name: 'enklume', version: 100
+	
 	deployerJars "org.apache.maven.wagon:wagon-ssh:2.12" //<-- fuck this fuck this fuck this
 }
 
