@@ -3,6 +3,8 @@ package io.xol.chunkstories.api.content;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.slf4j.Logger;
+
 import io.xol.chunkstories.api.animation.SkeletalAnimation;
 import io.xol.chunkstories.api.content.mods.ModsManager;
 import io.xol.chunkstories.api.entity.EntityType;
@@ -11,7 +13,6 @@ import io.xol.chunkstories.api.item.ItemType;
 import io.xol.chunkstories.api.mesh.MeshLibrary;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.particles.ParticleTypeHandler;
-import io.xol.chunkstories.api.util.ChunkStoriesLogger;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.materials.Material;
 import io.xol.chunkstories.api.voxel.models.VoxelModel;
@@ -52,6 +53,8 @@ public interface Content
 		public Iterator<Material> all();
 
 		public Content parent();
+		
+		public Logger logger();
 	}
 	
 	public Voxels voxels();
@@ -73,6 +76,8 @@ public interface Content
 			public Iterator<VoxelTexture> all();
 
 			public Voxels parent();
+
+			public Logger logger();
 		}
 		
 		public VoxelModels models();
@@ -83,9 +88,13 @@ public interface Content
 			public Iterator<VoxelModel> all();
 
 			public Voxels parent();
+			
+			public Logger logger();
 		}
 		
 		public VoxelRenderer getDefaultVoxelRenderer();
+		
+		public Logger logger();
 	}
 	
 	public ItemsTypes items();
@@ -98,6 +107,8 @@ public interface Content
 		public Iterator<ItemType> all();
 
 		public Content parent();
+		
+		public Logger logger();
 	}
 	
 	public EntityTypes entities();
@@ -107,19 +118,11 @@ public interface Content
 		
 		public EntityType getEntityTypeByName(String entityName);
 		
-		//public EntityType getEntityTypeByClassname(String className);
-		
-		//public short getEntityIdByClassname(String className);
-		
 		public Iterator<EntityType> all();
 
 		public Content parent();
 		
-		/*public EntityComponents components();
-		public interface EntityComponents {
-			
-			public int getIdForClass(String className);
-		}*/
+		public Logger logger();
 	}
 	
 	public ParticlesTypes particles();
@@ -132,6 +135,8 @@ public interface Content
 		public Iterator<ParticleTypeHandler> all();
 
 		public Content parent();
+		
+		public Logger logger();
 	}
 	
 	public PacketTypes packets();
@@ -158,6 +163,8 @@ public interface Content
 		}
 		
 		public Content parent();
+		
+		public Logger logger();
 	}
 	
 	public WorldGenerators generators();
@@ -178,6 +185,8 @@ public interface Content
 		}
 
 		public Content parent();
+		
+		public Logger logger();
 	}
 	
 	public LocalizationManager localization();
@@ -192,6 +201,8 @@ public interface Content
 		public void reload();
 
 		public void loadTranslation(String translationCode);
+		
+		public Logger logger();
 	}
 	public interface Translation {
 
@@ -206,9 +217,12 @@ public interface Content
 		public SkeletalAnimation getAnimation(String name);
 		
 		public Content parent();
+		
+		public Logger logger();
 	}
 	
 	public MeshLibrary meshes();
 	
-	public ChunkStoriesLogger logger();
+	/** General logger about content */
+	public Logger logger();
 }

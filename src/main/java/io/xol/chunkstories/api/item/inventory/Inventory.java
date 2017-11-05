@@ -1,5 +1,8 @@
 package io.xol.chunkstories.api.item.inventory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.util.IterableIterator;
 
@@ -65,5 +68,7 @@ public interface Inventory extends Iterable<ItemPile>
 	
 	/** Used to secure access */
 	public boolean isAccessibleTo(Entity entity);
+	
+	public final Logger inventoriesLogger = LoggerFactory.getLogger("inventory");
 
 }

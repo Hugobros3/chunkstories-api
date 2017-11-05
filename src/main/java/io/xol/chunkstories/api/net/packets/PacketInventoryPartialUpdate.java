@@ -14,7 +14,6 @@ import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSynchPrepared;
 import io.xol.chunkstories.api.net.PacketsProcessor;
-import io.xol.chunkstories.api.util.ChunkStoriesLogger.LogLevel;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -76,9 +75,11 @@ public class PacketInventoryPartialUpdate extends PacketSynchPrepared
 		catch (UndefinedItemTypeException e)
 		{
 			//This is slightly more problematic.
-			processor.getContext().logger().log(e.getMessage(), LogLevel.WARN);
-			e.printStackTrace(processor.getContext().logger().getPrintWriter());
-			e.printStackTrace();
+			
+			processor.logger().error("Undefined item: ", e);
+			//processor.getContext().logger().log(e.getMessage(), LogLevel.WARN);
+			//e.printStackTrace(processor.getContext().logger().getPrintWriter());
+			//e.printStackTrace();
 		}
 		
 		if (inventory != null)

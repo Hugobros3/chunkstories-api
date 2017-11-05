@@ -11,8 +11,6 @@ import io.xol.chunkstories.api.net.PacketSynch;
 import io.xol.chunkstories.api.net.PacketsProcessor;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.server.RemotePlayer;
-import io.xol.chunkstories.api.util.ChunkStoriesLogger.LogLevel;
-import io.xol.chunkstories.api.util.ChunkStoriesLogger.LogType;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
 
@@ -106,7 +104,7 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 			}
 			catch(UnknownComponentException e) {
 				
-				processor.getContext().logger().log(e.getMessage(), LogType.INTERNAL, LogLevel.WARN);
+				processor.logger().warn(e.getMessage());
 			}
 			componentId = in.readInt();
 		}

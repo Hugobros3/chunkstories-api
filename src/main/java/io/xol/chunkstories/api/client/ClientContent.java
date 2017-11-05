@@ -2,6 +2,8 @@ package io.xol.chunkstories.api.client;
 
 import java.util.Iterator;
 
+import org.slf4j.Logger;
+
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
@@ -37,6 +39,8 @@ public interface ClientContent extends Content
 			public Iterator<VoxelTexture> all();
 
 			public Voxels parent();
+			
+			public Logger logger();
 		}
 	}
 
@@ -55,6 +59,8 @@ public interface ClientContent extends Content
 		public void reloadAll();
 		
 		public ClientContent parent();
+		
+		public Logger logger();
 	}
 	
 	public ShadersLibrary shaders();
@@ -67,5 +73,7 @@ public interface ClientContent extends Content
 		public void reloadAll();
 		
 		public ClientContent parent();
+		
+		public Logger logger();
 	}
 }

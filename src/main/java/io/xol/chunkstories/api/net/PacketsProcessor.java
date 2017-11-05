@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.exceptions.net.IllegalPacketException;
 import io.xol.chunkstories.api.exceptions.net.UnknowPacketException;
@@ -44,4 +46,7 @@ public interface PacketsProcessor {
 	 *             If the packet we obtain is illegal ( if we're not supposed to receive or send it )
 	 */
 	public Packet getPacket(DataInputStream in) throws IOException, UnknowPacketException, IllegalPacketException;
+
+	/** Returns the logger specific to packets processing events */
+	public Logger logger();
 }

@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.util;
 
 import java.io.PrintWriter;
 
-public interface ChunkStoriesLogger {
+public interface ChunkStoriesLogger_ {
 
 	public void log(String text);
 

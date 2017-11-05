@@ -8,13 +8,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.exceptions.NullItemException;
 import io.xol.chunkstories.api.exceptions.UndefinedItemTypeException;
 import io.xol.chunkstories.api.item.Item;
-import io.xol.chunkstories.api.util.ChunkStoriesLogger.LogLevel;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 import io.xol.chunkstories.api.util.IterableIterator;
@@ -341,8 +341,9 @@ public class BasicInventory implements Inventory
 				catch (UndefinedItemTypeException e)
 				{
 					//This is slightly more problematic
-					content.logger().log(e.getMessage(), LogLevel.WARN);
-					e.printStackTrace(content.logger().getPrintWriter());
+					inventoriesLogger.error("Undefined item: ", e);
+					//content.logger().log(e.getMessage(), LogLevel.WARN);
+					//e.printStackTrace(content.logger().getPrintWriter());
 				}
 			}
 	}
