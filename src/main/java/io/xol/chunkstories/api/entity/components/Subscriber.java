@@ -35,5 +35,5 @@ public interface Subscriber extends StreamTarget
 
 	public void pushPacket(Packet packet);
 
-	public boolean isSubscribedTo(Entity entity);
+	//public boolean isSubscribedTo(Entity entity);
 }

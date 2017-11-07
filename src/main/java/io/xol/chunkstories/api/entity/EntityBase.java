@@ -20,6 +20,7 @@ import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
@@ -298,6 +299,11 @@ public abstract class EntityBase implements Entity
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean isSubscribed(StreamTarget subscriber) {
+		return subscribers.contains(subscriber);
 	}
 
 	@Override

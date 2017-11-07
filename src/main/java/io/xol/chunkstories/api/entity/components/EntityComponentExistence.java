@@ -39,18 +39,18 @@ public final class EntityComponentExistence extends EntityComponent
 	@Override
 	public void push(StreamTarget to, DataOutputStream dos) throws IOException
 	{
-		//Never lie on a entity existing when it doesn't.
+		//Very important: Never pretend an entity exists when it doesn't. You can do the opposite but please don't do this.
 		if (!exists)
 		{
 			dos.writeBoolean(false);
 			return;
 		}
-		//We can pretend it doesn't so the client despawns it
+		//In the multiplayer server scenario can pretend it doesn't so the client despawns it
 		else if (to instanceof Subscriber)
 		{
-			if (!((Subscriber) to).isSubscribedTo(entity))
+			if (!entity.isSubscribed(to))
 			{
-				System.out.println(to + " is not in the subscribers list, telling him the entity doesn't exist anymore >:D");
+				//System.out.println(to + " is not in the subscribers list, telling him the entity doesn't exist anymore >:D");
 				dos.writeBoolean(false);
 				return;
 			}

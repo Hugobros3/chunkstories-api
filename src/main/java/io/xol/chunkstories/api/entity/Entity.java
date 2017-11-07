@@ -12,6 +12,7 @@ import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -87,6 +88,8 @@ public interface Entity
 	
 	/** @return An iterator for all the subscribers that track the changes to this entity */
 	public IterableIterator<Subscriber> getAllSubscribers();
+
+	public boolean isSubscribed(StreamTarget to);
 	
 	/* Internal stuff, not really something you'd have to mess with
 	public boolean subscribe(Subscriber subscriber);
