@@ -16,6 +16,9 @@ description = 'Open API for the game \'Chunk Stories\''
 repositories {
 	mavenLocal()
 	mavenCentral()
+	maven {
+			url "http://maven.xol.io/repository/public/"
+	}
 }
 
 ext {
