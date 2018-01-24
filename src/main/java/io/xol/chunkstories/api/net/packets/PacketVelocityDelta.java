@@ -13,32 +13,36 @@ import io.xol.chunkstories.api.entity.interfaces.EntityWithVelocity;
 import io.xol.chunkstories.api.exceptions.PacketProcessingException;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
-import io.xol.chunkstories.api.net.PacketSynchPrepared;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketWorld;
+import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
 /**
- * We don't want controlled entities to lag-out when the master-side applies momentum to them, thus we use a special packet for this corner case.
+ * When adding momentum to a controlled entity (ie the player's current entity), doing so by sending the client it's new velocity directly would
+ * could result in weird, laggy behavior when the client is rapidly changing direction ( it's new velocity would be based on his own, RTT-seconds ago ).
+ * To avoid this we use a dedicated packet which entire purpose is to tell a player to offset it's velocity by N
  */
-public class PacketVelocityDelta extends PacketSynchPrepared
+public class PacketVelocityDelta extends PacketWorld
 {
-	public PacketVelocityDelta()
-	{
-		
+	public PacketVelocityDelta(World world) {
+		super(world);
 	}
 	
-	public PacketVelocityDelta(Vector3dc delta)
+	public PacketVelocityDelta(World world, Vector3dc delta)
 	{
+		super(world);
 		this.delta = delta;
 	}
 	
 	private Vector3dc delta;
 	
 	@Override
-	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
 		out.writeDouble(delta.x());
 		out.writeDouble(delta.y());
@@ -46,7 +50,7 @@ public class PacketVelocityDelta extends PacketSynchPrepared
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException, PacketProcessingException
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
 	{
 		Vector3d delta = new Vector3d(in.readDouble(), in.readDouble(), in.readDouble());
 		

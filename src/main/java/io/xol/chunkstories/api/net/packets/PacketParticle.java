@@ -10,32 +10,35 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.exceptions.PacketProcessingException;
 import io.xol.chunkstories.api.net.PacketDestinator;
-import io.xol.chunkstories.api.net.PacketSynchPrepared;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.net.PacketSender;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketWorld;
+import io.xol.chunkstories.api.world.World;
+
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public class PacketParticle extends PacketSynchPrepared
+public class PacketParticle extends PacketWorld
 {
 	private String particleName = "";
 	private Vector3dc position;
 	private Vector3dc velocity;
 	
-	public PacketParticle() {
-		
+	public PacketParticle(World world) {
+		super(world);
 	}
 
-	public PacketParticle(String particleName, Vector3dc position, Vector3dc velocity) {
-		super();
+	public PacketParticle(World world, String particleName, Vector3dc position, Vector3dc velocity) {
+		super(world);
 		this.particleName = particleName;
 		this.position = position;
 		this.velocity = velocity;
 	}
 
 	@Override
-	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
 		out.writeUTF(particleName);
 		out.writeDouble(position.x());
@@ -51,7 +54,7 @@ public class PacketParticle extends PacketSynchPrepared
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException, PacketProcessingException
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
 	{
 		particleName = in.readUTF();
 		Vector3d position = new Vector3d();
@@ -73,5 +76,4 @@ public class PacketParticle extends PacketSynchPrepared
 			cpp.getContext().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position, velocity);
 		}
 	}
-
 }

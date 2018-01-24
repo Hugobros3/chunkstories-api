@@ -1,13 +1,13 @@
 package io.xol.chunkstories.api.particles;
 
 import io.xol.chunkstories.api.content.Content;
-import io.xol.chunkstories.api.content.NamedWithProperties;
+import io.xol.chunkstories.api.content.Definition;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface ParticleType extends NamedWithProperties
+public interface ParticleTypeDefinition extends Definition
 {
 	public int getID();
 	

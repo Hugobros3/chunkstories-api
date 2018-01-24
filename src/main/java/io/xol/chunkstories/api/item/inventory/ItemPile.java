@@ -6,16 +6,17 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import io.xol.chunkstories.api.content.Content;
+import io.xol.chunkstories.api.content.ContentTranslator;
 import io.xol.chunkstories.api.exceptions.NullItemException;
 import io.xol.chunkstories.api.exceptions.UndefinedItemTypeException;
 import io.xol.chunkstories.api.item.Item;
-import io.xol.chunkstories.api.item.ItemType;
+import io.xol.chunkstories.api.item.ItemDefinition;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
 // http://xol.io
 
+/** A tangible pile of items in an inventory */
 public class ItemPile
 {
 	private final Item item;
@@ -37,23 +38,27 @@ public class ItemPile
 		this.amount = amount;
 	}
 
-	public ItemPile(ItemType type)
+	public ItemPile(ItemDefinition definition)
 	{
-		this(type.newItem());
+		this(definition.newItem());
+	}
+	
+	public ItemPile(ItemDefinition definition, int amount) {
+		this(definition.newItem(), amount);
 	}
 
-	public static ItemPile obtainItemPileFromStream(Content.ItemsTypes context, DataInputStream stream) throws IOException, UndefinedItemTypeException, NullItemException
+	public static ItemPile obtainItemPileFromStream(ContentTranslator translator, DataInputStream stream) throws IOException, UndefinedItemTypeException, NullItemException
 	{
 		int itemId = stream.readInt();
 		if(itemId == 0)
 			throw new NullItemException(stream);
 		
-		ItemType itemType = context.getItemTypeById(itemId);
+		ItemDefinition itemType = translator.getItemForId(itemId);
 		if(itemType == null)
 			throw new UndefinedItemTypeException(itemId);
 		
-		ItemPile itemPile = new ItemPile(itemType);
-		itemPile.loadInternalItemData(stream);
+		ItemPile itemPile = new ItemPile(itemType, stream.readInt());
+		itemPile.item.load(stream);
 		
 		return itemPile;
 	}
@@ -68,15 +73,9 @@ public class ItemPile
 		return item;
 	}
 
-	private final void loadInternalItemData(DataInputStream stream) throws IOException
+	public final void saveIntoStream(ContentTranslator translator, DataOutputStream stream) throws IOException
 	{
-		this.amount = stream.readInt();
-		item.load(stream);
-	}
-
-	public final void saveItemIntoStream(DataOutputStream stream) throws IOException
-	{
-		stream.writeInt(item.getID());
+		stream.writeInt(translator.getIdForItem(item));
 		
 		stream.writeInt(amount);
 		item.save(stream);
@@ -186,7 +185,7 @@ public class ItemPile
 	}
 
 	/**
-	 * Returns an exact copy of this pile ( serializes and unserializes )
+	 * Returns an exact copy of this pile
 	 */
 	public ItemPile duplicate()
 	{
@@ -194,11 +193,13 @@ public class ItemPile
 		ByteArrayOutputStream data = new ByteArrayOutputStream();
 		try
 		{
-			this.saveItemIntoStream(new DataOutputStream(data));
+			item.save(new DataOutputStream(data));
+			
 			ByteArrayInputStream stream = new ByteArrayInputStream(data.toByteArray());
 			DataInputStream dis = new DataInputStream(stream);
-			dis.readInt();
-			pile.loadInternalItemData(dis);
+			
+			item.load(dis);
+			dis.close();
 		}
 		catch (IOException e)
 		{

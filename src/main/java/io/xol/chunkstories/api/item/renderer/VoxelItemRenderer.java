@@ -172,23 +172,22 @@ public class VoxelItemRenderer extends ItemRenderer
 	@Override
 	public void renderItemInInventory(RenderingInterface renderingContext, ItemPile pile, float screenPositionX, float screenPositionY, int scaling)
 	{
-		//voxelItemsModelBuffer.clear();
-		//ClientContent content = ((ClientContent)pile.getItem().getType().store().parent())
-		
 		if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon)
 		{
 			fallbackRenderer.renderItemInInventory(renderingContext, pile, screenPositionX, screenPositionY, scaling);
 			return;
 		}
+		
+		//TODO : Explicit thumbnail rendering path in VoxelRenderer to replace this mess.
 
-		int slotSize = 24 * scaling;
+		/*int slotSize = 24 * scaling;
 		ShaderInterface program = renderingContext.useShader("inventory_blockmodel");
 		
 		renderingContext.setCullingMode(CullingMode.COUNTERCLOCKWISE);
 		renderingContext.setDepthTestMode(DepthTestMode.LESS_OR_EQUAL);
 
 		program.setUniform2f("screenSize", renderingContext.getWindow().getWidth(), renderingContext.getWindow().getHeight());
-		program.setUniform2f("dekal", screenPositionX + pile.getItem().getType().getSlotsWidth() * slotSize / 2, screenPositionY + pile.getItem().getType().getSlotsHeight() * slotSize / 2);
+		program.setUniform2f("dekal", screenPositionX + pile.getItem().getDefinition().getSlotsWidth() * slotSize / 2, screenPositionY + pile.getItem().getDefinition().getSlotsHeight() * slotSize / 2);
 		program.setUniform1f("scaling", slotSize / 1.65f);
 		transformation.identity();
 		transformation.scale(new Vector3f(-1f, 1f, 1f));
@@ -200,8 +199,8 @@ public class VoxelItemRenderer extends ItemRenderer
 		Voxel voxel = ((ItemVoxel) pile.getItem()).getVoxel();
 		if (voxel == null)
 		{
-			int width = slotSize * pile.getItem().getType().getSlotsWidth();
-			int height = slotSize * pile.getItem().getType().getSlotsHeight();
+			int width = slotSize * pile.getItem().getDefinition().getSlotsWidth();
+			int height = slotSize * pile.getItem().getDefinition().getSlotsHeight();
 			renderingContext.getGuiRenderer().drawBoxWindowsSpaceWithSize(screenPositionX, screenPositionY, width, height, 0, 1, 1, 0, content.textures().getTexture("./items/icons/notex.png"), true, true, null);
 			return;
 		}
@@ -225,7 +224,7 @@ public class VoxelItemRenderer extends ItemRenderer
 			}
 			@Override
 			public int getData() {
-				return VoxelFormat.format(voxel.getId(), ((ItemVoxel) pile.getItem()).getVoxelMeta(), 15, voxel.getLightLevel(0));
+				return VoxelFormat.format(pile, ((ItemVoxel) pile.getItem()).getVoxelMeta(), 15, voxel.getLightLevel(0));
 			}
 			@Override
 			public int getX() {return 0;}
@@ -248,7 +247,7 @@ public class VoxelItemRenderer extends ItemRenderer
 		{
 			model = voxel.store().models().getVoxelModelByName("default");
 		}
-		renderVoxel(renderingContext, voxel, model, bri);
+		renderVoxel(renderingContext, voxel, model, bri);*
 	}
 	
 	@Override
@@ -260,7 +259,7 @@ public class VoxelItemRenderer extends ItemRenderer
 			return;
 		}
 		
-		float s = 0.45f;
+		/*float s = 0.45f;
 		handTransformation.scale(new Vector3f(s, s, s));
 		handTransformation.translate(new Vector3f(-0.25f, -0.5f, -0.5f));
 		context.setObjectMatrix(handTransformation);
@@ -326,7 +325,7 @@ public class VoxelItemRenderer extends ItemRenderer
 		{
 			model = voxel.store().models().getVoxelModelByName("default");
 		}
-		renderVoxel(context, voxel, model, bri);
+		renderVoxel(context, voxel, model, bri);*/
 	}
 
 	/** The purpose of this class is to bake the voxel mesh by itself in a single VBO used by the item render, and that uses a specific layout */
@@ -371,8 +370,10 @@ public class VoxelItemRenderer extends ItemRenderer
 
 	private void renderVoxel(RenderingInterface renderingContext, Voxel voxel, VoxelRenderer voxelRenderer, VoxelContext bri)
 	{
+		int hash = voxel.getDefinition().hashCode() + bri.getMetaData(); // There is a *very* slim chance of collision, but whatever life's too short for this
+		
 		//If we did not already cache this model
-		if (!voxelItemsModelBuffer.containsKey(bri.getMetaData() + 16 * voxel.getId()))
+		if (!voxelItemsModelBuffer.containsKey(hash))
 		{
 			//Generous allocation
 			//TODO Jemalloc all the things
@@ -415,13 +416,13 @@ public class VoxelItemRenderer extends ItemRenderer
 			VertexBuffer mesh = renderingContext.newVertexBuffer();
 			mesh.uploadData(buffer);
 			
-			voxelItemsModelBuffer.put(bri.getMetaData() + 16 * voxel.getId(), mesh);
+			voxelItemsModelBuffer.put(hash, mesh);
 		}
 		
 		//Fail-safe in case above step fails ?
-		if (voxelItemsModelBuffer.containsKey(bri.getMetaData() + 16 * voxel.getId()))
+		if (voxelItemsModelBuffer.containsKey(hash))
 		{
-			VertexBuffer mesh = voxelItemsModelBuffer.get(bri.getMetaData() + 16 * voxel.getId());
+			VertexBuffer mesh = voxelItemsModelBuffer.get(hash);
 			
 			//This is why we needed VoxelInHandLayoutBaker!
 			renderingContext.bindAttribute("vertexIn", mesh.asAttributeSource(VertexFormat.FLOAT, 3, 24, 0));

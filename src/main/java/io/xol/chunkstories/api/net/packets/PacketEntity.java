@@ -3,65 +3,76 @@ package io.xol.chunkstories.api.net.packets;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.entity.components.EntityComponent;
+import io.xol.chunkstories.api.entity.components.EntityComponentExistence;
 import io.xol.chunkstories.api.exceptions.UnknownComponentException;
 import io.xol.chunkstories.api.net.PacketDestinator;
-import io.xol.chunkstories.api.net.PacketPrepared;
 import io.xol.chunkstories.api.net.PacketSender;
-import io.xol.chunkstories.api.net.PacketSynch;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketWorld;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.server.RemotePlayer;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
 // http://xol.io
 
-public class PacketEntity extends PacketSynch implements PacketPrepared
+public class PacketEntity extends PacketWorld
 {
-	private short entityTypeID;
-	private long entityUUID;
+	private Entity entity;
+	private EntityComponent updateSpecificComponent;
 
-	private Entity entityToUpdate;
-
-	public PacketEntity()
-	{
-		
+	public PacketEntity(World world) {
+		super(world);
 	}
 	
-	public PacketEntity(Entity entityToUpdate) throws IOException
+	public PacketEntity(Entity entityToUpdate)
 	{
-		this.entityToUpdate = entityToUpdate;
-		
-		entityUUID = entityToUpdate.getUUID();
-		entityTypeID = entityToUpdate.getType().getId();
-		
-		this.getSynchPacketOutputStream().writeLong(entityUUID);
-		this.getSynchPacketOutputStream().writeShort(entityTypeID);
+		super(entityToUpdate.getWorld());
+		this.entity = entityToUpdate;
+	}
+	
+	public PacketEntity(Entity entity, EntityComponent component)
+	{
+		this(entity);
+		this.updateSpecificComponent = component;
 	}
 
 	@Override
-	public void prepare(PacketDestinator destinator) throws IOException
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
-		//If the entity no longer exists, we make sure we tell the player so he doesn't spawn it again
-		if(!entityToUpdate.exists())
-			entityToUpdate.getComponents().pushComponentInStream(destinator, this.getSynchPacketOutputStream());
+		long entityUUID = entity.getUUID();
+		short entityTypeID = (short) entity.getWorld().getContentTranslator().getIdForEntity(entity.getType());
+		
+		out.writeLong(entityUUID);
+		out.writeShort(entityTypeID);
+		
+		if(updateSpecificComponent == null) {
+			// No specific component specified ? Update all of them.
+			entity.getComponents().pushAllComponentsInStream(destinator, out);
+		} else { 
+			updateSpecificComponent.pushComponentInStream(destinator, out);
+			
+			//If the entity no longer exists, we make sure we tell the player so he doesn't spawn it again by pushing the existence component
+			if(!entity.exists() && !(updateSpecificComponent instanceof EntityComponentExistence))
+				entity.getComponents().pushComponentInStream(destinator, out);
+		}
 		
 		//Write a 0 to mark the end of the components updates
-		this.getSynchPacketOutputStream().writeInt(0);
-		
-		//Finalizes the synch packet and lets the game build another
-		this.finalizeSynchPacket();
+		out.writeInt(0);
 	}
 
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException, UnknownComponentException
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, UnknownComponentException
 	{
-		entityUUID = in.readLong();
-		entityTypeID = in.readShort();
+		long entityUUID = in.readLong();
+		short entityTypeID = in.readShort();
 		
 		if(entityTypeID == -1)
 			return;
@@ -70,7 +81,7 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 		if(world == null)
 			return;
 		
-		Entity entity = world.getEntityByUUID(this.entityUUID);
+		Entity entity = world.getEntityByUUID(entityUUID);
 		
 		boolean addToWorld = false;
 		
@@ -82,11 +93,8 @@ public class PacketEntity extends PacketSynch implements PacketPrepared
 				((Player) sender).sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
 				return;
 			} else {
-				entity = processor.getWorld().
-						getGameContext().
-						getContent().
-						entities().
-						getEntityTypeById(entityTypeID).
+				entity = processor.getWorld().getContentTranslator().
+						getEntityForId(entityTypeID).
 						create(new Location(world, 0, 0, 0)); // This is technically wrong
 				
 				entity.setUUID(entityUUID);

@@ -5,6 +5,7 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
+import io.xol.chunkstories.api.content.ContentTranslator;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
@@ -40,6 +41,9 @@ public interface World
 	
 	/** Returns the GameContext this world lives in */
 	public GameContext getGameContext();
+	
+	/** Returns the ContentTranslator associated with this world */
+	public ContentTranslator getContentTranslator();
 	
 	/**
 	 * @return The height of the world, default worlds are 1024

@@ -7,11 +7,11 @@ import io.xol.chunkstories.api.voxel.Voxel;
  */
 public abstract class Mapper {
 	protected final Voxel voxel;
-	protected final int voxelID;
+	//protected final int voxelID;
 	
 	public Mapper(Voxel voxel) {
 		this.voxel = voxel;
-		voxelID = voxel.getId();
+		//voxelID = voxel.getId();
 	}
 	
 	/** Translates the method's parameters into something in {@link io.xol.chunkstories.api.voxel.VoxelFormat}. */

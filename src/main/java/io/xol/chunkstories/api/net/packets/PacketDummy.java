@@ -8,7 +8,8 @@ import io.xol.chunkstories.api.exceptions.PacketProcessingException;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -23,13 +24,13 @@ public class PacketDummy extends Packet
 	public byte[] data;
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
 		out.write(data);
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException, PacketProcessingException
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
 	{
 		throw new UnsupportedOperationException();
 	}

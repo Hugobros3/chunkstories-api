@@ -21,9 +21,9 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 	private BasicInventory inventory;
 	
-	public VoxelInventoryComponent(VoxelComponents holder,  int width, int height) {
+	public VoxelInventoryComponent(VoxelComponents holder, int width, int height) {
 		super(holder);
-		this.inventory = new BasicInventory(width, height) {
+		this.inventory = new BasicInventory(holder.getWorld(), width, height) {
 
 			@Override
 			public InventoryHolder getHolder() {
@@ -39,7 +39,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 			public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
 				for(WorldUser user : VoxelInventoryComponent.this.holder().getChunk().holder().getChunkUsers()) {
 					if(user instanceof RemotePlayer) {
-						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(this, x, y, pileChanged);
+						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(this.world, this, x, y, pileChanged);
 						RemotePlayer player = (RemotePlayer)user;
 						player.pushPacket(packet);
 					}

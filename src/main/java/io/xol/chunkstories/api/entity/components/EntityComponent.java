@@ -65,16 +65,7 @@ public abstract class EntityComponent
 		while (iterator.hasNext())
 		{
 			Subscriber subscriber = iterator.next();
-
-			try
-			{
-				PacketEntity packet = new PacketEntity(entity);
-				this.pushComponentInStream(subscriber, packet.getSynchPacketOutputStream());
-				subscriber.pushPacket(packet);
-			}
-			catch (IOException e)
-			{
-			}
+			this.pushComponent(subscriber);
 		}
 	}
 
@@ -114,15 +105,7 @@ public abstract class EntityComponent
 			if (controller != null && subscriber.equals(controller))
 				continue;
 
-			try
-			{
-				PacketEntity packet = new PacketEntity(entity);
-				this.pushComponentInStream(subscriber, packet.getSynchPacketOutputStream());
-				subscriber.pushPacket(packet);
-			}
-			catch (IOException e)
-			{
-			}
+			this.pushComponent(subscriber);
 		}
 	}
 
@@ -130,15 +113,10 @@ public abstract class EntityComponent
 	{
 		//You may check that subscriber has subscribed to said entity ?
 		//A: nope because we send the EntityExistence (hint: false) component to [just] unsubscribed guys so it wouldn't work
-		try
-		{
-			PacketEntity packet = new PacketEntity(entity);
-			this.pushComponentInStream(subscriber, packet.getSynchPacketOutputStream());
-			subscriber.pushPacket(packet);
-		}
-		catch (IOException e)
-		{
-		}
+		
+		PacketEntity packet = new PacketEntity(entity, this);
+		//this.pushComponentInStream(subscriber, packet.getSynchPacketOutputStream());
+		subscriber.pushPacket(packet);
 	}
 
 	public void pushComponentInStream(StreamTarget to, DataOutputStream dos) throws IOException
@@ -169,16 +147,8 @@ public abstract class EntityComponent
 
 	public final void pushAllComponents(Subscriber subscriber)
 	{
-		try
-		{
-			PacketEntity packet = new PacketEntity(entity);
-			this.pushAllComponentsInStream(subscriber, packet.getSynchPacketOutputStream());
-			subscriber.pushPacket(packet);
-		}
-		catch (IOException e)
-		{
-			
-		}
+		PacketEntity packet = new PacketEntity(entity);
+		subscriber.pushPacket(packet);
 	}
 
 	public final void tryPullComponentInStream(int componentId, StreamSource from, DataInputStream dis) throws IOException, UnknownComponentException

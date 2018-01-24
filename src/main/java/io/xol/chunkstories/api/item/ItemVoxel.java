@@ -23,6 +23,7 @@ import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.world.VoxelContext;
+import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -39,7 +40,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 	public Voxel voxel = null;
 	public int voxelMeta = 0;
 
-	public ItemVoxel(ItemType type)
+	public ItemVoxel(ItemDefinition type)
 	{
 		super(type);
 		store = type.store().parent().voxels();
@@ -96,33 +97,33 @@ public class ItemVoxel extends Item implements WorldModificationCause
 				
 				EntityWorldModifier modifierEntity = (EntityWorldModifier) entity;
 				EntityControllable playerEntity = (EntityControllable) entity;
-				int voxelID = voxel.getId();
 				
 				boolean isEntityCreativeMode = (entity instanceof EntityCreative) && (((EntityCreative) entity).isCreativeMode());
 	
 				Location blockLocation = null;
 				blockLocation = playerEntity.getBlockLookingAt(false);
-				int data2write = VoxelFormat.format(voxelID, voxelMeta, 0, 0);
+
+				int dataToWrite = VoxelFormat.format(entity.getWorld().getContentTranslator().getIdForVoxel(voxel), voxelMeta, 0, 0);
 				
 				if (blockLocation != null)
 				{
 					//int selectedBlockPreviousData = user.getWorld().getDataAt(selectedBlock);
 					//Adding blocks should not erase light if the block's not opaque
-					if (store.getVoxelById(data2write).getType().isOpaque())
+					if (voxel.getDefinition().isOpaque())
 					{
-						data2write = VoxelFormat.changeSunlight(data2write, 0);
-						data2write = VoxelFormat.changeBlocklight(data2write, 0);
+						dataToWrite = VoxelFormat.changeSunlight(dataToWrite, 0);
+						dataToWrite = VoxelFormat.changeBlocklight(dataToWrite, 0);
 					}
 					
 					//Glowy stuff should glow
-					if(store.getVoxelById(data2write).getLightLevel(data2write) > 0)
-						data2write = VoxelFormat.changeBlocklight(data2write, store.getVoxelById(data2write).getLightLevel(data2write));
+					if(voxel.getLightLevel(dataToWrite) > 0)
+						dataToWrite = VoxelFormat.changeBlocklight(dataToWrite, voxel.getLightLevel(dataToWrite));
 						
 					// Player events mod
 					if(controller instanceof Player) {
 						Player player = (Player)controller;
 						VoxelContext ctx = entity.getWorld().peek(blockLocation);
-						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, data2write, isEntityCreativeMode ? EntityCreative.CREATIVE_MODE : this, player);
+						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, dataToWrite, isEntityCreativeMode ? EntityCreative.CREATIVE_MODE : this, player);
 						
 						//Anyone has objections ?
 						entity.getWorld().getGameContext().getPluginManager().fireEvent(event);
@@ -131,7 +132,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 							return true;
 					}
 					
-					entity.getWorld().poke((int)blockLocation.x, (int)blockLocation.y, (int)blockLocation.z, data2write, modifierEntity);
+					entity.getWorld().poke((int)blockLocation.x, (int)blockLocation.y, (int)blockLocation.z, dataToWrite, modifierEntity);
 					
 					//entity.getWorld().setVoxelData(blockLocation, data2write, entity);
 					
@@ -161,12 +162,8 @@ public class ItemVoxel extends Item implements WorldModificationCause
 	@Override
 	public void load(DataInputStream stream) throws IOException
 	{
-		voxel = store.getVoxelById(stream.readInt());
+		voxel = store.getVoxelByName(stream.readUTF()); //store.getVoxelById(stream.readInt());
 		voxelMeta = stream.readByte();
-		//((ItemDataVoxel) itemPile.data).voxel = VoxelTypes.get(stream.readInt());
-		//((ItemDataVoxel) itemPile.data).voxelMeta = stream.readByte();
-		
-		//System.out.println("loaded my bits");
 	}
 
 	@Override
@@ -180,20 +177,26 @@ public class ItemVoxel extends Item implements WorldModificationCause
 		
 		//System.out.println("saved my bits");
 		
-		if(voxel != null)
+		/*if(voxel != null)
 			stream.writeInt(voxel.getId());
 		else
-			stream.writeInt(1);
+			stream.writeInt(1);*/
+		if(voxel == null) {
+			stream.writeUTF("air");
+		} else {
+			stream.writeUTF(voxel.getDefinition().getName());
+		}
 		stream.writeByte(voxelMeta);
 	}
 
 	@Override
+	/** Two ItemVoxel can merge if they represent the same voxel & they share the same 8 bits of metadata */
 	public boolean canMergeWith(Item item)
 	{
 		if(item instanceof ItemVoxel)
 		{
 			ItemVoxel itemVoxel = (ItemVoxel)item;
-			return super.canMergeWith(itemVoxel) && itemVoxel.getVoxel().getId() == this.getVoxel().getId() && itemVoxel.getVoxelMeta() == this.getVoxelMeta();
+			return super.canMergeWith(itemVoxel) && itemVoxel.getVoxel().sameKind(getVoxel()) && itemVoxel.getVoxelMeta() == this.getVoxelMeta();
 		}
 		return false;
 	}

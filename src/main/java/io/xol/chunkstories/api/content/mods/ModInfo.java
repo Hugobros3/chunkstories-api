@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.content.mods;
 
-import io.xol.chunkstories.api.content.NamedWithProperties;
+import io.xol.chunkstories.api.content.Definition;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -9,7 +9,7 @@ import io.xol.chunkstories.api.content.NamedWithProperties;
 /**
  * Loads from mod.txt in the mod root directory
  */
-public interface ModInfo extends NamedWithProperties
+public interface ModInfo extends Definition
 {
 	public Mod getMod();
 

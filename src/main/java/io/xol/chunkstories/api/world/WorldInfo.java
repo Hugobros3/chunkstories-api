@@ -1,12 +1,12 @@
 package io.xol.chunkstories.api.world;
 
-import io.xol.chunkstories.api.content.NamedWithProperties;
+import io.xol.chunkstories.api.content.Definition;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public interface WorldInfo extends NamedWithProperties
+public interface WorldInfo extends Definition
 {
 	public String getInternalName();
 

@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.item;
 
 import io.xol.chunkstories.api.content.Content;
-import io.xol.chunkstories.api.content.NamedWithProperties;
+import io.xol.chunkstories.api.content.Definition;
 import io.xol.chunkstories.api.item.renderer.ItemRenderer;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -12,10 +12,10 @@ import io.xol.chunkstories.api.item.renderer.ItemRenderer;
  * Immutable, describes an item type and is a common reference in all items of that type
  * It gets loaded from the .items file
  */
-public interface ItemType extends NamedWithProperties
+public interface ItemDefinition extends Definition
 {
-	/** @return Returns the associated ID in the .items files */
-	public int getID();
+	///** @return Returns the associated ID in the .items files */
+	//public int getID();
 	
 	/** @return The name this item is declared by */
 	public String getInternalName();

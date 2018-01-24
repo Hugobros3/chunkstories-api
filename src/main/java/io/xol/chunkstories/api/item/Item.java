@@ -14,23 +14,23 @@ import io.xol.chunkstories.api.item.renderer.ItemRenderer;
 // http://chunkstories.xyz
 // http://xol.io
 
-public class Item
+public class Item implements Cloneable
 {
-	private final ItemType type;
+	private final ItemDefinition definition;
 	
-	public Item(ItemType type)
+	public Item(ItemDefinition type)
 	{
-		this.type = type;
+		this.definition = type;
 	}
 	
-	public ItemType getType()
+	public ItemDefinition getType()
 	{
-		return type;
+		return definition;
 	}
 	
 	public String getName()
 	{
-		return type.getInternalName();
+		return definition.getInternalName();
 	}
 	
 	/** Returns null by default, you can have custom Item renderers just by returning an Item renderer here. */
@@ -56,7 +56,7 @@ public class Item
 	 * @param input
 	 * @return false if the item doesn't handle the input, true if it does
 	 */
-	public boolean onControllerInput(Entity owner, ItemPile itemPile, Input input, Controller controller)
+	public boolean onControllerInput(Entity owner, ItemPile pile, Input input, Controller controller)
 	{
 		return false;
 	}
@@ -67,7 +67,7 @@ public class Item
 	 */
 	public boolean canMergeWith(Item item)
 	{
-		return type.equals(item.getType());
+		return definition.equals(item.getType());
 	}
 	
 	/**
@@ -80,14 +80,14 @@ public class Item
 	}
 	
 	/** Returns the assignated ID for this item. */
-	public final int getID()
+	/*public final int getID()
 	{
 		return type.getID();
-	}
+	}*/
 	
 	public String getInternalName()
 	{
-		return type.getInternalName();
+		return definition.getInternalName();
 	}
 
 	/** Unsafe, called upon loading this item from a stream. If you do use it, PLEASE ensure you remember how many bytes you read/write and be consistent, else you break the savefile */

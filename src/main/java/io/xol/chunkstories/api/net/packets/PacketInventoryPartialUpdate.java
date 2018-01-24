@@ -12,26 +12,29 @@ import io.xol.chunkstories.api.item.inventory.InventoryTranslator;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
-import io.xol.chunkstories.api.net.PacketSynchPrepared;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketWorld;
+import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-public class PacketInventoryPartialUpdate extends PacketSynchPrepared
+public class PacketInventoryPartialUpdate extends PacketWorld
 {
 	private Inventory inventory;
 	private int slotx, sloty;
 	private ItemPile itemPile;
 
-	public PacketInventoryPartialUpdate()
+	public PacketInventoryPartialUpdate(World world)
 	{
-
+		super(world);
 	}
 
-	public PacketInventoryPartialUpdate(Inventory inventory, int slotx, int sloty, ItemPile newItemPile)
+	public PacketInventoryPartialUpdate(World world, Inventory inventory, int slotx, int sloty, ItemPile newItemPile)
 	{
+		super(world);
 		this.inventory = inventory;
 		this.slotx = slotx;
 		this.sloty = sloty;
@@ -39,7 +42,7 @@ public class PacketInventoryPartialUpdate extends PacketSynchPrepared
 	}
 
 	@Override
-	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
 		InventoryTranslator.writeInventoryHandle(out, inventory);
 
@@ -48,15 +51,13 @@ public class PacketInventoryPartialUpdate extends PacketSynchPrepared
 
 		if (itemPile == null)
 			out.writeInt(0);
-		else
-		{
-			//out.writeInt(itemPile.getItem().getID());
-			itemPile.saveItemIntoStream(out);
+		else {
+			itemPile.saveIntoStream(world.getContentTranslator(), out);
 		}
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException, PacketProcessingException
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
 	{
 		inventory = InventoryTranslator.obtainInventoryHandle(in, processor);
 
@@ -65,7 +66,7 @@ public class PacketInventoryPartialUpdate extends PacketSynchPrepared
 
 		try
 		{
-			itemPile = ItemPile.obtainItemPileFromStream(processor.getContext().getContent().items(), in);
+			itemPile = ItemPile.obtainItemPileFromStream(processor.getWorld().getContentTranslator(), in);
 		}
 		catch (NullItemException e)
 		{

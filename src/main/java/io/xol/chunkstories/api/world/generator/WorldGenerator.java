@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.world.generator;
 
-import io.xol.chunkstories.api.content.Content.WorldGenerators.WorldGeneratorType;
+import io.xol.chunkstories.api.content.Content.WorldGenerators.WorldGeneratorDefinition;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.generator.environment.WorldEnvironment;
@@ -14,17 +14,17 @@ import io.xol.chunkstories.api.world.generator.environment.WorldEnvironment;
 public abstract class WorldGenerator
 {
 	protected final World world;
-	protected final WorldGeneratorType type;
+	protected final WorldGeneratorDefinition definition;
 
-	public WorldGenerator(WorldGeneratorType type, World world)
+	public WorldGenerator(WorldGeneratorDefinition type, World world)
 	{
 		this.world = world;
-		this.type = type;
+		this.definition = type;
 	}
 	
-	public WorldGeneratorType getType()
+	public WorldGeneratorDefinition getDefinition()
 	{
-		return type;
+		return definition;
 	}
 
 	/** Fills a chunk with content */

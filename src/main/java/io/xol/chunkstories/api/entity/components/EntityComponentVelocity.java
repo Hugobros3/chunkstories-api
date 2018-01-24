@@ -87,7 +87,7 @@ public class EntityComponentVelocity extends EntityComponent
 			Controller controller = ((EntityControllable) entity).getControllerComponent().getController();
 			if(controller != null)
 			{
-				PacketVelocityDelta packet = new PacketVelocityDelta(delta);
+				PacketVelocityDelta packet = new PacketVelocityDelta(entity.getWorld(), delta);
 				controller.pushPacket(packet);
 			}
 		}

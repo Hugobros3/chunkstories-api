@@ -7,7 +7,7 @@ package io.xol.chunkstories.api.content;
 /** Describes a configuration section within a configuration file.<br/>
  *  Has a name, and contains properties you can query.
  */
-public interface NamedWithProperties
+public interface Definition
 {
 	public String getName();
 	

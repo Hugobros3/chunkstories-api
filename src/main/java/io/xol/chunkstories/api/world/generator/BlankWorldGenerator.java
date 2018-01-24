@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.world.generator;
 
-import io.xol.chunkstories.api.content.Content.WorldGenerators.WorldGeneratorType;
+import io.xol.chunkstories.api.content.Content.WorldGenerators.WorldGeneratorDefinition;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.generator.environment.DefaultWorldEnvironment;
@@ -14,7 +14,7 @@ public class BlankWorldGenerator extends WorldGenerator
 {
 	DefaultWorldEnvironment worldEnv;
 	
-	public BlankWorldGenerator(WorldGeneratorType type, World world)
+	public BlankWorldGenerator(WorldGeneratorDefinition type, World world)
 	{
 		super(type, world);
 		worldEnv = new DefaultWorldEnvironment(world);

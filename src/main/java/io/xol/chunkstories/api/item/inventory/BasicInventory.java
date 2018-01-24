@@ -15,19 +15,24 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.exceptions.NullItemException;
 import io.xol.chunkstories.api.exceptions.UndefinedItemTypeException;
 import io.xol.chunkstories.api.item.Item;
+import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 import io.xol.chunkstories.api.util.IterableIterator;
 
 public class BasicInventory implements Inventory
 {
+	protected final World world;
+	
 	protected int width;
 	protected int height;
 
 	protected ItemPile[][] contents;
 	
-	public BasicInventory(int width, int height)
+	public BasicInventory(World world, int width, int height)
 	{
+		this.world = world;
+		
 		this.width = width;
 		this.height = height;
 		
@@ -303,7 +308,7 @@ public class BasicInventory implements Inventory
 					stream.writeInt(0);
 				else
 				{
-					pile.saveItemIntoStream(stream);
+					pile.saveIntoStream(world.getContentTranslator(), stream);
 				}
 			}
 	}
@@ -327,7 +332,7 @@ public class BasicInventory implements Inventory
 				ItemPile itemPile;
 				try
 				{
-					itemPile = ItemPile.obtainItemPileFromStream(content.items(), stream);
+					itemPile = ItemPile.obtainItemPileFromStream(world.getContentTranslator(), stream);
 					//Then add the thing
 					contents[i][j] = itemPile;
 					contents[i][j].setInventory(this);

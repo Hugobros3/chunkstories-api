@@ -51,7 +51,7 @@ public class EntityComponentInventory extends EntityComponent
 
 		public EntityInventory(int width, int height)
 		{
-			super(width, height);
+			super(entity.getWorld(), width, height);
 		}
 
 		@Override
@@ -80,7 +80,7 @@ public class EntityComponentInventory extends EntityComponent
 
 		public void refreshItemSlot(int x, int y, ItemPile pileChanged)
 		{
-			Packet packetItemUpdate = new PacketInventoryPartialUpdate(this, x, y, pileChanged);
+			Packet packetItemUpdate = new PacketInventoryPartialUpdate(this.world, this, x, y, pileChanged);
 			Controller controller = null;
 			if (entity instanceof EntityControllable)
 				controller = ((EntityControllable) entity).getControllerComponent().getController();

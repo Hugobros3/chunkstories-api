@@ -15,7 +15,7 @@ import java.io.IOException;
  * Synch packets are meant to be short ; their length is computed when being sent and can be variable
  * Synch packets should never be longer than 256KiB !
  */
-public abstract class PacketSynch extends Packet
+public abstract class PacketSynch_ extends Packet
 {
 	//Used to buffer and compute the length synch packets to send
 
@@ -65,11 +65,11 @@ public abstract class PacketSynch extends Packet
 	
 	byte[] preparedMessage;
 	
-	@Override
+	/*@Override
 	public final void send(PacketDestinator destinator, DataOutputStream out) throws IOException
 	{
 		out.writeInt(preparedMessage.length);
 		out.write(preparedMessage);
-	}
+	}*/
 
 }

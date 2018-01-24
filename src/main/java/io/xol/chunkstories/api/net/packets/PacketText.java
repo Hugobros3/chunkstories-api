@@ -7,23 +7,24 @@ import java.io.IOException;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
 // http://xol.io
 
-public class PacketText extends Packet
+public abstract class PacketText extends Packet
 {
 	public String text;
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
 		out.writeUTF(text);
 	}
 
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext context) throws IOException
 	{
 		text = in.readUTF();
 		

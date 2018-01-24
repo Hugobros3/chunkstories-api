@@ -6,27 +6,29 @@ import java.io.IOException;
 
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
-import io.xol.chunkstories.api.net.PacketWorldStreaming;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketWorld;
+import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 
 /** Packet the client sends to the server to tell him what he requests it to load in.
  *  Server may answer with an UNREGISTER_CHUNK_... packet if we requested a chunk that is too far away for us to be allowed to request it */
-public class PacketWorldUser extends PacketWorldStreaming {
+public class PacketWorldUser extends PacketWorld {
 
-	public static PacketWorldUser registerChunkPacket(int chunkX, int chunkY, int chunkZ) {
-		return new PacketWorldUser(Type.REGISTER_CHUNK, chunkX, chunkY, chunkZ);
+	public static PacketWorldUser registerChunkPacket(World world, int chunkX, int chunkY, int chunkZ) {
+		return new PacketWorldUser(world, Type.REGISTER_CHUNK, chunkX, chunkY, chunkZ);
 	}
 	
-	public static PacketWorldUser unregisterChunkPacket(int chunkX, int chunkY, int chunkZ) {
-		return new PacketWorldUser(Type.UNREGISTER_CHUNK, chunkX, chunkY, chunkZ);
+	public static PacketWorldUser unregisterChunkPacket(World world, int chunkX, int chunkY, int chunkZ) {
+		return new PacketWorldUser(world, Type.UNREGISTER_CHUNK, chunkX, chunkY, chunkZ);
 	}
 	
-	public static PacketWorldUser registerSummary(int regionX, int regionY) {
-		return new PacketWorldUser(Type.REGISTER_SUMMARY, regionX, 0, regionY);
+	public static PacketWorldUser registerSummary(World world, int regionX, int regionY) {
+		return new PacketWorldUser(world, Type.REGISTER_SUMMARY, regionX, 0, regionY);
 	}
 	
-	public static PacketWorldUser unregisterSummary(int regionX, int regionY) {
-		return new PacketWorldUser(Type.UNREGISTER_SUMMARY, regionX, 0, regionY);
+	public static PacketWorldUser unregisterSummary(World world, int regionX, int regionY) {
+		return new PacketWorldUser(world, Type.UNREGISTER_SUMMARY, regionX, 0, regionY);
 	}
 	
 	protected Type type;
@@ -39,12 +41,12 @@ public class PacketWorldUser extends PacketWorldStreaming {
 		UNREGISTER_SUMMARY
 	}
 	
-	public PacketWorldUser() {
-		
+	public PacketWorldUser(World world) {
+		super(world);
 	}
 	
-	private PacketWorldUser(Type type, int x, int y, int z) {
-		super();
+	private PacketWorldUser(World world, Type type, int x, int y, int z) {
+		super(world);
 		this.type = type;
 		this.x = x;
 		this.y = y;
@@ -52,7 +54,7 @@ public class PacketWorldUser extends PacketWorldStreaming {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out) throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		out.writeByte(type.ordinal());
 		if(type == Type.REGISTER_SUMMARY || type == Type.UNREGISTER_SUMMARY) {
 			out.writeInt(x);
@@ -65,7 +67,7 @@ public class PacketWorldUser extends PacketWorldStreaming {
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException {
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException {
 		type = Type.values()[in.readByte()];
 		
 		if(type == Type.REGISTER_SUMMARY || type == Type.UNREGISTER_SUMMARY) {

@@ -16,43 +16,44 @@ import io.xol.chunkstories.api.world.World;
 //http://chunkstories.xyz
 //http://xol.io
 
+/** Defines the behavior for associated with a voxel type declaration */
 public class Voxel
 {
-	final protected VoxelType type;
+	final protected VoxelDefinition definition;
 	final protected Content.Voxels store;
 	
 	protected VoxelRenderer voxelRenderer;
 	
-	public Voxel(VoxelType type)
+	public Voxel(VoxelDefinition definition)
 	{
-		this.type = type;
-		this.store = type.store();
+		this.definition = definition;
+		this.store = definition.store();
 
 		//By default the 'VoxelRenderer' is just wether or not we set-up a model in the .voxels definitions file
-		if(type.getVoxelModel() != null)
-			this.voxelRenderer = type.getVoxelModel();
+		if(definition.getVoxelModel() != null)
+			this.voxelRenderer = definition.getVoxelModel();
 		//No custom model defined ? Use the default renderer.
 		else
-			this.voxelRenderer = type.store().getDefaultVoxelRenderer();
+			this.voxelRenderer = definition.store().getDefaultVoxelRenderer();
 	}
 	
 	/** Contains the information parsed from the .voxels file */
-	public final VoxelType getType() {
-		return type;
+	public final VoxelDefinition getDefinition() {
+		return definition;
 	}
 	
 	/** Get the assignated ID for this voxel, shortcut to VoxelType */
-	public final int getId() {
+	/*public final int getId() {
 		return type.getId();
-	}
+	}*/
 
 	/** Returns the internal, non localized name of this voxel, shortcut to VoxelType */
 	public final String getName() {
-		return type.getName();
+		return definition.getName();
 	}
 	
 	public final Material getMaterial() {
-		return type.getMaterial();
+		return definition.getMaterial();
 	}
 
 	/** @return The custom rendered used or null if default */
@@ -63,7 +64,7 @@ public class Voxel
 	/** Can this Voxel be selected in creative mode ? (or is it skipped ?) */
 	public boolean isVoxelSelectable() {
 		//Air is intangible and so is water
-		return getId() > 0 && !type.isLiquid();
+		return definition.isSelectable();// getId() > 0 && !definition.isLiquid();
 	}
 	
 	/**
@@ -73,7 +74,7 @@ public class Voxel
 	 */
 	public byte getLightLevel(int data) {
 		//By default the light output is the one defined in the type, you can change it depending on the provided data
-		return type.getEmittingLightLevel();
+		return definition.getEmittingLightLevel();
 	}
 
 	/**
@@ -84,24 +85,21 @@ public class Voxel
 	 */
 	public VoxelTexture getVoxelTexture(int data, VoxelSides side, VoxelContext info) {
 		//By default we don't care about context, we give the same texture to everyone
-		return type.getVoxelTexture(side);
+		return definition.getVoxelTexture(side);
 	}
 
 	/**
 	 * Gets the reduction of the light that will transfer from this block to another, based on data from the two blocks and the side from wich it's leaving the first block from.
 	 * 
-	 * @param dataFrom
-	 *            The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
-	 * @param dataTo
-	 *            The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
-	 * @param side
-	 *            The side of the block light would come out of ( see {@link VoxelSides VoxelSides.class} )
+	 * @param dataFrom The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
+	 * @param dataTo The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
+	 * @param side The side of the block light would come out of ( see {@link VoxelSides VoxelSides.class} )
 	 * @return The reduction to apply to the light level on exit
 	 */
 	public int getLightLevelModifier(int dataFrom, int dataTo, VoxelSides side) {
-		if (getType().isOpaque()) //Opaque voxels destroy all light
+		if (getDefinition().isOpaque()) //Opaque voxels destroy all light
 			return -15;
-		return type.getShadingLightLevel(); //Etc
+		return definition.getShadingLightLevel(); //Etc
 	}
 
 	/**
@@ -111,7 +109,7 @@ public class Voxel
 	 * @return Whether or not that face occlude a whole face and thus we can discard it
 	 */
 	public boolean isFaceOpaque(VoxelSides side, int data) {
-		return type.isOpaque();
+		return definition.isOpaque();
 	}
 
 	/**
@@ -144,21 +142,20 @@ public class Voxel
 	 * @return An array of CollisionBox or null.
 	 */
 	public CollisionBox[] getCollisionBoxes(VoxelContext info) {
-		if (getId() == 0) //Air is collisionless
+		if (!definition.isSolid())
 			return new CollisionBox[] {};
-		return new CollisionBox[] { new CollisionBox( type.getCollisionBox()) }; //Return the one box in the definition, if you want more make a customClass
+		return new CollisionBox[] { new CollisionBox( definition.getCollisionBox()) }; //Return the one box in the definition, if you want more make a customClass
 	}
 
-	//TODO is this even used ?
-	/** Compares wether two voxels are similar */
+	/** Two voxels are of the same kind if they share the same definition. */
 	public boolean sameKind(Voxel voxel) {
-		return this.getId() == voxel.getId();
+		return this.getDefinition() == voxel.getDefinition();
 	}
 
 	/** @return Returns an array of ItemPiles to use in creative inventory */
 	public ItemPile[] getItems() {
 		//We spawn a ItemVoxel and set it to reflect this one
-		ItemVoxel itemVoxel = (ItemVoxel) this.getType().store().parent().items().getItemTypeByName("item_voxel").newItem();
+		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemTypeByName("item_voxel").newItem();
 		itemVoxel.voxel = this;
 		return new ItemPile[] { new ItemPile(itemVoxel) };
 	}

@@ -5,6 +5,7 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
+import io.xol.chunkstories.api.content.ContentTranslator;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
@@ -358,6 +359,12 @@ public class DummyWorld implements World {
 
 	@Override
 	public SoundManager getSoundManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ContentTranslator getContentTranslator() {
 		// TODO Auto-generated method stub
 		return null;
 	}

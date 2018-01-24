@@ -18,14 +18,14 @@ import io.xol.chunkstories.api.world.World;
 /** Determines how a specific particle type should be handled, what type of metadata to keep for each particle, how to render them etc. */
 public abstract class ParticleTypeHandler {
 
-	private final ParticleType type;
+	private final ParticleTypeDefinition type;
 	
-	public ParticleTypeHandler(ParticleType type)
+	public ParticleTypeHandler(ParticleTypeDefinition type)
 	{
 		this.type = type;
 	}
 	
-	public ParticleType getType()
+	public ParticleTypeDefinition getType()
 	{
 		return type;
 	}
@@ -67,11 +67,11 @@ public abstract class ParticleTypeHandler {
 			
 			VoxelContext peek = world.peekSafely((int)x, (int)y, (int)z);
 			
-			if (peek.getVoxel().getId() > 0 && peek.getVoxel().getType().isSolid())
+			if (peek.getVoxel().getDefinition().isSolid())
 			{
 				//Fast check if the voxel is just a solid block
 				//TODO isOpaque doesn't mean that exactly, create a new type variable that represents that specific trait
-				if (peek.getVoxel().getType().isOpaque())
+				if (peek.getVoxel().getDefinition().isOpaque())
 					return true;
 				
 				//Else iterate over each box that make up that block

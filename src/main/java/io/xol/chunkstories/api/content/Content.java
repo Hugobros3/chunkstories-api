@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 
 import io.xol.chunkstories.api.animation.SkeletalAnimation;
 import io.xol.chunkstories.api.content.mods.ModsManager;
-import io.xol.chunkstories.api.entity.EntityType;
+import io.xol.chunkstories.api.entity.EntityDefinition;
 import io.xol.chunkstories.api.exceptions.net.UnknowPacketException;
-import io.xol.chunkstories.api.item.ItemType;
+import io.xol.chunkstories.api.item.ItemDefinition;
 import io.xol.chunkstories.api.mesh.MeshLibrary;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.particles.ParticleTypeHandler;
@@ -60,7 +60,7 @@ public interface Content
 	public Voxels voxels();
 	public interface Voxels {
 		
-		public Voxel getVoxelById(int voxelId_orVoxelData);
+		//public Voxel getVoxelById(int voxelId_orVoxelData);
 		
 		public Voxel getVoxelByName(String voxelName);
 		
@@ -100,11 +100,11 @@ public interface Content
 	public ItemsTypes items();
 	public interface ItemsTypes {
 		
-		public ItemType getItemTypeById(int itemId);
+		//public ItemType getItemTypeById(int itemId);
 		
-		public ItemType getItemTypeByName(String itemName);
+		public ItemDefinition getItemTypeByName(String itemName);
 		
-		public Iterator<ItemType> all();
+		public Iterator<ItemDefinition> all();
 
 		public Content parent();
 		
@@ -114,11 +114,11 @@ public interface Content
 	public EntityTypes entities();
 	public interface EntityTypes {
 		
-		public EntityType getEntityTypeById(short entityId);
+		//public EntityType getEntityTypeById(short entityId);
 		
-		public EntityType getEntityTypeByName(String entityName);
+		public EntityDefinition getEntityTypeByName(String entityName);
 		
-		public Iterator<EntityType> all();
+		public Iterator<EntityDefinition> all();
 
 		public Content parent();
 		
@@ -130,7 +130,7 @@ public interface Content
 		
 		public ParticleTypeHandler getParticleTypeHandlerByName(String string);
 		
-		public ParticleTypeHandler getParticleTypeHandlerById(int id);
+		//public ParticleTypeHandler getParticleTypeHandlerById(int id);
 		
 		public Iterator<ParticleTypeHandler> all();
 
@@ -142,16 +142,16 @@ public interface Content
 	public PacketTypes packets();
 	public interface PacketTypes {
 		
-		public PacketType getPacketTypeById(int packetID);
+		//public PacketType getPacketTypeById(int packetID);
 		
-		public PacketType getPacketTypeByName(String name);
+		public PacketDefinition getPacketTypeByName(String name);
 		
-		public PacketType getPacketType(Packet packet) throws UnknowPacketException;
+		public PacketDefinition getPacketType(Packet packet) throws UnknowPacketException;
 		
-		interface PacketType {
+		interface PacketDefinition extends Definition {
 			public String getName();
 			
-			public int getID();
+			//public int getID();
 			
 			public AllowedFrom allowedFrom();
 			
@@ -170,14 +170,14 @@ public interface Content
 	public WorldGenerators generators();
 	public interface WorldGenerators {
 		
-		public WorldGeneratorType getWorldGenerator(String name);
+		public WorldGeneratorDefinition getWorldGenerator(String name);
 		
 		public String getWorldGeneratorName(WorldGenerator generator);
 		
-		public Iterator<WorldGeneratorType> all();
+		public Iterator<WorldGeneratorDefinition> all();
 		
 		/** Contains the parameters stated in a 'generator' section of a .generators config file */
-		public interface WorldGeneratorType extends NamedWithProperties {
+		public interface WorldGeneratorDefinition extends Definition {
 			public String getName();
 			
 			/** Calls the constructor of whatever WorldGenerator you asked for */

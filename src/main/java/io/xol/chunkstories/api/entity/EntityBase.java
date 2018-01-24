@@ -28,7 +28,7 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 public abstract class EntityBase implements Entity
 {
-	final private EntityType entityType;
+	final private EntityDefinition entityType;
 	final protected World world;
 	
 	// The entity UUID is set to -1 so when added to a World the World assigns it a proper one
@@ -42,7 +42,7 @@ public abstract class EntityBase implements Entity
 	final protected EntityComponentExistence existenceComponent;
 	final public EntityComponentPosition positionComponent;
 	
-	public EntityBase(EntityType entityType, Location location) {
+	public EntityBase(EntityDefinition entityType, Location location) {
 		this.entityType = entityType;
 		this.world = location.getWorld();
 
@@ -197,7 +197,7 @@ public abstract class EntityBase implements Entity
 	}
 
 	@Override
-	public final EntityType getType()
+	public final EntityDefinition getType()
 	{
 		return entityType;
 	}

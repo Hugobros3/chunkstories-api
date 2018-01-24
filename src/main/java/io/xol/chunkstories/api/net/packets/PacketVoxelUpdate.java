@@ -3,11 +3,13 @@ package io.xol.chunkstories.api.net.packets;
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.net.PacketDestinator;
-import io.xol.chunkstories.api.net.PacketSynchPrepared;
-import io.xol.chunkstories.api.net.PacketsProcessor;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.voxel.components.VoxelComponent;
+import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 import io.xol.chunkstories.api.net.PacketSender;
+import io.xol.chunkstories.api.net.PacketSendingContext;
+import io.xol.chunkstories.api.net.PacketWorld;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,19 +21,21 @@ import java.util.Map.Entry;
 //http://xol.io
 
 /**
- * Describes a voxel change
+ * Describes a voxel change, including to the VoxelComponents
  */
-public class PacketVoxelUpdate extends PacketSynchPrepared
+public class PacketVoxelUpdate extends PacketWorld
 {
-	public PacketVoxelUpdate() {
-		
+	public PacketVoxelUpdate(World world) {
+		super(world);
 	}
 	
 	public PacketVoxelUpdate(ChunkVoxelContext context) {
+		super(context.getWorld());
 		this.context = context;
 	}
 	
 	public PacketVoxelUpdate(ChunkVoxelContext context, VoxelComponent componentToUpdate) {
+		super(context.getWorld());
 		this.context = context;
 		this.componentToUpdate = componentToUpdate;
 	}
@@ -41,7 +45,7 @@ public class PacketVoxelUpdate extends PacketSynchPrepared
 	private VoxelComponent componentToUpdate;
 	
 	@Override
-	public void fillInternalBuffer(PacketDestinator destinator, DataOutputStream out) throws IOException
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext sendingContext) throws IOException
 	{
 		out.writeInt(context.getX());
 		out.writeInt(context.getY());
@@ -65,7 +69,7 @@ public class PacketVoxelUpdate extends PacketSynchPrepared
 		out.writeByte((byte)0x00);
 	}
 
-	public void process(PacketSender sender, DataInputStream in, PacketsProcessor processor) throws IOException
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException
 	{
 		if(processor instanceof ClientPacketsProcessor)
 		{
@@ -88,7 +92,10 @@ public class PacketVoxelUpdate extends PacketSynchPrepared
 				}
 	
 			} catch (WorldException e) {
-				
+				// Maybe the world wasn't ready ?
+				// Edge case: what happens we receive an update for a chunk we haven't received the data yet ?
+				// The best option would be to delay the process but this is complicated for a rare instance
+				// Maybe one day
 			}
 		}
 		else {

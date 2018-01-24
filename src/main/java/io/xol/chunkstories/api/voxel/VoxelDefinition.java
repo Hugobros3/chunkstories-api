@@ -1,19 +1,19 @@
 package io.xol.chunkstories.api.voxel;
 
 import io.xol.chunkstories.api.content.Content;
-import io.xol.chunkstories.api.content.NamedWithProperties;
+import io.xol.chunkstories.api.content.Definition;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.voxel.materials.Material;
 import io.xol.chunkstories.api.voxel.models.VoxelModel;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
-public interface VoxelType extends NamedWithProperties
+public interface VoxelDefinition extends Definition
 {
-	/** Get the assignated ID for this voxel */
+	/** Get the store where the voxel definitions are stored. */
 	public Content.Voxels store();
 	
-	/** Get the assignated ID for this voxel */
-	public int getId();
+	///** Get the assignated ID for this voxel */
+	//public int getId();
 
 	/** Returns the internal, non localized name of this voxel */
 	public String getName();
@@ -27,21 +27,25 @@ public interface VoxelType extends NamedWithProperties
 	/** Returns the collisionBox defined in the .voxels file, or a default one if none was. */
 	public CollisionBox getCollisionBox();
 	
-	/** Gets the texture for this voxel
-	 ** @param side The side of the block we want the texture of ( see {@link VoxelSides VoxelSides.class} ) */
+	/** 
+	 * Gets the texture for this voxel
+	 * @param side The side of the block we want the texture of ( see {@link VoxelSides VoxelSides.class} ) 
+	 */
 	public VoxelTexture getVoxelTexture(VoxelSides side);
 
-	boolean isSolid();
+	public boolean isSolid();
 
-	boolean isOpaque();
+	public boolean isOpaque();
 	
-	byte getShadingLightLevel();
+	public byte getShadingLightLevel();
 
-	byte getEmittingLightLevel();
+	public byte getEmittingLightLevel();
 
-	boolean isBillboard();
+	public boolean isBillboard();
 
-	boolean isLiquid();
+	public boolean isLiquid();
 
-	boolean isSelfOpaque();
+	public boolean isSelfOpaque();
+
+	public boolean isSelectable();
 }
