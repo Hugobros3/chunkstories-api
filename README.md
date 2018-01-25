@@ -22,7 +22,7 @@ This API is a Gradle project. You can use it without installing anything by leve
 Typing in 'gradlew install' will build the API and install it to your local Maven repository. You can then use the created jars in build/libs.
 
 Alternatively, you can use the maven repo at
-http://maven.xol.io/repository/public to obtain binaries. The groupId is 'io.xol.chunkstories', the artifactId is 'api' and the version is usually a decimal number in the hundreds, '113' currently.
+http://maven.xol.io/repository/public to obtain binaries. The groupId is 'io.xol.chunkstories', the artifactId is 'api' and the version is usually a decimal number in the hundreds, '116' currently.
 
 To lean how to play the game and register an account, please visit http://chunkstories.xyz
 
