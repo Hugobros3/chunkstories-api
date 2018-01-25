@@ -6,26 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
-import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
-import io.xol.chunkstories.api.rendering.lightning.Light;
-import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
-import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingMode;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.DepthTestMode;
 import io.xol.chunkstories.api.rendering.Primitive;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.WorldRenderer.RenderingPass;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelCustomIcon;
-import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.voxel.VoxelSides.Corners;
 import io.xol.chunkstories.api.voxel.models.ChunkMeshDataSubtypes.LodLevel;
 import io.xol.chunkstories.api.voxel.models.ChunkMeshDataSubtypes.ShadingType;
@@ -37,7 +26,6 @@ import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.models.layout.BaseLayoutBaker;
 import io.xol.chunkstories.api.voxel.models.layout.IntricateLayoutBaker;
 import io.xol.chunkstories.api.world.VoxelContext;
-import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.DummyChunk;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -401,7 +389,7 @@ public class VoxelItemRenderer extends ItemRenderer
 			voxelRenderer.renderInto(chunkRenderer, bakingContext, new DummyChunk() {
 				
 				@Override
-				public int peekSimple(int x, int y, int z)
+				public int peekRaw(int x, int y, int z)
 				{
 					if(x == 0 && y == 0 && z == 0)
 						return bri.getData();

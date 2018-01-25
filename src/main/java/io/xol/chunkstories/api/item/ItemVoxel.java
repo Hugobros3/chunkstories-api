@@ -22,6 +22,7 @@ import io.xol.chunkstories.api.item.renderer.VoxelItemRenderer;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
+import io.xol.chunkstories.api.world.FutureVoxelContext;
 import io.xol.chunkstories.api.world.VoxelContext;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
@@ -103,27 +104,29 @@ public class ItemVoxel extends Item implements WorldModificationCause
 				Location blockLocation = null;
 				blockLocation = playerEntity.getBlockLookingAt(false);
 
-				int dataToWrite = VoxelFormat.format(entity.getWorld().getContentTranslator().getIdForVoxel(voxel), voxelMeta, 0, 0);
+				//int dataToWrite = VoxelFormat.format(entity.getWorld().getContentTranslator().getIdForVoxel(voxel), voxelMeta, 0, 0);
 				
 				if (blockLocation != null)
 				{
-					//int selectedBlockPreviousData = user.getWorld().getDataAt(selectedBlock);
-					//Adding blocks should not erase light if the block's not opaque
+					FutureVoxelContext fvc = new FutureVoxelContext(entity.getWorld().peekSafely(blockLocation));
+					
+					//Opaque blocks overwrite the original light with zero.
 					if (voxel.getDefinition().isOpaque())
 					{
-						dataToWrite = VoxelFormat.changeSunlight(dataToWrite, 0);
-						dataToWrite = VoxelFormat.changeBlocklight(dataToWrite, 0);
+						fvc.setBlocklight(0);
+						fvc.setSunlight(0);
 					}
 					
 					//Glowy stuff should glow
-					if(voxel.getLightLevel(dataToWrite) > 0)
-						dataToWrite = VoxelFormat.changeBlocklight(dataToWrite, voxel.getLightLevel(dataToWrite));
+					if(voxel.getDefinition().getEmittingLightLevel() > 0)
+						fvc.setBlocklight(voxel.getLightLevel(fvc));
+						//dataToWrite = VoxelFormat.changeBlocklight(dataToWrite, voxel.getLightLevel(dataToWrite));
 						
 					// Player events mod
 					if(controller instanceof Player) {
 						Player player = (Player)controller;
 						VoxelContext ctx = entity.getWorld().peek(blockLocation);
-						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, dataToWrite, isEntityCreativeMode ? EntityCreative.CREATIVE_MODE : this, player);
+						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, fvc, isEntityCreativeMode ? EntityCreative.CREATIVE_MODE : this, player);
 						
 						//Anyone has objections ?
 						entity.getWorld().getGameContext().getPluginManager().fireEvent(event);
@@ -132,9 +135,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 							return true;
 					}
 					
-					entity.getWorld().poke((int)blockLocation.x, (int)blockLocation.y, (int)blockLocation.z, dataToWrite, modifierEntity);
-					
-					//entity.getWorld().setVoxelData(blockLocation, data2write, entity);
+					entity.getWorld().poke(fvc, modifierEntity);
 					
 					// Decrease stack size
 					if(!isEntityCreativeMode) {

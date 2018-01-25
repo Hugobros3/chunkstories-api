@@ -7,6 +7,7 @@ import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.exceptions.world.voxel.IllegalBlockModificationException;
 import io.xol.chunkstories.api.util.IterableIterator;
+import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.components.VoxelComponents;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.dummy.DummyContext;
@@ -90,37 +91,17 @@ public class DummyChunk implements Chunk
 	@Override
 	public ChunkVoxelContext peek(int x, int y, int z)
 	{
-		return new DummyContext(this, x, y, z, peekSimple(x, y, z));
+		return new DummyContext(this, x, y, z, peekRaw(x, y, z));
 	}
 
 	@Override
-	public int peekSimple(int x, int y, int z) {
+	public Voxel peekSimple(int x, int y, int z) {
 		
 		//Return zero by default
-		return 0;
+		return null;
 	}
 
-	@Override
-	public ChunkVoxelContext poke(int x, int y, int z, int newVoxelData, WorldModificationCause cause)
-			throws WorldException {
-		throw new IllegalBlockModificationException(peek(x,y,z), "This is a dummy chunk, you can't edit any block.");
-	}
-
-	@Override
-	public ChunkVoxelContext pokeSilently(int x, int y, int z, int newVoxelData) throws WorldException {
-		return poke(x, y, z, newVoxelData, null);
-	}
-
-	@Override
-	public void pokeSimple(int x, int y, int z, int newVoxelData) {
-		//Do nothing
-	}
-
-	@Override
-	public void pokeSimpleSilently(int x, int y, int z, int newVoxelData) {
-		//Do nothing
-	}
-
+	
 	@Override
 	public VoxelComponents components(int worldX, int worldY, int worldZ) {
 		throw new UnsupportedOperationException("components()");
@@ -145,5 +126,42 @@ public class DummyChunk implements Chunk
 	public ChunkLightUpdater lightBaker() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int peekRaw(int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ChunkVoxelContext poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
+			WorldModificationCause cause) throws WorldException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeRaw(int x, int y, int z, int newVoxelData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeRawSilently(int x, int y, int z, int newVoxelData) {
+		// TODO Auto-generated method stub
+		
 	}
 }

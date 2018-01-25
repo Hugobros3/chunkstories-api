@@ -61,6 +61,9 @@ public interface Content
 	public interface Voxels {
 		
 		//public Voxel getVoxelById(int voxelId_orVoxelData);
+
+		/** Returns the 'air' voxel ( No voxel data ) */
+		public Voxel air();
 		
 		public Voxel getVoxelByName(String voxelName);
 		

@@ -11,7 +11,7 @@ import io.xol.chunkstories.api.world.World;
 
 public class Location extends Vector3d
 {
-	World world;
+	protected World world;
 	
 	public Location(World world, double x, double y, double z)
 	{

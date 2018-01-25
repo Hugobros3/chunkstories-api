@@ -46,6 +46,10 @@ public class Voxel
 	/*public final int getId() {
 		return type.getId();
 	}*/
+	
+	public final boolean isAir() {
+		return store().air().sameKind(this);
+	}
 
 	/** Returns the internal, non localized name of this voxel, shortcut to VoxelType */
 	public final String getName() {
@@ -69,21 +73,19 @@ public class Voxel
 	
 	/**
 	 * Gets the Blocklight level this voxel emmits
-	 * @param data The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @return The aformentioned light level
 	 */
-	public byte getLightLevel(int data) {
+	public byte getLightLevel(VoxelContext info) {
 		//By default the light output is the one defined in the type, you can change it depending on the provided data
 		return definition.getEmittingLightLevel();
 	}
 
 	/**
 	 * Gets the texture for this voxel
-	 * @param data The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @param side The side of the block we want the texture of ( see {@link VoxelSides VoxelSides.class} )
 	 * @return
 	 */
-	public VoxelTexture getVoxelTexture(int data, VoxelSides side, VoxelContext info) {
+	public VoxelTexture getVoxelTexture(VoxelSides side, VoxelContext info) {
 		//By default we don't care about context, we give the same texture to everyone
 		return definition.getVoxelTexture(side);
 	}
@@ -96,7 +98,7 @@ public class Voxel
 	 * @param side The side of the block light would come out of ( see {@link VoxelSides VoxelSides.class} )
 	 * @return The reduction to apply to the light level on exit
 	 */
-	public int getLightLevelModifier(int dataFrom, int dataTo, VoxelSides side) {
+	public int getLightLevelModifier(VoxelContext in, VoxelContext out, VoxelSides side) {
 		if (getDefinition().isOpaque()) //Opaque voxels destroy all light
 			return -15;
 		return definition.getShadingLightLevel(); //Etc
@@ -105,33 +107,25 @@ public class Voxel
 	/**
 	 * Used to fine-tune the culling system, allows for a precise, per-face approach to culling.
 	 * @param face The side of the block BEING DREW ( not the one we are asking ), so in fact we have to answer for the opposite face, that is the one that this voxel connects with. To get a reference on the sides conventions, see {@link VoxelSides VoxelSides.class}
-	 * @param data The data of the block connected to the one being drew by the face j
+	 * @param metadata The 8 bits of metadata associated with the block we represent.
 	 * @return Whether or not that face occlude a whole face and thus we can discard it
 	 */
-	public boolean isFaceOpaque(VoxelSides side, int data) {
+	public boolean isFaceOpaque(VoxelSides side, int metadata) {
 		return definition.isOpaque();
 	}
 
 	/**
 	 * Get the collision boxes for this object, centered as if the block was in x,y,z
 	 * 
-	 * @param data
-	 *            The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
+	 * @param data The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @return An array of CollisionBox or null.
 	 */
-	public CollisionBox[] getTranslatedCollisionBoxes(World world, int x, int y, int z) {
-		CollisionBox[] boxes = getCollisionBoxes(world.peekSafely(x, y, z));
+	public CollisionBox[] getTranslatedCollisionBoxes(VoxelContext info) {
+		CollisionBox[] boxes = getCollisionBoxes(info);
 		if (boxes != null)
 			for (CollisionBox b : boxes)
-				b.translate(x, y, z);
+				b.translate(info.getX(), info.getY(), info.getZ());
 		return boxes;
-	}
-
-	/**
-	 * Overload of getTranslatedCollisionBoxes with a vector3d
-	 */
-	public CollisionBox[] getTranslatedCollisionBoxes(World world, Vector3dc position) {
-		return getTranslatedCollisionBoxes(world, (int)position.x(), (int)position.y(), (int)position.z());
 	}
 	
 	/**

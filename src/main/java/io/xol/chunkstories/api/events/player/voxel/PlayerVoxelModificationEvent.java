@@ -26,9 +26,9 @@ public class PlayerVoxelModificationEvent extends VoxelModificationEvent
 	// Specific event code
 	final Player player;
 	
-	public PlayerVoxelModificationEvent(VoxelContext context, int data, WorldModificationCause cause, Player player)
+	public PlayerVoxelModificationEvent(VoxelContext context, VoxelContext newData, WorldModificationCause cause, Player player)
 	{
-		super(context, data, cause);
+		super(context, newData, cause);
 		this.player = player;
 	}
 	

@@ -75,7 +75,7 @@ public abstract class ParticleTypeHandler {
 					return true;
 				
 				//Else iterate over each box that make up that block
-				CollisionBox[] boxes = peek.getVoxel().getTranslatedCollisionBoxes(world, (int) x, (int) y, (int) z);
+				CollisionBox[] boxes = peek.getVoxel().getTranslatedCollisionBoxes(peek);
 				if (boxes != null)
 					for (CollisionBox box : boxes)
 						if (box.isPointInside(x, y, z))

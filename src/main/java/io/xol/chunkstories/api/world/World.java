@@ -16,6 +16,7 @@ import io.xol.chunkstories.api.rendering.effects.DecalsManager;
 import io.xol.chunkstories.api.sound.SoundManager;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.util.concurrency.Fence;
+import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
@@ -114,8 +115,6 @@ public interface World
 
 	public interface WorldVoxelContext extends EditableVoxelContext {
 		public World getWorld();
-		
-		public Location getLocation();
 	}
 	
 	/**
@@ -141,34 +140,67 @@ public interface World
 	 * Alternative to peek() that does not create any VoxelContext object<br/>
 	 * <b>Does not throw exceptions</b>, instead safely returns zero upon failure.
 	 * */
-	public int peekSimple(int x, int y, int z);
+	public Voxel peekSimple(int x, int y, int z);
+
+	/** Peek the raw data of the chunk */
+	public int peekRaw(int x, int y, int z);
 
 	/**
-	 * Sets the data for this block
-	 * Takes a full 32-bit data format ( see {@link VoxelFormat})
+	 * Poke new information in a voxel cell.
+	 * 
+	 * If 'voxel' is null the voxel bits will not be updated.
+	 * If 'sunlight' is -1 the sunlight bits will not be updated.
+	 * If 'blocklight' is -1 the blocklight bits will not be updated.
+	 * If 'metadata' is -1 the metadata bits will not be updated.
+	 * 
 	 * It will also trigger lightning and such updates
-	 * @param data The raw block data, see {@link VoxelFormat}
-	 * @throws WorldException if it couldn't poke the world at the specified location for some reason
+	 * @throws WorldException if it couldn't poke the world at the specified location, for example if it's not loaded
 	 */
-	public WorldVoxelContext poke(int x, int y, int z, int newVoxelData, WorldModificationCause cause) throws WorldException;
-	
-	/** 
-	 * Does the same as {@link #poke(x,y,z,d)} but does not trigger any updates.
-	 */
-	public WorldVoxelContext pokeSilently(int x, int y, int z, int newVoxelData) throws WorldException;
+	public WorldVoxelContext poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException;
 
-	/** 
-	 * Does the same as {@link #poke(x,y,z,d)} but without creating any VoxelContext object<br/>
-	 * <b>Does not throw exceptions</b>, instead fails silently.
-	 * <b>Does not take a cause argument.</b>, instead use the slower poke() method
+	/** Simply use a FutureVoxelContext to ease modifications */
+	public VoxelContext poke(FutureVoxelContext fvc, WorldModificationCause cause) throws WorldException;
+	
+	/**
+	 * Poke new information in a voxel cell.
+	 * 
+	 * If 'voxel' is null the voxel bits will not be updated.
+	 * If 'sunlight' is -1 the sunlight bits will not be updated.
+	 * If 'blocklight' is -1 the blocklight bits will not be updated.
+	 * If 'metadata' is -1 the metadata bits will not be updated.
+	 * 
+	 * It will also trigger lightning and such updates
 	 */
-	public void pokeSimple(int x, int y, int z, int newVoxelData);
+	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
+	
+	public void pokeSimple(FutureVoxelContext fvc);
+	
+	/**
+	 * Poke new information in a voxel cell.
+	 * 
+	 * If 'voxel' is null the voxel bits will not be updated.
+	 * If 'sunlight' is -1 the sunlight bits will not be updated.
+	 * If 'blocklight' is -1 the blocklight bits will not be updated.
+	 * If 'metadata' is -1 the metadata bits will not be updated.
+	 * 
+	 * This will *not* trigger any update.
+	 */
+	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
+	
+	public void pokeSimpleSilently(FutureVoxelContext fvc);
 	
 	/** 
-	 * Does the same as {@link #poke(x,y,z,d)} but without creating any VoxelContext object or triggering any updates<br/>
-	 * <b>Does not throw exceptions</b>, instead fails silently.
+	 * Poke the raw data for a voxel cell
+	 * Takes a full 32-bit data format ( see {@link VoxelFormat})
 	 */
-	public void pokeSimpleSilently(int x, int y, int z, int newVoxelData);
+	public void pokeRaw(int x, int y, int z, int newVoxelData);
+	
+	/** 
+	 * Poke the raw data for a voxel cell
+	 * Takes a full 32-bit data format ( see {@link VoxelFormat})
+	 * Does not trigger any updates.
+	 */
+	public void pokeRawSilently(int x, int y, int z, int newVoxelData);
 
 	public IterableIterator<VoxelContext> getVoxelsWithin(CollisionBox boundingBox);
 

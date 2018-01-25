@@ -15,8 +15,6 @@ import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 /** The result of a peek/poke command, contains formatted information about a voxel, as well as a few helper methods */
 public interface VoxelContext
 {
-	public int getData();
-	
 	public World getWorld();
 	
 	public int getX();
@@ -30,16 +28,27 @@ public interface VoxelContext
 		return new Location(getWorld(), getX(), getY(), getZ());
 	}
 	
-	// Neightbour block helper
+	// Neightbor cells access
 	
-	/** Might automatically cache the data, or might not depending on context... */
+	@Deprecated
 	public int getNeightborData(int side);
 
-	public default int getSideId(int side) {
+	@Deprecated
+	public default int getNeightborId(int side) {
 		return VoxelFormat.id(getNeightborData(side));
 	}
+	
+	public default Voxel getNeightborVoxel(int side) {
+		return getNeightbor(side).getVoxel(); // Optimisation hint: do not create the neightbor object if you just want to peek the voxel
+	}
+	
+	public default int getNeightborMetadata(int side) {
+		return getNeightbor(side).getMetaData(); // Optimisation hint: do not create the neightbor object if you just want to peek the metadata
+	}
+	
+	public VoxelContext getNeightbor(int side);
 
-	// Helpers for rendering
+	// Shortcuts for rendering
 
 	public default VoxelRenderer getVoxelRenderer() {
 		Voxel voxel = getVoxel();
@@ -48,16 +57,20 @@ public interface VoxelContext
 
 	public default VoxelTexture getTexture(VoxelSides side) {
 		Voxel voxel = getVoxel();
-		return voxel != null ? voxel.getVoxelTexture(getData(), side, this) : null;
+		return voxel != null ? voxel.getVoxelTexture(side, this) : null;
 	}
 
 	// Data accessing helpers 
+
+	@Deprecated
+	public int getData();
 	
-	public Voxel getVoxel();
-	
+	@Deprecated
 	public default int getId() {
 		return VoxelFormat.id(getData());
 	}
+	
+	public Voxel getVoxel();
 	
 	public default int getMetaData() {
 		return VoxelFormat.meta(getData());
@@ -74,6 +87,6 @@ public interface VoxelContext
 	/** Returns an array (possibly 0-sized) of collision boxes translated to the actual position of the voxel */
 	public default CollisionBox[] getTranslatedCollisionBoxes() {
 		Voxel voxel = getVoxel();
-		return voxel != null ? voxel.getTranslatedCollisionBoxes(getWorld(), getX(), getY(), getZ()) : new CollisionBox[] {};
+		return voxel != null ? voxel.getTranslatedCollisionBoxes(this) : new CollisionBox[] {};
 	}
 }

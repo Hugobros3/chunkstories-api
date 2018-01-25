@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.voxel;
 
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
+import io.xol.chunkstories.api.world.FutureVoxelContext;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -22,7 +23,7 @@ public interface VoxelLogic
 	 * 
 	 * @return The modified data to actually place there
 	 */
-	public int onPlace(ChunkVoxelContext context, int voxelData, WorldModificationCause cause) throws WorldException;
+	public FutureVoxelContext onPlace(ChunkVoxelContext context, FutureVoxelContext newVoxelData, WorldModificationCause cause) throws WorldException;
 	
 	/**
 	 * Called when a voxel implementing this interface is removed
@@ -43,5 +44,5 @@ public interface VoxelLogic
 	 * 
 	 * @return The modified data to actually place there
 	 */
-	public int onModification(ChunkVoxelContext context, int voxelData, WorldModificationCause cause) throws WorldException;
+	public FutureVoxelContext onModification(ChunkVoxelContext context, FutureVoxelContext newVoxelData, WorldModificationCause cause) throws WorldException;
 }

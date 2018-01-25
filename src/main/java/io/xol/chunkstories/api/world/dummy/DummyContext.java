@@ -2,10 +2,12 @@ package io.xol.chunkstories.api.world.dummy;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
+import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.exceptions.world.voxel.IllegalBlockModificationException;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.components.VoxelComponents;
 import io.xol.chunkstories.api.world.EditableVoxelContext;
+import io.xol.chunkstories.api.world.VoxelContext;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
@@ -75,28 +77,47 @@ public class DummyContext implements ChunkVoxelContext {
 		return c;
 	}
 
-	@Override
-	public EditableVoxelContext poke(int newVoxelData, WorldModificationCause cause) throws IllegalBlockModificationException {
-		throw new IllegalBlockModificationException(this, "This is a dummy chunk, you can't edit any block.");
-	}
-
-	@Override
-	public EditableVoxelContext pokeSilently(int newVoxelData) throws IllegalBlockModificationException {
-		throw new IllegalBlockModificationException(this, "This is a dummy chunk, you can't edit any block.");
-	}
-
-	@Override
-	public void pokeSimple(int newVoxelData) {
-		//Do absolutely nothing
-	}
-
-	@Override
-	public void pokeSimpleSilently(int newVoxelData) {
-		//Do absolutely nothing
-	}
+	
 
 	@Override
 	public VoxelComponents components() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public EditableVoxelContext poke(Voxel voxel, int sunlight, int blocklight, int metadata,
+			WorldModificationCause cause) throws WorldException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void pokeSimple(Voxel voxel, int sunlight, int blocklight, int metadata) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeSimpleSilently(Voxel voxel, int sunlight, int blocklight, int metadata) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeRaw(int raw_data_bits) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeRawSilently(int raw_data_bits) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public VoxelContext getNeightbor(int side) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

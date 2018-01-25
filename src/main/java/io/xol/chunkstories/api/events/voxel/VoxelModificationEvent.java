@@ -1,7 +1,6 @@
 package io.xol.chunkstories.api.events.voxel;
 
 import io.xol.chunkstories.api.events.EventListeners;
-import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.world.VoxelContext;
 
 public class VoxelModificationEvent extends VoxelEvent
@@ -24,23 +23,18 @@ public class VoxelModificationEvent extends VoxelEvent
 	// Specific event code
 
 	final WorldModificationCause modificationCause;
-	int newData;
+	VoxelContext newData;
 	
-	public VoxelModificationEvent(VoxelContext context, int data, WorldModificationCause cause)
+	public VoxelModificationEvent(VoxelContext context, VoxelContext newData, WorldModificationCause cause)
 	{
 		super(context);
-		this.newData = data;
+		this.newData = newData;
 		this.modificationCause = cause;
 	}
 
-	public int getNewData()
+	public VoxelContext getNewData()
 	{
 		return newData;
-	}
-
-	public void setNewData(int newData)
-	{
-		this.newData = newData;
 	}
 
 	public WorldModificationCause getModificationCause()
@@ -49,11 +43,11 @@ public class VoxelModificationEvent extends VoxelEvent
 	}
 
 	public ModifiationType getModification() {
-		if(VoxelFormat.id(getContext().getData()) == 0)
+		if(getContext().getVoxel().isAir())
 			return ModifiationType.PLACEMENT;
 		else
 		{
-			if(VoxelFormat.id(newData) == 0)
+			if(newData.getVoxel().isAir())
 				return ModifiationType.DESTRUCTION;
 			else
 				return ModifiationType.REPLACEMENT;

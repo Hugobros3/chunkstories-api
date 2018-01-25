@@ -4,6 +4,8 @@ import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
+import io.xol.chunkstories.api.voxel.Voxel;
+import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.voxel.components.VoxelComponent;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
@@ -79,16 +81,18 @@ public class PacketVoxelUpdate extends PacketWorld
 			int y = in.readInt();
 			int z = in.readInt();
 			int data = in.readInt();
-			byte osef = in.readByte();
 			
+			Voxel voxel = world.getContentTranslator().getVoxelForId(VoxelFormat.id(data));
+			
+			byte nextComponent = in.readByte();
 
 			try {
-				ChunkVoxelContext context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, data, null);
+				ChunkVoxelContext context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, voxel, VoxelFormat.sunlight(data), VoxelFormat.blocklight(data), VoxelFormat.meta(data), null);
 				
-				while(osef != 0) {
+				while(nextComponent != 0) {
 					String componentName = in.readUTF();
 					context.components().get(componentName).pull(sender, in);
-					osef = in.readByte();
+					nextComponent = in.readByte();
 				}
 	
 			} catch (WorldException e) {

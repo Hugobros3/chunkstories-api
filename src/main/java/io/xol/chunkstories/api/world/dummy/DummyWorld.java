@@ -16,6 +16,8 @@ import io.xol.chunkstories.api.rendering.effects.DecalsManager;
 import io.xol.chunkstories.api.sound.SoundManager;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.util.concurrency.Fence;
+import io.xol.chunkstories.api.voxel.Voxel;
+import io.xol.chunkstories.api.world.FutureVoxelContext;
 import io.xol.chunkstories.api.world.VoxelContext;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldCollisionsManager;
@@ -129,34 +131,9 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public int peekSimple(int x, int y, int z) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public WorldVoxelContext poke(int x, int y, int z, int newVoxelData, WorldModificationCause cause)
-			throws WorldException {
+	public Voxel peekSimple(int x, int y, int z) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public WorldVoxelContext pokeSilently(int x, int y, int z, int newVoxelData) throws WorldException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void pokeSimple(int x, int y, int z, int newVoxelData) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pokeSimpleSilently(int x, int y, int z, int newVoxelData) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -367,6 +344,61 @@ public class DummyWorld implements World {
 	public ContentTranslator getContentTranslator() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int peekRaw(int x, int y, int z) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public WorldVoxelContext poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
+			WorldModificationCause cause) throws WorldException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeRaw(int x, int y, int z, int newVoxelData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeRawSilently(int x, int y, int z, int newVoxelData) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public VoxelContext poke(FutureVoxelContext fvc, WorldModificationCause cause) throws WorldException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeSimple(FutureVoxelContext fvc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pokeSimpleSilently(FutureVoxelContext fvc) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
