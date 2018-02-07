@@ -4,7 +4,7 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 
 /** A special VoxelContext outside of any physical realm; using id-relative or world-relative methods will throw exceptions. */
-public class AbstractVoxelContext implements VoxelContext {
+public class AbstractVoxelContext implements VoxelContext, EditableVoxelContext {
 
 	private Voxel voxel;
 	int metadata, blocklight, sunlight;
@@ -75,6 +75,10 @@ public class AbstractVoxelContext implements VoxelContext {
 
 	public void setSunlight(int sunlight) {
 		this.sunlight = sunlight;
+	}
+	
+	public void setBlocklight(int blocklight) {
+		this.blocklight = blocklight;
 	}
 
 	@Override

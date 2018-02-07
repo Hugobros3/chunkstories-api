@@ -12,6 +12,7 @@ import io.xol.chunkstories.api.exceptions.net.UnknowPacketException;
 import io.xol.chunkstories.api.item.ItemDefinition;
 import io.xol.chunkstories.api.mesh.MeshLibrary;
 import io.xol.chunkstories.api.net.Packet;
+import io.xol.chunkstories.api.net.PacketDefinition;
 import io.xol.chunkstories.api.particles.ParticleTypeHandler;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.materials.Material;
@@ -145,25 +146,9 @@ public interface Content
 	public PacketTypes packets();
 	public interface PacketTypes {
 		
-		//public PacketType getPacketTypeById(int packetID);
-		
 		public PacketDefinition getPacketTypeByName(String name);
 		
 		public PacketDefinition getPacketType(Packet packet) throws UnknowPacketException;
-		
-		interface PacketDefinition extends Definition {
-			public String getName();
-			
-			//public int getID();
-			
-			public AllowedFrom allowedFrom();
-			
-			public enum AllowedFrom {
-				ALL,
-				CLIENT,
-				SERVER;
-			}
-		}
 		
 		public Content parent();
 		

@@ -7,13 +7,13 @@ import java.io.IOException;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSendingContext;
-import io.xol.chunkstories.api.net.PacketWorld;
+import io.xol.chunkstories.api.net.PacketWorldStreaming;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
 
 /** Packet the client sends to the server to tell him what he requests it to load in.
  *  Server may answer with an UNREGISTER_CHUNK_... packet if we requested a chunk that is too far away for us to be allowed to request it */
-public class PacketWorldUser extends PacketWorld {
+public class PacketWorldUser extends PacketWorldStreaming {
 
 	public static PacketWorldUser registerChunkPacket(World world, int chunkX, int chunkY, int chunkZ) {
 		return new PacketWorldUser(world, Type.REGISTER_CHUNK, chunkX, chunkY, chunkZ);

@@ -5,7 +5,7 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 
 /** A VoxelContext representing a possible future state for a voxel cell. */
-public class FutureVoxelContext extends Location implements VoxelContext {
+public class FutureVoxelContext extends Location implements VoxelContext, EditableVoxelContext {
 
 	private Voxel voxel;
 	int ix, iy, iz;

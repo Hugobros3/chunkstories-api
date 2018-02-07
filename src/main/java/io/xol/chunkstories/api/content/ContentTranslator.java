@@ -2,12 +2,12 @@ package io.xol.chunkstories.api.content;
 
 import java.util.Collection;
 
-import io.xol.chunkstories.api.content.Content.PacketTypes.PacketDefinition;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.EntityDefinition;
 import io.xol.chunkstories.api.item.Item;
 import io.xol.chunkstories.api.item.ItemDefinition;
 import io.xol.chunkstories.api.net.Packet;
+import io.xol.chunkstories.api.net.PacketDefinition;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelDefinition;
 

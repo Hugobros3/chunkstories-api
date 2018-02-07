@@ -14,7 +14,7 @@ import io.xol.chunkstories.api.net.PacketReceptionContext;
 // http://chunkstories.xyz
 // http://xol.io
 
-public abstract class PacketText extends Packet
+public class PacketText extends Packet
 {
 	public String text;
 

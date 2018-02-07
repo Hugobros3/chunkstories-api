@@ -84,40 +84,39 @@ public class DummyContext implements ChunkVoxelContext {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public EditableVoxelContext poke(Voxel voxel, int sunlight, int blocklight, int metadata,
-			WorldModificationCause cause) throws WorldException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void pokeSimple(Voxel voxel, int sunlight, int blocklight, int metadata) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pokeSimpleSilently(Voxel voxel, int sunlight, int blocklight, int metadata) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pokeRaw(int raw_data_bits) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pokeRawSilently(int raw_data_bits) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public VoxelContext getNeightbor(int side) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setVoxel(Voxel voxel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMetaData(int metadata) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSunlight(int sunlight) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBlocklight(int blocklight) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setRawData(int raw_data_bits) {
+		// TODO Auto-generated method stub
+		
 	}
 }

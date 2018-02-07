@@ -1,7 +1,5 @@
 package io.xol.chunkstories.api.voxel;
 
-import org.joml.Vector3dc;
-
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
@@ -10,7 +8,6 @@ import io.xol.chunkstories.api.voxel.materials.Material;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.VoxelContext;
-import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
