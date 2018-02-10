@@ -22,14 +22,23 @@ public enum VoxelSides
 	// 2 = cs_FRONT  / mc_SOUTH  |    2
 	// 3 = cs_BACK / mc_NORTH  |
 	
-	LEFT,
-	FRONT,
-	RIGHT,
-	BACK,
-	TOP,
-	BOTTOM;
+	LEFT(-1, 0, 0),
+	FRONT(0, 0, 1),
+	RIGHT(1, 0, 0),
+	BACK(0, 0, -1),
+	TOP(0, 1, 0),
+	BOTTOM(0, -1, 0);
 	
 	private static VoxelSides[] oppsiteSide = new VoxelSides[] {RIGHT, BACK, LEFT, FRONT, BOTTOM, TOP};
+	
+	/** Cell offsets when looking up a side cell */
+	public final int dx, dy, dz;
+	
+	VoxelSides(int dx, int dy, int dz) {
+		this.dx = dx;
+		this.dy = dy;
+		this.dz = dz;
+	}
 	
 	public VoxelSides getOppositeSide() {
 		return oppsiteSide[this.ordinal()];

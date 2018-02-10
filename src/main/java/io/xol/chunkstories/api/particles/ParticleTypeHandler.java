@@ -8,8 +8,8 @@ import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.BlendMod
 import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingMode;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
-import io.xol.chunkstories.api.world.VoxelContext;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.cell.CellData;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -65,7 +65,7 @@ public abstract class ParticleTypeHandler {
 		/** Helper method for particles to check their collisions efficiently and concisely */
 		public boolean isCollidingAgainst(World world, float x, float y, float z) {
 			
-			VoxelContext peek = world.peekSafely((int)x, (int)y, (int)z);
+			CellData peek = world.peekSafely((int)x, (int)y, (int)z);
 			
 			if (peek.getVoxel().getDefinition().isSolid())
 			{

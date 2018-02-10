@@ -10,7 +10,7 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.voxel.components.VoxelComponents;
 import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.api.world.World.WorldVoxelContext;
+import io.xol.chunkstories.api.world.World.WorldCell;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -37,10 +37,10 @@ public interface Chunk
 	 * @return the data contained in this chunk as full 32-bit data format ( see {@link VoxelFormat})
 	 * @throws WorldException if it couldn't peek the world at the specified location for some reason
 	 */
-	public ChunkVoxelContext peek(int x, int y, int z);
+	public ChunkCell peek(int x, int y, int z);
 	
 	/** Convenient overload of peek() to take a Vector3dc derivative ( ie: a Location object ) */
-	public ChunkVoxelContext peek(Vector3dc location);
+	public ChunkCell peek(Vector3dc location);
 	
 	/** 
 	 * Alternative to peek() that does not create any VoxelContext object<br/>
@@ -63,7 +63,7 @@ public interface Chunk
 	 * 
 	 * @throws WorldException if it couldn't poke the world at the specified location for some reason
 	 */
-	public ChunkVoxelContext poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException;
+	public ChunkCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException;
 
 	/** 
 	 * Poke new information in a voxel cell.
@@ -115,10 +115,14 @@ public interface Chunk
 	
 	public IterableIterator<Entity> getEntitiesWithinChunk();
 	
-	public interface ChunkVoxelContext extends WorldVoxelContext {
+	public interface ChunkCell extends WorldCell {
 		public Chunk getChunk();
 		
 		public VoxelComponents components();
+
+		@Deprecated
+		/** Accesses the raw data in that cell. Reserved for internal engine purposes ! */
+		public int getData();
 	}
 
 	public void destroy();

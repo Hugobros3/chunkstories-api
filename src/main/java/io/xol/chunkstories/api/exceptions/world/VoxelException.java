@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.exceptions.world;
 
-import io.xol.chunkstories.api.world.VoxelContext;
+import io.xol.chunkstories.api.world.cell.CellData;
 
 /** An exception about some voxel 
  * Doesn't extend ChunkException to account for the fact some exceptions come from unloaded stuff, 
@@ -9,14 +9,14 @@ import io.xol.chunkstories.api.world.VoxelContext;
 @SuppressWarnings("serial")
 public abstract class VoxelException extends WorldException {
 
-	private final VoxelContext context;
+	private final CellData context;
 	
-	public VoxelException(VoxelContext context) {
+	public VoxelException(CellData context) {
 		super(context.getWorld());
 		this.context = context;
 	}
 
-	public VoxelContext getContext() {
+	public CellData getContext() {
 		return context;
 	}
 }

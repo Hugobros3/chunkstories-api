@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.events.voxel;
 
 import io.xol.chunkstories.api.events.EventListeners;
-import io.xol.chunkstories.api.world.VoxelContext;
+import io.xol.chunkstories.api.world.cell.CellData;
 
 public class VoxelModificationEvent extends VoxelEvent
 {
@@ -23,16 +23,16 @@ public class VoxelModificationEvent extends VoxelEvent
 	// Specific event code
 
 	final WorldModificationCause modificationCause;
-	VoxelContext newData;
+	CellData newData;
 	
-	public VoxelModificationEvent(VoxelContext context, VoxelContext newData, WorldModificationCause cause)
+	public VoxelModificationEvent(CellData context, CellData newData, WorldModificationCause cause)
 	{
 		super(context);
 		this.newData = newData;
 		this.modificationCause = cause;
 	}
 
-	public VoxelContext getNewData()
+	public CellData getNewData()
 	{
 		return newData;
 	}

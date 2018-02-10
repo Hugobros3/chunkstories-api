@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.voxel.components;
 
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.util.IterableIterator;
-import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 
 /** 
  * This component isn't used for anything but to signal the game than this voxel
@@ -17,6 +17,6 @@ public abstract class VoxelComponentDynamicRenderer extends VoxelComponent {
 	public abstract VoxelDynamicRenderer getVoxelDynamicRenderer();
 	
 	public interface VoxelDynamicRenderer {
-		public void renderVoxels(RenderingInterface renderer, IterableIterator<ChunkVoxelContext> voxelsOfThisType);
+		public void renderVoxels(RenderingInterface renderer, IterableIterator<ChunkCell> voxelsOfThisType);
 	}
 }

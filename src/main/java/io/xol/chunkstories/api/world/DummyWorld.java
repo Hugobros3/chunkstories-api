@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.world.dummy;
+package io.xol.chunkstories.api.world;
 
 import org.joml.Vector3dc;
 
@@ -17,13 +17,10 @@ import io.xol.chunkstories.api.sound.SoundManager;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.world.FutureVoxelContext;
-import io.xol.chunkstories.api.world.VoxelContext;
-import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.api.world.WorldCollisionsManager;
-import io.xol.chunkstories.api.world.WorldInfo;
+import io.xol.chunkstories.api.world.cell.CellData;
+import io.xol.chunkstories.api.world.cell.FutureCell;
 import io.xol.chunkstories.api.world.chunk.Chunk;
-import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 import io.xol.chunkstories.api.world.chunk.ChunkHolder;
 import io.xol.chunkstories.api.world.chunk.ChunksIterator;
 import io.xol.chunkstories.api.world.chunk.Region;
@@ -107,25 +104,25 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public ChunkVoxelContext peek(int x, int y, int z) throws WorldException {
+	public ChunkCell peek(int x, int y, int z) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ChunkVoxelContext peek(Vector3dc location) throws WorldException {
+	public ChunkCell peek(Vector3dc location) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public WorldVoxelContext peekSafely(int x, int y, int z) {
+	public WorldCell peekSafely(int x, int y, int z) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public WorldVoxelContext peekSafely(Vector3dc location) {
+	public WorldCell peekSafely(Vector3dc location) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -137,7 +134,7 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public IterableIterator<VoxelContext> getVoxelsWithin(CollisionBox boundingBox) {
+	public IterableIterator<CellData> getVoxelsWithin(CollisionBox boundingBox) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -353,7 +350,7 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public WorldVoxelContext poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
+	public WorldCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
 			WorldModificationCause cause) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
@@ -378,7 +375,7 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public VoxelContext poke(FutureVoxelContext fvc, WorldModificationCause cause) throws WorldException {
+	public CellData poke(FutureCell fvc, WorldModificationCause cause) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -390,13 +387,13 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public void pokeSimple(FutureVoxelContext fvc) {
+	public void pokeSimple(FutureCell fvc) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void pokeSimpleSilently(FutureVoxelContext fvc) {
+	public void pokeSimpleSilently(FutureCell fvc) {
 		// TODO Auto-generated method stub
 		
 	}

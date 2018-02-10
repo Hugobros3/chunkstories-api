@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.events.voxel;
 
 import io.xol.chunkstories.api.events.CancellableEvent;
 import io.xol.chunkstories.api.events.EventListeners;
-import io.xol.chunkstories.api.world.VoxelContext;
+import io.xol.chunkstories.api.world.cell.CellData;
 
 public abstract class VoxelEvent extends CancellableEvent
 {
@@ -23,16 +23,16 @@ public abstract class VoxelEvent extends CancellableEvent
 	
 	// Specific event code
 	
-	final VoxelContext context;
+	final CellData context;
 
-	public VoxelEvent(VoxelContext context)
+	public VoxelEvent(CellData context)
 	{
 		super();
 		this.context = context;
 	}
 
 	/** Returns the context before the voxel destruction */
-	public VoxelContext getContext()
+	public CellData getContext()
 	{
 		return context;
 	}

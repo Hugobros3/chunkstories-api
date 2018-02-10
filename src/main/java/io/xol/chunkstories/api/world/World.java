@@ -18,8 +18,11 @@ import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
+import io.xol.chunkstories.api.world.cell.CellData;
+import io.xol.chunkstories.api.world.cell.EditableCell;
+import io.xol.chunkstories.api.world.cell.FutureCell;
 import io.xol.chunkstories.api.world.chunk.Chunk;
-import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 import io.xol.chunkstories.api.world.chunk.ChunkHolder;
 import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.generator.WorldGenerator;
@@ -113,7 +116,7 @@ public interface World
 
 	/* Direct voxel data accessors */
 
-	public interface WorldVoxelContext extends EditableVoxelContext {
+	public interface WorldCell extends EditableCell {
 		public World getWorld();
 	}
 	
@@ -122,19 +125,19 @@ public interface World
 	 * @return the data contained in this chunk as full 32-bit data format ( see {@link VoxelFormat})
 	 * @throws WorldException if it couldn't peek the world at the specified location for some reason
 	 */
-	public ChunkVoxelContext peek(int x, int y, int z) throws WorldException;
+	public ChunkCell peek(int x, int y, int z) throws WorldException;
 	
 	/** Convenient overload of peek() to take a Vector3dc derivative ( ie: a Location object ) */
-	public ChunkVoxelContext peek(Vector3dc location) throws WorldException;
+	public ChunkCell peek(Vector3dc location) throws WorldException;
 	
 	/**
 	 * Safely calls peek() and returns a WorldVoxelContext no matter what.
 	 * Zeroes-out if the normal peek() would have failed.
 	 */
-	public WorldVoxelContext peekSafely(int x, int y, int z);
+	public WorldCell peekSafely(int x, int y, int z);
 	
 	/** Convenient overload of peekSafely() to take a Vector3dc derivative ( ie: a Location object ) */
-	public WorldVoxelContext peekSafely(Vector3dc location);
+	public WorldCell peekSafely(Vector3dc location);
 	
 	/** 
 	 * Alternative to peek() that does not create any VoxelContext object<br/>
@@ -156,10 +159,10 @@ public interface World
 	 * It will also trigger lightning and such updates
 	 * @throws WorldException if it couldn't poke the world at the specified location, for example if it's not loaded
 	 */
-	public WorldVoxelContext poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException;
+	public WorldCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException;
 
 	/** Simply use a FutureVoxelContext to ease modifications */
-	public VoxelContext poke(FutureVoxelContext fvc, WorldModificationCause cause) throws WorldException;
+	public CellData poke(FutureCell fvc, WorldModificationCause cause) throws WorldException;
 	
 	/**
 	 * Poke new information in a voxel cell.
@@ -173,7 +176,7 @@ public interface World
 	 */
 	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
 	
-	public void pokeSimple(FutureVoxelContext fvc);
+	public void pokeSimple(FutureCell fvc);
 	
 	/**
 	 * Poke new information in a voxel cell.
@@ -187,7 +190,7 @@ public interface World
 	 */
 	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
 	
-	public void pokeSimpleSilently(FutureVoxelContext fvc);
+	public void pokeSimpleSilently(FutureCell fvc);
 	
 	/** 
 	 * Poke the raw data for a voxel cell
@@ -202,7 +205,7 @@ public interface World
 	 */
 	public void pokeRawSilently(int x, int y, int z, int newVoxelData);
 
-	public IterableIterator<VoxelContext> getVoxelsWithin(CollisionBox boundingBox);
+	public IterableIterator<CellData> getVoxelsWithin(CollisionBox boundingBox);
 
 	/* Chunks */
 	

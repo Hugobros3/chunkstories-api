@@ -1,19 +1,24 @@
-package io.xol.chunkstories.api.world;
+package io.xol.chunkstories.api.world.cell;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.voxel.VoxelSides;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
+import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
-/** The result of a peek/poke command, contains formatted information about a voxel, as well as a few helper methods */
-public interface VoxelContext
+/** 
+ * A CellData is representing the content of a specific cell in the world.
+ * 
+ * A cell is the smallest editable bit of world data in chunk stories.
+ * A cell contains a Voxel type, 8 bits of free-form metadata and 2x 4-bits of voxel lightning ( for sun/skylight and voxel-emitted light )
+ */
+public interface CellData
 {
 	public World getWorld();
 	
@@ -27,16 +32,26 @@ public interface VoxelContext
 		//Just here so dummy classes are shorter, actual voxel contexts have a field for this
 		return new Location(getWorld(), getX(), getY(), getZ());
 	}
+
+	/** Deprecated: you should NOT use raw data outside of the engine internals! */
+	//public int getData();
 	
+	/** Return the Voxel type used in this cell */
+	public Voxel getVoxel();
+	
+	public int getMetaData();
+	
+	public int getSunlight();
+	
+	public int getBlocklight();
+
 	// Neightbor cells access
 	
-	@Deprecated
-	public int getNeightborData(int side);
-
-	@Deprecated
-	public default int getNeightborId(int side) {
-		return VoxelFormat.id(getNeightborData(side));
-	}
+	//@Deprecated
+	/** Deprecated: you should NOT use raw data outside of the engine internals! */
+	//public int getNeightborData(int side);
+	
+	public CellData getNeightbor(int side);
 	
 	public default Voxel getNeightborVoxel(int side) {
 		return getNeightbor(side).getVoxel(); // Optimisation hint: do not create the neightbor object if you just want to peek the voxel
@@ -46,9 +61,7 @@ public interface VoxelContext
 		return getNeightbor(side).getMetaData(); // Optimisation hint: do not create the neightbor object if you just want to peek the metadata
 	}
 	
-	public VoxelContext getNeightbor(int side);
-
-	// Shortcuts for rendering
+	// Shortcuts
 
 	public default VoxelRenderer getVoxelRenderer() {
 		Voxel voxel = getVoxel();
@@ -58,30 +71,6 @@ public interface VoxelContext
 	public default VoxelTexture getTexture(VoxelSides side) {
 		Voxel voxel = getVoxel();
 		return voxel != null ? voxel.getVoxelTexture(side, this) : null;
-	}
-
-	// Data accessing helpers 
-
-	@Deprecated
-	public int getData();
-	
-	@Deprecated
-	public default int getId() {
-		return VoxelFormat.id(getData());
-	}
-	
-	public Voxel getVoxel();
-	
-	public default int getMetaData() {
-		return VoxelFormat.meta(getData());
-	}
-	
-	public default int getSunlight() {
-		return VoxelFormat.sunlight(getData());
-	}
-	
-	public default int getBlocklight() {
-		return VoxelFormat.blocklight(getData());
 	}
 	
 	/** Returns an array (possibly 0-sized) of collision boxes translated to the actual position of the voxel */

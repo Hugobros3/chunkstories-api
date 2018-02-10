@@ -7,14 +7,14 @@ import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.voxel.materials.Material;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
-import io.xol.chunkstories.api.world.VoxelContext;
+import io.xol.chunkstories.api.world.cell.CellData;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
 /** Defines the behavior for associated with a voxel type declaration */
-public class Voxel
+public class Voxel implements VoxelLogic
 {
 	final protected VoxelDefinition definition;
 	final protected Content.Voxels store;
@@ -39,11 +39,6 @@ public class Voxel
 		return definition;
 	}
 	
-	/** Get the assignated ID for this voxel, shortcut to VoxelType */
-	/*public final int getId() {
-		return type.getId();
-	}*/
-	
 	public final boolean isAir() {
 		return store().air().sameKind(this);
 	}
@@ -58,7 +53,7 @@ public class Voxel
 	}
 
 	/** @return The custom rendered used or null if default */
-	public VoxelRenderer getVoxelRenderer(VoxelContext info) {
+	public VoxelRenderer getVoxelRenderer(CellData info) {
 		return voxelRenderer;
 	}
 	
@@ -72,7 +67,7 @@ public class Voxel
 	 * Gets the Blocklight level this voxel emmits
 	 * @return The aformentioned light level
 	 */
-	public byte getLightLevel(VoxelContext info) {
+	public byte getLightLevel(CellData info) {
 		//By default the light output is the one defined in the type, you can change it depending on the provided data
 		return definition.getEmittingLightLevel();
 	}
@@ -82,7 +77,7 @@ public class Voxel
 	 * @param side The side of the block we want the texture of ( see {@link VoxelSides VoxelSides.class} )
 	 * @return
 	 */
-	public VoxelTexture getVoxelTexture(VoxelSides side, VoxelContext info) {
+	public VoxelTexture getVoxelTexture(VoxelSides side, CellData info) {
 		//By default we don't care about context, we give the same texture to everyone
 		return definition.getVoxelTexture(side);
 	}
@@ -90,12 +85,12 @@ public class Voxel
 	/**
 	 * Gets the reduction of the light that will transfer from this block to another, based on data from the two blocks and the side from wich it's leaving the first block from.
 	 * 
-	 * @param dataFrom The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
-	 * @param dataTo The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
+	 * @param in The full data related the entry cell (==this one) ( see {@link VoxelFormat VoxelFormat.class} )
+	 * @param out The full data related the exit voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @param side The side of the block light would come out of ( see {@link VoxelSides VoxelSides.class} )
 	 * @return The reduction to apply to the light level on exit
 	 */
-	public int getLightLevelModifier(VoxelContext in, VoxelContext out, VoxelSides side) {
+	public int getLightLevelModifier(CellData in, CellData out, VoxelSides side) {
 		if (getDefinition().isOpaque()) //Opaque voxels destroy all light
 			return -15;
 		return definition.getShadingLightLevel(); //Etc
@@ -117,7 +112,7 @@ public class Voxel
 	 * @param data The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @return An array of CollisionBox or null.
 	 */
-	public CollisionBox[] getTranslatedCollisionBoxes(VoxelContext info) {
+	public CollisionBox[] getTranslatedCollisionBoxes(CellData info) {
 		CollisionBox[] boxes = getCollisionBoxes(info);
 		if (boxes != null)
 			for (CollisionBox b : boxes)
@@ -132,7 +127,7 @@ public class Voxel
 	 *            full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @return An array of CollisionBox or null.
 	 */
-	public CollisionBox[] getCollisionBoxes(VoxelContext info) {
+	public CollisionBox[] getCollisionBoxes(CellData info) {
 		if (!definition.isSolid())
 			return new CollisionBox[] {};
 		return new CollisionBox[] { new CollisionBox( definition.getCollisionBox()) }; //Return the one box in the definition, if you want more make a customClass

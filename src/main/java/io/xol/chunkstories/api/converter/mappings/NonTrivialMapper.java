@@ -1,8 +1,8 @@
 package io.xol.chunkstories.api.converter.mappings;
 
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.world.FutureVoxelContext;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.cell.FutureCell;
 import io.xol.enklume.MinecraftRegion;
 
 /** For blocks that have some fancy properties we need to consider, like doors or signs. */
@@ -14,7 +14,7 @@ public abstract class NonTrivialMapper extends Mapper {
 
 	/** We don't use this method for Non-trivial mappers */
 	@Override
-	public final void output(int mcId, byte mcMeta, FutureVoxelContext fvc) {
+	public final void output(int mcId, byte mcMeta, FutureCell fvc) {
 		throw new UnsupportedOperationException();
 	}
 	

@@ -5,12 +5,11 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
-import io.xol.chunkstories.api.exceptions.world.voxel.IllegalBlockModificationException;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.components.VoxelComponents;
 import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.api.world.dummy.DummyContext;
+import io.xol.chunkstories.api.world.cell.DummyCell;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -83,17 +82,35 @@ public class DummyChunk implements Chunk
 	}
 
 	@Override
-	public ChunkVoxelContext peek(Vector3dc location)
+	public ChunkCell peek(Vector3dc location)
 	{
 		return peek((int)location.x(), (int)location.y(), (int)location.z());
 	}
 
 	@Override
-	public ChunkVoxelContext peek(int x, int y, int z)
+	public ChunkCell peek(int x, int y, int z)
 	{
-		return new DummyContext(this, x, y, z, peekRaw(x, y, z));
+		return new DummyChunkCell(this, x, y, z);
 	}
 
+	class DummyChunkCell extends DummyCell implements ChunkCell {
+
+		public DummyChunkCell(DummyChunk dummyChunk, int x, int y, int z) {
+			super(x, y, z, null, 0, 0, 0);
+		}
+
+		@Override
+		public Chunk getChunk() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public VoxelComponents components() {
+			throw new UnsupportedOperationException("components()");
+		}
+	}
+	
 	@Override
 	public Voxel peekSimple(int x, int y, int z) {
 		
@@ -135,7 +152,7 @@ public class DummyChunk implements Chunk
 	}
 
 	@Override
-	public ChunkVoxelContext poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
+	public ChunkCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
 			WorldModificationCause cause) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;

@@ -25,7 +25,7 @@ import io.xol.chunkstories.api.voxel.models.VoxelBakerHighPoly;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.models.layout.BaseLayoutBaker;
 import io.xol.chunkstories.api.voxel.models.layout.IntricateLayoutBaker;
-import io.xol.chunkstories.api.world.VoxelContext;
+import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.chunk.DummyChunk;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -356,7 +356,7 @@ public class VoxelItemRenderer extends ItemRenderer
 		}*/
 	}
 
-	private void renderVoxel(RenderingInterface renderingContext, Voxel voxel, VoxelRenderer voxelRenderer, VoxelContext bri)
+	private void renderVoxel(RenderingInterface renderingContext, Voxel voxel, VoxelRenderer voxelRenderer, CellData bri)
 	{
 		int hash = voxel.getDefinition().hashCode() + bri.getMetaData(); // There is a *very* slim chance of collision, but whatever life's too short for this
 		
@@ -391,8 +391,8 @@ public class VoxelItemRenderer extends ItemRenderer
 				@Override
 				public int peekRaw(int x, int y, int z)
 				{
-					if(x == 0 && y == 0 && z == 0)
-						return bri.getData();
+					//if(x == 0 && y == 0 && z == 0)
+					//	return bri.getData();
 					return 0;
 				}
 				

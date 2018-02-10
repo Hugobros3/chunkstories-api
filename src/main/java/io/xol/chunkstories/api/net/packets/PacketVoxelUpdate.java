@@ -8,7 +8,7 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.voxel.components.VoxelComponent;
 import io.xol.chunkstories.api.world.World;
-import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSendingContext;
 import io.xol.chunkstories.api.net.PacketWorld;
@@ -31,18 +31,18 @@ public class PacketVoxelUpdate extends PacketWorld
 		super(world);
 	}
 	
-	public PacketVoxelUpdate(ChunkVoxelContext context) {
+	public PacketVoxelUpdate(ChunkCell context) {
 		super(context.getWorld());
 		this.context = context;
 	}
 	
-	public PacketVoxelUpdate(ChunkVoxelContext context, VoxelComponent componentToUpdate) {
+	public PacketVoxelUpdate(ChunkCell context, VoxelComponent componentToUpdate) {
 		super(context.getWorld());
 		this.context = context;
 		this.componentToUpdate = componentToUpdate;
 	}
 	
-	private ChunkVoxelContext context;
+	private ChunkCell context;
 	
 	private VoxelComponent componentToUpdate;
 	
@@ -87,7 +87,7 @@ public class PacketVoxelUpdate extends PacketWorld
 			byte nextComponent = in.readByte();
 
 			try {
-				ChunkVoxelContext context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, voxel, VoxelFormat.sunlight(data), VoxelFormat.blocklight(data), VoxelFormat.meta(data), null);
+				ChunkCell context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, voxel, VoxelFormat.sunlight(data), VoxelFormat.blocklight(data), VoxelFormat.meta(data), null);
 				
 				while(nextComponent != 0) {
 					String componentName = in.readUTF();

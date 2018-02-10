@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.exceptions.world.voxel;
 
 import io.xol.chunkstories.api.exceptions.world.VoxelException;
-import io.xol.chunkstories.api.world.VoxelContext;
+import io.xol.chunkstories.api.world.cell.CellData;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -16,7 +16,7 @@ public class IllegalBlockModificationException extends VoxelException
 
 	private static final long serialVersionUID = -1717494086092644106L;
 	
-	public IllegalBlockModificationException(VoxelContext context, String message)
+	public IllegalBlockModificationException(CellData context, String message)
 	{
 		super(context);
 		this.message = message;

@@ -11,7 +11,7 @@ import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.voxel.components.VoxelComponent;
 import io.xol.chunkstories.api.voxel.components.VoxelInventoryComponent;
-import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -76,7 +76,7 @@ public class InventoryTranslator
 			String componentName = in.readUTF();
 			
 			try {
-				ChunkVoxelContext voxelContext = context.getWorld().peek(x, y, z);
+				ChunkCell voxelContext = context.getWorld().peek(x, y, z);
 				VoxelComponent com = voxelContext.components().get(componentName);
 				if(com != null && com instanceof VoxelInventoryComponent) {
 					VoxelInventoryComponent comp = (VoxelInventoryComponent)com;

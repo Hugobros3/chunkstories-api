@@ -1,7 +1,7 @@
 package io.xol.chunkstories.api.converter.mappings;
 
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.world.FutureVoxelContext;
+import io.xol.chunkstories.api.world.cell.FutureCell;
 
 /** 
  * Used by the map importer/converter. 
@@ -14,5 +14,5 @@ public abstract class Mapper {
 	}
 	
 	/** Translates the method's parameters into something in {@link io.xol.chunkstories.api.voxel.VoxelFormat}. */
-	public abstract void output(int minecraftId, byte minecraftMeta, FutureVoxelContext fvc);
+	public abstract void output(int minecraftId, byte minecraftMeta, FutureCell fvc);
 }

@@ -22,10 +22,10 @@ import io.xol.chunkstories.api.item.renderer.VoxelItemRenderer;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
-import io.xol.chunkstories.api.world.FutureVoxelContext;
-import io.xol.chunkstories.api.world.VoxelContext;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
+import io.xol.chunkstories.api.world.cell.CellData;
+import io.xol.chunkstories.api.world.cell.FutureCell;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -108,7 +108,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 				
 				if (blockLocation != null)
 				{
-					FutureVoxelContext fvc = new FutureVoxelContext(entity.getWorld().peekSafely(blockLocation));
+					FutureCell fvc = new FutureCell(entity.getWorld().peekSafely(blockLocation));
 					
 					//Opaque blocks overwrite the original light with zero.
 					if (voxel.getDefinition().isOpaque())
@@ -125,7 +125,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 					// Player events mod
 					if(controller instanceof Player) {
 						Player player = (Player)controller;
-						VoxelContext ctx = entity.getWorld().peek(blockLocation);
+						CellData ctx = entity.getWorld().peek(blockLocation);
 						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, fvc, isEntityCreativeMode ? EntityCreative.CREATIVE_MODE : this, player);
 						
 						//Anyone has objections ?

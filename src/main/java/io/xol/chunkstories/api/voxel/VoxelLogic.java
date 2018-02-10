@@ -2,8 +2,8 @@ package io.xol.chunkstories.api.voxel;
 
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
-import io.xol.chunkstories.api.world.FutureVoxelContext;
-import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
+import io.xol.chunkstories.api.world.cell.FutureCell;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -15,34 +15,38 @@ import io.xol.chunkstories.api.world.chunk.Chunk.ChunkVoxelContext;
 public interface VoxelLogic
 {
 	/**
-	 * Called when a voxel implementing this interface is placed
-	 * @param voxelData The intended data to place at this location
-	 * @param entity If placed by an entity
+	 * Called before setting a cell to this Voxel type. Previous state is assumed to be air.
 	 * 
-	 * @throws IllegalBlockModificationException If we want to prevent it
+	 * @param newData The data we want to place here. You are welcome to modify it !
 	 * 
-	 * @return The modified data to actually place there
+	 * @throws Throw a IllegalBlockModificationException if you want to stop the modification from happening altogether.
 	 */
-	public FutureVoxelContext onPlace(ChunkVoxelContext context, FutureVoxelContext newVoxelData, WorldModificationCause cause) throws WorldException;
+	public default void onPlace(FutureCell newData, WorldModificationCause cause) throws WorldException {
+		//Do nothing
+	}
 	
 	/**
-	 * Called when a voxel implementing this interface is removed
-	 * @param voxelData Complete data of the voxel being removed
-	 * @param entity If removed by an entity
+	 * Called before replacing a cell contaning this voxel type with air.
 	 * 
-	 * @throws IllegalBlockModificationException If we want to prevent it
+	 * @param context Current data in this cell.
+	 * @param cause The cause of this modification ( can be an Entity )
+	 * 
+	 * @throws Throw a IllegalBlockModificationException if you want to stop the modification from happening.
 	 */
-	public void onRemove(ChunkVoxelContext context, WorldModificationCause cause) throws WorldException;
+	public default void onRemove(ChunkCell context, WorldModificationCause cause) throws WorldException {
+		//Do nothing
+	}
 	
 	/**
-	 * Called when a voxel implementing this interface is changed ( but the voxel type remains the same )
-	 * @param voxelData The old data being replaced
-	 * @param voxelData Complete new data being applied
-	 * @param entity If modified by an entity
+	 * Called when either the metadata, block_light or sun_light values of a cell of this Voxel type is touched.
+	 * 
+	 * @param context The current data in this cell.
+	 * @param newData The future data we want to put there
+	 * @param cause The cause of this modification ( can be an Entity )
 	 * 
 	 * @throws IllegalBlockModificationException If we want to prevent it
-	 * 
-	 * @return The modified data to actually place there
 	 */
-	public FutureVoxelContext onModification(ChunkVoxelContext context, FutureVoxelContext newVoxelData, WorldModificationCause cause) throws WorldException;
+	public default void onModification(ChunkCell context, FutureCell newData, WorldModificationCause cause) throws WorldException {
+		//Do nothing
+	}
 }
