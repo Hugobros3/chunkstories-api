@@ -5,6 +5,7 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
+import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.ContentTranslator;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
@@ -45,6 +46,9 @@ public interface World
 	
 	/** Returns the GameContext this world lives in */
 	public GameContext getGameContext();
+	
+	/** Return the Content used with this world */
+	public Content getContent();
 	
 	/** Returns the ContentTranslator associated with this world */
 	public ContentTranslator getContentTranslator();

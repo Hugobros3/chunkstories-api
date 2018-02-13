@@ -17,21 +17,24 @@ public abstract class Cell implements CellData {
 		this.metadata = meta;
 		this.blocklight = blocklight;
 		this.sunlight = sunlight;
+		
+		//if(!voxel.getName().equals("air"))
+		//	System.out.println(voxel.getName());
 	}
 	
 	@Override
 	public int getX() {
-		return 0;
+		return x;
 	}
 
 	@Override
 	public int getY() {
-		return 0;
+		return y;
 	}
 
 	@Override
 	public int getZ() {
-		return 0;
+		return z;
 	}
 
 	@Override

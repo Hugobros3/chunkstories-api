@@ -109,6 +109,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 				if (blockLocation != null)
 				{
 					FutureCell fvc = new FutureCell(entity.getWorld().peekSafely(blockLocation));
+					fvc.setVoxel(voxel);
 					
 					//Opaque blocks overwrite the original light with zero.
 					if (voxel.getDefinition().isOpaque())

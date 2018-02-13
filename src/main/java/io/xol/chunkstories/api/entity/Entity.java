@@ -21,7 +21,7 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 public interface Entity
 {
 	/** Return the object representing the declaration of this entity in a .entities file */
-	public EntityDefinition getType();
+	public EntityDefinition getDefinition();
 	
 	/** @return the entity's world */
 	public World getWorld();

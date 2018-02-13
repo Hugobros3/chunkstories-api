@@ -5,8 +5,6 @@ import io.xol.chunkstories.api.content.Definition;
 public interface PacketDefinition extends Definition {
 	public String getName();
 	
-	//public int getID();
-	
 	public AllowedFrom allowedFrom();
 	
 	public enum AllowedFrom {
@@ -15,9 +13,9 @@ public interface PacketDefinition extends Definition {
 		SERVER;
 	}
 	
-	public PacketType getType();
+	public PacketGenre getType();
 	
-	public enum PacketType {
+	public enum PacketGenre {
 		/** Internal packets the engine uses to negociate connections and do it's job */
 		SYSTEM,
 		/** For miscalineous uses, both the engine & mods may use those */

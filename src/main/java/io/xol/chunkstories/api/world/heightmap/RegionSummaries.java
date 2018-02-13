@@ -1,6 +1,7 @@
 package io.xol.chunkstories.api.world.heightmap;
 
 import io.xol.chunkstories.api.Location;
+import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.chunk.WorldUser;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -55,5 +56,5 @@ public interface RegionSummaries
 	
 	public int getHeightAtWorldCoordinates(int worldX, int worldZ);
 	
-	public int getDataAtWorldCoordinates(int worldX, int worldZ);
+	public CellData getTopCellAtWorldCoordinates(int worldX, int worldZ);
 }

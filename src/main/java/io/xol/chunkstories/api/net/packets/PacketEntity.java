@@ -49,7 +49,7 @@ public class PacketEntity extends PacketWorld
 	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
 		long entityUUID = entity.getUUID();
-		short entityTypeID = (short) entity.getWorld().getContentTranslator().getIdForEntity(entity.getType());
+		short entityTypeID = (short) entity.getWorld().getContentTranslator().getIdForEntity(entity);
 		
 		out.writeLong(entityUUID);
 		out.writeShort(entityTypeID);

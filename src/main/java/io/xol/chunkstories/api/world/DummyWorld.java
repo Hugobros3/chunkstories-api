@@ -5,6 +5,7 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.GameLogic;
 import io.xol.chunkstories.api.Location;
+import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.ContentTranslator;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
@@ -396,6 +397,12 @@ public class DummyWorld implements World {
 	public void pokeSimpleSilently(FutureCell fvc) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Content getContent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

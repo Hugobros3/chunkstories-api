@@ -31,9 +31,7 @@ import io.xol.chunkstories.api.world.generator.WorldGenerator;
  */
 public interface Content
 {
-	/** Returns which context is this content relevant to */
-	//public GameContext getContext();
-	
+	/** Returns the ModManager that was used to load this content */
 	public ModsManager modsManager();
 
 	/** Obtains an Asset using it's name string 
@@ -149,6 +147,8 @@ public interface Content
 		public PacketDefinition getPacketTypeByName(String name);
 		
 		public PacketDefinition getPacketType(Packet packet) throws UnknowPacketException;
+		
+		public Iterator<PacketDefinition> all();
 		
 		public Content parent();
 		

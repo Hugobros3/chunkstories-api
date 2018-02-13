@@ -3,6 +3,7 @@ package io.xol.chunkstories.api.world.heightmap;
 import java.util.Iterator;
 
 import io.xol.chunkstories.api.util.concurrency.Fence;
+import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.chunk.WorldUser;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -20,14 +21,12 @@ public interface RegionSummary
 	public boolean unregisterUser(WorldUser user);
 
 	public Iterator<WorldUser> getSummaryUsers();
-
-	public void updateOnBlockModification(int worldX, int height, int worldZ, int voxelData);
 	
 	public void setHeightAndId(int worldX, int height, int worldZ, int voxelData);
 
 	public int getHeight(int x, int z);
 
-	public int getVoxelData(int x, int z);
+	public CellData getTopCell(int x, int z);
 
 	public int getRegionX();
 	

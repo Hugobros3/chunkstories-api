@@ -28,7 +28,7 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 public abstract class EntityBase implements Entity
 {
-	final private EntityDefinition entityType;
+	final private EntityDefinition entityDefinition;
 	final protected World world;
 	
 	// The entity UUID is set to -1 so when added to a World the World assigns it a proper one
@@ -43,7 +43,7 @@ public abstract class EntityBase implements Entity
 	final public EntityComponentPosition positionComponent;
 	
 	public EntityBase(EntityDefinition entityType, Location location) {
-		this.entityType = entityType;
+		this.entityDefinition = entityType;
 		this.world = location.getWorld();
 
 		//Components have to be initialized in constructor explicitly
@@ -109,7 +109,7 @@ public abstract class EntityBase implements Entity
 	@Override
 	public String toString()
 	{
-		return "[" + this.getClass().getSimpleName() + ": holderExists: " + (positionComponent.getChunkWithin() != null) + " ,position : " + positionComponent.getLocation() + " UUID : " + entityUUID + " Type: " + this.getType().getName() + " Chunk:"
+		return "[" + this.getClass().getSimpleName() + ": holderExists: " + (positionComponent.getChunkWithin() != null) + " ,position : " + positionComponent.getLocation() + " UUID : " + entityUUID + " Type: " + entityDefinition.getName() + " Chunk:"
 				+ this.positionComponent.getChunkWithin() + " ]";
 	}
 
@@ -197,9 +197,9 @@ public abstract class EntityBase implements Entity
 	}
 
 	@Override
-	public final EntityDefinition getType()
+	public final EntityDefinition getDefinition()
 	{
-		return entityType;
+		return entityDefinition;
 	}
 
 	@Override
