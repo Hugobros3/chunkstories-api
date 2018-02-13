@@ -146,8 +146,11 @@ public class Voxel implements VoxelLogic
 		return new ItemPile[] { new ItemPile(itemVoxel) };
 	}
 	
-	public Content.Voxels store()
-	{
+	public String toString() {
+		return "[Voxel name:"+getName()+"]";
+	}
+	
+	public Content.Voxels store() {
 		return store;
 	}
 }

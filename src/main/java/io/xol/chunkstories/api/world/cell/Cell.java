@@ -72,4 +72,8 @@ public abstract class Cell implements CellData {
 	public void setBlocklight(int blocklight) {
 		this.blocklight = blocklight;
 	}
+	
+	public String toString() {
+		return "[Cell "+x+", "+y+", "+z+" "+voxel+" "+sunlight+":"+blocklight+":"+metadata+"]";
+	}
 }

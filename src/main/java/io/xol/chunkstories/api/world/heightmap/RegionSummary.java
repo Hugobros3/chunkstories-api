@@ -21,12 +21,12 @@ public interface RegionSummary
 	public boolean unregisterUser(WorldUser user);
 
 	public Iterator<WorldUser> getSummaryUsers();
-	
-	public void setHeightAndId(int worldX, int height, int worldZ, int voxelData);
 
 	public int getHeight(int x, int z);
 
 	public CellData getTopCell(int x, int z);
+	
+	public void setTopCell(CellData data);
 
 	public int getRegionX();
 	
