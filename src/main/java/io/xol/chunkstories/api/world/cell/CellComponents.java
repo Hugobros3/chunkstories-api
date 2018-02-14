@@ -1,0 +1,45 @@
+package io.xol.chunkstories.api.world.cell;
+
+import java.util.Map.Entry;
+
+import io.xol.chunkstories.api.util.IterableIterator;
+import io.xol.chunkstories.api.voxel.components.VoxelComponent;
+import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
+import io.xol.chunkstories.api.world.chunk.WorldUser;
+
+/** Represents the various VoxelComponents that may exist in one voxel cell */
+public interface CellComponents {
+	public Chunk getChunk();
+
+	public World getWorld();
+	
+	/** Returns the WORLD x coordinate */
+	public int getX();
+
+	/** Returns the WORLD y coordinate */
+	public int getY();
+
+	/** Returns the WORLD z coordinate */
+	public int getZ();
+	
+	/** Peeks the cell containing those components */
+	public ChunkCell cell();
+	
+	/** Returns a list of users that can see this cell */
+	public IterableIterator<WorldUser> users();
+	
+	///** Removes any components this cell might have had */
+	//public void erase();
+	
+	///** Add a new named component here */
+	//public void put(String name, VoxelComponent component);
+	
+	public VoxelComponent get(String name);
+
+	/** Looks for a VoxelComponent and returns it's name if it is contained in this cell. */
+	public String name(VoxelComponent component);
+
+	public IterableIterator<Entry<String, VoxelComponent>> all();
+}

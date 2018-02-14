@@ -1,6 +1,10 @@
 package io.xol.chunkstories.api.voxel;
 
 import io.xol.chunkstories.api.content.Content;
+import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
+import io.xol.chunkstories.api.exceptions.world.WorldException;
+import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.physics.CollisionBox;
@@ -8,13 +12,16 @@ import io.xol.chunkstories.api.voxel.materials.Material;
 import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.cell.CellData;
+import io.xol.chunkstories.api.world.cell.FutureCell;
+import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
+import io.xol.chunkstories.api.world.chunk.Chunk.FreshChunkCell;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
 //http://xol.io
 
 /** Defines the behavior for associated with a voxel type declaration */
-public class Voxel implements VoxelLogic
+public class Voxel
 {
 	final protected VoxelDefinition definition;
 	final protected Content.Voxels store;
@@ -39,6 +46,7 @@ public class Voxel implements VoxelLogic
 		return definition;
 	}
 	
+	/** Returns true only if this voxel is the 'void' air type */
 	public final boolean isAir() {
 		return store().air().sameKind(this);
 	}
@@ -48,6 +56,7 @@ public class Voxel implements VoxelLogic
 		return definition.getName();
 	}
 	
+	/** Returns the Material used by this Voxel */
 	public final Material getMaterial() {
 		return definition.getMaterial();
 	}
@@ -57,25 +66,65 @@ public class Voxel implements VoxelLogic
 		return voxelRenderer;
 	}
 	
-	/** Can this Voxel be selected in creative mode ? (or is it skipped ?) */
-	public boolean isVoxelSelectable() {
-		//Air is intangible and so is water
-		return definition.isSelectable();// getId() > 0 && !definition.isLiquid();
+	/**
+	 * Called before setting a cell to this Voxel type. Previous state is assumed to be air.
+	 * @param newData The data we want to place here. You are welcome to modify it !
+	 * @throws Throw a IllegalBlockModificationException if you want to stop the modification from happening altogether.
+	 */
+	public void onPlace(FutureCell cell, WorldModificationCause cause) throws WorldException {
+		//Do nothing
+	}
+	
+	/** 
+	 * Called <i>after</i> a cell was successfully placed.
+	 * Unlike onPlace you can add your voxelComponents here.
+	 * @param cell 
+	 */
+	public void whenPlaced(FreshChunkCell cell) {
+		
 	}
 	
 	/**
-	 * Gets the Blocklight level this voxel emmits
+	 * Called before replacing a cell contaning this voxel type with air.
+	 * @param context Current data in this cell.
+	 * @param cause The cause of this modification ( can be an Entity )
+	 * @throws Throw a IllegalBlockModificationException if you want to stop the modification from happening.
+	 */
+	public void onRemove(ChunkCell cell, WorldModificationCause cause) throws WorldException {
+		//Do nothing
+	}
+	
+	/**
+	 * Called when either the metadata, block_light or sun_light values of a cell of this Voxel type is touched.
+	 * @param context The current data in this cell.
+	 * @param newData The future data we want to put there
+	 * @param cause The cause of this modification ( can be an Entity )
+	 * @throws IllegalBlockModificationException If we want to prevent it
+	 */
+	public void onModification(ChunkCell context, FutureCell newData, WorldModificationCause cause) throws WorldException {
+		//Do nothing
+	}
+	
+	/**
+	 * Called when an Entity's controller sends an Input while looking at this Cell
+	 * @return True if the interaction was 'handled', and won't be passed to the next stage of the input pipeline
+	 */
+	public boolean handleInteraction(Entity entity, ChunkCell voxelContext, Input input) {
+		return false;
+	}
+	
+	/**
+	 * Gets the Blocklight level this voxel emits
 	 * @return The aformentioned light level
 	 */
-	public byte getLightLevel(CellData info) {
+	public byte getEmittedLightLevel(CellData info) {
 		//By default the light output is the one defined in the type, you can change it depending on the provided data
-		return definition.getEmittingLightLevel();
+		return definition.getEmittedLightLevel();
 	}
 
 	/**
 	 * Gets the texture for this voxel
 	 * @param side The side of the block we want the texture of ( see {@link VoxelSides VoxelSides.class} )
-	 * @return
 	 */
 	public VoxelTexture getVoxelTexture(VoxelSides side, CellData info) {
 		//By default we don't care about context, we give the same texture to everyone
@@ -134,11 +183,11 @@ public class Voxel implements VoxelLogic
 	}
 
 	/** Two voxels are of the same kind if they share the same definition. */
-	public boolean sameKind(Voxel voxel) {
+	public final boolean sameKind(Voxel voxel) {
 		return this.getDefinition() == voxel.getDefinition();
 	}
 
-	/** @return Returns an array of ItemPiles to use in creative inventory */
+	/** @return Returns an array of ItemPiles for all the player-placeable variants of this Voxel */
 	public ItemPile[] getItems() {
 		//We spawn a ItemVoxel and set it to reflect this one
 		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemTypeByName("item_voxel").newItem();
@@ -150,7 +199,7 @@ public class Voxel implements VoxelLogic
 		return "[Voxel name:"+getName()+"]";
 	}
 	
-	public Content.Voxels store() {
+	public final Content.Voxels store() {
 		return store;
 	}
 }

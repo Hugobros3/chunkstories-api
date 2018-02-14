@@ -32,9 +32,6 @@ public interface CellData
 		//Just here so dummy classes are shorter, actual voxel contexts have a field for this
 		return new Location(getWorld(), getX(), getY(), getZ());
 	}
-
-	/** Deprecated: you should NOT use raw data outside of the engine internals! */
-	//public int getData();
 	
 	/** Return the Voxel type used in this cell */
 	public Voxel getVoxel();
@@ -46,10 +43,6 @@ public interface CellData
 	public int getBlocklight();
 
 	// Neightbor cells access
-	
-	//@Deprecated
-	/** Deprecated: you should NOT use raw data outside of the engine internals! */
-	//public int getNeightborData(int side);
 	
 	public CellData getNeightbor(int side);
 	

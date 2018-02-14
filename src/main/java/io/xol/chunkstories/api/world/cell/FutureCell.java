@@ -19,7 +19,8 @@ public class FutureCell extends Cell implements CellData, EditableCell {
 	}
 	
 	public FutureCell(CellData ogContext) {
-		this(ogContext.getWorld(), ogContext.getX(), ogContext.getY(), ogContext.getZ(), ogContext.getVoxel(), ogContext.getMetaData(), ogContext.getBlocklight(), ogContext.getSunlight());
+		super(ogContext.getX(), ogContext.getY(), ogContext.getZ(), ogContext.getVoxel(), ogContext.getMetaData(), ogContext.getBlocklight(), ogContext.getSunlight());
+		this.world = ogContext.getWorld();
 	}
 
 	@Deprecated

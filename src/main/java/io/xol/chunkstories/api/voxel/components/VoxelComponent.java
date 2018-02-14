@@ -6,18 +6,19 @@ import java.io.IOException;
 
 import io.xol.chunkstories.api.net.packets.PacketVoxelUpdate;
 import io.xol.chunkstories.api.server.RemotePlayer;
+import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 public abstract class VoxelComponent {
-	private final VoxelComponents holder;
+	private final CellComponents holder;
 	
-	public VoxelComponent(VoxelComponents holder) {
+	public VoxelComponent(CellComponents holder) {
 		this.holder = holder;
 	}
 	
-	public final VoxelComponents holder() {
+	public final CellComponents holder() {
 		return holder;
 	}
 	
@@ -27,7 +28,7 @@ public abstract class VoxelComponent {
 	
 	/** Pushes the component to every client subscribed to the chunk owning this voxel */
 	public void pushComponentEveryone() {
-		for(WorldUser user : holder.getChunk().holder().getChunkUsers()) {
+		for(WorldUser user : holder.users()) {
 			if(user instanceof RemotePlayer) {
 				pushComponent((RemotePlayer)user);
 			}
@@ -36,7 +37,7 @@ public abstract class VoxelComponent {
 	
 	/** Pushes the component to a specific player */
 	public void pushComponent(RemotePlayer player) {
-		PacketVoxelUpdate packet = new PacketVoxelUpdate(holder.getChunk().peek(holder.getX(), holder.getY(), holder.getZ()), this);
+		PacketVoxelUpdate packet = new PacketVoxelUpdate(holder.cell(), this);
 		player.pushPacket(packet);
 	}
 	

@@ -8,9 +8,10 @@ import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
-import io.xol.chunkstories.api.voxel.components.VoxelComponents;
+import io.xol.chunkstories.api.voxel.components.VoxelComponent;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.World.WorldCell;
+import io.xol.chunkstories.api.world.cell.CellComponents;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -105,7 +106,7 @@ public interface Chunk
 	public boolean isAirChunk();
 
 	/** Obtains the EntityVoxel saved at the given location */
-	public VoxelComponents components(int worldX, int worldY, int worldZ);
+	public CellComponents components(int worldX, int worldY, int worldZ);
 	
 	/** Add some entity to the chunk's confines */
 	public void addEntity(Entity entity);
@@ -118,11 +119,15 @@ public interface Chunk
 	public interface ChunkCell extends WorldCell {
 		public Chunk getChunk();
 		
-		public VoxelComponents components();
+		public CellComponents components();
 
 		@Deprecated
 		/** Accesses the raw data in that cell. Reserved for internal engine purposes ! */
 		public int getData();
+	}
+	
+	public interface FreshChunkCell extends ChunkCell {
+		public void registerComponent(String name, VoxelComponent component);
 	}
 
 	public void destroy();

@@ -9,6 +9,7 @@ import io.xol.chunkstories.api.item.inventory.InventoryHolder;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.net.packets.PacketInventoryPartialUpdate;
 import io.xol.chunkstories.api.server.RemotePlayer;
+import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
@@ -21,7 +22,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 	private BasicInventory inventory;
 	
-	public VoxelInventoryComponent(VoxelComponents holder, int width, int height) {
+	public VoxelInventoryComponent(CellComponents holder, int width, int height) {
 		super(holder);
 		this.inventory = new BasicInventory(holder.getWorld(), width, height) {
 
@@ -37,7 +38,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 			@Override
 			public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
-				for(WorldUser user : VoxelInventoryComponent.this.holder().getChunk().holder().getChunkUsers()) {
+				for(WorldUser user : holder.users()) {
 					if(user instanceof RemotePlayer) {
 						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(this.world, this, x, y, pileChanged);
 						RemotePlayer player = (RemotePlayer)user;
@@ -57,7 +58,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 	@Override
 	public void pull(StreamSource from, DataInputStream dis) throws IOException {
-		inventory.pullInventory(from, dis, holder().getChunk().getWorld().getGameContext().getContent());
+		inventory.pullInventory(from, dis, holder().getWorld().getGameContext().getContent());
 	}
 
 	public BasicInventory getInventory() {

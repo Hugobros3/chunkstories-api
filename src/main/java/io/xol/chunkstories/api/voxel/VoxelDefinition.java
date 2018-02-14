@@ -39,7 +39,7 @@ public interface VoxelDefinition extends Definition
 	
 	public byte getShadingLightLevel();
 
-	public byte getEmittingLightLevel();
+	public byte getEmittedLightLevel();
 
 	public boolean isBillboard();
 

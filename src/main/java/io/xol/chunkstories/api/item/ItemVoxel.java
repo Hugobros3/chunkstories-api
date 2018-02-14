@@ -21,8 +21,6 @@ import io.xol.chunkstories.api.item.renderer.ItemRenderer;
 import io.xol.chunkstories.api.item.renderer.VoxelItemRenderer;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.VoxelFormat;
-import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.FutureCell;
@@ -119,9 +117,8 @@ public class ItemVoxel extends Item implements WorldModificationCause
 					}
 					
 					//Glowy stuff should glow
-					if(voxel.getDefinition().getEmittingLightLevel() > 0)
-						fvc.setBlocklight(voxel.getLightLevel(fvc));
-						//dataToWrite = VoxelFormat.changeBlocklight(dataToWrite, voxel.getLightLevel(dataToWrite));
+					//if(voxel.getDefinition().getEmittedLightLevel() > 0)
+					fvc.setBlocklight(voxel.getEmittedLightLevel(fvc));
 						
 					// Player events mod
 					if(controller instanceof Player) {

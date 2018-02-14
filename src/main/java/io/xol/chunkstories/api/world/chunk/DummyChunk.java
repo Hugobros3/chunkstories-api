@@ -7,8 +7,8 @@ import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.components.VoxelComponents;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.cell.DummyCell;
 
 //(c) 2015-2017 XolioWare Interactive
@@ -106,7 +106,7 @@ public class DummyChunk implements Chunk
 		}
 
 		@Override
-		public VoxelComponents components() {
+		public CellComponents components() {
 			throw new UnsupportedOperationException("components()");
 		}
 	}
@@ -120,7 +120,7 @@ public class DummyChunk implements Chunk
 
 	
 	@Override
-	public VoxelComponents components(int worldX, int worldY, int worldZ) {
+	public CellComponents components(int worldX, int worldY, int worldZ) {
 		throw new UnsupportedOperationException("components()");
 	}
 

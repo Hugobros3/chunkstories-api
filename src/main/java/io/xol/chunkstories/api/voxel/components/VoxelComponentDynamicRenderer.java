@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.voxel.components;
 
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.util.IterableIterator;
+import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 
 /** 
@@ -10,7 +11,7 @@ import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
  */
 public abstract class VoxelComponentDynamicRenderer extends VoxelComponent {
 
-	public VoxelComponentDynamicRenderer(VoxelComponents holder) {
+	public VoxelComponentDynamicRenderer(CellComponents holder) {
 		super(holder);
 	}
 	
