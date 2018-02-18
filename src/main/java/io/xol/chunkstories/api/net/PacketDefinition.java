@@ -13,8 +13,9 @@ public interface PacketDefinition extends Definition {
 		SERVER;
 	}
 	
-	public PacketGenre getType();
+	public PacketGenre getGenre();
 	
+	/** There are only 4 genders */
 	public enum PacketGenre {
 		/** Internal packets the engine uses to negociate connections and do it's job */
 		SYSTEM,
