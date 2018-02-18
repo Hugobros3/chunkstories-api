@@ -20,7 +20,7 @@ public interface ItemDefinition extends Definition
 	/** @return The name this item is declared by */
 	public String getInternalName();
 	
-	public Content.ItemsTypes store();
+	public Content.ItemsDefinitions store();
 
 	/** Items in chunk stories can take up more than one slot.
 	 * @return How many slots this items use, horizontally */

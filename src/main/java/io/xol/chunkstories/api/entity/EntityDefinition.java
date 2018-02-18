@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.entity;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.content.Definition;
-import io.xol.chunkstories.api.content.Content.EntityTypes;
+import io.xol.chunkstories.api.content.Content.EntityDefinitions;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
@@ -16,5 +16,5 @@ public interface EntityDefinition extends Definition
 	
 	public Entity create(Location location);
 	
-	public EntityTypes store();
+	public EntityDefinitions store();
 }

@@ -99,8 +99,8 @@ public interface Content
 		public Logger logger();
 	}
 	
-	public ItemsTypes items();
-	public interface ItemsTypes {
+	public ItemsDefinitions items();
+	public interface ItemsDefinitions {
 		
 		//public ItemType getItemTypeById(int itemId);
 		
@@ -113,8 +113,8 @@ public interface Content
 		public Logger logger();
 	}
 	
-	public EntityTypes entities();
-	public interface EntityTypes {
+	public EntityDefinitions entities();
+	public interface EntityDefinitions {
 		
 		//public EntityType getEntityTypeById(short entityId);
 		
@@ -141,8 +141,8 @@ public interface Content
 		public Logger logger();
 	}
 	
-	public PacketTypes packets();
-	public interface PacketTypes {
+	public PacketDefinitions packets();
+	public interface PacketDefinitions {
 		
 		public PacketDefinition getPacketByName(String name);
 		
