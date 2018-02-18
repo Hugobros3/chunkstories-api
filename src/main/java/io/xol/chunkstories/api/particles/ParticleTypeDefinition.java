@@ -9,8 +9,6 @@ import io.xol.chunkstories.api.content.Definition;
 
 public interface ParticleTypeDefinition extends Definition
 {
-	public int getID();
-	
 	public String getName();
 	
 	public Content.ParticlesTypes store();
