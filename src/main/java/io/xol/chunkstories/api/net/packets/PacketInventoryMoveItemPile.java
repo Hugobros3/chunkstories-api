@@ -34,6 +34,9 @@ public class PacketInventoryMoveItemPile extends PacketWorld
 	public int oldX, oldY, newX, newY;
 	public int amount;
 	
+	public PacketInventoryMoveItemPile(World world) {
+		super(world);
+	}
 	
 	public PacketInventoryMoveItemPile(World world, ItemPile itemPile, Inventory from, Inventory to, int oldX, int oldY, int newX, int newY, int amount)
 	{
