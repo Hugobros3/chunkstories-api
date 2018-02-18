@@ -12,6 +12,9 @@ import io.xol.chunkstories.api.world.World;
 /** Processes sent packets */
 public interface PacketSendingContext {
 
+	/** Whoever are we sending packets to ? */
+	public PacketDestinator getInterlocutor();
+	
 	public GameContext getContext();
 	
 	public World getWorld();

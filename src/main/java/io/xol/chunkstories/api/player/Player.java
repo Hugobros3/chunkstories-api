@@ -6,8 +6,7 @@ import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
 import io.xol.chunkstories.api.item.inventory.Inventory;
-import io.xol.chunkstories.api.net.PacketDestinator;
-import io.xol.chunkstories.api.net.PacketSender;
+import io.xol.chunkstories.api.net.Interlocutor;
 import io.xol.chunkstories.api.plugin.commands.CommandEmitter;
 import io.xol.chunkstories.api.world.World;
 
@@ -16,7 +15,7 @@ import io.xol.chunkstories.api.world.World;
 //http://xol.io
 
 /** Represents a player (Remote or Local) as the once calling shots */
-public interface Player extends CommandEmitter, Controller, Subscriber, PacketDestinator, PacketSender
+public interface Player extends CommandEmitter, Controller, Subscriber, Interlocutor
 {
 	/** @return the username of the player */
 	public String getName();
