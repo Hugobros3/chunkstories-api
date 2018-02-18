@@ -144,9 +144,9 @@ public interface Content
 	public PacketTypes packets();
 	public interface PacketTypes {
 		
-		public PacketDefinition getPacketTypeByName(String name);
+		public PacketDefinition getPacketByName(String name);
 		
-		public PacketDefinition getPacketType(Packet packet) throws UnknowPacketException;
+		public PacketDefinition getPacketFromInstance(Packet packet) throws UnknowPacketException;
 		
 		public Iterator<PacketDefinition> all();
 		
