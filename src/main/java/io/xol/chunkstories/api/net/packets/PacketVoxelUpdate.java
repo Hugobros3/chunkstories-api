@@ -46,6 +46,7 @@ public class PacketVoxelUpdate extends PacketWorld
 	
 	private VoxelComponent componentToUpdate;
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext sendingContext) throws IOException
 	{
