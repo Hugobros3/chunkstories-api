@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.item.renderer;
+package io.xol.chunkstories.api.rendering.item;
 
 import org.joml.Matrix4f;
 
@@ -12,14 +12,13 @@ import io.xol.chunkstories.api.world.World;
 //http://xol.io
 
 /**
- * Renders items
+ * Instanced once per ItemDefinition, has the job of rendering all the Item instances from that definition.
  */
 public class ItemRenderer
 {
 	protected final ItemRenderer fallbackRenderer;
 	
-	public ItemRenderer(ItemRenderer fallbackRenderer)
-	{
+	public ItemRenderer(ItemRenderer fallbackRenderer) {
 		this.fallbackRenderer = fallbackRenderer;
 	}
 
@@ -31,8 +30,7 @@ public class ItemRenderer
 	 * @param g
 	 * @param scaling
 	 */
-	public void renderItemInInventory(RenderingInterface renderingInterface, ItemPile pile, float f, float g, int scaling)
-	{
+	public void renderItemInInventory(RenderingInterface renderingInterface, ItemPile pile, float f, float g, int scaling) {
 		fallbackRenderer.renderItemInInventory(renderingInterface, pile, f, g, scaling);
 	}
 
@@ -42,8 +40,12 @@ public class ItemRenderer
 	 * @param pile
 	 * @param handTransformation Can be modified
 	 */
-	public void renderItemInWorld(RenderingInterface renderingInterface, ItemPile pile, World world, Location location, Matrix4f transformation)
-	{
+	public void renderItemInWorld(RenderingInterface renderingInterface, ItemPile pile, World world, Location location, Matrix4f transformation) {
 		fallbackRenderer.renderItemInWorld(renderingInterface, pile, world, location, transformation);
+	}
+	
+	/** Cleanups any used ressources */
+	public void destroy() {
+		
 	}
 }

@@ -1,7 +1,7 @@
-package io.xol.chunkstories.api.voxel.models;
+package io.xol.chunkstories.api.rendering.voxel;
 
+import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderContext.VoxelLighter;
 import io.xol.chunkstories.api.voxel.VoxelSides.Corners;
-import io.xol.chunkstories.api.voxel.models.ChunkRenderer.ChunkRenderContext.VoxelLighter;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

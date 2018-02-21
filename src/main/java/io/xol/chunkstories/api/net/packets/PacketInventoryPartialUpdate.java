@@ -21,19 +21,16 @@ import io.xol.chunkstories.api.net.PacketReceptionContext;
 //http://chunkstories.xyz
 //http://xol.io
 
-public class PacketInventoryPartialUpdate extends PacketWorld
-{
+public class PacketInventoryPartialUpdate extends PacketWorld {
 	private Inventory inventory;
 	private int slotx, sloty;
 	private ItemPile itemPile;
 
-	public PacketInventoryPartialUpdate(World world)
-	{
+	public PacketInventoryPartialUpdate(World world) {
 		super(world);
 	}
 
-	public PacketInventoryPartialUpdate(World world, Inventory inventory, int slotx, int sloty, ItemPile newItemPile)
-	{
+	public PacketInventoryPartialUpdate(World world, Inventory inventory, int slotx, int sloty, ItemPile newItemPile) {
 		super(world);
 		this.inventory = inventory;
 		this.slotx = slotx;
@@ -42,8 +39,8 @@ public class PacketInventoryPartialUpdate extends PacketWorld
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
-	{
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
+			throws IOException {
 		InventoryTranslator.writeInventoryHandle(out, inventory);
 
 		out.writeInt(slotx);
@@ -57,32 +54,23 @@ public class PacketInventoryPartialUpdate extends PacketWorld
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
-	{
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
+			throws IOException, PacketProcessingException {
 		inventory = InventoryTranslator.obtainInventoryHandle(in, processor);
 
 		int slotx = in.readInt();
 		int sloty = in.readInt();
 
-		try
-		{
+		try {
 			itemPile = ItemPile.obtainItemPileFromStream(processor.getWorld().getContentTranslator(), in);
-		}
-		catch (NullItemException e)
-		{
-			//This is fine.
+		} catch (NullItemException e) {
+			// This is sane behavior !
 			itemPile = null;
-		}
-		catch (UndefinedItemTypeException e)
-		{
-			//This is slightly more problematic.
-			
+		} catch (UndefinedItemTypeException e) {
+			// This is slightly more problematic.
 			processor.logger().error("Undefined item: ", e);
-			//processor.getContext().logger().log(e.getMessage(), LogLevel.WARN);
-			//e.printStackTrace(processor.getContext().logger().getPrintWriter());
-			//e.printStackTrace();
 		}
-		
+
 		if (inventory != null)
 			inventory.setItemPileAt(slotx, sloty, itemPile);
 	}

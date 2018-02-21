@@ -8,7 +8,7 @@ import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
-import io.xol.chunkstories.api.item.renderer.ItemRenderer;
+import io.xol.chunkstories.api.rendering.item.ItemRenderer;
 
 //(c) 2015-2017 XolioWare Interactive
 // http://chunkstories.xyz
@@ -23,7 +23,7 @@ public class Item implements Cloneable
 		this.definition = type;
 	}
 	
-	public ItemDefinition getType()
+	public ItemDefinition getDefinition()
 	{
 		return definition;
 	}
@@ -34,10 +34,9 @@ public class Item implements Cloneable
 	}
 	
 	/** Returns null by default, you can have custom Item renderers just by returning an Item renderer here. */
-	public ItemRenderer getCustomItemRenderer(ItemRenderer fallbackRenderer)
-	{
+	public ItemRenderer getCustomItemRenderer(ItemRenderer fallbackRenderer) {
 		// return new MyFancyCustomRenderer(fallbackRenderer);
-		return null;
+		return fallbackRenderer;
 	}
 	
 	/**
@@ -67,7 +66,7 @@ public class Item implements Cloneable
 	 */
 	public boolean canMergeWith(Item item)
 	{
-		return definition.equals(item.getType());
+		return definition.equals(item.getDefinition());
 	}
 	
 	/**

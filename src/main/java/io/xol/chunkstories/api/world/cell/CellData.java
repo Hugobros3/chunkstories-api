@@ -2,9 +2,9 @@ package io.xol.chunkstories.api.world.cell;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.physics.CollisionBox;
+import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelSides;
-import io.xol.chunkstories.api.voxel.models.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
 

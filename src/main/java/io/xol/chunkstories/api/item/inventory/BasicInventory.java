@@ -8,7 +8,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.entity.Entity;
@@ -72,7 +71,7 @@ public class BasicInventory implements Inventory
 					p = contents[i % width][j % height];
 					if (p != null)
 					{
-						if (i + p.getItem().getType().getSlotsWidth() - 1 >= x && j + p.getItem().getType().getSlotsHeight() - 1 >= y)
+						if (i + p.getItem().getDefinition().getSlotsWidth() - 1 >= x && j + p.getItem().getDefinition().getSlotsHeight() - 1 >= y)
 							return p;
 					}
 				}
@@ -92,12 +91,12 @@ public class BasicInventory implements Inventory
 		{
 			ItemPile p;
 			//Iterate the inventory up to the new pile x end ( position + width - 1 )
-			for (int i = 0; i < x + (itemPile.getItem().getType().getSlotsWidth()); i++)
+			for (int i = 0; i < x + (itemPile.getItem().getDefinition().getSlotsWidth()); i++)
 			{
 				// If the item width would overflow the limits of the inventory
 				if (i >= width)
 					return false;
-				for (int j = 0; j < y + (itemPile.getItem().getType().getSlotsHeight()); j++)
+				for (int j = 0; j < y + (itemPile.getItem().getDefinition().getSlotsHeight()); j++)
 				{
 					// If overflow in height
 					if (j >= height)
@@ -106,7 +105,7 @@ public class BasicInventory implements Inventory
 					p = contents[i % width][j % height];
 					if (p != null)
 					{
-						if (i + p.getItem().getType().getSlotsWidth() - 1 >= x && j + p.getItem().getType().getSlotsHeight() - 1 >= y)
+						if (i + p.getItem().getDefinition().getSlotsWidth() - 1 >= x && j + p.getItem().getDefinition().getSlotsHeight() - 1 >= y)
 							return false;
 					}
 				}
@@ -142,11 +141,11 @@ public class BasicInventory implements Inventory
 			int wouldBeAddedAmount = itemPile.getAmount();
 
 			//The existing pile is not already full
-			if (currentAmount < item.getType().getMaxStackSize())
+			if (currentAmount < item.getDefinition().getMaxStackSize())
 			{
 				int totalAmount = currentAmount + wouldBeAddedAmount;
 				//How much can we add ?
-				int addableAmmount = Math.min(totalAmount, item.getType().getMaxStackSize()) - currentAmount;
+				int addableAmmount = Math.min(totalAmount, item.getDefinition().getMaxStackSize()) - currentAmount;
 
 				currentPileAtLocation.setAmount(currentAmount + addableAmmount);
 				//If we could add all to the first stack, discard the second pile

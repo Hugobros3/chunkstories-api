@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.voxel.models;
+package io.xol.chunkstories.api.rendering.voxel;
 
 import org.joml.Vector3dc;
 import org.joml.Vector3fc;

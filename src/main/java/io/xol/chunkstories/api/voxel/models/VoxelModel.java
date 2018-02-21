@@ -1,7 +1,9 @@
 package io.xol.chunkstories.api.voxel.models;
 
 import io.xol.chunkstories.api.content.Content;
-import io.xol.chunkstories.api.voxel.models.ChunkRenderer.ChunkRenderContext;
+import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
+import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
+import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderContext;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 

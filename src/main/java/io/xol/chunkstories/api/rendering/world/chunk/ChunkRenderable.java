@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.rendering.world;
+package io.xol.chunkstories.api.rendering.world.chunk;
 
 import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.world.chunk.Chunk;

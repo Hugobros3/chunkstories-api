@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.events.rendering;
 
 import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.WorldRenderer;
+import io.xol.chunkstories.api.rendering.world.WorldRenderer;
 import io.xol.chunkstories.api.world.World;
 
 //(c) 2015-2017 XolioWare Interactive

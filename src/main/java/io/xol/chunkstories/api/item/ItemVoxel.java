@@ -17,9 +17,10 @@ import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
-import io.xol.chunkstories.api.item.renderer.ItemRenderer;
-import io.xol.chunkstories.api.item.renderer.VoxelItemRenderer;
 import io.xol.chunkstories.api.player.Player;
+import io.xol.chunkstories.api.rendering.item.ItemRenderer;
+import io.xol.chunkstories.api.rendering.item.VoxelItemRenderer;
+import io.xol.chunkstories.api.sound.SoundSource.Mode;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.cell.CellData;
@@ -47,7 +48,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 	
 	public ItemRenderer getCustomItemRenderer(ItemRenderer fallbackRenderer)
 	{
-		return new VoxelItemRenderer((ClientContent)this.getType().store().parent(), fallbackRenderer);
+		return new VoxelItemRenderer((ClientContent)this.getDefinition().store().parent(), fallbackRenderer);
 	}
 
 	/*@Override
@@ -131,6 +132,8 @@ public class ItemVoxel extends Item implements WorldModificationCause
 						
 						if(event.isCancelled())
 							return true;
+						
+						entity.getWorld().getSoundManager().playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, fvc.getLocation(), 1.0f, 1.0f);
 					}
 					
 					entity.getWorld().poke(fvc, modifierEntity);

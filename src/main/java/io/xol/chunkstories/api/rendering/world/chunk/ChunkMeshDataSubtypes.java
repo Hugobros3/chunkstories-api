@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.voxel.models;
+package io.xol.chunkstories.api.rendering.world.chunk;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz

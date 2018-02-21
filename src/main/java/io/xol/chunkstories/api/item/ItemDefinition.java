@@ -2,7 +2,7 @@ package io.xol.chunkstories.api.item;
 
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.Definition;
-import io.xol.chunkstories.api.item.renderer.ItemRenderer;
+import io.xol.chunkstories.api.rendering.item.ItemRenderer;
 
 //(c) 2015-2017 XolioWare Interactive
 //http://chunkstories.xyz
