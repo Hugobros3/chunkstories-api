@@ -28,17 +28,20 @@ ext {
 buildscript {
 	repositories {
 		mavenCentral()
-		maven { url 'https://jitpack.io' }
+		//maven { url 'https://jitpack.io' }
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 
 	dependencies {
-		classpath 'com.github.johni0702:gradle-ecj-plugin:master-SNAPSHOT'
+		classpath "gradle.plugin.de.set.gradle:gradle-eclipse-compiler-plugin:1.1.0"		
+		//classpath 'com.github.johni0702:gradle-ecj-plugin:master-SNAPSHOT'
 	}
 }
 
 if(ext.useEclipseCompiler) {
-	apply plugin: 'de.johni0702.ecj'
-	
+	//apply plugin: 'de.johni0702.ecj'
+	apply plugin: "de.set.ecj"	
+
 	println "Using ECJ compiler"
 }
 
