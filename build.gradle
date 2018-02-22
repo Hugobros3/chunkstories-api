@@ -13,12 +13,13 @@ version = '116'
 group = 'io.xol.chunkstories'
 description = 'Open API for the game \'Chunk Stories\''
 
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
 repositories {
 	mavenLocal()
 	mavenCentral()
-	maven {
-			url "http://maven.xol.io/repository/public/"
-	}
+	maven { url "http://maven.xol.io/repository/public/" }
 }
 
 ext {
@@ -27,20 +28,23 @@ ext {
 
 buildscript {
 	repositories {
-		mavenCentral()
+		//mavenLocal()
+		mavenCentral()	
+		maven { url "http://maven.xol.io/repository/public/" }
 		//maven { url 'https://jitpack.io' }
-		maven { url "https://plugins.gradle.org/m2/" }
+		//maven { url "https://plugins.gradle.org/m2/" }
 	}
 
 	dependencies {
-		classpath "gradle.plugin.de.set.gradle:gradle-eclipse-compiler-plugin:1.1.0"		
+		//classpath "gradle.plugin.de.set.gradle:gradle-eclipse-compiler-plugin:1.1.0"		
 		//classpath 'com.github.johni0702:gradle-ecj-plugin:master-SNAPSHOT'
+		classpath 'de.johni0702.gradle:gradle-ecj-plugin:1.1-JAVA9'
 	}
 }
 
 if(ext.useEclipseCompiler) {
-	//apply plugin: 'de.johni0702.ecj'
-	apply plugin: "de.set.ecj"	
+	apply plugin: 'de.johni0702.ecj'
+	//apply plugin: "de.set.ecj"	
 
 	println "Using ECJ compiler"
 }
