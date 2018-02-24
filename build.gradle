@@ -32,10 +32,10 @@ ext {
 }
 
 //TODO Make version depend on Git ?
-version = '116'
+version = '117'
 
 group = 'io.xol.chunkstories'
-description = 'Open API for the game \'Chunk Stories\''
+description = 'API for the game \'Chunk Stories\''
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -85,7 +85,7 @@ dependencies {
 	compile group: 'io.xol.enklume', name: 'enklume', version: 100
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.9'
 	
-	deployerJars "org.apache.maven.wagon:wagon-ssh:2.12" //<-- fuck this fuck this fuck this
+	deployerJars "org.apache.maven.wagon:wagon-ssh:3.0.0"
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
