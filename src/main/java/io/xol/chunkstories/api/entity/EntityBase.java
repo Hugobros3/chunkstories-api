@@ -6,9 +6,9 @@
 
 package io.xol.chunkstories.api.entity;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
@@ -38,7 +38,7 @@ public abstract class EntityBase implements Entity
 	private boolean hasSpawned = false;
 	
 	// Multiplayer players or other agents that chose to be notified when components of the entity are changed
-	final private Set<Subscriber> subscribers = new HashSet<Subscriber>();
+	final private Set<Subscriber> subscribers = ConcurrentHashMap.newKeySet();
 
 	// Basic components every entity should have
 	final protected EntityComponentExistence existenceComponent;
