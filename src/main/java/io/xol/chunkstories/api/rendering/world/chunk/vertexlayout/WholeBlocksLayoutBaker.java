@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.rendering.world.chunk.vertexlayout;
 
 import java.nio.ByteBuffer;
@@ -5,10 +11,6 @@ import java.nio.ByteBuffer;
 import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCubic;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.VertexLayout;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /** Defines the (default) layout used by the game when using the WHOLE_BLOCKS VertexLayout */
 public class WholeBlocksLayoutBaker extends BaseLayoutBaker implements VoxelBakerCubic  {

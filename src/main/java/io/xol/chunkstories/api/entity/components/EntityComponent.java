@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.entity.components;
 
 import java.io.DataInputStream;
@@ -13,10 +19,6 @@ import io.xol.chunkstories.api.net.packets.PacketEntity;
 import io.xol.chunkstories.api.world.serialization.OfflineSerializedData;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /**
  * To make a new entity component, just extend this class and mention your class a .components file in the entity/ directory so it gets an unique id

@@ -3,29 +3,6 @@
  * Collection of interfaces forming an API and the skeleton of the chunkstories project.
  */
 
-apply plugin: 'java'
-apply plugin: 'java-library'
-apply plugin: 'maven'
-
-//TODO Make version depend on Git ?
-version = '116'
-
-group = 'io.xol.chunkstories'
-description = 'Open API for the game \'Chunk Stories\''
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
-repositories {
-	mavenLocal()
-	mavenCentral()
-	maven { url "http://maven.xol.io/repository/public/" }
-}
-
-ext {
-	useEclipseCompiler = true
-}
-
 buildscript {
 	repositories {
 		//mavenLocal()
@@ -42,11 +19,47 @@ buildscript {
 	}
 }
 
+plugins {
+    id "com.github.hierynomus.license" version "0.14.0"
+}
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'maven'
+
+ext {
+	useEclipseCompiler = true
+}
+
+//TODO Make version depend on Git ?
+version = '116'
+
+group = 'io.xol.chunkstories'
+description = 'Open API for the game \'Chunk Stories\''
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven { url "http://maven.xol.io/repository/public/" }
+}
+
 if(ext.useEclipseCompiler) {
 	apply plugin: 'de.johni0702.ecj'
 	//apply plugin: "de.set.ecj"	
 
 	println "Using ECJ compiler"
+}
+
+license {
+    header rootProject.file('codequality/header-include-notice.txt')
+    strictCheck true
+	
+	mapping {
+        java='DOUBLESLASH_STYLE'
+    }
 }
 
 compileJava {

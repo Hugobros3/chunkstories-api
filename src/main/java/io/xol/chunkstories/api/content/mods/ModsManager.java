@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.content.mods;
 
 import java.util.Collection;
@@ -5,10 +11,6 @@ import java.util.Iterator;
 
 import io.xol.chunkstories.api.content.Asset;
 import io.xol.chunkstories.api.exceptions.content.mods.NotAllModsLoadedException;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /**
  * The ModsManager is responsible for loading mods and maintaining a global filesystem of assets

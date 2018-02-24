@@ -1,12 +1,14 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.util;
 
 import java.security.MessageDigest;
 
 import io.xol.chunkstories.api.math.HexTools;
-
-//(c) 2015-2017 XolioWare Interactive
-// http://chunkstories.xyz
-// http://xol.io
 
 /** Some basic helper functions I wrote ages ago, basic RGB/Hex conversions functions and whatnot */
 public class ColorsTools

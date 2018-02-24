@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.plugin;
 
 import java.util.Collection;
@@ -9,10 +15,6 @@ import io.xol.chunkstories.api.plugin.commands.CommandEmitter;
 import io.xol.chunkstories.api.plugin.commands.CommandHandler;
 import io.xol.chunkstories.api.plugin.commands.SystemCommand;
 import io.xol.chunkstories.api.util.IterableIterator;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /** The Plugin manager is responsible for loading/unloading of plugins, handling of commands and handling of events */
 public interface PluginManager

@@ -1,12 +1,14 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.plugin.commands;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /** A command is a special token the game uses to call the execution of a certain tool */
 public class Command

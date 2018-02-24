@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.world.chunk;
 
 import org.joml.Vector3dc;
@@ -10,10 +16,6 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.cell.DummyCell;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /** A fake chunk, for all the non-reality fans 
  * Also, might be usefull when dealing with blocks all by themselves. */

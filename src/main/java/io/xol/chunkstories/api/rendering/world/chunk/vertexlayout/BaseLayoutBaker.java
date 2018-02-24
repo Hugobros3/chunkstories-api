@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.rendering.world.chunk.vertexlayout;
 
 import java.nio.ByteBuffer;
@@ -10,10 +16,6 @@ import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCommon;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderContext.VoxelLighter;
 import io.xol.chunkstories.api.voxel.VoxelSides.Corners;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /** In a move to abstract away the buffer layout from mods, these classes now serve to link the abstract layout in the
  * VoxelBaker* classes to the actual layout used by the game, which may now change without breaking mods, since they won't rely

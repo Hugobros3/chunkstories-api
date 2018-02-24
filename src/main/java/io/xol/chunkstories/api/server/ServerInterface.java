@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.server;
 
 import io.xol.chunkstories.api.GameContext;
@@ -5,10 +11,6 @@ import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.plugin.PluginManager;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.WorldMaster;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 public interface ServerInterface extends GameContext
 {

@@ -1,12 +1,14 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.content.mods;
 
 import java.util.Iterator;
 
 import io.xol.chunkstories.api.content.Asset;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /**
  * Some assets may get overloaded by mods, and in some cases you still want to read all versions, this interface allows just that

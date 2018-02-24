@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.rendering.world.chunk;
 
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCubic;
@@ -5,10 +11,6 @@ import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.LodLevel;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.ShadingType;
 import io.xol.chunkstories.api.voxel.VoxelSides;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /** This interface is the context in which chunks are rendered, it's implemented by the thread-pool rendering the chunks */
 public interface ChunkRenderer

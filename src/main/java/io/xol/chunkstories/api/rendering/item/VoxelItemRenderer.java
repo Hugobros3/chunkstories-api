@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.rendering.item;
 
 import java.nio.ByteBuffer;
@@ -39,10 +45,6 @@ import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.DummyCell;
 import io.xol.chunkstories.api.world.chunk.DummyChunk;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 // TODO : Explicit thumbnail rendering path in VoxelRenderer to avoid this mess ?
 /** Over-engineered way of turning VoxelRenderer output to render a voxel as an item */

@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.math.random;
 
 import java.util.ArrayList;
@@ -6,7 +12,7 @@ import java.util.List;
 // This class takes care of providing the simplex noise functions for the world
 // generator. It is based on other people's work as the comments below show.
 
-/*
+/**
  * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
  *
  * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
@@ -22,7 +28,6 @@ import java.util.List;
  * attribution is appreciated.
  *
  */
-
 public class SeededSimplexNoiseGenerator
 {
 	private Grad grad3[] = { new Grad(1, 1, 0), new Grad(-1, 1, 0),
@@ -141,7 +146,7 @@ public class SeededSimplexNoiseGenerator
 	public float looped_noise(float x, float y, float period, float x1,
 			float y1, float x2, float y2)
 	{
-		// (c) XolioWare Interactive 2015
+		// Hugo 'Gobrosse' Devillers 2015
 
 		float s = x / period;
 		float t = y / period;

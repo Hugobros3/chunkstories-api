@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.entity.interfaces;
 
 import io.xol.chunkstories.api.Location;
@@ -6,10 +12,6 @@ import io.xol.chunkstories.api.entity.components.EntityComponentController;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.input.Input;
-
-//(c) 2015-2017 XolioWare Interactive
-// http://chunkstories.xyz
-// http://xol.io
 
 /**
  * Defines an entity as controllable by players, this is used to allow the Client to send controls to the entity and the

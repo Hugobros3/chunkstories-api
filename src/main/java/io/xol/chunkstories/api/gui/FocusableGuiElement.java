@@ -1,10 +1,12 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.gui;
 
 import io.xol.chunkstories.api.input.Input;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /** Elements that can be focused, either by tab-ing on them, or by clicking */
 public abstract class FocusableGuiElement extends GuiElement {

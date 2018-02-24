@@ -1,12 +1,14 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.item;
 
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.Definition;
 import io.xol.chunkstories.api.rendering.item.ItemRenderer;
-
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
 
 /**
  * Immutable, describes an item type and is a common reference in all items of that type

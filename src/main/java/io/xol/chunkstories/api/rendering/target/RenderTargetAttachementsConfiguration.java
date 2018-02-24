@@ -1,8 +1,10 @@
-package io.xol.chunkstories.api.rendering.target;
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
 
-//(c) 2015-2017 XolioWare Interactive
-//http://chunkstories.xyz
-//http://xol.io
+package io.xol.chunkstories.api.rendering.target;
 
 /** A semi-obvious proxy for FBO configuration in OGL, abstracting it better would be hard, and 
  * it is'nt that often you find yourself messing with framebuffer output, so isn't that a big deal... is it ?

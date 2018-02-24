@@ -1,3 +1,9 @@
+//
+// This file is a part of the Chunk Stories API codebase
+// Check out README.md for more information
+// Website: http://chunkstories.xyz
+//
+
 package io.xol.chunkstories.api.math.random;
 
 /*
@@ -106,7 +112,7 @@ public class SimplexNoise
 
 	public static double looped_noise_dirty(double x, double y, double period)
 	{
-		// (c) XolioWare Interactive 2015
+		// Hugo 'Gobrosse' Devillers 2015
 		// shall be replaced by a proper 4D dual-circle thing
 		double result = 0;
 		result += noise(x, y) * (period - x) * (period - y);
