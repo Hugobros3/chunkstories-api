@@ -111,7 +111,7 @@ public abstract class EntityBase implements Entity
 	@Override
 	public String toString()
 	{
-		return "[" + this.getClass().getSimpleName() + ": holderExists: " + (positionComponent.getChunkWithin() != null) + " ,position : " + positionComponent.getLocation() + " UUID : " + entityUUID + " Type: " + entityDefinition.getName() + " Chunk:"
+		return "[" + this.getClass().getSimpleName() + " subs:" + this.subscribers.size() + "  position : " + positionComponent.getLocation() + " UUID : " + entityUUID + " Type: " + entityDefinition.getName() + " Chunk:"
 				+ this.positionComponent.getChunkWithin() + " ]";
 	}
 
