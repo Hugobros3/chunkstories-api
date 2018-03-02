@@ -31,6 +31,7 @@ import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.rendering.textures.Cubemap;
 import io.xol.chunkstories.api.rendering.textures.Texture1D;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
+import io.xol.chunkstories.api.rendering.textures.Texture3D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;
 import io.xol.chunkstories.api.rendering.vertex.AttributeSource;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
@@ -77,6 +78,8 @@ public interface RenderingInterface
 	public TexturesLibrary textures();
 	
 	public Texture2D newTexture2D(TextureFormat type, int width, int height);
+	
+	public Texture3D newTexture3D(TextureFormat type, int width, int height, int depth);
 	
 	/* Object location & Instance Data */
 	
