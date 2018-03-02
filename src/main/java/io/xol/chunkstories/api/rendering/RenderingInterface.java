@@ -71,6 +71,8 @@ public interface RenderingInterface
 	
 	public TexturingConfiguration bindTexture2D(String textureSamplerName, Texture2D texture);
 	
+	public TexturingConfiguration bindTexture3D(String textureSamplerName, Texture3D texture);
+	
 	public TexturingConfiguration bindCubemap(String cubemapSamplerName, Cubemap cubemapTexture);
 	
 	public TexturingConfiguration bindArrayTexture(String textureSamplerName, ArrayTexture texture);
