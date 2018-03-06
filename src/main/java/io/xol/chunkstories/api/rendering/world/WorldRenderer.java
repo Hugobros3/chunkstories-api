@@ -9,21 +9,23 @@ package io.xol.chunkstories.api.rendering.world;
 import io.xol.chunkstories.api.particles.ParticlesRenderer;
 import io.xol.chunkstories.api.rendering.GameWindow;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
+import io.xol.chunkstories.api.rendering.RenderingPipeline;
 import io.xol.chunkstories.api.rendering.effects.DecalsRenderer;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.world.WorldClient;
 
+/** Contains the necessary tools to render a world and all it's objects */
 public interface WorldRenderer
 {
 	public WorldClient getWorld();
 	
-	public SkyboxRenderer getSky();
+	public RenderingPipeline getRenderingPipeline();
 	
-	/** Renders the world into the back buffer */
-	public void renderWorld(RenderingInterface renderingInterface);
+	///** Renders the world into the back buffer */
+	//public void renderWorld(RenderingInterface renderingInterface);
 	
-	/** Blits that buffer back */
-	public void blitFinalImage(RenderingInterface renderingInterface, boolean hideGui);
+	///** Blits that buffer back */
+	//public void blitFinalImage(RenderingInterface renderingInterface, boolean hideGui);
 
 	/** Tells the chunks renderer to rebuilt it's PVS set */
 	public void flagChunksModified();
@@ -34,8 +36,8 @@ public interface WorldRenderer
 	/** Resizes the rendering buffers to fit the game window */
 	public void setupRenderSize();
 
-	/** Lists passes the 3d engines does */
-	public enum RenderingPass
+	///** Lists passes the 3d engines does */
+	/*public enum RenderingPass
 	{
 		SHADOW, //Depth-only for sun and light shadows
 		NORMAL_OPAQUE, 
@@ -44,10 +46,12 @@ public interface WorldRenderer
 		ALPHA_BLENDED, 
 		INTERNAL, //Internal states of the renderer, do not mess with those.
 		;
-	}
+	}*/
 
-	/** Returns null or a valid element of RenderingPasses */
-	public RenderingPass getCurrentRenderingPass();
+	///** Returns null or a valid element of RenderingPasses */
+	//public RenderingPass getCurrentRenderingPass();
+	
+	public SkyRenderer getSky();
 	
 	public FarTerrainRenderer getFarTerrainRenderer();
 	

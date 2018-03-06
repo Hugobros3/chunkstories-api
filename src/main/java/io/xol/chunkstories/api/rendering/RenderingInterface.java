@@ -31,6 +31,7 @@ import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.rendering.textures.Cubemap;
 import io.xol.chunkstories.api.rendering.textures.Texture1D;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
+import io.xol.chunkstories.api.rendering.textures.Texture2DRenderTarget;
 import io.xol.chunkstories.api.rendering.textures.Texture3D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;
 import io.xol.chunkstories.api.rendering.vertex.AttributeSource;
@@ -79,32 +80,24 @@ public interface RenderingInterface
 
 	public TexturesLibrary textures();
 	
-	public Texture2D newTexture2D(TextureFormat type, int width, int height);
+	public Texture2DRenderTarget newTexture2D(TextureFormat type, int width, int height);
 	
 	public Texture3D newTexture3D(TextureFormat type, int width, int height, int depth);
 	
 	/* Object location & Instance Data */
 	
-	/**
-	 * returns the current object matrix
-	 */
+	/** returns the current object matrix */
 	public Matrix4f getObjectMatrix();
 	
-	/**
-	 * Feeds the 'objectMatrix' and 'objectMatrixNormal' shader inputs ( either uniform or texture-based instanced if shader has support )
-	 */
+	/** Feeds the 'objectMatrix' and 'objectMatrixNormal' shader inputs ( either uniform or texture-based instanced if shader has support ) */
 	public Matrix4f setObjectMatrix(Matrix4f objectMatrix);
 	
-	/**
-	 * Feeds the 'worldLight' shader inputs ( either uniform or texture-based instanced if shader has support )
-	 */
+	/** Feeds the 'worldLight' shader inputs ( either uniform or texture-based instanced if shader has support ) */
 	public void setWorldLight(int sunLight, int blockLight);
 	
 	/* Pipeline configuration */
 	
-	/**
-	 * @return The current PipelineConfiguration
-	 */
+	/** @return The current PipelineConfiguration */
 	public PipelineConfiguration getPipelineConfiguration();
 
 	public PipelineConfiguration setDepthTestMode(DepthTestMode depthTestMode);
@@ -129,10 +122,7 @@ public interface RenderingInterface
 	 */
 	public AttributesConfiguration bindAttribute(String attributeName, AttributeSource attributeSource) throws AttributeNotPresentException;
 	
-	/**
-	 * Ensures no attributes are bound left over from previous draw instructions
-	 * @return
-	 */
+	/** Ensures no attributes are bound left over from previous draw instructions */
 	public AttributesConfiguration unbindAttributes();
 	
 	public ClientMeshLibrary meshes();

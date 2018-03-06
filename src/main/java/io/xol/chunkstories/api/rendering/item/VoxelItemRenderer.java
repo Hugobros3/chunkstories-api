@@ -19,18 +19,6 @@ import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
-import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
-import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
-import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCubic;
-import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
-import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
-import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer;
-import io.xol.chunkstories.api.rendering.world.WorldRenderer.RenderingPass;
-import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.LodLevel;
-import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.ShadingType;
-import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderContext;
-import io.xol.chunkstories.api.rendering.world.chunk.vertexlayout.BaseLayoutBaker;
-import io.xol.chunkstories.api.rendering.world.chunk.vertexlayout.IntricateLayoutBaker;
 import io.xol.chunkstories.api.rendering.Primitive;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.lightning.Light;
@@ -38,6 +26,17 @@ import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingM
 import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.DepthTestMode;
 import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
+import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
+import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
+import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCubic;
+import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
+import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
+import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.LodLevel;
+import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.ShadingType;
+import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer;
+import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderContext;
+import io.xol.chunkstories.api.rendering.world.chunk.vertexlayout.BaseLayoutBaker;
+import io.xol.chunkstories.api.rendering.world.chunk.vertexlayout.IntricateLayoutBaker;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelCustomIcon;
 import io.xol.chunkstories.api.voxel.VoxelSides.Corners;
@@ -254,7 +253,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 
 		// Add a light only on the opaque pass
 		if (fakeCell.getBlocklight() > 0
-				&& renderer.getWorldRenderer().getCurrentRenderingPass() == RenderingPass.NORMAL_OPAQUE) {
+				&& renderer.getWorldRenderer().getRenderingPipeline().getCurrentPass().name.startsWith("opaque")) {
 			Vector4f lightposition = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 
 			handTransformation.transform(lightposition);

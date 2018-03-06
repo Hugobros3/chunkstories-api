@@ -14,11 +14,14 @@ import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
 /** Takes care of rendering the 'background' of a frame, typically using some sort of skybox or fancy props.
  *  Is also responsible to setup shader parameters, such as fog
  */
-public interface SkyboxRenderer {
+public interface SkyRenderer {
 	
-	public Vector3fc getSunPosition();
-	
-	public void render(RenderingInterface renderingContext);
+	public void render(RenderingInterface renderer);
 	
 	public void setupShader(ShaderInterface shaderInterface);
+
+	public Vector3fc getSunPosition();
+	
+	/** Returns daytime (0-10'000) */
+	public float getDayTime();
 }

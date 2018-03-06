@@ -10,9 +10,7 @@ import org.joml.Vector4fc;
 
 public interface RenderTargetManager
 {
-	/**
-	 * Get the current FBO bound
-	 */
+	/** Get the current render targets configured */
 	public RenderTargetAttachementsConfiguration getCurrentConfiguration();
 	
 	/**

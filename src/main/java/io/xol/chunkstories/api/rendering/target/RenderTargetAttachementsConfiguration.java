@@ -21,10 +21,9 @@ public interface RenderTargetAttachementsConfiguration {
 
 	public void setColorAttachements(RenderTarget... colorAttachements);
 
-	/** Resizes the framebuffer output ( and associated textures ) */
-	public void resizeFBO(int w, int h);
+	/** Resizes the framebuffer ( actually resizes it's associated textures ) */
+	public void resizeFBO(int width, int height);
 
-	/** Destroys the configuration. MUST BE CALLED OR MEMORY LEAK BAD OK BAD 
-	 * 	TexturesToo will destroys the linked RenderTarget, might be usefull but consider the side effects. */
-	public void destroy(boolean texturesToo);
+	/** Destroys the configuration.*/
+	public void destroy();
 }

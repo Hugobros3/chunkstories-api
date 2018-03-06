@@ -8,6 +8,7 @@ package io.xol.chunkstories.api.rendering.pipeline;
 
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 
+//TODO rename to something more meaningfull
 public interface PipelineConfiguration
 {
 	public DepthTestMode getDepthTestMode();

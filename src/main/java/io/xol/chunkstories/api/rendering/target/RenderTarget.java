@@ -7,7 +7,7 @@
 package io.xol.chunkstories.api.rendering.target;
 
 /**
- * Different kinds of stuff qualify as a render target, mostly textures
+ * A 2d surface we can draw stuff to
  */
 public interface RenderTarget
 {
