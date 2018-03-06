@@ -27,9 +27,15 @@ public enum TextureFormat
 	
 	/** One component of 16-bit integers */
 	RED_16I(GL_R16UI, GL_RED_INTEGER, GL_INT, 2),
+	
+	/** One component of 16-bit integers */
+	RED_16F(GL_R16F, GL_RED_INTEGER, GL_FLOAT, 2),
 
 	/** 10 bits for RGB, two for alpha. Normalized. */
 	RGBA_3x10_2(GL_RGB10_A2, GL_RGBA, GL_UNSIGNED_BYTE, 4),
+	
+	/** High precision HDR format, 16-bit per component, quite heavy.*/
+	RGBA_16F(GL_RGBA16F, GL_RGBA, GL_FLOAT, 16),
 	
 	/** Very high precision HDR format, fully fat 32-bit per component, slow ! */
 	RGBA_32F(GL_RGBA32F, GL_RGBA, GL_FLOAT, 16),
@@ -61,7 +67,9 @@ public enum TextureFormat
 		public static final int GL_RED = 0x1903;
 		public static final int GL_RGB10_A2 = 0x8059;
 		public static final int GL_RGBA32F = 0x8814;
+		public static final int GL_RGBA16F = 34842;
 		public static final int GL_R16UI = 0x8234;
+		public static final int GL_R16F = 33325;
 		public static final int GL_R8UI = 0x8232;
 		public static final int GL_R8 = 33321;
 		public static final int GL_RG8 = 33323;
