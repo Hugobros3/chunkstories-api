@@ -6,8 +6,12 @@
 
 package io.xol.chunkstories.api.rendering;
 
+import io.xol.chunkstories.api.rendering.world.WorldRenderer;
+
 public interface RenderingPipeline {
 	public RenderingInterface getRenderingInterface();
+	
+	public WorldRenderer getWorldRenderer();
 	
 	public void registerRenderPass(RenderPass pass);
 

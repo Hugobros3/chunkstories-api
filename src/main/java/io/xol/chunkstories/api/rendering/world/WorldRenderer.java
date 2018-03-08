@@ -12,6 +12,7 @@ import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.RenderingPipeline;
 import io.xol.chunkstories.api.rendering.effects.DecalsRenderer;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
+import io.xol.chunkstories.api.rendering.world.chunk.ChunksRenderer;
 import io.xol.chunkstories.api.world.WorldClient;
 
 /** Contains the necessary tools to render a world and all it's objects */
@@ -36,6 +37,7 @@ public interface WorldRenderer
 	/** Resizes the rendering buffers to fit the game window */
 	public void setupRenderSize();
 
+	public float getAnimationTimer();
 	///** Lists passes the 3d engines does */
 	/*public enum RenderingPass
 	{
@@ -51,12 +53,16 @@ public interface WorldRenderer
 	///** Returns null or a valid element of RenderingPasses */
 	//public RenderingPass getCurrentRenderingPass();
 	
-	public SkyRenderer getSky();
+	public SkyRenderer getSkyRenderer();
+	
+	public void setSkyRenderer(SkyRenderer skyRenderer);
+	
+	public ChunksRenderer getChunksRenderer();
 	
 	public FarTerrainRenderer getFarTerrainRenderer();
 	
 	/** Takes charge of rendering distant region summaries using only 2D data */
-	interface FarTerrainRenderer {
+	public interface FarTerrainRenderer {
 		
 		/** Tells the far terrain renderer to trash it's (mesh) data and to rebuild it anew */
 		public default void markFarTerrainMeshDirty() {
@@ -71,7 +77,7 @@ public interface WorldRenderer
 		}
 		
 		/** Stops the far terrain system to draw what is already shown using actual voxel data */
-		interface ReadyVoxelMeshesMask {
+		public interface ReadyVoxelMeshesMask {
 			
 			/** Default implementations of the FarTerrainRenderer subdivide each region in 8x8 slabs that coincide with the world data chunks, and that have a min/max height
 				parameter pre-computed. This methods allows to check whether or not that data is present. You don't have to implement it, this interface is reference only.
