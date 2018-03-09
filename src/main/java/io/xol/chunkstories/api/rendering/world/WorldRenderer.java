@@ -38,26 +38,19 @@ public interface WorldRenderer
 	public void setupRenderSize();
 
 	public float getAnimationTimer();
-	///** Lists passes the 3d engines does */
-	/*public enum RenderingPass
-	{
-		SHADOW, //Depth-only for sun and light shadows
-		NORMAL_OPAQUE, 
-		NORMAL_LIQUIDS_PASS_1, 
-		NORMAL_LIQUIDS_PASS_2, 
-		ALPHA_BLENDED, 
-		INTERNAL, //Internal states of the renderer, do not mess with those.
-		;
-	}*/
-
-	///** Returns null or a valid element of RenderingPasses */
-	//public RenderingPass getCurrentRenderingPass();
 	
 	public SkyRenderer getSkyRenderer();
 	
 	public void setSkyRenderer(SkyRenderer skyRenderer);
 	
 	public ChunksRenderer getChunksRenderer();
+	
+	public EntitiesRenderer getEntitiesRenderer();
+	
+	public interface EntitiesRenderer {
+		
+		public int renderEntities(RenderingInterface renderingContext);
+	}
 	
 	public FarTerrainRenderer getFarTerrainRenderer();
 	

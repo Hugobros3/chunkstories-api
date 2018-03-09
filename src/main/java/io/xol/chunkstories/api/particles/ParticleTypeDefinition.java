@@ -15,21 +15,22 @@ public interface ParticleTypeDefinition extends Definition
 	
 	public Content.ParticlesTypes store();
 	
-	/** When should we render those particle types */
-	public enum RenderTime {
-		/** Actually iterated anyways! Use case is light particles, mostly. */
-		NEVER,
-		/** Done after the rest of the opaque GBuffer stuff. */
-		GBUFFER,
-		FORWARD
-		;
-	}
+	///** When should we render those particle types */
+	//public enum RenderTime {
+	//	/** Actually iterated anyways! Use case is light particles, mostly. */
+	//	NEVER,
+	//	/** Done after the rest of the opaque GBuffer stuff. */
+	//	GBUFFER,
+	//	FORWARD
+	//	;
+	//}
 	
 	public enum ParticleRenderingMode {
 		BILLBOARD;
 	}
 	
-	public abstract RenderTime getRenderTime();
+	/** Returns the name of the render pass we should use to render those particles. */ 
+	public abstract String getRenderPass();
 	
 	public default String getShaderName()
 	{

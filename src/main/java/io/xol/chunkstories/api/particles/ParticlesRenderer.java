@@ -18,5 +18,5 @@ public interface ParticlesRenderer extends ParticlesManager
 	public ClientContent getContent();
 	
 	/** Internal to the engine */
-	public int render(RenderingInterface renderingInterface, boolean isThisGBufferPass);
+	public void renderParticles(RenderingInterface renderingInterface);
 }
