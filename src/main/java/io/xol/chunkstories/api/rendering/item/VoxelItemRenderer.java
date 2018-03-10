@@ -21,10 +21,10 @@ import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.rendering.Primitive;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
+import io.xol.chunkstories.api.rendering.StateMachine.CullingMode;
+import io.xol.chunkstories.api.rendering.StateMachine.DepthTestMode;
 import io.xol.chunkstories.api.rendering.lightning.Light;
-import io.xol.chunkstories.api.rendering.pipeline.StateMachine.CullingMode;
-import io.xol.chunkstories.api.rendering.pipeline.StateMachine.DepthTestMode;
-import io.xol.chunkstories.api.rendering.pipeline.Shader;
+import io.xol.chunkstories.api.rendering.shader.Shader;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
@@ -253,7 +253,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 
 		// Add a light only on the opaque pass
 		if (fakeCell.getBlocklight() > 0
-				&& renderer.getWorldRenderer().getRenderingPipeline().getCurrentPass().name.startsWith("opaque")) {
+				&& renderer.getCurrentPass().name.contains("gBuffers")) {
 			Vector4f lightposition = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 
 			handTransformation.transform(lightposition);

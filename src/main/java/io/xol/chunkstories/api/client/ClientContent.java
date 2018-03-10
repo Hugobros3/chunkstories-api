@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
-import io.xol.chunkstories.api.rendering.pipeline.Shader;
+import io.xol.chunkstories.api.rendering.shader.Shader;
 import io.xol.chunkstories.api.rendering.textures.Cubemap;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;

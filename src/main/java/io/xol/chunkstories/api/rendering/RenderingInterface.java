@@ -15,15 +15,14 @@ import io.xol.chunkstories.api.client.ClientRenderingConfig;
 import io.xol.chunkstories.api.exceptions.rendering.AttributeNotPresentException;
 import io.xol.chunkstories.api.exceptions.rendering.InvalidShaderException;
 import io.xol.chunkstories.api.exceptions.rendering.ShaderCompileException;
+import io.xol.chunkstories.api.rendering.StateMachine.BlendMode;
+import io.xol.chunkstories.api.rendering.StateMachine.CullingMode;
+import io.xol.chunkstories.api.rendering.StateMachine.DepthTestMode;
+import io.xol.chunkstories.api.rendering.StateMachine.PolygonFillMode;
 import io.xol.chunkstories.api.rendering.lightning.Light;
 import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
-import io.xol.chunkstories.api.rendering.pipeline.AttributesConfiguration;
-import io.xol.chunkstories.api.rendering.pipeline.StateMachine;
-import io.xol.chunkstories.api.rendering.pipeline.StateMachine.BlendMode;
-import io.xol.chunkstories.api.rendering.pipeline.StateMachine.CullingMode;
-import io.xol.chunkstories.api.rendering.pipeline.StateMachine.DepthTestMode;
-import io.xol.chunkstories.api.rendering.pipeline.StateMachine.PolygonFillMode;
-import io.xol.chunkstories.api.rendering.pipeline.Shader;
+import io.xol.chunkstories.api.rendering.pass.RenderPass;
+import io.xol.chunkstories.api.rendering.shader.Shader;
 import io.xol.chunkstories.api.rendering.target.RenderTargets;
 import io.xol.chunkstories.api.rendering.text.FontRenderer;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
@@ -34,6 +33,7 @@ import io.xol.chunkstories.api.rendering.textures.Texture2DRenderTarget;
 import io.xol.chunkstories.api.rendering.textures.Texture3D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;
 import io.xol.chunkstories.api.rendering.vertex.AttributeSource;
+import io.xol.chunkstories.api.rendering.vertex.AttributesConfiguration;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 import io.xol.chunkstories.api.rendering.world.WorldRenderer;
 
@@ -163,6 +163,9 @@ public interface RenderingInterface
 	public FontRenderer getFontRenderer();
 	
 	public WorldRenderer getWorldRenderer();
+
+	/** Shortcut to getWorldRenderer().renderPasses().getcurrentPass() */
+	public RenderPass getCurrentPass();
 	
 	public LightsAccumulator getLightsRenderer();
 	

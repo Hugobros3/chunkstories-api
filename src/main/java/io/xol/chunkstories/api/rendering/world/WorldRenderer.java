@@ -9,8 +9,8 @@ package io.xol.chunkstories.api.rendering.world;
 import io.xol.chunkstories.api.particles.ParticlesRenderer;
 import io.xol.chunkstories.api.rendering.GameWindow;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.RenderingPipeline;
 import io.xol.chunkstories.api.rendering.effects.DecalsRenderer;
+import io.xol.chunkstories.api.rendering.pass.RenderPasses;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunksRenderer;
 import io.xol.chunkstories.api.world.WorldClient;
@@ -20,7 +20,7 @@ public interface WorldRenderer
 {
 	public WorldClient getWorld();
 	
-	public RenderingPipeline getRenderingPipeline();
+	public RenderPasses renderPasses();
 	
 	///** Renders the world into the back buffer */
 	//public void renderWorld(RenderingInterface renderingInterface);

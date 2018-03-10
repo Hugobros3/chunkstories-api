@@ -10,7 +10,7 @@ import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
 import io.xol.chunkstories.api.physics.CollisionBox;
-import io.xol.chunkstories.api.rendering.pipeline.Shader;
+import io.xol.chunkstories.api.rendering.shader.Shader;
 
 public interface CameraInterface
 {

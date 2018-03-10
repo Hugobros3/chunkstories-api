@@ -10,7 +10,7 @@ import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
 import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.pipeline.Shader;
+import io.xol.chunkstories.api.rendering.shader.Shader;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 
 /** Helper interface regrouping all the look & feel specific traits of a World */

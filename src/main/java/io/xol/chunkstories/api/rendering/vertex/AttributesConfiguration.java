@@ -4,11 +4,9 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.rendering.pipeline;
+package io.xol.chunkstories.api.rendering.vertex;
 
 import java.util.Map;
-
-import io.xol.chunkstories.api.rendering.vertex.AttributeSource;
 
 /**
  * Abstracts the vertex shader inputs

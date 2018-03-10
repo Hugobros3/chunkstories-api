@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.rendering.pipeline;
+package io.xol.chunkstories.api.rendering.shader;
 
 import java.util.Map;
 

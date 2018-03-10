@@ -6,8 +6,8 @@
 
 package io.xol.chunkstories.api.rendering.entity;
 
-import io.xol.chunkstories.api.rendering.RenderPass;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
+import io.xol.chunkstories.api.rendering.pass.RenderPass;
 
 public interface EntityRenderer<E extends EntityRenderable>
 {

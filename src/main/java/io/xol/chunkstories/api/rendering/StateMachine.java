@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.rendering.pipeline;
+package io.xol.chunkstories.api.rendering;
 
 /** Offers a platform-agnostic simplification of the main OpenGL state */
 public interface StateMachine

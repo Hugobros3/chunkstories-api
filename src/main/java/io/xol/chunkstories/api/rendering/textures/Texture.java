@@ -6,6 +6,8 @@
 
 package io.xol.chunkstories.api.rendering.textures;
 
+import io.xol.chunkstories.api.rendering.shader.Shader.SamplerType;
+
 /** Completely abstracted-out Texture class. Represents some kind of picture on the GPU. */
 public interface Texture {
 
@@ -20,4 +22,23 @@ public interface Texture {
 
 	/** Returns the VRAM usage, in bytes */
 	public long getVramUsage();
+
+	public default SamplerType getSamplerType() {
+		if(this instanceof Texture1D)
+			return SamplerType.TEXTURE_1D;
+		
+		else if(this instanceof Texture2D)
+			return SamplerType.TEXTURE_2D;
+		
+		else if(this instanceof Texture3D)
+			return SamplerType.TEXTURE_3D;
+		
+		else if(this instanceof Cubemap)
+			return SamplerType.CUBEMAP;
+		
+		else if(this instanceof ArrayTexture)
+			return SamplerType.ARRAY_TEXTURE_2D;
+		
+		throw new RuntimeException("what is this texture ?");
+	}
 }
