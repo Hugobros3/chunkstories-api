@@ -22,9 +22,9 @@ import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.rendering.Primitive;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.lightning.Light;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingMode;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.DepthTestMode;
-import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.CullingMode;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.DepthTestMode;
+import io.xol.chunkstories.api.rendering.pipeline.Shader;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
@@ -154,7 +154,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 		}
 
 		int slotSize = 24 * scaling;
-		ShaderInterface program = renderer.useShader("inventory_blockmodel");
+		Shader program = renderer.useShader("inventory_blockmodel");
 
 		renderer.setCullingMode(CullingMode.COUNTERCLOCKWISE);
 		renderer.setDepthTestMode(DepthTestMode.LESS_OR_EQUAL);

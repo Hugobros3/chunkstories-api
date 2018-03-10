@@ -8,18 +8,18 @@ package io.xol.chunkstories.api.rendering.target;
 
 import org.joml.Vector4fc;
 
-public interface RenderTargetManager
+public interface RenderTargets
 {
 	/** Get the current render targets configured */
-	public RenderTargetAttachementsConfiguration getCurrentConfiguration();
+	public RenderTargetsConfiguration getCurrentConfiguration();
 	
 	/**
 	 * Binds a new FBO to render to
 	 */
-	public void setConfiguration(RenderTargetAttachementsConfiguration fbo);
+	public void setConfiguration(RenderTargetsConfiguration fbo);
 	
 	/** Creates a new configuration, depth might be = null and you are prompted to provide an arbitrary number of colour buffers */
-	public RenderTargetAttachementsConfiguration newConfiguration(RenderTarget depth, RenderTarget... colors);
+	public RenderTargetsConfiguration newConfiguration(RenderTarget depth, RenderTarget... colors);
 	
 	/**
 	 * Clears both types of bound rendertargets

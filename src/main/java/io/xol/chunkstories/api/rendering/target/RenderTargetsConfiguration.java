@@ -10,7 +10,7 @@ package io.xol.chunkstories.api.rendering.target;
  * it is'nt that often you find yourself messing with framebuffer output, so isn't that a big deal... is it ?
  * Created using a RenderTargetManager.
  */
-public interface RenderTargetAttachementsConfiguration {
+public interface RenderTargetsConfiguration {
 
 	/** Enables or disables specific render targets in this configuration */
 	public void setEnabledRenderTargets(boolean... targets);
@@ -22,7 +22,7 @@ public interface RenderTargetAttachementsConfiguration {
 	public void setColorAttachements(RenderTarget... colorAttachements);
 
 	/** Resizes the framebuffer ( actually resizes it's associated textures ) */
-	public void resizeFBO(int width, int height);
+	public void resize(int width, int height);
 
 	/** Destroys the configuration.*/
 	public void destroy();

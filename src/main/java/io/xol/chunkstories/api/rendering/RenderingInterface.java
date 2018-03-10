@@ -18,14 +18,13 @@ import io.xol.chunkstories.api.exceptions.rendering.ShaderCompileException;
 import io.xol.chunkstories.api.rendering.lightning.Light;
 import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
 import io.xol.chunkstories.api.rendering.pipeline.AttributesConfiguration;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration;
-import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
-import io.xol.chunkstories.api.rendering.pipeline.TexturingConfiguration;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.BlendMode;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingMode;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.DepthTestMode;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.PolygonFillMode;
-import io.xol.chunkstories.api.rendering.target.RenderTargetManager;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.BlendMode;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.CullingMode;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.DepthTestMode;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.PolygonFillMode;
+import io.xol.chunkstories.api.rendering.pipeline.Shader;
+import io.xol.chunkstories.api.rendering.target.RenderTargets;
 import io.xol.chunkstories.api.rendering.text.FontRenderer;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.rendering.textures.Cubemap;
@@ -48,35 +47,33 @@ public interface RenderingInterface
 	
 	public GameWindow getWindow();
 	
-	public RenderTargetManager getRenderTargetManager();
+	public RenderTargets getRenderTargetManager();
 	
 	/* Shaders */
 	
 	public ShadersLibrary shaders();
 	
-	public ShaderInterface useShader(String shaderName) throws InvalidShaderException, ShaderCompileException;
+	public Shader useShader(String shaderName) throws InvalidShaderException, ShaderCompileException;
 	
-	public ShaderInterface currentShader();
+	public Shader currentShader();
 	
 	/* Texturing configuration */
 	
-	public TexturingConfiguration getTexturingConfiguration();
+	public void bindAlbedoTexture(Texture2D texture);
 	
-	public TexturingConfiguration bindAlbedoTexture(Texture2D texture);
+	public void bindNormalTexture(Texture2D texture);
 	
-	public TexturingConfiguration bindNormalTexture(Texture2D texture);
-	
-	public TexturingConfiguration bindMaterialTexture(Texture2D texture);
+	public void bindMaterialTexture(Texture2D texture);
 
-	public TexturingConfiguration bindTexture1D(String textureSamplerName, Texture1D texture);
+	public void bindTexture1D(String textureSamplerName, Texture1D texture);
 	
-	public TexturingConfiguration bindTexture2D(String textureSamplerName, Texture2D texture);
+	public void bindTexture2D(String textureSamplerName, Texture2D texture);
 	
-	public TexturingConfiguration bindTexture3D(String textureSamplerName, Texture3D texture);
+	public void bindTexture3D(String textureSamplerName, Texture3D texture);
 	
-	public TexturingConfiguration bindCubemap(String cubemapSamplerName, Cubemap cubemapTexture);
+	public void bindCubemap(String cubemapSamplerName, Cubemap cubemapTexture);
 	
-	public TexturingConfiguration bindArrayTexture(String textureSamplerName, ArrayTexture texture);
+	public void bindArrayTexture(String textureSamplerName, ArrayTexture texture);
 
 	public TexturesLibrary textures();
 	
@@ -92,28 +89,28 @@ public interface RenderingInterface
 	/** Feeds the 'objectMatrix' and 'objectMatrixNormal' shader inputs ( either uniform or texture-based instanced if shader has support ) */
 	public Matrix4f setObjectMatrix(Matrix4f objectMatrix);
 	
-	/** Feeds the 'worldLight' shader inputs ( either uniform or texture-based instanced if shader has support ) */
-	public void setWorldLight(int sunLight, int blockLight);
+	///** Feeds the 'worldLight' shader inputs ( either uniform or texture-based instanced if shader has support ) */
+	//public void setWorldLight(int sunLight, int blockLight);
 	
 	/* Pipeline configuration */
 	
 	/** @return The current PipelineConfiguration */
-	public PipelineConfiguration getPipelineConfiguration();
+	public StateMachine getStateMachine();
 
-	public PipelineConfiguration setDepthTestMode(DepthTestMode depthTestMode);
+	public void setDepthTestMode(DepthTestMode depthTestMode);
 	
-	public PipelineConfiguration setCullingMode(CullingMode cullingMode);
+	public void setCullingMode(CullingMode cullingMode);
 
-	public PipelineConfiguration setBlendMode(BlendMode blendMode);
+	public void setBlendMode(BlendMode blendMode);
 
-	public PipelineConfiguration setPolygonFillMode(PolygonFillMode polygonFillMode);
+	public void setPolygonFillMode(PolygonFillMode polygonFillMode);
 	
 	/* Attributes */
 	
 	/**
 	 * Returns the configuration of the bound vertex shader inputs
 	 */
-	public AttributesConfiguration getAttributesConfiguration();
+	//public AttributesConfiguration getAttributesConfiguration();
 	
 	/** If attributeSource != null, setups the currently bound vertex shader attribute input 'attributeName' with it
 	 * If attibuteSource == null, disables the shader input 'attributeName'
@@ -131,15 +128,14 @@ public interface RenderingInterface
 	
 	/**
 	 * Draws N primitives made of 'count' vertices, offset at vertice 'startAt', using data specified in the AttributesConfiguration
-	 * @return Returns a RenderingCommand object, containing a snapshot of the current state of the RenderingInterface and adds it to the rendering queue
 	 */
-	public RenderingCommand draw(Primitive primitive, int startAt, int count);
+	public void draw(Primitive primitive, int startAt, int count);
 	
 	/** For instanced rendering */
-	public RenderingCommand draw(Primitive primitive, int startAt, int count, int instances);
+	public void draw(Primitive primitive, int startAt, int count, int instances);
 	
 	/** Equivalent to glMultiDrawArrays */
-	public RenderingCommand drawMany(Primitive primitive, int... startAndCountPairs);
+	public void drawMany(Primitive primitive, int... startAndCountPairs);
 
 	/** Renders a fullsize quad for whole-screen effects */
 	public void drawFSQuad();
@@ -147,7 +143,7 @@ public interface RenderingInterface
 	/**
 	 * Executes ALL commands in the queue up to this point before continuing
 	 */
-	public void flush();
+	//public void flush();
 	
 	/* Statistics */
 	

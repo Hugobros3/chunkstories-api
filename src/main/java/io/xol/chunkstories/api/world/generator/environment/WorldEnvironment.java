@@ -10,7 +10,7 @@ import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
 import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
+import io.xol.chunkstories.api.rendering.pipeline.Shader;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 
 /** Helper interface regrouping all the look & feel specific traits of a World */
@@ -29,7 +29,7 @@ public interface WorldEnvironment {
 	public abstract Vector3fc getShadowColor(Vector3dc cameraPosition);
 	
 	/** Set-ups the shader constants used to render shadows */
-	public default void setupShadowColors(RenderingInterface renderer, ShaderInterface shader) {
+	public default void setupShadowColors(RenderingInterface renderer, Shader shader) {
 
 		Vector3dc cameraPosition = renderer.getCamera().getCameraPosition();
 		

@@ -6,6 +6,8 @@
 
 package io.xol.chunkstories.api.rendering.pipeline;
 
+import java.util.Map;
+
 import org.joml.Matrix3fc;
 import org.joml.Matrix4fc;
 import org.joml.Vector2dc;
@@ -15,7 +17,7 @@ import org.joml.Vector3fc;
 import org.joml.Vector4dc;
 import org.joml.Vector4fc;
 
-public interface ShaderInterface
+public interface Shader
 {
 	public String getShaderName();
 
@@ -53,5 +55,16 @@ public interface ShaderInterface
 	
 	public void setUniformMatrix3f(String uniformName, Matrix3fc uniformData);
 	
-	public UniformsConfiguration getUniformsConfiguration();
+	/** Returns the list of parsed texture samplers declared in the fragment shader */
+	public Map<String, SamplerType> samplers();
+	
+	public enum SamplerType {
+		TEXTURE_1D,
+		TEXTURE_2D,
+		TEXTURE_3D,
+		CUBEMAP,
+		ARRAY_TEXTURE_2D;
+	}
+	
+	//public UniformsConfiguration getUniformsConfiguration();
 }

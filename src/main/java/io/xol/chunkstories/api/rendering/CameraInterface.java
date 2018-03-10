@@ -10,7 +10,7 @@ import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
 import io.xol.chunkstories.api.physics.CollisionBox;
-import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
+import io.xol.chunkstories.api.rendering.pipeline.Shader;
 
 public interface CameraInterface
 {
@@ -18,7 +18,7 @@ public interface CameraInterface
 	
 	public boolean isBoxInFrustrum(CollisionBox box);
 
-	public void setupShader(ShaderInterface shaderProgram);
+	public void setupShader(Shader shaderProgram);
 
 	public Vector3dc getCameraPosition();
 	

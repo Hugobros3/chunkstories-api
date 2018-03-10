@@ -6,19 +6,9 @@
 
 package io.xol.chunkstories.api.rendering.pipeline;
 
-import io.xol.chunkstories.api.rendering.RenderingInterface;
-
-//TODO rename to something more meaningfull
-public interface PipelineConfiguration
+/** Offers a platform-agnostic simplification of the main OpenGL state */
+public interface StateMachine
 {
-	public DepthTestMode getDepthTestMode();
-
-	public BlendMode getBlendMode();
-
-	public CullingMode getCullingMode();
-	
-	public PolygonFillMode getPolygonFillMode();
-
 	public static enum DepthTestMode {
 		DISABLED, GREATER, GREATER_OR_EQUAL, EQUAL, LESS_OR_EQUAL, LESS;
 	}
@@ -34,6 +24,20 @@ public interface PipelineConfiguration
 	public static enum PolygonFillMode {
 		FILL, WIREFRAME, POINTS;
 	}
+	
+	public DepthTestMode getDepthTestMode();
 
-	public void setup(RenderingInterface renderingInterface);
+	public BlendMode getBlendMode();
+
+	public CullingMode getCullingMode();
+	
+	public PolygonFillMode getPolygonFillMode();
+	
+	public void setDepthTestMode(DepthTestMode depthTestMode);
+	
+	public void setCullingMode(CullingMode cullingMode);
+
+	public void setBlendMode(BlendMode blendMode);
+
+	public void setPolygonFillMode(PolygonFillMode polygonFillMode);
 }

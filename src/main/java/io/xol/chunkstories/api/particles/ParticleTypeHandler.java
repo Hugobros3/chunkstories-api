@@ -10,10 +10,10 @@ import org.joml.Vector3f;
 
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.BlendMode;
-import io.xol.chunkstories.api.rendering.pipeline.PipelineConfiguration.CullingMode;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.BlendMode;
+import io.xol.chunkstories.api.rendering.pipeline.StateMachine.CullingMode;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
-import io.xol.chunkstories.api.rendering.pipeline.ShaderInterface;
+import io.xol.chunkstories.api.rendering.pipeline.Shader;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.cell.CellData;
 
@@ -129,7 +129,7 @@ public abstract class ParticleTypeHandler {
 		{
 			renderingInterface.setCullingMode(CullingMode.DISABLED);
 			renderingInterface.setBlendMode(BlendMode.MIX);
-			ShaderInterface particlesShader = renderingInterface.useShader(type.getShaderName());
+			Shader particlesShader = renderingInterface.useShader(type.getShaderName());
 			particlesShader.setUniform2f("screenSize", renderingInterface.getWindow().getWidth(), renderingInterface.getWindow().getHeight());
 			renderingInterface.getCamera().setupShader(particlesShader);
 			renderingInterface.bindTexture2D("lightColors", particlesRenderer.getContent().textures().getTexture("./textures/environement/light.png"));
