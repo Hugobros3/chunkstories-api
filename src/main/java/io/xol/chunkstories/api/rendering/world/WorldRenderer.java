@@ -31,9 +31,6 @@ public interface WorldRenderer
 	/** Tells the chunks renderer to rebuilt it's PVS set */
 	public void flagChunksModified();
 
-	/** Resizes the shadow maps to fit the user parameters */
-	public void resizeShadowMaps();
-
 	/** Resizes the rendering buffers to fit the game window */
 	public void setupRenderSize();
 

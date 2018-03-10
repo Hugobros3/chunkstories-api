@@ -10,7 +10,7 @@ package io.xol.chunkstories.api.rendering;
 public interface StateMachine
 {
 	public static enum DepthTestMode {
-		DISABLED, GREATER, GREATER_OR_EQUAL, EQUAL, LESS_OR_EQUAL, LESS;
+		DISABLED, GREATER, GREATER_OR_EQUAL, EQUAL, LESS_OR_EQUAL, LESS, ALWAYS;
 	}
 	
 	public static enum BlendMode {

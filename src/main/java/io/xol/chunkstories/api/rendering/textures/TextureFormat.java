@@ -28,8 +28,8 @@ public enum TextureFormat
 	/** One component of 16-bit integers */
 	RED_16I(GL_R16UI, GL_RED_INTEGER, GL_INT, 2),
 	
-	/** One component of 16-bit integers */
-	RED_16F(GL_R16F, GL_RED_INTEGER, GL_FLOAT, 2),
+	/** One component of 16-bit float */
+	RED_16F(GL_R16F, GL_RED, GL_FLOAT, 2),
 
 	/** 10 bits for RGB, two for alpha. Normalized. */
 	RGBA_3x10_2(GL_RGB10_A2, GL_RGBA, GL_UNSIGNED_BYTE, 4),

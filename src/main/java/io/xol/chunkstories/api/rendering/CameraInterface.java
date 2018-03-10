@@ -6,6 +6,8 @@
 
 package io.xol.chunkstories.api.rendering;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
@@ -45,4 +47,24 @@ public interface CameraInterface
 	float getRotationX();
 
 	public void setupUsingScreenSize(int width, int height);
+	
+	public Matrix4f getProjectionMatrix4f();
+
+	public Matrix4f getProjectionMatrix4fInverted();
+
+	public Matrix4f getModelViewProjectionMatrix4f();
+
+	public Matrix4f getModelViewProjectionMatrix4fInverted();
+
+	public Matrix4f getUntranslatedMVP4f();
+
+	public Matrix4f getUntranslatedMVP4fInv();
+
+	public Matrix4f getModelViewMatrix4f();
+
+	public Matrix4f getModelViewMatrix4fInverted();
+
+	public Matrix3f getNormalMatrix3f();
+
+	public Matrix3f getNormalMatrix3fInverted();
 }
