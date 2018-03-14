@@ -11,7 +11,6 @@ import org.joml.Matrix4f;
 import io.xol.chunkstories.api.client.ClientContent.ShadersLibrary;
 import io.xol.chunkstories.api.client.ClientContent.TexturesLibrary;
 import io.xol.chunkstories.api.client.ClientInterface;
-import io.xol.chunkstories.api.client.ClientRenderingConfig;
 import io.xol.chunkstories.api.exceptions.rendering.AttributeNotPresentException;
 import io.xol.chunkstories.api.exceptions.rendering.InvalidShaderException;
 import io.xol.chunkstories.api.exceptions.rendering.ShaderCompileException;
@@ -42,8 +41,6 @@ public interface RenderingInterface
 	public CameraInterface getCamera();
 
 	public ClientInterface getClient();
-	
-	public ClientRenderingConfig renderingConfig();
 	
 	public GameWindow getWindow();
 	

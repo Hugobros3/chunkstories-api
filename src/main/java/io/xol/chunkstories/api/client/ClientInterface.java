@@ -11,8 +11,9 @@ import io.xol.chunkstories.api.item.inventory.Inventory;
 import io.xol.chunkstories.api.particles.ParticlesManager;
 import io.xol.chunkstories.api.plugin.ClientPluginManager;
 import io.xol.chunkstories.api.rendering.GameWindow;
+import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.effects.DecalsManager;
-import io.xol.chunkstories.api.util.ConfigDeprecated;
+import io.xol.chunkstories.api.util.Configuration;
 import io.xol.chunkstories.api.world.WorldClient;
 
 public interface ClientInterface extends GameContext
@@ -63,11 +64,15 @@ public interface ClientInterface extends GameContext
 	
 	public ClientPluginManager getPluginManager();
 
-	public ParticlesManager getParticlesManager();
+	public ParticlesManager getParticlesManager(); //TODO move in world
 
-	public DecalsManager getDecalsManager();
+	public DecalsManager getDecalsManager(); //TODO same
 
-	public ConfigDeprecated configDeprecated();
+	public RenderingInterface getRenderingInterface();
 	
-	public ClientRenderingConfig renderingConfig();
+	public Configuration getConfiguration();
+	
+	//public ConfigDeprecated configDeprecated();
+	
+	//public ClientRenderingConfig renderingConfig();
 }

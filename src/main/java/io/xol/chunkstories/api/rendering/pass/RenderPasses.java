@@ -19,4 +19,7 @@ public interface RenderPasses {
 	public RenderPass getRenderPass(String name);
 	
 	public RenderPass getCurrentPass();
+	
+	/** Marks the rendering graph to be redone next frame */
+	public void reloadPasses();
 }

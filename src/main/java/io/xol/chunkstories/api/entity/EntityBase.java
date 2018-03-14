@@ -195,7 +195,7 @@ public abstract class EntityBase implements Entity
 		renderingInterface.getCamera().setCameraPosition(new Vector3d(positionComponent.getLocation()));
 		
 		//Default FOV
-		renderingInterface.getCamera().setFOV(renderingInterface.renderingConfig().getFov());
+		renderingInterface.getCamera().setFOV((float) renderingInterface.getClient().getConfiguration().getDoubleOption("fov"));
 	}
 
 	@Override
