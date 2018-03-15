@@ -10,7 +10,7 @@ The project consists of an API, an implementation of that API in the form of cli
 
 ### Why yet another Minecraft clone ?
 
-It may have occured to you that a while ago, some company of the name 'Microsoft' spent more than what a few countries GPD to aquire the rights to the videogame 'Minecraft', to the astonishment of observers and fears of some faitfull players. More recently their strategy has become increasingly clear: they are using the brand to promote their other products, and are phasing out the relativly open, and beloved so-called "Java Edition". Replacing it is effectively a port of the C++/C# console remake, exclusive to the platforms Microsoft *wants* you to use.
+It may have occured to you that a while ago, some company of the name 'Microsoft' spent more than what a few countries GDP to aquire the rights to the videogame 'Minecraft', to the astonishment of observers and fears of some faitfull players. More recently their strategy has become increasingly clear: they are using the brand to promote their other products, and are phasing out the relativly open, and beloved so-called "Java Edition". Replacing it is effectively a port of the C++/C# console remake, exclusive to the platforms Microsoft *wants* you to use.
 
 Chunk Stories is free software and runs on any platform someone can be bothered to port the implementation to.
 
@@ -18,7 +18,7 @@ Chunk Stories is free software and runs on any platform someone can be bothered 
 
 For the author, Chunk Stories is and always has been a side project, made for fun and to become a better programmer. This is the main quest. The author also has the smug belief that other clones are flawed in some way, and he can do better, especially in the mods handling department. ( [Yes, that](https://xkcd.com/927/) )
 
-To this end, Chunk Stories borrows heavily from one of two best things about the Minecraft modding ecosystem: The Bukkit-style of plugins, and the server-downloadable "ressource packs", mixing the two into the idea of a "Mod".
+To this end, Chunk Stories borrows heavily from one of two best things about the Minecraft modding ecosystem: The Bukkit-style of plugins, and the server-downloadable "resource packs", mixing the two into the idea of a "Mod".
 
 ### Engine Features
 
