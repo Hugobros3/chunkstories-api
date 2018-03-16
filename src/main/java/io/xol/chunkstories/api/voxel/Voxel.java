@@ -179,8 +179,8 @@ public class Voxel
 	 * @return An array of CollisionBox or null.
 	 */
 	public CollisionBox[] getCollisionBoxes(CellData info) {
-		if (!definition.isSolid())
-			return new CollisionBox[] {};
+		//if (!definition.isSolid())
+		//	return new CollisionBox[] {};
 		return new CollisionBox[] { new CollisionBox( definition.getCollisionBox()) }; //Return the one box in the definition, if you want more make a customClass
 	}
 
