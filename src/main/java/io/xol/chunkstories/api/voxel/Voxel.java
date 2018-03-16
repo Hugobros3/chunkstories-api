@@ -136,8 +136,8 @@ public class Voxel
 	/**
 	 * Gets the reduction of the light that will transfer from this block to another, based on data from the two blocks and the side from wich it's leaving the first block from.
 	 * 
-	 * @param in The full data related the entry cell (==this one) ( see {@link VoxelFormat VoxelFormat.class} )
-	 * @param out The full data related the exit voxel ( see {@link VoxelFormat VoxelFormat.class} )
+	 * @param in The cell the light is going into (==this one) ( see {@link CellData CellData.class} )
+	 * @param out The cell the light is coming from ( see {@link CellData CellData.class} )
 	 * @param side The side of the block light would come out of ( see {@link VoxelSides VoxelSides.class} )
 	 * @return The reduction to apply to the light level on exit
 	 */
