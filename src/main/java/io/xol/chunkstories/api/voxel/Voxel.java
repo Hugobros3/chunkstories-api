@@ -143,8 +143,8 @@ public class Voxel
 	 */
 	public int getLightLevelModifier(CellData in, CellData out, VoxelSides side) {
 		if (getDefinition().isOpaque()) //Opaque voxels destroy all light
-			return -15;
-		return definition.getShadingLightLevel(); //Etc
+			return 15;
+		return definition.getShadingLightLevel();
 	}
 
 	/**
