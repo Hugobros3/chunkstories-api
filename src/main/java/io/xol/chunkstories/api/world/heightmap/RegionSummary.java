@@ -14,6 +14,8 @@ import io.xol.chunkstories.api.world.chunk.WorldUser;
 
 public interface RegionSummary
 {
+	public int NO_DATA = -1;
+	
 	public boolean isLoaded();
 	
 	public Fence waitForLoading();
@@ -24,6 +26,7 @@ public interface RegionSummary
 
 	public Iterator<WorldUser> getSummaryUsers();
 
+	/** Return the height of the topmost block or NO_DATA is no data is yet available */
 	public int getHeight(int x, int z);
 
 	public CellData getTopCell(int x, int z);
