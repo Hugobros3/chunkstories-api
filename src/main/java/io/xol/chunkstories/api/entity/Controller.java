@@ -12,7 +12,7 @@ import io.xol.chunkstories.api.input.InputsManager;
 import io.xol.chunkstories.api.particles.ParticlesManager;
 import io.xol.chunkstories.api.rendering.effects.DecalsManager;
 import io.xol.chunkstories.api.sound.SoundManager;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
+import io.xol.chunkstories.api.world.WorldUser;
 
 /**
  * The Controller is a special subscriber that don't receive normal tracking updates and can push changes to the controlled entity

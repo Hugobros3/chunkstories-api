@@ -31,11 +31,10 @@ import io.xol.chunkstories.api.world.cell.FutureCell;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 import io.xol.chunkstories.api.world.chunk.ChunkHolder;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.generator.WorldGenerator;
 import io.xol.chunkstories.api.world.chunk.ChunksIterator;
-import io.xol.chunkstories.api.world.chunk.Region;
-import io.xol.chunkstories.api.world.heightmap.RegionSummaries;
+import io.xol.chunkstories.api.world.heightmap.WorldHeightmaps;
+import io.xol.chunkstories.api.world.region.Region;
 
 public interface World
 {
@@ -307,7 +306,7 @@ public interface World
 
 	/* Region Summaries */
 	
-	public RegionSummaries getRegionsSummariesHolder();
+	public WorldHeightmaps getRegionsSummariesHolder();
 	
 	/**
 	 * For dirty hacks that need so

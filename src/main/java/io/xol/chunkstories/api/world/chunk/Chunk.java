@@ -18,6 +18,7 @@ import io.xol.chunkstories.api.voxel.components.VoxelComponent;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.World.WorldCell;
 import io.xol.chunkstories.api.world.cell.CellComponents;
+import io.xol.chunkstories.api.world.region.Region;
 
 public interface Chunk
 {

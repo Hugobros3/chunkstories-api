@@ -11,9 +11,9 @@ import java.util.Map.Entry;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.voxel.components.VoxelComponent;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
 
 /** Represents the various VoxelComponents that may exist in one voxel cell */
 public interface CellComponents {

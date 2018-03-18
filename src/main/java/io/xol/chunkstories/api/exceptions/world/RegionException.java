@@ -6,7 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.world;
 
-import io.xol.chunkstories.api.world.chunk.Region;
+import io.xol.chunkstories.api.world.region.Region;
 
 @SuppressWarnings("serial")
 public abstract class RegionException extends WorldException {

@@ -9,12 +9,19 @@ package io.xol.chunkstories.api.world.heightmap;
 import java.util.Iterator;
 
 import io.xol.chunkstories.api.util.concurrency.Fence;
+import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.cell.CellData;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
 
-public interface RegionSummary
+/** Represents the topmost cell for 256 * 256 area. X and Z coordinates match those of regions */
+public interface Heightmap
 {
-	public int NO_DATA = -1;
+	public final int NO_DATA = -1;
+
+	/** Get the region-space X coordinate for the begining of this heightmap data  */
+	public int getRegionX();
+
+	/** Get the region-space Z coordinate for the begining of this heightmap data  */
+	public int getRegionZ();
 	
 	public boolean isLoaded();
 	
@@ -24,7 +31,7 @@ public interface RegionSummary
 
 	public boolean unregisterUser(WorldUser user);
 
-	public Iterator<WorldUser> getSummaryUsers();
+	public Iterator<WorldUser> getUsers();
 
 	/** Return the height of the topmost block or NO_DATA is no data is yet available */
 	public int getHeight(int x, int z);
@@ -32,8 +39,4 @@ public interface RegionSummary
 	public CellData getTopCell(int x, int z);
 	
 	public void setTopCell(CellData data);
-
-	public int getRegionX();
-	
-	public int getRegionZ();
 }

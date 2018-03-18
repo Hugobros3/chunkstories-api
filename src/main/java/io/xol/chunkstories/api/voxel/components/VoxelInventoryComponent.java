@@ -15,8 +15,8 @@ import io.xol.chunkstories.api.item.inventory.InventoryHolder;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.net.packets.PacketInventoryPartialUpdate;
 import io.xol.chunkstories.api.server.RemotePlayer;
+import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.cell.CellComponents;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 

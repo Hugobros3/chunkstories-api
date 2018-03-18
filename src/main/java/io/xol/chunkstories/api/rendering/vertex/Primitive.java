@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.rendering;
+package io.xol.chunkstories.api.rendering.vertex;
 
 public enum Primitive {
 	POINT, LINE, TRIANGLE, 

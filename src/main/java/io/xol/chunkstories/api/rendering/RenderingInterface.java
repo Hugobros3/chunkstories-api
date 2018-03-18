@@ -33,6 +33,7 @@ import io.xol.chunkstories.api.rendering.textures.Texture3D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;
 import io.xol.chunkstories.api.rendering.vertex.AttributeSource;
 import io.xol.chunkstories.api.rendering.vertex.AttributesConfiguration;
+import io.xol.chunkstories.api.rendering.vertex.Primitive;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 import io.xol.chunkstories.api.rendering.world.WorldRenderer;
 

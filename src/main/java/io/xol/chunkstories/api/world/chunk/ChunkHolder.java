@@ -8,6 +8,8 @@ package io.xol.chunkstories.api.world.chunk;
 
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.util.concurrency.Fence;
+import io.xol.chunkstories.api.world.WorldUser;
+import io.xol.chunkstories.api.world.region.Region;
 
 /**
  * Regions have 8x8x8 slots for chunks, this holds the offline/compressed data and takes care of loading/unloading the live data when required by users

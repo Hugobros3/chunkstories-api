@@ -12,8 +12,8 @@ import java.io.IOException;
 
 import io.xol.chunkstories.api.net.packets.PacketVoxelUpdate;
 import io.xol.chunkstories.api.server.RemotePlayer;
+import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.cell.CellComponents;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 

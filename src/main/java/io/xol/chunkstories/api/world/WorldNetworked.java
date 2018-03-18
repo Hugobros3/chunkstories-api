@@ -12,10 +12,4 @@ public interface WorldNetworked extends World
 {	
 	/** Returns a ContentTranslator that can deal with serializing live data */
 	public OnlineContentTranslator getContentTranslator();
-	
-	//public void processIncommingPackets();
-	
-	//public void queueWorldPacket(PacketWorld packet);
-	
-	//public void queueWorldStreamingPacket(PacketWorldStreaming packet);
 }

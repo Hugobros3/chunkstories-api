@@ -6,7 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.world;
 
-import io.xol.chunkstories.api.world.chunk.Region;
+import io.xol.chunkstories.api.world.region.Region;
 
 public class ChunkNotLoadedException extends RegionException {
 

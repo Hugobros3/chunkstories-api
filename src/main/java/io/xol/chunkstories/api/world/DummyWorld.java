@@ -30,10 +30,9 @@ import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 import io.xol.chunkstories.api.world.chunk.ChunkHolder;
 import io.xol.chunkstories.api.world.chunk.ChunksIterator;
-import io.xol.chunkstories.api.world.chunk.Region;
-import io.xol.chunkstories.api.world.chunk.WorldUser;
 import io.xol.chunkstories.api.world.generator.WorldGenerator;
-import io.xol.chunkstories.api.world.heightmap.RegionSummaries;
+import io.xol.chunkstories.api.world.heightmap.WorldHeightmaps;
+import io.xol.chunkstories.api.world.region.Region;
 
 /** 
  * DummyWorld doesn't exist. DummyWorld is immutable. DummyWorld is unique.
@@ -243,7 +242,7 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public RegionSummaries getRegionsSummariesHolder() {
+	public WorldHeightmaps getRegionsSummariesHolder() {
 		// TODO Auto-generated method stub
 		return null;
 	}

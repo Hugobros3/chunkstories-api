@@ -4,26 +4,31 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.world.chunk;
+package io.xol.chunkstories.api.world.region;
 
 import java.util.Iterator;
 
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.world.World;
+import io.xol.chunkstories.api.world.WorldUser;
+import io.xol.chunkstories.api.world.chunk.Chunk;
+import io.xol.chunkstories.api.world.chunk.ChunkHolder;
 
 /**
  * A region is 8x8x8 chunks and contains entities
  */
-public interface Region
-{
+public interface Region {
+
+	public World getWorld();
+	
 	public int getRegionX();
 	
 	public int getRegionY();
 	
 	public int getRegionZ();
 
-	public Iterator<WorldUser> getChunkUsers();
+	public Iterator<WorldUser> getUsers();
 
 	boolean registerUser(WorldUser user);
 
@@ -32,7 +37,7 @@ public interface Region
 	/**
 	 * @return An iterator over each entity within this region
 	 */
-	Iterator<Entity> getEntitiesWithinRegion();
+	public Iterator<Entity> getEntitiesWithinRegion();
 	
 	public int getNumberOfLoadedChunks();
 
@@ -51,6 +56,4 @@ public interface Region
 
 	/** Same as above, but unloads first */
 	public Fence unloadAndSave();
-
-	public World getWorld();
 }
