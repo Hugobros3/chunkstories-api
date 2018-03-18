@@ -11,31 +11,27 @@ import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.world.World;
 
-public class Location extends Vector3d
-{
+/** Cartesian product of a world and a position within that world */
+public class Location extends Vector3d {
 	protected World world;
-	
-	public Location(World world, double x, double y, double z)
-	{
+
+	public Location(World world, double x, double y, double z) {
 		super(x, y, z);
 		this.world = world;
 	}
-	
-	public Location(World world, Vector3dc position)
-	{
+
+	public Location(World world, Vector3dc position) {
 		this(world, position.x(), position.y(), position.z());
 	}
 
-	public Location(Location location)
-	{
+	public Location(Location location) {
 		this.world = location.getWorld();
 		this.x = (location.x);
 		this.y = (location.y);
 		this.z = (location.z);
 	}
-	
-	public World getWorld()
-	{
+
+	public World getWorld() {
 		return world;
 	}
 }

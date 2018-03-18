@@ -22,7 +22,7 @@ import io.xol.chunkstories.api.net.PacketDefinition;
 import io.xol.chunkstories.api.particles.ParticleTypeHandler;
 import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.materials.Material;
+import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
 import io.xol.chunkstories.api.voxel.models.VoxelModel;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
@@ -46,18 +46,6 @@ public interface Content
 	 */
 	public void reload();
 	
-	public Materials materials();
-	public interface Materials {
-		
-		public Material getMaterialByName(String materialName);
-		
-		public Iterator<Material> all();
-
-		public Content parent();
-		
-		public Logger logger();
-	}
-	
 	public Voxels voxels();
 	public interface Voxels {
 		
@@ -66,7 +54,7 @@ public interface Content
 		/** Returns the 'air' voxel ( No voxel data ) */
 		public Voxel air();
 		
-		public Voxel getVoxelByName(String voxelName);
+		public Voxel getVoxel(String voxelName);
 		
 		public Iterator<Voxel> all();
 
@@ -75,7 +63,7 @@ public interface Content
 		public VoxelTextures textures();
 		public interface VoxelTextures {
 			
-			public VoxelTexture getVoxelTextureByName(String voxelTextureName);
+			public VoxelTexture getVoxelTexture(String voxelTextureName);
 			
 			public Iterator<VoxelTexture> all();
 
@@ -87,11 +75,23 @@ public interface Content
 		public VoxelModels models();
 		public interface VoxelModels {
 			
-			public VoxelModel getVoxelModelByName(String voxelModelName);
+			public VoxelModel getVoxelModel(String voxelModelName);
 			
 			public Iterator<VoxelModel> all();
 
 			public Voxels parent();
+			
+			public Logger logger();
+		}
+		
+		public VoxelMaterials materials();
+		public interface VoxelMaterials {
+			
+			public VoxelMaterial getVoxelMaterial(String materialName);
+			
+			public Iterator<VoxelMaterial> all();
+
+			public Content parent();
 			
 			public Logger logger();
 		}
@@ -104,9 +104,7 @@ public interface Content
 	public ItemsDefinitions items();
 	public interface ItemsDefinitions {
 		
-		//public ItemType getItemTypeById(int itemId);
-		
-		public ItemDefinition getItemTypeByName(String itemName);
+		public ItemDefinition getItemDefinition(String itemName);
 		
 		public Iterator<ItemDefinition> all();
 
@@ -118,9 +116,7 @@ public interface Content
 	public EntityDefinitions entities();
 	public interface EntityDefinitions {
 		
-		//public EntityType getEntityTypeById(short entityId);
-		
-		public EntityDefinition getEntityTypeByName(String entityName);
+		public EntityDefinition getEntityDefinition(String entityName);
 		
 		public Iterator<EntityDefinition> all();
 
@@ -132,9 +128,7 @@ public interface Content
 	public ParticlesTypes particles();
 	public interface ParticlesTypes {
 		
-		public ParticleTypeHandler getParticleTypeHandlerByName(String string);
-		
-		//public ParticleTypeHandler getParticleTypeHandlerById(int id);
+		public ParticleTypeHandler getParticleType(String string);
 		
 		public Iterator<ParticleTypeHandler> all();
 

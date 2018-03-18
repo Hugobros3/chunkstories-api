@@ -10,7 +10,7 @@ import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.VoxelSides;
+import io.xol.chunkstories.api.voxel.VoxelSide;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
 
@@ -63,7 +63,7 @@ public interface CellData
 		return voxel != null ? voxel.getVoxelRenderer(this) : null;
 	}
 
-	public default VoxelTexture getTexture(VoxelSides side) {
+	public default VoxelTexture getTexture(VoxelSide side) {
 		Voxel voxel = getVoxel();
 		return voxel != null ? voxel.getVoxelTexture(side, this) : null;
 	}

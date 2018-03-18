@@ -10,7 +10,7 @@ import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCubic;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.LodLevel;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.ShadingType;
-import io.xol.chunkstories.api.voxel.VoxelSides;
+import io.xol.chunkstories.api.voxel.VoxelSide;
 
 /** This interface is the context in which chunks are rendered, it's implemented by the thread-pool rendering the chunks */
 public interface ChunkRenderer
@@ -40,12 +40,12 @@ public interface ChunkRenderer
 		
 		public interface VoxelLighter {
 			/** Returns a value between 0 and 15 if the block is non-opaque, -1 if it is */
-			public byte getSunlightLevelForCorner(VoxelSides.Corners corner);
+			public byte getSunlightLevelForCorner(VoxelSide.Corners corner);
 
 			/** Returns a value between 0 and 15 if the block is non-opaque, -1 if it is */
-			public byte getBlocklightLevelForCorner(VoxelSides.Corners corner);
+			public byte getBlocklightLevelForCorner(VoxelSide.Corners corner);
 			
-			public byte getAoLevelForCorner(VoxelSides.Corners corner);
+			public byte getAoLevelForCorner(VoxelSide.Corners corner);
 
 			public byte getSunlightLevelInterpolated(float vertX, float vertY, float vertZ);
 			public byte getBlocklightLevelInterpolated(float vertX, float vertY, float vertZ);

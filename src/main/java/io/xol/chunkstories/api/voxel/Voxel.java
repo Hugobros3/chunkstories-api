@@ -15,7 +15,7 @@ import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
-import io.xol.chunkstories.api.voxel.materials.Material;
+import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.FutureCell;
@@ -59,7 +59,7 @@ public class Voxel
 	}
 	
 	/** Returns the Material used by this Voxel */
-	public final Material getMaterial() {
+	public final VoxelMaterial getMaterial() {
 		return definition.getMaterial();
 	}
 
@@ -126,9 +126,9 @@ public class Voxel
 
 	/**
 	 * Gets the texture for this voxel
-	 * @param side The side of the block we want the texture of ( see {@link VoxelSides VoxelSides.class} )
+	 * @param side The side of the block we want the texture of ( see {@link VoxelSide VoxelSides.class} )
 	 */
-	public VoxelTexture getVoxelTexture(VoxelSides side, CellData info) {
+	public VoxelTexture getVoxelTexture(VoxelSide side, CellData info) {
 		//By default we don't care about context, we give the same texture to everyone
 		return definition.getVoxelTexture(side);
 	}
@@ -138,10 +138,10 @@ public class Voxel
 	 * 
 	 * @param in The cell the light is going into (==this one) ( see {@link CellData CellData.class} )
 	 * @param out The cell the light is coming from ( see {@link CellData CellData.class} )
-	 * @param side The side of the block light would come out of ( see {@link VoxelSides VoxelSides.class} )
+	 * @param side The side of the block light would come out of ( see {@link VoxelSide VoxelSides.class} )
 	 * @return The reduction to apply to the light level on exit
 	 */
-	public int getLightLevelModifier(CellData in, CellData out, VoxelSides side) {
+	public int getLightLevelModifier(CellData in, CellData out, VoxelSide side) {
 		if (getDefinition().isOpaque()) //Opaque voxels destroy all light
 			return 15;
 		return definition.getShadingLightLevel();
@@ -149,11 +149,11 @@ public class Voxel
 
 	/**
 	 * Used to fine-tune the culling system, allows for a precise, per-face approach to culling.
-	 * @param face The side of the block BEING DREW ( not the one we are asking ), so in fact we have to answer for the opposite face, that is the one that this voxel connects with. To get a reference on the sides conventions, see {@link VoxelSides VoxelSides.class}
+	 * @param face The side of the block BEING DREW ( not the one we are asking ), so in fact we have to answer for the opposite face, that is the one that this voxel connects with. To get a reference on the sides conventions, see {@link VoxelSide VoxelSides.class}
 	 * @param metadata The 8 bits of metadata associated with the block we represent.
 	 * @return Whether or not that face occlude a whole face and thus we can discard it
 	 */
-	public boolean isFaceOpaque(VoxelSides side, int metadata) {
+	public boolean isFaceOpaque(VoxelSide side, int metadata) {
 		return definition.isOpaque();
 	}
 
@@ -192,7 +192,7 @@ public class Voxel
 	/** @return Returns an array of ItemPiles for all the player-placeable variants of this Voxel */
 	public ItemPile[] getItems() {
 		//We spawn a ItemVoxel and set it to reflect this one
-		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemTypeByName("item_voxel").newItem();
+		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemDefinition("item_voxel").newItem();
 		itemVoxel.voxel = this;
 		return new ItemPile[] { new ItemPile(itemVoxel) };
 	}

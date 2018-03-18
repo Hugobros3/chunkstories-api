@@ -8,7 +8,7 @@ package io.xol.chunkstories.api.voxel.materials;
 
 import io.xol.chunkstories.api.content.Definition;
 
-public interface Material extends Definition
+public interface VoxelMaterial extends Definition
 {
 	
 }

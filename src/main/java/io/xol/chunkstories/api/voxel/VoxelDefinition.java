@@ -9,7 +9,7 @@ package io.xol.chunkstories.api.voxel;
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.Definition;
 import io.xol.chunkstories.api.physics.CollisionBox;
-import io.xol.chunkstories.api.voxel.materials.Material;
+import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
 import io.xol.chunkstories.api.voxel.models.VoxelModel;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
@@ -25,7 +25,7 @@ public interface VoxelDefinition extends Definition
 	public String getName();
 	
 	/** Returns the material used by this Voxel */
-	public Material getMaterial();
+	public VoxelMaterial getMaterial();
 
 	/** Returns the voxelModel specified in the .voxels file, or null. */
 	public VoxelModel getVoxelModel();
@@ -35,9 +35,9 @@ public interface VoxelDefinition extends Definition
 	
 	/** 
 	 * Gets the texture for this voxel
-	 * @param side The side of the block we want the texture of ( see {@link VoxelSides VoxelSides.class} ) 
+	 * @param side The side of the block we want the texture of ( see {@link VoxelSide VoxelSides.class} ) 
 	 */
-	public VoxelTexture getVoxelTexture(VoxelSides side);
+	public VoxelTexture getVoxelTexture(VoxelSide side);
 
 	public boolean isSolid();
 

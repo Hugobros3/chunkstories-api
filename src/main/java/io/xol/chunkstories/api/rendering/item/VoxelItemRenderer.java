@@ -38,8 +38,7 @@ import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderCo
 import io.xol.chunkstories.api.rendering.world.chunk.vertexlayout.BaseLayoutBaker;
 import io.xol.chunkstories.api.rendering.world.chunk.vertexlayout.IntricateLayoutBaker;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.VoxelCustomIcon;
-import io.xol.chunkstories.api.voxel.VoxelSides.Corners;
+import io.xol.chunkstories.api.voxel.VoxelSide.Corners;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.DummyCell;
@@ -148,10 +147,10 @@ public class VoxelItemRenderer extends ItemRenderer {
 	@Override
 	public void renderItemInInventory(RenderingInterface renderer, ItemPile pile, float screenPositionX, float screenPositionY, int scaling) {
 
-		if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
+		/*if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
 			fallbackRenderer.renderItemInInventory(renderer, pile, screenPositionX, screenPositionY, scaling);
 			return;
-		}
+		}*/
 
 		int slotSize = 24 * scaling;
 		Shader program = renderer.useShader("inventory_blockmodel");
@@ -217,10 +216,10 @@ public class VoxelItemRenderer extends ItemRenderer {
 	@Override
 	public void renderItemInWorld(RenderingInterface renderer, ItemPile pile, World world, Location location, Matrix4f handTransformation) {
 
-		if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
+		/*if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
 			fallbackRenderer.renderItemInWorld(renderer, pile, world, location, handTransformation);
 			return;
-		}
+		}*/
 
 		Voxel voxel = ((ItemVoxel) pile.getItem()).getVoxel();
 		if (voxel == null)
@@ -343,7 +342,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 
 		VoxelRenderer voxelRenderer = cell.getVoxelRenderer();
 		if (voxelRenderer == null) {
-			voxelRenderer = cell.getVoxel().store().models().getVoxelModelByName("default");
+			voxelRenderer = cell.getVoxel().store().models().getVoxelModel("default");
 		}
 		
 		// Render into a dummy chunk ( containing only that one voxel we want )

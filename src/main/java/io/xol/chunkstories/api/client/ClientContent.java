@@ -36,7 +36,7 @@ public interface ClientContent extends Content
 			
 			public Texture2D getMaterialAtlasTexture();
 			
-			public VoxelTexture getVoxelTextureByName(String voxelTextureName);
+			public VoxelTexture getVoxelTexture(String voxelTextureName);
 			
 			public Iterator<VoxelTexture> all();
 

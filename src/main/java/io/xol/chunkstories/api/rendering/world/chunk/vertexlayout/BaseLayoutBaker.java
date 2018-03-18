@@ -14,7 +14,7 @@ import org.joml.Vector3f;
 import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCommon;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderContext.VoxelLighter;
-import io.xol.chunkstories.api.voxel.VoxelSides.Corners;
+import io.xol.chunkstories.api.voxel.VoxelSide.Corners;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
 /** In a move to abstract away the buffer layout from mods, these classes now serve to link the abstract layout in the
@@ -34,7 +34,7 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 	public BaseLayoutBaker(ClientContent content) {
 		this.content = content;
 		
-		this.defaultTexture = content.voxels().textures().getVoxelTextureByName("notex");
+		this.defaultTexture = content.voxels().textures().getVoxelTexture("notex");
 		this.currentTexture = defaultTexture;
 		
 		//Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java
@@ -49,7 +49,7 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 		this.content = content;
 		this.output = output;
 		
-		this.defaultTexture = content.voxels().textures().getVoxelTextureByName("notex");
+		this.defaultTexture = content.voxels().textures().getVoxelTexture("notex");
 		this.currentTexture = defaultTexture;
 		
 		//Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java

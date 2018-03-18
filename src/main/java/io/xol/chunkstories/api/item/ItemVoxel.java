@@ -52,17 +52,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 	{
 		return new VoxelItemRenderer((ClientContent)this.getDefinition().store().parent(), fallbackRenderer);
 	}
-
-	/*@Override
-	public void onCreate(ItemPile pile, String[] info)
-	{
-		//ItemDataVoxel idv = (ItemDataVoxel) pile.data;
-		if (info != null && info.length > 0)
-			voxel = Voxels.get(Integer.parseInt(info[0]));
-		if (info != null && info.length > 1)
-			voxelMeta = Integer.parseInt(info[1]) % 16;
-	}
-*/
+	
 	@Override
 	public String getTextureName(ItemPile pile)
 	{
@@ -166,7 +156,7 @@ public class ItemVoxel extends Item implements WorldModificationCause
 	@Override
 	public void load(DataInputStream stream) throws IOException
 	{
-		voxel = store.getVoxelByName(stream.readUTF()); //store.getVoxelById(stream.readInt());
+		voxel = store.getVoxel(stream.readUTF()); //store.getVoxelById(stream.readInt());
 		voxelMeta = stream.readByte();
 	}
 

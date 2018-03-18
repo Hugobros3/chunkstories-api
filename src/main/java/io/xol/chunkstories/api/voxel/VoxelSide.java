@@ -6,7 +6,7 @@
 
 package io.xol.chunkstories.api.voxel;
 
-public enum VoxelSides
+public enum VoxelSide
 {
 	/**	 Conventions for space in Chunk Stories
 	 
@@ -31,25 +31,25 @@ public enum VoxelSides
 	TOP(0, 1, 0),
 	BOTTOM(0, -1, 0);
 	
-	private static VoxelSides[] oppsiteSide = new VoxelSides[] {RIGHT, BACK, LEFT, FRONT, BOTTOM, TOP};
+	private static VoxelSide[] oppsiteSide = new VoxelSide[] {RIGHT, BACK, LEFT, FRONT, BOTTOM, TOP};
 	
 	/** Cell offsets when looking up a side cell */
 	public final int dx, dy, dz;
 	
-	VoxelSides(int dx, int dy, int dz) {
+	VoxelSide(int dx, int dy, int dz) {
 		this.dx = dx;
 		this.dy = dy;
 		this.dz = dz;
 	}
 	
-	public VoxelSides getOppositeSide() {
+	public VoxelSide getOppositeSide() {
 		return oppsiteSide[this.ordinal()];
 	}
 	
 	/**
 	 * Returns the Chunk Stories side from the minecraft metadata of the following objects, no top/bottom direction allowed
 	 */
-	public static VoxelSides getSideMcStairsChestFurnace(int mcSide)
+	public static VoxelSide getSideMcStairsChestFurnace(int mcSide)
 	{
 		switch(mcSide)
 		{
@@ -69,7 +69,7 @@ public enum VoxelSides
 	/**
 	 * Returns the Chunk Stories side from the minecraft metadata of the following objects, no top/bottom direction allowed
 	 */
-	public static VoxelSides getSideMcDoor(int mcSide)
+	public static VoxelSide getSideMcDoor(int mcSide)
 	{
 		switch(mcSide)
 		{
