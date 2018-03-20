@@ -197,6 +197,16 @@ public class Voxel
 		return new ItemPile[] { new ItemPile(itemVoxel) };
 	}
 	
+	/** Returns what's dropped when a cell using this voxel type is destroyed */
+	public ItemPile[] getLoot(CellData cell, WorldModificationCause cause) {
+		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemDefinition("item_voxel").newItem();
+		itemVoxel.voxel = this;
+		itemVoxel.voxelMeta = cell.getMetaData();
+		
+		ItemPile pile = new ItemPile(itemVoxel);
+		return new ItemPile[] { pile };
+	}
+	
 	public String toString() {
 		return "[Voxel name:"+getName()+"]";
 	}
