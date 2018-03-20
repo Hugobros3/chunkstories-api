@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.rendering;
+package io.xol.chunkstories.api.gui;
 
 import org.joml.Vector4fc;
 
@@ -18,6 +18,9 @@ public interface GuiRenderer
 
 	public void drawBox(float startX, float startY, float endX, float endY, float textureStartX, float textureStartY, float textureEndX, float textureEndY, Texture2D texture, boolean alpha, boolean textured, Vector4fc color);
 
+	public void drawCorneredBoxTiled(float posx, float posy, float width, float height, int cornerSize,
+			Texture2D texture, int textureSize, int scale);
+	
 	//TODO rename
 	/** Flushes what's remaining to draw */
 	public void drawBuffer();
