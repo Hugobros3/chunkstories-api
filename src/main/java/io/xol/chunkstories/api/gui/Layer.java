@@ -9,6 +9,7 @@ package io.xol.chunkstories.api.gui;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.xol.chunkstories.api.gui.elements.InputText;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.input.Mouse.MouseButton;
 import io.xol.chunkstories.api.rendering.GameWindow;
@@ -81,13 +82,8 @@ public class Layer {
 	}
 	
 	public boolean handleTextInput(char c) {
-		if(focusedElement != null && focusedElement instanceof TextInputGuiElement)
-			return ((TextInputGuiElement) focusedElement).handleTextInput(c);
-
-		//Forward to parent if not handled
-		/*Layer parent = this.parentLayer;
-		if(parent != null)
-			return parent.handleTextInput(c);*/
+		if(focusedElement != null && focusedElement instanceof InputText)
+			return ((InputText) focusedElement).handleTextInput(c);
 		
 		return false;
 	}
