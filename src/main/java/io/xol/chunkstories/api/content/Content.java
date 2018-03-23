@@ -11,6 +11,7 @@ import java.util.Iterator;
 
 import org.slf4j.Logger;
 
+import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.animation.SkeletalAnimation;
 import io.xol.chunkstories.api.content.mods.ModsManager;
 import io.xol.chunkstories.api.entity.EntityDefinition;
@@ -31,8 +32,10 @@ import io.xol.chunkstories.api.world.generator.WorldGenerator;
 /**
  * Encapsulates all the user-definable content available
  */
-public interface Content
-{
+public interface Content {
+	/** Returns the game context that owns this */
+	public GameContext getContext();
+	
 	/** Returns the ModManager that was used to load this content */
 	public ModsManager modsManager();
 

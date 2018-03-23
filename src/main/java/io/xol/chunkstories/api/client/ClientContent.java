@@ -18,9 +18,9 @@ import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
-public interface ClientContent extends Content
-{
-	public ClientInterface getClient();
+public interface ClientContent extends Content {
+	/** Get the associated ClientInterface that loaded all this */
+	public ClientInterface getContext();
 	
 	public ClientMeshLibrary meshes();
 	
