@@ -19,6 +19,14 @@ import io.xol.chunkstories.api.net.PacketReceptionContext;
 public class PacketText extends Packet
 {
 	public String text;
+	
+	public PacketText() {
+		
+	}
+	
+	public PacketText(String text) {
+		this.text = text;
+	}
 
 	@Override
 	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
