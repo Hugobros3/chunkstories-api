@@ -10,9 +10,9 @@ import io.xol.chunkstories.api.animation.SkeletonAnimator;
 import io.xol.chunkstories.api.exceptions.rendering.RenderingException;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 
-public interface RenderableAnimatable extends RenderableMesh {
+public interface RenderableAnimatableMesh extends RenderableMesh {
 
 	/** Renders the mesh using animation data, abstracted from actual in-engine means of achieving the animation. Users should consult a more detailed
 	 * interface to design their shaders for. */
-	public void render(RenderingInterface renderingInterface, SkeletonAnimator skeleton, double animationTime ) throws RenderingException;
+	public void render(RenderingInterface renderer, SkeletonAnimator skeleton, double animationTime ) throws RenderingException;
 }

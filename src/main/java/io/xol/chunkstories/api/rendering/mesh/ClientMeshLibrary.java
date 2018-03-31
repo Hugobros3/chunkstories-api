@@ -12,12 +12,9 @@ import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 
 public interface ClientMeshLibrary extends MeshLibrary {
 	
-	public RenderableMesh getRenderableMeshByName(String meshName);
+	public RenderableMesh getRenderableMesh(String meshName);
 	
-	//Any multi-part mesh can have animations slapped on, no matter how silly
-	//public RenderableMultiPartMesh getMultiPartMeshByName(String meshName);
-	
-	public RenderableMultiPartAnimatableMesh getRenderableMultiPartAnimatableMeshByName(String meshName);
+	public RenderableAnimatableMesh getRenderableAnimatableMesh(String meshName);
 	
 	public ClientContent parent();
 

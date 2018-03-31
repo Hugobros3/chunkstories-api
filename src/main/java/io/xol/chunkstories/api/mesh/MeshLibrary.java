@@ -10,9 +10,9 @@ import io.xol.chunkstories.api.content.Content;
 
 public interface MeshLibrary {
 	
-	public Mesh getMeshByName(String meshName);
+	public Mesh getMesh(String meshName);
 	
-	public MultiPartMesh getMultiPartMeshByName(String meshName);
+	public AnimatableMesh getAnimatableMesh(String meshName);
 	
 	public Content parent();
 }

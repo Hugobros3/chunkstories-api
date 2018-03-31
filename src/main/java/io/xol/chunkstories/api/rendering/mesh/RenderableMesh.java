@@ -16,5 +16,5 @@ public interface RenderableMesh extends Renderable {
 	 * Renders the mesh using the current pipeline state
 	 * @throws RenderingException 
 	 */
-	public void render(RenderingInterface renderingInterface);// throws RenderingException;
+	public void render(RenderingInterface renderer) throws RenderingException;
 }

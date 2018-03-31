@@ -14,19 +14,15 @@ public abstract class EntityRenderer<E extends EntityRenderable>
 {
 	/** Override this to implement your own entity render */
 	public int renderEntities(RenderingInterface renderer, RenderingIterator<E> renderableEntitiesIterator) {
+		Shader shader = renderer.useShader("entities"); // The new and improved base 'entities' shader supports 
+		int c = 0;
 		
-		boolean shadow = renderer.getCurrentPass().name.startsWith("shadow");
-		Shader shader = /*shadow ? renderer.currentShader() : */renderer.useShader("entities");
+		for(E entity : renderableEntitiesIterator.getElementsInFrustrumOnly()) {
+			c++;
 
-		//entitiesShader.setUniform1f("wetness", world.getGenerator().getEnvironment().getWorldWetness(renderer.getCamera().getCameraPosition()));
-
-		renderer.currentShader().setUniform1f("useColorIn", 0.0f);
-		renderer.currentShader().setUniform1f("useNormalIn", 1.0f);
-
-		renderer.getCamera().setupShader(shader);
-		renderer.getWorldRenderer().setupShaderUniforms(shader);
-		
-		return 0;
+			//do your rendering here
+		}
+		return c;
 	}
 	
 	/** By default entities only render to the shadow and opaque passes, but you are free to change that */
