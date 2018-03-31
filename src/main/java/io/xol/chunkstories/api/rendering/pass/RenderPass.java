@@ -50,6 +50,15 @@ public abstract class RenderPass {
 	public abstract void render(RenderingInterface renderer);
 
 	public abstract void onScreenResize(int width, int height);
+
+	/** Called when switching shader in the pass, you can setup any pass/shader-specific uniforms that would be required during this pass */
+	public void setupShader(RenderingInterface renderer, Shader shader) {
+
+		renderer.getCamera().setupShader(shader);
+		renderer.getWorldRenderer().setupShaderUniforms(shader);
+		
+		renderer.currentShader().setUniform1i("isShadowPass", 0);
+	}
 	
 	/** Called when switching shader in the pass, will automatically try to bind the available textures to the sampler */
 	public void autoBindInputs(RenderingInterface renderer, Shader shader) {

@@ -18,7 +18,7 @@ public interface SkyRenderer {
 	
 	public void render(RenderingInterface renderer);
 	
-	public void setupShader(Shader shaderInterface);
+	public void setupShader(Shader shader);
 
 	public Vector3fc getSunPosition();
 	

@@ -257,7 +257,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 
 			handTransformation.transform(lightposition);
 
-			Light heldBlockLight = new Light(new Vector3f(0.5f, 0.45f, 0.4f).mul(2.0f), new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()), 15f);
+			Light heldBlockLight = new Light(new Vector3f(0.6f, 0.50f, 0.4f).mul(0.5f), new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()), 15f);
 			renderer.getLightsRenderer().queueLight(heldBlockLight);
 
 			// If we hold a light source, prepare the shader accordingly

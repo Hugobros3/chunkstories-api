@@ -11,6 +11,7 @@ import io.xol.chunkstories.api.rendering.GameWindow;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.effects.DecalsRenderer;
 import io.xol.chunkstories.api.rendering.pass.RenderPasses;
+import io.xol.chunkstories.api.rendering.shader.Shader;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunksRenderer;
 import io.xol.chunkstories.api.world.WorldClient;
@@ -21,18 +22,15 @@ public interface WorldRenderer
 	public WorldClient getWorld();
 	
 	public RenderPasses renderPasses();
-	
-	///** Renders the world into the back buffer */
-	//public void renderWorld(RenderingInterface renderingInterface);
-	
-	///** Blits that buffer back */
-	//public void blitFinalImage(RenderingInterface renderingInterface, boolean hideGui);
 
 	/** Tells the chunks renderer to rebuilt it's PVS set */
 	public void flagChunksModified();
 
 	/** Resizes the rendering buffers to fit the game window */
-	public void setupRenderSize();
+	//public void setupRenderSize();
+	
+	/** Sets the various world-related shader uniforms the shader uses */
+	public void setupShaderUniforms(Shader shader);
 
 	public float getAnimationTimer();
 	
@@ -103,11 +101,11 @@ public interface WorldRenderer
 	public ParticlesRenderer getParticlesRenderer();
 
 	public WorldEffectsRenderer getWorldEffectsRenderer();
-
-	public String screenShot();
 	
 	/** Warning: Most methods of the RenderingInterface are intended to be run only from the main thread. Don't play with this
 	 * until you know what you are doing !
 	 */
 	public RenderingInterface getRenderingInterface();
+
+	public String screenShot();
 }
