@@ -15,10 +15,14 @@ public class Mesh {
 	protected final FloatBuffer textureCoordinates; //Stored as couples of coordinates
 	protected final FloatBuffer normals; //Stored as normalized triplets
 	
-	public Mesh(FloatBuffer vertices, FloatBuffer textureCoordinates, FloatBuffer normals) {
+	protected final MeshMaterial materials[];
+	
+	public Mesh(FloatBuffer vertices, FloatBuffer textureCoordinates, FloatBuffer normals, MeshMaterial materials[]) {
 		this.vertices = vertices;
 		this.textureCoordinates = textureCoordinates;
 		this.normals = normals;
+		
+		this.materials = materials;
 	}
 	
 	public int getVerticesCount() {
@@ -36,6 +40,8 @@ public class Mesh {
 	public FloatBuffer getNormals() {
 		return normals;
 	}
-	
-	
+
+	public MeshMaterial[] getMaterials() {
+		return materials;
+	}
 }
