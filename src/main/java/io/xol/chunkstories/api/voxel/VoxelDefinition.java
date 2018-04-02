@@ -9,8 +9,8 @@ package io.xol.chunkstories.api.voxel;
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.Definition;
 import io.xol.chunkstories.api.physics.CollisionBox;
+import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
-import io.xol.chunkstories.api.voxel.models.VoxelModel;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
 public interface VoxelDefinition extends Definition
@@ -18,9 +18,6 @@ public interface VoxelDefinition extends Definition
 	/** Get the store where the voxel definitions are stored. */
 	public Content.Voxels store();
 	
-	///** Get the assignated ID for this voxel */
-	//public int getId();
-
 	/** Returns the internal, non localized name of this voxel */
 	public String getName();
 	
@@ -28,7 +25,7 @@ public interface VoxelDefinition extends Definition
 	public VoxelMaterial getMaterial();
 
 	/** Returns the voxelModel specified in the .voxels file, or null. */
-	public VoxelModel getVoxelModel();
+	public VoxelRenderer getVoxelModel();
 
 	/** Returns the collisionBox defined in the .voxels file, or a default one if none was. */
 	public CollisionBox getCollisionBox();

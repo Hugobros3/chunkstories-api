@@ -191,6 +191,7 @@ public interface Content {
 		
 		public Logger logger();
 	}
+	
 	public interface Translation {
 
 		public String getLocalizedString(String stringName);

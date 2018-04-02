@@ -7,7 +7,6 @@
 package io.xol.chunkstories.api.rendering.textures;
 
 import java.nio.ByteBuffer;
-import io.xol.chunkstories.api.rendering.target.RenderTarget;
 
 public interface Texture3D extends Texture {
 

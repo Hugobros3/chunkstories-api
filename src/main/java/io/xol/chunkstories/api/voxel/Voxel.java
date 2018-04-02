@@ -13,9 +13,11 @@ import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.item.ItemVoxel;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
+import io.xol.chunkstories.api.mesh.Mesh;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
+import io.xol.chunkstories.api.voxel.models.MeshAsVoxelModel;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.FutureCell;
@@ -35,12 +37,19 @@ public class Voxel
 		this.definition = definition;
 		this.store = definition.store();
 
-		//By default the 'VoxelRenderer' is just wether or not we set-up a model in the .voxels definitions file
+		//By default and first, always set the default renderer
+		this.voxelRenderer = definition.store().getDefaultVoxelRenderer();
+		
+		//Does the definition has a 'model' property defined ?
 		if(definition.getVoxelModel() != null)
 			this.voxelRenderer = definition.getVoxelModel();
-		//No custom model defined ? Use the default renderer.
-		else
-			this.voxelRenderer = definition.store().getDefaultVoxelRenderer();
+		//Does the definition has a 'mesh' property defined ?
+		else if(definition.resolveProperty("mesh") != null) {
+			Mesh mesh = definition.store().parent().meshes().getMesh(definition.resolveProperty("mesh"));
+			if(mesh != null) {
+				this.voxelRenderer = new MeshAsVoxelModel(definition.store().models(), mesh);
+			}
+		}
 	}
 	
 	/** Contains the information parsed from the .voxels file */

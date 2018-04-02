@@ -11,7 +11,7 @@ public interface MeshMaterial {
 	
 	public String getAlbedoTextureName();
 	
-	public String getNormalsTextureName();
+	public String getNormalTextureName();
 	
-	public String getSpecularityTextureName();
+	public String getSpecularTextureName();
 }

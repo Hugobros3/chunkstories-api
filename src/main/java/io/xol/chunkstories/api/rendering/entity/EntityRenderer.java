@@ -13,6 +13,7 @@ import io.xol.chunkstories.api.rendering.shader.Shader;
 public abstract class EntityRenderer<E extends EntityRenderable>
 {
 	/** Override this to implement your own entity render */
+	@SuppressWarnings("unused")
 	public int renderEntities(RenderingInterface renderer, RenderingIterator<E> renderableEntitiesIterator) {
 		Shader shader = renderer.useShader("entities"); // The new and improved base 'entities' shader supports 
 		int c = 0;

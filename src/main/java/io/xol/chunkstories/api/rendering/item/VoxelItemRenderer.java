@@ -322,7 +322,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 
 	/** Bake a single cell's content into a buffer */
 	private void bakeVoxelRenderer(CellData cell, VertexBuffer mesh) {
-		ByteBuffer buffer = ByteBuffer.allocateDirect(16384).order(ByteOrder.nativeOrder());
+		ByteBuffer buffer = ByteBuffer.allocateDirect(1024000).order(ByteOrder.nativeOrder());
 		VoxelInHandLayoutBaker specialSauce = new VoxelInHandLayoutBaker(this.content, buffer);
 
 		// Dummy objects that point to our special sauce
@@ -360,7 +360,6 @@ public class VoxelItemRenderer extends ItemRenderer {
 		// Flip the buffer and upload it
 		buffer.flip();
 		mesh.uploadData(buffer);
-
 	}
 	
 	/** Look for this configuration of the Voxel in the local cache */
