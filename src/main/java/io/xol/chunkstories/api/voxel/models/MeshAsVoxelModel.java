@@ -36,11 +36,6 @@ public class MeshAsVoxelModel implements VoxelRenderer {
 		Vector4f normal = new Vector4f(0,0,0,0f);
 		
 		Matrix4f matrix = new Matrix4f();
-		//Swap Y and Z axises
-		matrix.m22(0);
-		matrix.m11(0);
-		matrix.m12(1);
-		matrix.m21(1);
 		
 		for(MeshMaterial meshMaterial : mesh.getMaterials()) {
 			//System.out.println("material:"+simplify(meshMaterial.getAlbedoTextureName()));
@@ -48,9 +43,7 @@ public class MeshAsVoxelModel implements VoxelRenderer {
 			baker.setVoxelLight((byte)cell.getSunlight(), (byte)cell.getBlocklight(), (byte)0);
 			
 			for(int j = meshMaterial.firstVertex() / 3; j <= meshMaterial.lastVertex() / 3; j++) {
-				
-				//Reverse culling order because we swapped Y and Z
-				for(int k : new int[] {0,2,1}) {
+				for(int k : new int[] {0,1,2}) {
 					int i = j*3 + k;
 					vertex.set(mesh.getVertices().get(i * 3 + 0), mesh.getVertices().get(i * 3 + 1), mesh.getVertices().get(i * 3 + 2), 1.0f);
 					normal.set(mesh.getNormals().get(i * 3 + 0), mesh.getNormals().get(i * 3 + 1), mesh.getNormals().get(i * 3 + 2), 1.0f);
