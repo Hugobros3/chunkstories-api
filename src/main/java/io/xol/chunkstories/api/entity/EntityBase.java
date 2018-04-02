@@ -28,8 +28,7 @@ import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
-public abstract class EntityBase implements Entity
-{
+public abstract class EntityBase implements Entity {
 	final private EntityDefinition entityDefinition;
 	final protected World world;
 	
@@ -54,40 +53,34 @@ public abstract class EntityBase implements Entity
 		positionComponent = new EntityComponentPosition(this, location);
 	}
 	
-	public EntityComponentExistence getComponentExistence()
-	{
+	public EntityComponentExistence getComponentExistence() {
 		return this.existenceComponent;
 	}
 
 	@Override
-	public Location getLocation()
-	{
+	public Location getLocation() {
 		return positionComponent.getLocation();
 	}
-	
+
 	@Override
-	public void setLocation(Location loc)
-	{
+	public void setLocation(Location loc) {
 		positionComponent.setLocation(loc);
 	}
 
 	@Override
-	public World getWorld()
-	{
+	public World getWorld() {
 		return world;
 	}
 
 	@Override
-	public Chunk getChunk()
-	{
+	public Chunk getChunk() {
 		return positionComponent.getChunkWithin();
 	}
 
 	// Ran each tick
 	@Override
-	public void tick()
-	{
-		//Don't do much
+	public void tick() {
+		// Don't do much
 	}
 
 	@Override
@@ -109,14 +102,16 @@ public abstract class EntityBase implements Entity
 	}
 
 	@Override
-	public String toString()
-	{
-		return "[" + this.getClass().getSimpleName() + " subs:" + this.subscribers.size() + "  position : " + positionComponent.getLocation() + " UUID : " + entityUUID + " Type: " + entityDefinition.getName() + " Chunk:"
-				+ this.positionComponent.getChunkWithin() + " ]";
+	public String toString() {
+		return "[" + this.getClass().getSimpleName() + 
+				" subs:" + this.subscribers.size() + 
+				"  position : " + positionComponent.getLocation() + 
+				" UUID : " + entityUUID + 
+				" Type: " + entityDefinition.getName() + 
+				" Chunk:" + this.positionComponent.getChunkWithin() + " ]";
 	}
 
-	double clampDouble(double d)
-	{
+	double clampDouble(double d) {
 		d *= 100;
 		d = Math.floor(d);
 		d /= 100.0;
@@ -124,16 +119,14 @@ public abstract class EntityBase implements Entity
 	}
 
 	@Override
-	public Vector3dc moveWithCollisionRestrain(Vector3dc delta)
-	{
+	public Vector3dc moveWithCollisionRestrain(Vector3dc delta) {
 		Vector3dc movementLeft = world.collisionsManager().runEntityAgainstWorldVoxels(this, this.getLocation(), delta);
 		this.moveWithoutCollisionRestrain(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(), delta.z() - movementLeft.z());
 		return movementLeft;
 	}
 
 	@Override
-	public Vector3dc moveWithCollisionRestrain(double mx, double my, double mz)
-	{
+	public Vector3dc moveWithCollisionRestrain(double mx, double my, double mz) {
 		return moveWithCollisionRestrain(new Vector3d(mx, my, mz));
 	}
 
@@ -142,8 +135,7 @@ public abstract class EntityBase implements Entity
 	 * 
 	 * @return The remaining distance in each dimension if he got stuck ( with vec3(0.0, 0.0, 0.0) meaning it can move without colliding with anything )
 	 */
-	public Vector3dc canMoveWithCollisionRestrain(Vector3dc delta)
-	{
+	public Vector3dc canMoveWithCollisionRestrain(Vector3dc delta) {
 		return world.collisionsManager().runEntityAgainstWorldVoxels(this, this.getLocation(), delta);
 	}
 
@@ -157,93 +149,102 @@ public abstract class EntityBase implements Entity
 	 * @param from Change the origin of the movement from the default ( current entity position )
 	 * @return The remaining distance in each dimension if he got stuck ( with vec3(0.0, 0.0, 0.0) meaning it can move without colliding with anything )
 	 */
-	public Vector3dc canMoveWithCollisionRestrain(Vector3dc from, Vector3dc delta)
-	{
+	public Vector3dc canMoveWithCollisionRestrain(Vector3dc from, Vector3dc delta) {
 		return world.collisionsManager().runEntityAgainstWorldVoxels(this, from, delta);
 	}
-	
+
 	private static final Vector3dc onGroundTest_ = new Vector3d(0.0, -0.01, 0.0);
 
 	@Override
-	public boolean isOnGround()
-	{
-		return canMoveWithCollisionRestrain(onGroundTest_).length() != 0.0d;
+	public boolean isOnGround() {
+		//System.out.println(canMoveWithCollisionRestrain(onGroundTest_).length());
+		if(isStuckInEntity() == null)
+			return world.collisionsManager().runEntityAgainstWorldVoxelsAndEntities(this, this.getLocation(), onGroundTest_).length() != 0.0d;
+		else
+			return canMoveWithCollisionRestrain(onGroundTest_).length() != 0.0d;
+	}
+	
+	public Entity isStuckInEntity() {
+		for(Entity e : world.getEntitiesInBox(getLocation(), new Vector3d(5,5,5))) {
+			if(e != this) {
+				for(CollisionBox b : e.getTranslatedCollisionBoxes())
+					for(CollisionBox c : this.getTranslatedCollisionBoxes())
+						if(b.collidesWith(c))
+							return e;
+			}
+		}
+		return null;
 	}
 
 	@Override
-	public CollisionBox getTranslatedBoundingBox()
-	{
+	public CollisionBox getTranslatedBoundingBox() {
 		CollisionBox box = getBoundingBox();
 		box.translate(getLocation());
 		return box;
 	}
 
 	@Override
-	public CollisionBox getBoundingBox()
-	{
+	public CollisionBox getBoundingBox() {
 		return new CollisionBox(1.0, 1.0, 1.0).translate(-0.5, 0, -0.5);
 	}
 
-	public CollisionBox[] getCollisionBoxes()
-	{
-		return new CollisionBox[]{ getBoundingBox() };
+	public CollisionBox[] getCollisionBoxes() {
+		return new CollisionBox[] { getBoundingBox() };
+	}
+	
+	public CollisionBox[] getTranslatedCollisionBoxes() {
+		CollisionBox[] boxes = getCollisionBoxes();
+		for(CollisionBox box : boxes)
+			box.translate(getLocation());
+		return boxes;
 	}
 
 	@Override
-	public void setupCamera(RenderingInterface renderingInterface)
-	{
+	public void setupCamera(RenderingInterface renderingInterface) {
 		renderingInterface.getCamera().setCameraPosition(new Vector3d(positionComponent.getLocation()));
-		
-		//Default FOV
+
+		// Default FOV
 		renderingInterface.getCamera().setFOV((float) renderingInterface.getClient().getConfiguration().getDoubleOption("fov"));
 	}
 
 	@Override
-	public final EntityDefinition getDefinition()
-	{
+	public final EntityDefinition getDefinition() {
 		return entityDefinition;
 	}
 
 	@Override
-	public final long getUUID()
-	{
+	public final long getUUID() {
 		return entityUUID;
 	}
 
 	@Override
-	public boolean equals(Object o)
-	{
+	public boolean equals(Object o) {
 		if (!(o instanceof Entity))
 			return false;
 		return ((Entity) o).getUUID() == entityUUID;
 	}
 
 	@Override
-	public boolean shouldBeTrackedBy(Player player)
-	{
-		//Note 05/09/2016 : Gobrosse read yourself properly you tardfuck
+	public boolean shouldBeTrackedBy(Player player) {
+		// Note 05/09/2016 : Gobrosse read yourself properly you tardfuck
 		return exists();
 	}
 
-	public final boolean exists()
-	{
+	public final boolean exists() {
 		return existenceComponent.exists();
 	}
 
-	public final boolean hasSpawned()
-	{
+	public final boolean hasSpawned() {
 		return hasSpawned;
 	}
 
-	public final void markHasSpawned()
-	{
+	public final void markHasSpawned() {
 		hasSpawned = true;
 	}
 
 	@Override
-	public final void setUUID(long uuid)
-	{
-		//Don't allow UUID changes once spawned !
+	public final void setUUID(long uuid) {
+		// Don't allow UUID changes once spawned !
 		if (entityUUID != -1 && this.hasSpawned())
 			throw new IllegalUUIDChangeException();
 
@@ -251,58 +252,58 @@ public abstract class EntityBase implements Entity
 	}
 
 	@Override
-	public final IterableIterator<Subscriber> getAllSubscribers()
-	{
+	public final IterableIterator<Subscriber> getAllSubscribers() {
 		return new IterableIterator<Subscriber>() {
 
 			Iterator<Subscriber> i = subscribers.iterator();
-			
+
 			@Override
-			public boolean hasNext()
-			{
+			public boolean hasNext() {
 				return i.hasNext();
 			}
 
 			@Override
-			public Subscriber next()
-			{
+			public Subscriber next() {
 				return i.next();
 			}
 
 			@Override
-			public Iterator<Subscriber> iterator()
-			{
+			public Iterator<Subscriber> iterator() {
 				return this;
-			}};
+			}
+		};
 	}
 
-	/** Internal method called by a subscriber ( like a {@link Player} ... ) when he subscribe() to this entity */
-	public final boolean subscribe(Subscriber subscriber)
-	{
-		//If it didn't already contain the subscriber ...
-		if (subscribers.add(subscriber))
-		{
+	/**
+	 * Internal method called by a subscriber ( like a {@link Player} ... ) when he
+	 * subscribe() to this entity
+	 */
+	public final boolean subscribe(Subscriber subscriber) {
+		// If it didn't already contain the subscriber ...
+		if (subscribers.add(subscriber)) {
 			return true;
 		}
 		return false;
 	}
 
-	/** Internal method called by a subscriber ( like a {@link Player} ... ) when he unsubscribe() to this entity */
-	public final boolean unsubscribe(Subscriber subscriber)
-	{
-		//If it did contain the subscriber
-		if (subscribers.remove(subscriber))
-		{
-			//Push an update to the subscriber telling him to forget about the entity :
+	/**
+	 * Internal method called by a subscriber ( like a {@link Player} ... ) when he
+	 * unsubscribe() to this entity
+	 */
+	public final boolean unsubscribe(Subscriber subscriber) {
+		// If it did contain the subscriber
+		if (subscribers.remove(subscriber)) {
+			// Push an update to the subscriber telling him to forget about the entity :
 			this.existenceComponent.pushComponent(subscriber);
-			
-			//The existence component checks for the subscriber being present in the subscribees of the entity and if it doesn't find it it will
-			//say the entity no longer exists
+
+			// The existence component checks for the subscriber being present in the
+			// subscribees of the entity and if it doesn't find it it will
+			// say the entity no longer exists
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isSubscribed(StreamTarget subscriber) {
 		return subscribers.contains(subscriber);
@@ -310,13 +311,13 @@ public abstract class EntityBase implements Entity
 
 	@Override
 	/**
-	 * Returns first component : existence, all other components are linked to it via a chained list
+	 * Returns first component : existence, all other components are linked to it
+	 * via a chained list
 	 */
-	public final EntityComponent getComponents()
-	{
+	public final EntityComponent getComponents() {
 		return existenceComponent;
 	}
-	
+
 	public boolean handleInteraction(Entity entity, Input input) {
 		return false;
 	}

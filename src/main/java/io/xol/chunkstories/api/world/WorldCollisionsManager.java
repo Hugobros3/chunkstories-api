@@ -57,4 +57,8 @@ public interface WorldCollisionsManager {
 	 */
 	public Vector3dc runEntityAgainstWorldVoxels(Entity entity, Vector3dc from, Vector3dc delta);
 	
+	public Vector3dc runEntityAgainstWorldVoxelsAndEntities(Entity entity, Vector3dc from, Vector3dc delta);
+	
+	/** Tries to move the entity and returns the remaining untravelled distance, will collide with other entities! */
+	public Vector3dc tryMovingEntityWithCollisions(Entity entity, Vector3dc from, Vector3dc delta);
 }

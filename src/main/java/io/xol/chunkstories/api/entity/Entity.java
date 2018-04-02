@@ -103,6 +103,8 @@ public interface Entity
 	/** @return The actual list of collision (=>solid) boxes for this entity. Can return null or an empty array. */
 	public CollisionBox[] getCollisionBoxes();
 	
+	public CollisionBox[] getTranslatedCollisionBoxes();
+	
 	/** @return the entity AABB translated to its position */
 	public CollisionBox getTranslatedBoundingBox();
 	
