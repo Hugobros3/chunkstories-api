@@ -165,12 +165,16 @@ public abstract class EntityBase implements Entity {
 	}
 	
 	public Entity isStuckInEntity() {
-		for(Entity e : world.getEntitiesInBox(getLocation(), new Vector3d(5,5,5))) {
+		for(Entity e : world.getEntitiesInBox(getLocation(), new Vector3d(1,2,1))) {
+			//Duh
 			if(e != this) {
-				for(CollisionBox b : e.getTranslatedCollisionBoxes())
-					for(CollisionBox c : this.getTranslatedCollisionBoxes())
-						if(b.collidesWith(c))
-							return e;
+				//Broad
+				if(e.getBoundingBox().collidesWith(this.getBoundingBox()))
+					//Fine
+					for(CollisionBox b : e.getTranslatedCollisionBoxes())
+						for(CollisionBox c : this.getTranslatedCollisionBoxes())
+							if(b.collidesWith(c))
+								return e;
 			}
 		}
 		return null;

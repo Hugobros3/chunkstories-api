@@ -26,21 +26,23 @@ public final class CollisionBox implements Collidable
 		zpos = box.zpos;
 	}
 
-	public CollisionBox(double xwidth, double height, double zwidth)
-	{
+	public CollisionBox(double xwidth, double height, double zwidth) {
 		xw = xwidth;
 		h = height;
 		zw = zwidth;
 	}
 
-	public CollisionBox(double xpos, double ypos, double zpos, double xw, double h, double zw)
-	{
+	public CollisionBox(double xpos, double ypos, double zpos, double xw, double h, double zw) {
 		this.xpos = xpos;
 		this.ypos = ypos;
 		this.zpos = zpos;
 		this.xw = xw;
 		this.h = h;
 		this.zw = zw;
+	}
+	
+	public CollisionBox(Vector3dc origin, Vector3dc size) {
+		this(origin.x(), origin.y(), origin.z(), size.x(), size.y(), size.z());
 	}
 
 	public CollisionBox translate(double x, double y, double z)
@@ -160,53 +162,36 @@ public final class CollisionBox implements Collidable
 		return null;
 		
 	}
-	
-	public double getWidthWarp()
-	{
-		return xw % 1;
-	}
-
-	public double getLengthWarp()
-	{
-		return zw % 1;
-	}
-
-	public double getHeightWarp()
-	{
-		return h % 1;
-	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Collision Box : position = [" + xpos + ", " + ypos + ", " + zpos + "] size = [" + xw + ", " + h + ", " + zw + "]";
 	}
 
 	@Override
-	public boolean collidesWith(Collidable c)
-	{
-		if(c instanceof CollisionBox)
+	public boolean collidesWith(Collidable c) {
+		if (c instanceof CollisionBox)
 			return collidesWith(c);
-		
-		throw new UnsupportedOperationException("Unupported Collidable: "+c.getClass().getSimpleName());
+
+		throw new UnsupportedOperationException("Unupported Collidable: " + c.getClass().getSimpleName());
 	}
 	
-	public boolean collidesWith(CollisionBox b)
-	{
-		if (ypos + h <= b.ypos || ypos >= b.ypos + b.h || xpos + xw<= b.xpos || xpos >= b.xpos + b.xw || zpos + zw <= b.zpos || zpos >= b.zpos + b.zw)
-		{
+	public boolean collidesWith(CollisionBox b) {
+		if (ypos + h <= b.ypos || ypos >= b.ypos + b.h || xpos + xw <= b.xpos || xpos >= b.xpos + b.xw || zpos + zw <= b.zpos || zpos >= b.zpos + b.zw) {
 			return false;
 		}
 		return true;
 	}
 
-	public boolean isPointInside(double posX, double posY, double posZ)
-	{
-		if (ypos + h < posY || ypos > posY || xpos + xw < posX || xpos > posX || zpos + zw < posZ || zpos > posZ)
-		{
+	public boolean isPointInside(double posX, double posY, double posZ) {
+		if (ypos + h < posY || ypos > posY || xpos + xw < posX || xpos > posX || zpos + zw < posZ || zpos > posZ) {
 			return false;
 		}
 
-		return false;
+		return true;
+	}
+
+	public boolean isPointInside(Vector3dc vec) {
+		return isPointInside(vec.x(), vec.y(), vec.z());
 	}
 }
