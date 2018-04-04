@@ -67,7 +67,7 @@ public class IntricateLayoutBaker extends BaseLayoutBaker implements VoxelBakerH
 		output.put(blockLight);
 		output.put(sunLight);
 		output.put(ao);
-		output.put((byte)0x00);
+		output.put(materialFlags);
 		
 		//1010102 Layout, 3 float components ( precision overkill ? ) + 2-bit flag for wavy grass etc
 		int n0 = BaseLayoutBaker.floatToUnsigned10Bit(normal.x);

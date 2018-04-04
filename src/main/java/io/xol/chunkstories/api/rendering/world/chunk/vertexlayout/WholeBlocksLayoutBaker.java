@@ -48,8 +48,7 @@ public class WholeBlocksLayoutBaker extends BaseLayoutBaker implements VoxelBake
 		output.put((byte)i0);
 		output.put((byte)i1);
 		output.put((byte)i2);
-		//One of padding
-		output.put((byte)0x00);
+		output.put(materialFlags);
 		
 		//Resolve the positions in the texture atlas ( as non-float shorts! )
 		output.putShort((short) (currentTexture.getAtlasS() + texCoords.x * currentTexture.getAtlasOffset()));
@@ -59,7 +58,7 @@ public class WholeBlocksLayoutBaker extends BaseLayoutBaker implements VoxelBake
 		output.put(blockLight);
 		output.put(sunLight);
 		output.put(ao);
-		output.put((byte)0x00);
+		output.put(materialFlags);
 		
 		//1010102 Layout, 3 float components ( precision overkill ? ) + 2-bit flag for wavy grass etc
 		int n0 = BaseLayoutBaker.floatToUnsigned10Bit(normal.x);

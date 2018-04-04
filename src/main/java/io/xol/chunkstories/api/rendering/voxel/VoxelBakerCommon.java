@@ -29,6 +29,9 @@ public interface VoxelBakerCommon
 	/** Selects a specific texture */
 	public void usingTexture(VoxelTexture voxelTexture);
 	
+	/** Sets the material flags, 8 bits of misc integer data you can use in your shaders ( only 1x per triangle due to the 'flat' layout in glsl ) */
+	public void setMaterialFlags(byte flags);
+	
 	/** Texture coordinates WITHIN the specified VoxelTexture ( atlas/array texture stuff is handled internally ) */
 	public void setTextureCoordinates(float s, float t);
 	

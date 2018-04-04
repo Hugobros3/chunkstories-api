@@ -60,6 +60,8 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 	protected VoxelTexture currentTexture = null;
 	protected Vector2f texCoords = new Vector2f();
 	protected Vector3f normal = new Vector3f();
+	protected byte materialFlags;
+
 	protected boolean wavyFlag;
 	
 	public void reset() {
@@ -69,6 +71,7 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 		currentTexture = defaultTexture;
 		texCoords.set(0f);
 		normal.set(0f, 1f, 0f);
+		materialFlags = 0;
 		wavyFlag = false;
 	}
 	
@@ -77,6 +80,10 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 		this.sunLight = (byte) (sunLight & 0xF);
 		this.blockLight = (byte) (blockLight & 0xF);
 		this.ao = (byte) (ao & 0x3);
+	}
+
+	public void setMaterialFlags(byte materialFlags) {
+		this.materialFlags = materialFlags;
 	}
 
 	@Override

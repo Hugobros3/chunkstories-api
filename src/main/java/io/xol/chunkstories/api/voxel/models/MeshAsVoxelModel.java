@@ -40,6 +40,7 @@ public class MeshAsVoxelModel implements VoxelRenderer {
 		for(MeshMaterial meshMaterial : mesh.getMaterials()) {
 			//System.out.println("material:"+simplify(meshMaterial.getAlbedoTextureName()));
 			baker.usingTexture(store.parent().textures().getVoxelTexture(simplify(meshMaterial.getAlbedoTextureName())));
+			baker.setMaterialFlags(Byte.parseByte(cell.getVoxel().getDefinition().resolveProperty("materialFlags", "0")));
 			baker.setVoxelLight((byte)cell.getSunlight(), (byte)cell.getBlocklight(), (byte)0);
 			
 			for(int j = meshMaterial.firstVertex() / 3; j <= meshMaterial.lastVertex() / 3; j++) {
