@@ -206,6 +206,8 @@ public interface Content {
 		
 		public Content parent();
 		
+		public void reloadAll();
+		
 		public Logger logger();
 	}
 	

@@ -18,6 +18,8 @@ public interface ClientMeshLibrary extends MeshLibrary {
 	public RenderableAnimatableMesh getRenderableAnimatableMesh(String meshName);
 	
 	public ClientContent parent();
+	
+	public void reloadAll();
 
 	public VertexBuffer getIdentityCube();
 }

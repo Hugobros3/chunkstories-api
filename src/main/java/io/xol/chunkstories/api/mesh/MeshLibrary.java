@@ -14,5 +14,7 @@ public interface MeshLibrary {
 	
 	public AnimatableMesh getAnimatableMesh(String meshName);
 	
+	public void reloadAll();
+	
 	public Content parent();
 }
