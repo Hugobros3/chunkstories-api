@@ -39,4 +39,6 @@ public interface Heightmap
 	public CellData getTopCell(int x, int z);
 	
 	public void setTopCell(CellData data);
+	
+	public Fence save();
 }

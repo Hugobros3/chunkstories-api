@@ -12,36 +12,36 @@ import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.generator.environment.DefaultWorldEnvironment;
 import io.xol.chunkstories.api.world.generator.environment.WorldEnvironment;
 
-public class BlankWorldGenerator extends WorldGenerator
-{
+public class BlankWorldGenerator extends WorldGenerator {
 	DefaultWorldEnvironment worldEnv;
-	
-	public BlankWorldGenerator(WorldGeneratorDefinition type, World world)
-	{
+
+	public BlankWorldGenerator(WorldGeneratorDefinition type, World world) {
 		super(type, world);
 		worldEnv = new DefaultWorldEnvironment(world);
 	}
 
-	@Override
-	public Chunk generateChunk(Chunk c)
-	{
+	/*@Override
+	public Chunk generateChunk(Chunk c) {
 		return c;
 	}
 
 	@Override
-	public int getTopDataAt(int x, int y)
-	{
+	public int getTopDataAt(int x, int y) {
 		return 0;
 	}
 
 	@Override
-	public int getHeightAt(int x, int z)
-	{
+	public int getHeightAt(int x, int z) {
 		return 0;
-	}
+	}*/
 
 	@Override
 	public WorldEnvironment getEnvironment() {
 		return worldEnv;
+	}
+
+	@Override
+	public void generateChunk(Chunk chunk) {
+		
 	}
 }

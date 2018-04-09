@@ -49,11 +49,11 @@ public interface Region {
 
 	public boolean isChunkLoaded(int chunkX, int chunkY, int chunkZ);
 
-	public boolean isUnused();
+	//public boolean isUnused();
 
 	/** Will be traversable once the file representing the region at the time of calling this is done writing. */
 	public Fence save();
 
-	/** Same as above, but unloads first */
-	public Fence unloadAndSave();
+	///** Same as above, but unloads first */
+	//public Fence unloadAndSave();
 }
