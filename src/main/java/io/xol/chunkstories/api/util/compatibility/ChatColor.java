@@ -33,7 +33,7 @@ public enum ChatColor
 	BOLD(""),
 	UNDERLINE(""),
 	MAGIC(""),
-	RESET(""),
+	RESET("#FFFFFF"),
 	;
 
 	String hex;
