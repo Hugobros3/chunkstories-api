@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.voxel.structures;
 
 import org.joml.Vector3i;
 
+import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderable;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.cell.Cell;
@@ -71,21 +72,22 @@ public abstract class Structure {
 		int initZ = Math.max(0, chunk.getChunkZ() * 32 - actualPosition.z);
 		int boundZ = Math.min(size.z, (chunk.getChunkZ() + 1) * 32 - actualPosition.z);
 		
-		//System.out.println(size+":"+boundZ);
 		for(int x = initX; x < boundX; x++) {
 			for(int y = initY; y < boundY; y++) {
 				for(int z = initZ; z < boundZ; z++) {
 					FutureCell future = new FutureCell(chunk.getWorld(), actualPosition.x + x, actualPosition.y + y, actualPosition.z + z, null);
 					future.setVoxel(data[x + y * size.x + z * size.x * size.y].getVoxel());
-					//world.poke(future, null);
 					
 					if(!future.getVoxel().isAir() || (flags & FLAG_DONT_OVERWRITE_AIR) == 0)
-						chunk.pokeSimple(actualPosition.x + x, actualPosition.y + y, actualPosition.z + z, future.getVoxel(), future.getMetaData(), 0, 0);
-					
-					//System.out.println("woooaaaab "+(actualPosition.x + x)+","+(actualPosition.y + y)+","+(actualPosition.z + z));
-					//chunk.pokeSimple(actualPosition.x + x, actualPosition.y + y, actualPosition.z + z, chunk.getWorld().getContent().voxels().getVoxel("stone"), future.getMetaData(), 0, 0);
+						chunk.pokeSimpleSilently(actualPosition.x + x, actualPosition.y + y, actualPosition.z + z, future.getVoxel(), future.getMetaData(), 0, 0);
 				}
 			}
+		}
+		
+		chunk.lightBaker().incrementPendingUpdates();
+		chunk.occlusion().incrementPendingUpdates();
+		if(chunk instanceof ChunkRenderable) {
+			((ChunkRenderable)chunk).meshUpdater().incrementPendingUpdates();
 		}
 	}
 	
