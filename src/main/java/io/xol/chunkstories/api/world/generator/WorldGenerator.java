@@ -26,14 +26,14 @@ public abstract class WorldGenerator {
 		return definition;
 	}
 
+	public void generateWorldSlice(Chunk chunks[]) {
+		for(int chunkY = 0; chunkY < chunks.length; chunkY++) {
+			generateChunk(chunks[chunkY]);
+		}
+	}
+	
 	/** Fills a chunk with content */
 	public abstract void generateChunk(Chunk chunk);
-
-	///** Returns the initial data {@link VoxelFormat} for summary generation (how it expects the topmostblock to be) */
-	//public abstract int getTopDataAt(int x, int z);
-
-	///** Returns the initial height for summary generation (how high it expects the topmost block to be) */
-	//public abstract int getHeightAt(int x, int z);
 	
 	public abstract WorldEnvironment getEnvironment();
 }
