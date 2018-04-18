@@ -184,4 +184,10 @@ public class DummyChunk implements Chunk
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public ChunkOcclusionManager occlusion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

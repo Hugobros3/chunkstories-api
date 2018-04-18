@@ -12,6 +12,7 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.util.IterableIterator;
+import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.voxel.components.VoxelComponent;
@@ -102,6 +103,22 @@ public interface Chunk
 	 * <b>Does not throw exceptions</b>, instead fails silently.
 	 */
 	public void pokeRawSilently(int x, int y, int z, int newVoxelData);
+	
+	public ChunkOcclusionManager occlusion();
+	
+	public interface ChunkOcclusionManager {
+		/** Increments the needed updates counter but doesn't spawn a task */
+		public void incrementPendingUpdates();
+		
+		/** Increments the needed updates counter, spawns a task if none exists or is pending execution */
+		public Fence requestUpdate();
+
+		/** Spawns a if there are unbaked modifications and no task is pending execution */
+		public void spawnUpdateTaskIfNeeded();
+
+		/** Returns how many updates have yet to be done */
+		public int pendingUpdates();
+	}
 	
 	/** Returns the interface responsible of updating the voxel light of this chunk */
 	public ChunkLightUpdater lightBaker();

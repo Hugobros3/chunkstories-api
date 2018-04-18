@@ -10,13 +10,15 @@ import io.xol.chunkstories.api.util.concurrency.Fence;
 
 public interface ChunkLightUpdater {
 
+	/** Increments the needed updates counter but doesn't spawn a task */
+	public void incrementPendingUpdates();
+	
 	/** Increments the needed updates counter, spawns a task if none exists or is pending execution */
-	Fence requestLightningUpdate();
+	public Fence requestLightningUpdate();
 
 	/** Spawns a TaskLightChunk if there are unbaked modifications and no task is pending execution */
-	void spawnUpdateTaskIfNeeded();
+	public void spawnUpdateTaskIfNeeded();
 
 	/** Returns how many light updates have yet to be done */
-	int pendingUpdates();
-
+	public int pendingUpdates();
 }
