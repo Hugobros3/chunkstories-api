@@ -14,9 +14,10 @@ public interface EntityDefinition extends Definition
 {
 	public String getName();
 	
-	//public short getId();
-	
 	public Entity create(Location location);
+	
+	/** Returns true if this entity should collide with others ( can be used to boost for instance ) */
+	public boolean collidesWithEntities();
 	
 	public EntityDefinitions store();
 }
