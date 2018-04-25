@@ -6,9 +6,10 @@
 
 package io.xol.chunkstories.api.rendering.entity;
 
+import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.util.IterableIterator;
 
-public interface RenderingIterator<E extends EntityRenderable> extends IterableIterator<E>
+public interface RenderingIterator<E extends Entity> extends IterableIterator<E>
 {
 	/**
 	 * __The specification of Iterator__

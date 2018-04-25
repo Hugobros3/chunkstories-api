@@ -6,10 +6,11 @@
 
 package io.xol.chunkstories.api.rendering.entity;
 
+import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.pass.RenderPass;
 
-public abstract class EntityRenderer<E extends EntityRenderable>
+public abstract class EntityRenderer<E extends Entity>
 {
 	/** Override this to implement your own entity render */
 	public abstract int renderEntities(RenderingInterface renderer, RenderingIterator<E> renderableEntitiesIterator);

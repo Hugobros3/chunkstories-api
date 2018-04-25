@@ -6,9 +6,13 @@
 
 package io.xol.chunkstories.api.net.packets;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import io.xol.chunkstories.api.Location;
-import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
-import io.xol.chunkstories.api.entity.interfaces.EntityCreative;
+import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.entity.components.EntityCreativeMode;
 import io.xol.chunkstories.api.events.item.EventItemDroppedToWorld;
 import io.xol.chunkstories.api.events.player.PlayerMoveItemEvent;
 import io.xol.chunkstories.api.exceptions.NullItemException;
@@ -18,22 +22,18 @@ import io.xol.chunkstories.api.item.inventory.InventoryTranslator;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
-import io.xol.chunkstories.api.player.Player;
-import io.xol.chunkstories.api.server.ServerPacketsProcessor.ServerPlayerPacketsProcessor;
-import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSendingContext;
 import io.xol.chunkstories.api.net.PacketWorld;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import io.xol.chunkstories.api.player.Player;
+import io.xol.chunkstories.api.server.ServerPacketsProcessor.ServerPlayerPacketsProcessor;
+import io.xol.chunkstories.api.world.World;
 
 public class PacketInventoryMoveItemPile extends PacketWorld
 {
 	public ItemPile itemPile;
-	public Inventory from, to;
-	public int oldX, oldY, newX, newY;
+	public Inventory sourceInventory, destinationInventory;
+	public int sourceX, sourceY, destX, destY;
 	public int amount;
 	
 	public PacketInventoryMoveItemPile(World world) {
@@ -44,12 +44,12 @@ public class PacketInventoryMoveItemPile extends PacketWorld
 	{
 		super(world);
 		this.itemPile = itemPile;
-		this.from = from;
-		this.to = to;
-		this.oldX = oldX;
-		this.oldY = oldY;
-		this.newX = newX;
-		this.newY = newY;
+		this.sourceInventory = from;
+		this.destinationInventory = to;
+		this.sourceX = oldX;
+		this.sourceY = oldY;
+		this.destX = newX;
+		this.destY = newY;
 		this.amount = amount;
 	}
 
@@ -57,19 +57,19 @@ public class PacketInventoryMoveItemPile extends PacketWorld
 	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
 	{
 		//Describe the move
-		out.writeInt(oldX);
-		out.writeInt(oldY);
-		out.writeInt(newX);
-		out.writeInt(newY);
+		out.writeInt(sourceX);
+		out.writeInt(sourceY);
+		out.writeInt(destX);
+		out.writeInt(destY);
 		
 		out.writeInt(amount);
 		
 		//Describe the inventories
-		InventoryTranslator.writeInventoryHandle(out, from);
-		InventoryTranslator.writeInventoryHandle(out, to);
+		InventoryTranslator.writeInventoryHandle(out, sourceInventory);
+		InventoryTranslator.writeInventoryHandle(out, destinationInventory);
 		
 		//Describe the itemPile if we are trying to spawn an item from nowhere
-		if(from == null || from.getHolder() == null)
+		if(sourceInventory == null || sourceInventory.getHolder() == null)
 		{
 			itemPile.saveIntoStream(context.getWorld().getContentTranslator(), out);
 		}
@@ -85,20 +85,20 @@ public class PacketInventoryMoveItemPile extends PacketWorld
 		
 		ServerPlayerPacketsProcessor sppc = (ServerPlayerPacketsProcessor)processor;
 		Player player = sppc.getPlayer();
-		EntityControllable playerEntity = player.getControlledEntity();
+		Entity playerEntity = player.getControlledEntity();
 		
-		oldX = in.readInt();
-		oldY = in.readInt();
-		newX = in.readInt();
-		newY = in.readInt();
+		sourceX = in.readInt();
+		sourceY = in.readInt();
+		destX = in.readInt();
+		destY = in.readInt();
 		
 		amount = in.readInt();
 		
-		from = InventoryTranslator.obtainInventoryHandle(in, processor);
-		to = InventoryTranslator.obtainInventoryHandle(in, processor);
+		sourceInventory = InventoryTranslator.obtainInventoryHandle(in, processor);
+		destinationInventory = InventoryTranslator.obtainInventoryHandle(in, processor);
 		
 		//If this pile is spawned from the void
-		if(from == null)// || from == InventoryTranslator.INVENTORY_CREATIVE_TRASH)
+		if(sourceInventory == null)// || from == InventoryTranslator.INVENTORY_CREATIVE_TRASH)
 		{
 			try
 			{
@@ -118,44 +118,45 @@ public class PacketInventoryMoveItemPile extends PacketWorld
 		}
 		else
 		{
-			itemPile = from.getItemPileAt(oldX, oldY);
+			itemPile = sourceInventory.getItemPileAt(sourceX, sourceY);
 		}
 		
-		//Check access
-		if(to != null && playerEntity != null)
-		{
-			if(!to.isAccessibleTo(playerEntity))
-			{
-				player.sendMessage("You don't have access to this.");
+		// Check access
+		if (sourceInventory != null) {
+			if (!sourceInventory.isAccessibleTo(playerEntity)) {
+				player.sendMessage("You don't have access to the source inventory.");
+				return;
+			}
+		}
+
+		if (destinationInventory != null) {
+			if (!destinationInventory.isAccessibleTo(playerEntity)) {
+				player.sendMessage("You don't have access to the destination inventory.");
 				return;
 			}
 		}
 		
 		//Check using event
-		PlayerMoveItemEvent moveItemEvent = new PlayerMoveItemEvent(player, itemPile, from, to, oldX, oldY, newX, newY, amount);
+		PlayerMoveItemEvent moveItemEvent = new PlayerMoveItemEvent(player, itemPile, sourceInventory, destinationInventory, sourceX, sourceY, destX, destY, amount);
 		player.getContext().getPluginManager().fireEvent(moveItemEvent);
 		
 		if(!moveItemEvent.isCancelled())
 		{
 			//Restrict item spawning
-			if(from == null)// || from instanceof InventoryLocalCreativeMenu)
-			{
-				//player.sendMessage("Notice : dragging stuff from /dev/null to your inventory should be limited by permission.");
-				
-				if(player.hasPermission("items.spawn") || (player.getControlledEntity() != null 
-						&& player.getControlledEntity() instanceof EntityCreative && ((EntityCreative) player.getControlledEntity()).getCreativeModeComponent().get()))
-				{
-					//Let it happen when in creative mode or owns items.spawn perm
-				}
-				else
-				{
+			if (sourceInventory == null) {
+				// player.sendMessage("Notice : dragging stuff from /dev/null to your inventory
+				// should be limited by permission.");
+
+				if (player.hasPermission("items.spawn") || playerEntity.components.tryWithBoolean(EntityCreativeMode.class, ecm -> ecm.get())) {
+					// Let it happen when in creative mode or owns items.spawn perm
+				} else {
 					player.sendMessage("#C00000You are neither in creative mode nor have the items.spawn permission.");
 					return;
 				}
 			}
 			
 			//If target inventory is null, this means the item was dropped
-			if(to == null)
+			if(destinationInventory == null)
 			{
 				//TODO this really needs some kind of permissions system
 				//TODO or not ? Maybe the cancellable event deal can prevent this
@@ -185,7 +186,7 @@ public class PacketInventoryMoveItemPile extends PacketWorld
 				return;
 			}
 			
-			itemPile.moveItemPileTo(to, newX, newY, amount);
+			itemPile.moveItemPileTo(destinationInventory, destX, destY, amount);
 		}
 	}
 }

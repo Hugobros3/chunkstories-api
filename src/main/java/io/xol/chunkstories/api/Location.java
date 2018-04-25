@@ -13,7 +13,7 @@ import io.xol.chunkstories.api.world.World;
 
 /** Cartesian product of a world and a position within that world */
 public class Location extends Vector3d {
-	protected World world;
+	public final World world;
 
 	public Location(World world, double x, double y, double z) {
 		super(x, y, z);
@@ -29,6 +29,13 @@ public class Location extends Vector3d {
 		this.x = (location.x);
 		this.y = (location.y);
 		this.z = (location.z);
+	}
+	
+	public void set(Location loc) {
+		if(loc.world != this.world)
+			throw new RuntimeException("You can't change the world of a location.");
+		
+		super.set(loc);
 	}
 
 	public World getWorld() {

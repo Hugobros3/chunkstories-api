@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import io.xol.chunkstories.api.client.ClientInterface;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.interfaces.EntityWithInventory;
+import io.xol.chunkstories.api.entity.components.EntityInventory;
 import io.xol.chunkstories.api.exceptions.PacketProcessingException;
 import io.xol.chunkstories.api.item.inventory.Inventory;
 import io.xol.chunkstories.api.item.inventory.InventoryTranslator;
@@ -50,8 +50,10 @@ public class PacketOpenInventory extends PacketWorld
 			ClientInterface client = (ClientInterface) processor.getContext();
 			Entity currentControlledEntity = client.getPlayer().getControlledEntity();
 			
-			if(currentControlledEntity != null && currentControlledEntity instanceof EntityWithInventory)
-				client.openInventories(((EntityWithInventory) currentControlledEntity).getInventory(), inventory);
+			Inventory inventory2 = currentControlledEntity != null ? currentControlledEntity.components.tryWith(EntityInventory.class, ei -> ei) : null;
+			
+			if(inventory2 != null)
+				client.openInventories(inventory2, inventory);
 			else
 				client.openInventories(inventory);
 		}

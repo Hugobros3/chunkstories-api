@@ -6,7 +6,7 @@
 
 package io.xol.chunkstories.api.events.player;
 
-import io.xol.chunkstories.api.entity.interfaces.EntityWithInventory;
+import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.player.Player;
@@ -31,10 +31,10 @@ public class PlayerSelectItemEvent extends Event
 	// Specific event code
 	
 	public Player player;
-	public EntityWithInventory entity;
+	public Entity entity;
 	public int newSlot;
 	
-	public PlayerSelectItemEvent(Player player, EntityWithInventory playerEntity, int newSlot)
+	public PlayerSelectItemEvent(Player player, Entity playerEntity, int newSlot)
 	{
 		this.player = player;
 		this.entity = playerEntity;

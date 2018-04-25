@@ -14,33 +14,28 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
-public class EntityComponentName extends EntityComponent
-{
-	public EntityComponentName(Entity entity, EntityComponent previous)
-	{
-		super(entity, previous);
+public class EntityName extends EntityComponent {
+	public EntityName(Entity entity) {
+		super(entity);
 	}
+
 	String name = "";
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
 
-	public void setName(String name)
-	{
+	public void setName(String name) {
 		this.name = name;
 	}
 
 	@Override
-	protected void push(StreamTarget destinator, DataOutputStream dos) throws IOException
-	{
+	protected void push(StreamTarget destinator, DataOutputStream dos) throws IOException {
 		dos.writeUTF(name);
 	}
 
 	@Override
-	protected void pull(StreamSource from, DataInputStream dis) throws IOException
-	{
+	protected void pull(StreamSource from, DataInputStream dis) throws IOException {
 		name = dis.readUTF();
 	}
 

@@ -26,7 +26,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 	
 	public VoxelInventoryComponent(CellComponents holder, int width, int height) {
 		super(holder);
-		this.inventory = new BasicInventory(holder.getWorld(), width, height) {
+		this.inventory = new BasicInventory(width, height) {
 
 			@Override
 			public InventoryHolder getHolder() {
@@ -42,7 +42,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 			public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
 				for(WorldUser user : holder.users()) {
 					if(user instanceof RemotePlayer) {
-						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(this.world, this, x, y, pileChanged);
+						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(holder.getWorld(), this, x, y, pileChanged);
 						RemotePlayer player = (RemotePlayer)user;
 						player.pushPacket(packet);
 					}
@@ -55,12 +55,12 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 	@Override
 	public void push(StreamTarget destinator, DataOutputStream dos) throws IOException {
-		inventory.pushInventory(destinator, dos);
+		inventory.pushInventory(destinator, dos, holder().getWorld().getContentTranslator());
 	}
 
 	@Override
 	public void pull(StreamSource from, DataInputStream dis) throws IOException {
-		inventory.pullInventory(from, dis, holder().getWorld().getGameContext().getContent());
+		inventory.pullInventory(from, dis, holder().getWorld().getContentTranslator());
 	}
 
 	public BasicInventory getInventory() {

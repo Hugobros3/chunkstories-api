@@ -6,124 +6,128 @@
 
 package io.xol.chunkstories.api.net.packets;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
-import io.xol.chunkstories.api.entity.components.EntityComponentExistence;
+import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.exceptions.UnknownComponentException;
 import io.xol.chunkstories.api.net.PacketDestinator;
+import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSendingContext;
 import io.xol.chunkstories.api.net.PacketWorld;
-import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.server.RemotePlayer;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-public class PacketEntity extends PacketWorld
-{
+public class PacketEntity extends PacketWorld {
 	private Entity entity;
 	private EntityComponent updateSpecificComponent;
 
 	public PacketEntity(World world) {
 		super(world);
 	}
-	
-	public PacketEntity(Entity entityToUpdate)
-	{
+
+	public PacketEntity(Entity entityToUpdate) {
 		super(entityToUpdate.getWorld());
 		this.entity = entityToUpdate;
 	}
-	
-	public PacketEntity(Entity entity, EntityComponent component)
-	{
+
+	public PacketEntity(Entity entity, EntityComponent component) {
 		this(entity);
 		this.updateSpecificComponent = component;
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
-	{
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		long entityUUID = entity.getUUID();
 		short entityTypeID = (short) entity.getWorld().getContentTranslator().getIdForEntity(entity);
-		
+
+		boolean hideEntity = entity.entityLocation.wasRemoved();
+		if (destinator instanceof Subscriber)
+			hideEntity |= entity.subscribers.isRegistered(destinator);
+
 		out.writeLong(entityUUID);
 		out.writeShort(entityTypeID);
-		
-		if(updateSpecificComponent == null) {
-			// No specific component specified ? Update all of them.
-			entity.getComponents().pushAllComponentsInStream(destinator, out);
-		} else { 
-			updateSpecificComponent.pushComponentInStream(destinator, out);
-			
-			//If the entity no longer exists, we make sure we tell the player so he doesn't spawn it again by pushing the existence component
-			if(!entity.exists() && !(updateSpecificComponent instanceof EntityComponentExistence))
-				entity.getComponents().pushComponentInStream(destinator, out);
+
+		out.writeBoolean(hideEntity);
+
+		if (!hideEntity) { // don't push components when all we want is to hide the entity from the
+							// player's view
+			if (updateSpecificComponent == null) {
+				// No specific component specified ? Update all of them.
+
+				// can't use shorter method because of exceptions >:(
+				// entity.components.all().forEach(c -> c.pushComponentInStream(destinator,
+				// out));
+
+				for (EntityComponent c : entity.components.all())
+					c.pushComponentInStream(destinator, out);
+
+			} else {
+				updateSpecificComponent.pushComponentInStream(destinator, out);
+
+				// If the entity no longer exists, we make sure we tell the player so he doesn't
+				// spawn it again by pushing the existence component
+				// if(!entity.exists() && !(updateSpecificComponent instanceof
+				// EntityComponentExistence))
+				// entity.getComponents().pushComponentInStream(destinator, out);
+			}
 		}
-		
-		//Write a 0 to mark the end of the components updates
+
+		// Write a 0 to mark the end of the components updates
 		out.writeInt(0);
 	}
 
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, UnknownComponentException
-	{
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, UnknownComponentException {
 		long entityUUID = in.readLong();
 		short entityTypeID = in.readShort();
-		
-		if(entityTypeID == -1)
+
+		boolean hideEntity = in.readBoolean();
+
+		if (entityTypeID == -1)
 			return;
-		
+
 		World world = processor.getWorld();
-		if(world == null)
+		if (world == null)
 			return;
-		
+
 		Entity entity = world.getEntityByUUID(entityUUID);
-		
+
 		boolean addToWorld = false;
-		
-		//TODO this should be done explicitely by dedicated packet/packet flags
-		//Create an entity if the servers tells you to do so
-		if(entity == null)
-		{
-			if(world instanceof WorldMaster && sender instanceof RemotePlayer) {
+
+		// TODO this should be done explicitely by dedicated packet/packet flags
+		// Create an entity if the servers tells you to do so
+		if (entity == null) {
+			if (world instanceof WorldMaster && sender instanceof RemotePlayer) {
 				((Player) sender).sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
 				return;
-			} else {
-				entity = processor.getWorld().getContentTranslator().
-						getEntityForId(entityTypeID).
-						create(new Location(world, 0, 0, 0)); // This is technically wrong
-				
+			} else if (!hideEntity) {
+				entity = processor.getWorld().getContentTranslator().getEntityForId(entityTypeID).create(new Location(world, 0, 0, 0)); // This is technically
+																
 				entity.setUUID(entityUUID);
-				
+
 				addToWorld = true;
 			}
 		}
-		
+
 		int componentId = in.readInt();
-		//Loop throught all components
-		while(componentId != 0)
-		{
-			try {
-				entity.getComponents().tryPullComponentInStream(componentId, sender, in);
-			}
-			catch(UnknownComponentException e) {
-				
-				processor.logger().warn(e.getMessage());
-			}
+		// Loop throught all components
+		while (componentId != 0) {
+			entity.components.byId()[componentId].tryPull(sender, in);
 			componentId = in.readInt();
 		}
-		
-		//Add to world if it was missing and we didn't receive the despawn flag
-		if(addToWorld && entity.exists())
-		{
-			//Only the WorldMaster is allowed to spawn new entities in the world
-			if(processor instanceof ClientPacketsProcessor)
+
+		// Add to world if it was missing and we didn't receive the despawn flag
+		if (addToWorld && !hideEntity) {
+			// Only the WorldMaster is allowed to spawn new entities in the world
+			if (processor instanceof ClientPacketsProcessor)
 				processor.getWorld().addEntity(entity);
 		}
 	}

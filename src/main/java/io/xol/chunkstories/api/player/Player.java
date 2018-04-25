@@ -9,8 +9,8 @@ package io.xol.chunkstories.api.player;
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Controller;
+import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.components.Subscriber;
-import io.xol.chunkstories.api.entity.interfaces.EntityControllable;
 import io.xol.chunkstories.api.item.inventory.Inventory;
 import io.xol.chunkstories.api.net.Interlocutor;
 import io.xol.chunkstories.api.plugin.commands.CommandEmitter;
@@ -32,10 +32,10 @@ public interface Player extends CommandEmitter, Controller, Subscriber, Interloc
 	public GameContext getContext();
 	
 	/** @return the entity this player is controlling */
-	public EntityControllable getControlledEntity();
+	public Entity getControlledEntity();
 	
 	/** Sets the entity this player has control over (and tells him) */
-	public boolean setControlledEntity(EntityControllable entity);
+	public boolean setControlledEntity(Entity entity);
 	
 	/** Sends a text message to this player chat */
 	public void sendMessage(String msg);

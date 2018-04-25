@@ -4,12 +4,15 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.interfaces;
+package io.xol.chunkstories.api.entity.traits;
 
 import io.xol.chunkstories.api.animation.SkeletonAnimator;
 import io.xol.chunkstories.api.entity.Entity;
 
-public interface EntityAnimated extends Entity
-{
-	public SkeletonAnimator getAnimatedSkeleton();
+public abstract class TraitAnimated extends Trait {
+	public TraitAnimated(Entity entity) {
+		super(entity);
+	}
+
+	public abstract SkeletonAnimator getAnimatedSkeleton();
 }

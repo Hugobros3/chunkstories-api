@@ -14,38 +14,31 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
-public abstract class EntityComponentGenericBoolean extends EntityComponent
-{
+public abstract class EntityComponentGenericBoolean extends EntityComponent {
 	private boolean value = false;
 
-	public boolean get()
-	{
+	public boolean get() {
 		return value;
 	}
 
-	public void set(boolean newValue)
-	{
-		if (this.value != newValue)
-		{
+	public void set(boolean newValue) {
+		if (this.value != newValue) {
 			this.value = newValue;
 			this.pushComponentEveryone();
 		}
 	}
 
-	public EntityComponentGenericBoolean(Entity entity, EntityComponent previous)
-	{
-		super(entity, previous);
+	public EntityComponentGenericBoolean(Entity entity) {
+		super(entity);
 	}
 
 	@Override
-	protected void push(StreamTarget destinator, DataOutputStream dos) throws IOException
-	{
+	protected void push(StreamTarget destinator, DataOutputStream dos) throws IOException {
 		dos.writeBoolean(value);
 	}
 
 	@Override
-	protected void pull(StreamSource from, DataInputStream dis) throws IOException
-	{
+	protected void pull(StreamSource from, DataInputStream dis) throws IOException {
 		value = dis.readBoolean();
 	}
 
