@@ -16,8 +16,5 @@ public abstract class TraitVoxelSelection extends Trait {
 	 * @param overwriteInstaDestructibleBlocks Would we return a non-air cell provided the voxel in that cell is instantaneously destructible/replaceable ?
 	 * @return
 	 */
-	public Location getBlockLookingAt(boolean inside, boolean overwriteInstaDestructibleBlocks) {
-		//TODO
-		return null;
-	}
+	public abstract Location getBlockLookingAt(boolean inside, boolean overwriteInstaDestructibleBlocks);
 }
