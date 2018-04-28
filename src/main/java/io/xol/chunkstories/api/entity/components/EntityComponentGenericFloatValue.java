@@ -11,6 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.util.Generalized;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
@@ -18,6 +19,7 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
  * Generic class for not duplacting boring code everywhere
  * Remember: you still have to declare the actual components classes in .components files !
  */
+@Generalized
 public class EntityComponentGenericFloatValue extends EntityComponent
 {
 	protected float value;

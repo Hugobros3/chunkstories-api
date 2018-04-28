@@ -27,7 +27,14 @@ public class BasicInventory implements Inventory {
 	protected int height;
 
 	protected ItemPile[][] contents;
+	
+	protected Inventory externalInventory = this;
 
+	public BasicInventory(int width, int height, Inventory externalInventory) {
+		this(width, height);
+		this.externalInventory = externalInventory;
+	}
+	
 	public BasicInventory(int width, int height) {
 
 		this.width = width;
@@ -103,7 +110,7 @@ public class BasicInventory implements Inventory {
 		ItemPile currentPileAtLocation = this.getItemPileAt(x, y);
 		// If empty and has space, put it in.
 		if (currentPileAtLocation == null && canPlaceItemAt(x, y, itemPile)) {
-			itemPile.setInventory(this);
+			itemPile.setInventory(externalInventory);
 
 			itemPile.setX(x);
 			itemPile.setY(y);
@@ -166,7 +173,7 @@ public class BasicInventory implements Inventory {
 		}
 
 		if (canPlaceItemAt(x, y, pile)) {
-			pile.setInventory(this);
+			pile.setInventory(externalInventory);
 			pile.setX(x);
 			pile.setY(y);
 			contents[x % width][y % height] = pile;
@@ -290,7 +297,7 @@ public class BasicInventory implements Inventory {
 					itemPile = ItemPile.obtainItemPileFromStream(translator, stream);
 					// Then add the thing
 					contents[i][j] = itemPile;
-					contents[i][j].setInventory(this);
+					contents[i][j].setInventory(externalInventory);
 					contents[i][j].setX(i);
 					contents[i][j].setY(j);
 				} catch (NullItemException e) {

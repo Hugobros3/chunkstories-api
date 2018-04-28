@@ -208,7 +208,9 @@ public class EntityLocation extends EntityComponent {
 		}
 		
 		this.pushComponentEveryone();
-		//TODO remove itself from the subscribers's list ?
+		
+		//Tell anyone still subscribed to this entity to sod off
+		entity.subscribers.all().forEach(subscriber -> { subscriber.unsubscribe(entity); });
 	}
 
 	public boolean wasRemoved() {
@@ -219,8 +221,14 @@ public class EntityLocation extends EntityComponent {
 		try {
 			lock.lock();
 			spawned = true;
+			
+			sanitize();
 		} finally {
 			lock.unlock();
 		}
+	}
+
+	public boolean hasSpawned() {
+		return spawned;
 	}
 }

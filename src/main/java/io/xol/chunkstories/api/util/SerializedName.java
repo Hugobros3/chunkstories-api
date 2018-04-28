@@ -1,4 +1,4 @@
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.util;
 
 public @interface SerializedName {
 	String name();

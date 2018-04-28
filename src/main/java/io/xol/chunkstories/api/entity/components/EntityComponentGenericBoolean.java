@@ -11,9 +11,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.util.Generalized;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+@Generalized
 public abstract class EntityComponentGenericBoolean extends EntityComponent {
 	private boolean value = false;
 

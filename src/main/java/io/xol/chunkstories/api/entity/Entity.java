@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,7 +19,9 @@ import io.xol.chunkstories.api.net.packets.PacketEntity;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.util.BooleanAction;
+import io.xol.chunkstories.api.util.Generalized;
 import io.xol.chunkstories.api.util.ReturnsAction;
+import io.xol.chunkstories.api.util.Specialized;
 import io.xol.chunkstories.api.util.VoidAction;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
@@ -97,7 +101,7 @@ public abstract class Entity {
 	}
 
 	/** Called by EntityDefinition::create after the constructor */
-	protected final void afterIntialization() {
+	public final void afterIntialization() {
 		if (initialized)
 			throw new RuntimeException("You can't register components after the entity initializes.");
 
@@ -138,18 +142,72 @@ public abstract class Entity {
 			if (initialized)
 				throw new RuntimeException("You can't register components after the entity initializes.");
 
+			System.out.println("registering component: "+component);
+			
+			purge(component);
 			components.put(component.getClass(), component);
 
-			// We allow refering to a component by it's superclass, it's up to the user to
-			// make sure to ask for a specific
-			// enough superclass as to not have collisions
-			Class<?> c = component.getClass().getSuperclass();
-			while (EntityComponent.class.isAssignableFrom(c) && c != Trait.class) {
-				components.put((Class<? extends EntityComponent>) c, component);
+			// We allow refering to a component by it's superclass so we bake in all superclasses that component encompasses
+			Class<?> c = component.getClass();
+			while (true) {
+				if(c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
+					System.out.println(c.getSimpleName()+" : this is a specialized class, no overshadowing parents");
+					break;
+				}
 				c = c.getSuperclass();
+				if(c == EntityComponent.class)
+					break; //stop there
+				
+				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
+					System.out.println(c.getSimpleName()+" : this is a generalized class, not overriding that.");
+					break;
+				}
+
+				System.out.println("registering component with superclass: "+c);
+				components.put((Class<? extends EntityComponent>) c, component);
 			}
 
 			return components.size() - 1;
+		}
+
+		private void purge(EntityComponent component) {
+			String remove = null;
+			
+			System.out.println("Purging matching components...");
+			Class<?> c = component.getClass();
+			while(true) {
+				if(c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
+					System.out.println(c.getSimpleName()+" : this is a specialized class, no removing parents");
+					break;
+				}
+				c = c.getSuperclass();
+				if(c == EntityComponent.class)
+					break; //stop there
+				
+				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
+					System.out.println(c.getSimpleName()+" : this is a generalized class, stopping purge");
+					break;
+				}
+
+				EntityComponent comp = components.get(c);
+				if(comp != null) {
+					System.out.println("Found conflicting component: "+comp);
+					remove = comp.name;
+					break;
+				}
+			}
+			
+			if(remove != null) {
+				//System.out.println("Purging matching component: "+remove);
+				Iterator<Entry<Class<? extends EntityComponent>, EntityComponent>> i = components.entrySet().iterator();
+				while(i.hasNext()) {
+					Entry<Class<? extends EntityComponent>, EntityComponent> e = i.next();
+					if(e.getValue().name.equals(remove)) {
+						System.out.println("Purging : "+e.getKey());
+						i.remove();
+					}
+				}
+			}
 		}
 
 		public boolean has(Class<? extends EntityComponent> componentType) {
@@ -208,6 +266,14 @@ public abstract class Entity {
 		public EntityComponent[] byId() {
 			return byId;
 		}
+		
+		@Override
+		public String toString() {
+			String ok = "";
+			for(EntityComponent c : all())
+				ok += c.getClass().getSimpleName()+", ";
+			return all().size()+"{"+ok+"}";
+		}
 	}
 
 	public final class Traits {
@@ -219,13 +285,16 @@ public abstract class Entity {
 			if (initialized)
 				throw new RuntimeException("You can't register traits after the entity initializes.");
 
+			System.out.println("registering trait: "+trait);
 			traits.put(trait.getClass(), trait);
 
 			// We allow refering to a trait by it's superclass, it's up to the user to make
 			// sure to ask for a specific
 			// enough superclass as to not have collisions
-			Class<?> c = traits.getClass().getSuperclass();
+			Class<?> c = trait.getClass().getSuperclass();
 			while (Trait.class.isAssignableFrom(c) && c != Trait.class) {
+
+				System.out.println("registering trait superclass: "+c);
 				traits.put((Class<? extends Trait>) c, trait);
 				c = c.getSuperclass();
 			}
@@ -275,6 +344,7 @@ public abstract class Entity {
 		@SuppressWarnings("unchecked")
 		public <T extends Trait> boolean with(Class<T> traitType, VoidAction<T> action) {
 			T trait = (T) traits.get(traitType);
+			//System.out.println("with "+traitType+": "+trait);
 			if (trait != null) {
 				action.run(trait);
 				return true;
@@ -284,6 +354,14 @@ public abstract class Entity {
 
 		public Collection<Trait> all() {
 			return all;
+		}
+		
+		@Override
+		public String toString() {
+			String ok = "";
+			for(Trait t : all())
+				ok += (t.getClass().getCanonicalName() == null ? t.getClass().getSuperclass().getSimpleName() : t.getClass().getSimpleName())+", ";
+			return all().size()+"{"+ok+"}";
 		}
 	}
 
@@ -339,15 +417,23 @@ public abstract class Entity {
 	}
 
 	public final void setUUID(long entityUUID) {
-		if (uuid != -1)
+		if (uuid != -1 && entityLocation.hasSpawned())
 			throw new RuntimeException("Can't change an entity UUID after it's been set");
 		this.uuid = entityUUID;
 	}
 
 	@Override
 	public String toString() {
-		return "[" + this.getClass().getSimpleName() + " subs:" + this.subscribers.subscribers.size() + "  position : " + this.entityLocation.get() + " UUID : "
-				+ this.uuid + " Type: " + this.definition + " Chunk:" + this.entityLocation.getChunk() + " ]";
+		return "[" + 
+				this.getClass().getSimpleName() + 
+				" Type: " + this.definition + 
+				" subs:" + this.subscribers.subscribers.size() + 
+				"  position : " + this.entityLocation.get() + 
+				" UUID : " + this.uuid  + 
+				" Chunk:" + this.entityLocation.getChunk() + 
+				" Components:" + this.components + 
+				" Traits:" + this.traits + 
+				" ]";
 	}
 
 	public final Location getLocation() {

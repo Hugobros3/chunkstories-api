@@ -34,7 +34,8 @@ public class EntityInventory extends EntityComponent implements Inventory {
 		this.holder = (InventoryHolder) entity;
 		
 		//Create the REAL inventory but re-route the updaters method to this class so it's functional
-		this.actualInventory = new BasicInventory(width, height) {
+		this.actualInventory = new BasicInventory(width, height, this) {
+			
 			public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
 				EntityInventory.this.refreshItemSlot(x, y, pileChanged);
 			}
@@ -44,6 +45,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 				EntityInventory.this.refreshCompleteInventory();
 			}
 		};
+		
 	}
 
 	@Override
@@ -57,7 +59,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 		String name = entity.components.tryWith(EntityName.class, en -> en.getName());
 		//if (holder instanceof EntityNameable)
 		//	return ((EntityNameable) holder).getName();
-		return name != null ? null : holder.getClass().getSimpleName();
+		return name != null ? "[entity has no name]" : holder.getClass().getSimpleName();
 	}
 
 	@Override
