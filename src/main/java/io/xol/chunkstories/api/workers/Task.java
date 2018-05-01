@@ -7,6 +7,7 @@
 package io.xol.chunkstories.api.workers;
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.xol.chunkstories.api.exceptions.tasks.CancelledTaskException;
@@ -68,7 +69,11 @@ public abstract class Task implements Fence
 			if(cancelled.get()) 
 				throw new CancelledTaskException(this);
 			
-			wait.acquireUninterruptibly();
+			try {
+				wait.tryAcquire(500, TimeUnit.MICROSECONDS);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			/*synchronized(this)
 			{
 				if(done) // Check again
