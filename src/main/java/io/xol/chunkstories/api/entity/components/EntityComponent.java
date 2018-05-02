@@ -22,7 +22,7 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 @SerializedName(name="carotte")
 public abstract class EntityComponent {
 	public final Entity entity;
-	private int id;
+	private int id = -1;
 	
 	/** Reflects the name declared in the @SerializedName annotation, or the the top level class name if none is declared */
 	public final String name;
@@ -31,7 +31,8 @@ public abstract class EntityComponent {
 
 	public EntityComponent(Entity entity) {
 		this.entity = entity;
-		entity.components.registerComponent(this);
+		id = entity.components.registerComponent(this);
+		System.out.println("created component "+this+" registered as "+id);
 		
 		SerializedName[] a = this.getClass().getAnnotationsByType(SerializedName.class);
 		if(a.length > 0)
@@ -94,6 +95,7 @@ public abstract class EntityComponent {
 			dos.writeUTF(this.name);
 		} else {
 			dos.writeInt(this.id);
+			//System.out.println("pushing component "+this+" with id"+this.id);
 		}
 		
 		// Push actual component data
@@ -111,6 +113,13 @@ public abstract class EntityComponent {
 	public int id() {
 		return id;
 	}
+	
+	/*public void setId(int id) {
+		if(this.id == -1)
+			this.id = id;
+		else
+			throw new RuntimeException("You can't change the ID of a component.");
+	}*/
 	
 	/*private void callbacks() {
 		for(TouchedCallback c : callbacks)

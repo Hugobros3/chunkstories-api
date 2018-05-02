@@ -51,8 +51,10 @@ public class PacketEntity extends PacketWorld {
 
 		boolean hideEntity = entity.entityLocation.wasRemoved();
 		if (destinator instanceof Subscriber)
-			hideEntity |= entity.subscribers.isRegistered(destinator);
+			hideEntity |= !entity.subscribers.isRegistered(destinator);
 
+		//System.out.println("telling "+destinator+" about "+entity +" (hide:"+hideEntity+", reg="+entity.subscribers.isRegistered(destinator)+")");
+		
 		out.writeLong(entityUUID);
 		out.writeShort(entityTypeID);
 
@@ -63,7 +65,7 @@ public class PacketEntity extends PacketWorld {
 			if (updateSpecificComponent == null) {
 				// No specific component specified ? Update all of them.
 
-				// can't use shorter method because of exceptions >:(
+				// can't use shorter method because of exceptions handling >:(
 				// entity.components.all().forEach(c -> c.pushComponentInStream(destinator,
 				// out));
 
@@ -72,17 +74,11 @@ public class PacketEntity extends PacketWorld {
 
 			} else {
 				updateSpecificComponent.pushComponentInStream(destinator, out);
-
-				// If the entity no longer exists, we make sure we tell the player so he doesn't
-				// spawn it again by pushing the existence component
-				// if(!entity.exists() && !(updateSpecificComponent instanceof
-				// EntityComponentExistence))
-				// entity.getComponents().pushComponentInStream(destinator, out);
 			}
 		}
 
-		// Write a 0 to mark the end of the components updates
-		out.writeInt(0);
+		// Write a -1 to mark the end of the components updates
+		out.writeInt(-1);
 	}
 
 	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, UnknownComponentException {
@@ -98,10 +94,10 @@ public class PacketEntity extends PacketWorld {
 		if (world == null)
 			return;
 
+		//System.out.println("received packet entity");
 		Entity entity = world.getEntityByUUID(entityUUID);
 
 		boolean addToWorld = false;
-
 		// TODO this should be done explicitely by dedicated packet/packet flags
 		// Create an entity if the servers tells you to do so
 		if (entity == null) {
@@ -119,7 +115,8 @@ public class PacketEntity extends PacketWorld {
 
 		int componentId = in.readInt();
 		// Loop throught all components
-		while (componentId != 0) {
+		while (componentId >= 0) {
+			//System.out.println("reading component "+componentId);
 			entity.components.byId()[componentId].tryPull(sender, in);
 			componentId = in.readInt();
 		}
@@ -129,6 +126,10 @@ public class PacketEntity extends PacketWorld {
 			// Only the WorldMaster is allowed to spawn new entities in the world
 			if (processor instanceof ClientPacketsProcessor)
 				processor.getWorld().addEntity(entity);
+		}
+		
+		if(hideEntity && entity != null) {
+			world.removeEntity(entity);
 		}
 	}
 }

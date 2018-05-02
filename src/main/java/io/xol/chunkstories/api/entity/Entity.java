@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.components.EntityComponent;
 import io.xol.chunkstories.api.entity.components.EntityLocation;
@@ -95,7 +97,6 @@ public abstract class Entity {
 
 		// ALL entities are set to have a location
 		entityLocation = new EntityLocation(this, location);
-		this.components.registerComponent(entityLocation);
 
 		this.world = location.getWorld();
 	}
@@ -112,7 +113,10 @@ public abstract class Entity {
 		components.byId = new EntityComponent[componentsSet.size()];
 		int i = 0;
 		for (EntityComponent c : componentsSet) {
+			i = c.id();
 			components.byId[i] = c;
+			//c.setId(i);
+			System.out.println("component "+c+" gets id "+i);
 			i++;
 		}
 		// Build an immutable view of that set
@@ -137,21 +141,33 @@ public abstract class Entity {
 		protected Set<EntityComponent> all = null;
 		protected EntityComponent[] byId = null;
 
+		private int count = 0;
+		
 		@SuppressWarnings("unchecked")
 		public int registerComponent(EntityComponent component) {
 			if (initialized)
 				throw new RuntimeException("You can't register components after the entity initializes.");
 
-			System.out.println("registering component: "+component);
+			if(components.get(component.getClass()) == component) {
+				//TODO proper logger here
+				world.getGameLogic().getGameContext().logger().warn("Tried to register the same component twice"
+						+ " (hint: don't call registerComponent yourself, the superconstructor does it already )");
+				return component.id();
+			}
 			
-			purge(component);
+			//System.out.println("registering component: "+component);
+			
+			int id = purge(component);
+			if(id == -1)
+				id = count++;
+			
 			components.put(component.getClass(), component);
 
 			// We allow refering to a component by it's superclass so we bake in all superclasses that component encompasses
 			Class<?> c = component.getClass();
 			while (true) {
 				if(c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
-					System.out.println(c.getSimpleName()+" : this is a specialized class, no overshadowing parents");
+					//System.out.println(c.getSimpleName()+" : this is a specialized class, no overshadowing parents");
 					break;
 				}
 				c = c.getSuperclass();
@@ -159,25 +175,25 @@ public abstract class Entity {
 					break; //stop there
 				
 				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
-					System.out.println(c.getSimpleName()+" : this is a generalized class, not overriding that.");
+					//System.out.println(c.getSimpleName()+" : this is a generalized class, not overriding that.");
 					break;
 				}
 
-				System.out.println("registering component with superclass: "+c);
+				//System.out.println("registering component with superclass: "+c);
 				components.put((Class<? extends EntityComponent>) c, component);
 			}
 
-			return components.size() - 1;
+			return id;
 		}
 
-		private void purge(EntityComponent component) {
-			String remove = null;
+		private int purge(EntityComponent component) {
+			EntityComponent remove = null;
 			
-			System.out.println("Purging matching components...");
+			//System.out.println("Purging matching components...");
 			Class<?> c = component.getClass();
 			while(true) {
 				if(c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
-					System.out.println(c.getSimpleName()+" : this is a specialized class, no removing parents");
+					//System.out.println(c.getSimpleName()+" : this is a specialized class, no removing parents");
 					break;
 				}
 				c = c.getSuperclass();
@@ -185,14 +201,14 @@ public abstract class Entity {
 					break; //stop there
 				
 				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
-					System.out.println(c.getSimpleName()+" : this is a generalized class, stopping purge");
+					//System.out.println(c.getSimpleName()+" : this is a generalized class, stopping purge");
 					break;
 				}
 
 				EntityComponent comp = components.get(c);
 				if(comp != null) {
-					System.out.println("Found conflicting component: "+comp);
-					remove = comp.name;
+					//System.out.println("Found conflicting component: "+comp + "with id "+comp.id());
+					remove = comp;
 					break;
 				}
 			}
@@ -202,12 +218,17 @@ public abstract class Entity {
 				Iterator<Entry<Class<? extends EntityComponent>, EntityComponent>> i = components.entrySet().iterator();
 				while(i.hasNext()) {
 					Entry<Class<? extends EntityComponent>, EntityComponent> e = i.next();
-					if(e.getValue().name.equals(remove)) {
-						System.out.println("Purging : "+e.getKey());
+					if(e.getValue() == remove) {
+						//System.out.println("Purging : "+e.getKey());
 						i.remove();
 					}
 				}
+				
+				//System.out.println("returning purged id:"+remove.id());
+				return remove.id();
 			}
+			
+			return -1;
 		}
 
 		public boolean has(Class<? extends EntityComponent> componentType) {
@@ -285,7 +306,8 @@ public abstract class Entity {
 			if (initialized)
 				throw new RuntimeException("You can't register traits after the entity initializes.");
 
-			System.out.println("registering trait: "+trait);
+			//TODO smart traits purging (@Generalized and @Specialized)
+			//System.out.println("registering trait: "+trait);
 			traits.put(trait.getClass(), trait);
 
 			// We allow refering to a trait by it's superclass, it's up to the user to make
@@ -294,7 +316,7 @@ public abstract class Entity {
 			Class<?> c = trait.getClass().getSuperclass();
 			while (Trait.class.isAssignableFrom(c) && c != Trait.class) {
 
-				System.out.println("registering trait superclass: "+c);
+				//System.out.println("registering trait superclass: "+c);
 				traits.put((Class<? extends Trait>) c, trait);
 				c = c.getSuperclass();
 			}
