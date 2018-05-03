@@ -32,7 +32,7 @@ ext {
 }
 
 //TODO Make version depend on Git ?
-version = '120'
+version = '121'
 
 group = 'io.xol.chunkstories'
 description = 'API for the game \'Chunk Stories\''
