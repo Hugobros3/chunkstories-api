@@ -8,13 +8,16 @@ package io.xol.chunkstories.api.world.cell;
 
 import io.xol.chunkstories.api.voxel.Voxel;
 
+import javax.annotation.Nullable;
+
 public abstract class Cell implements CellData {
 	final protected int x, y, z;
 	
+	@Nullable
 	protected Voxel voxel;
 	protected int metadata, blocklight, sunlight;
 	
-	public Cell(int x, int y, int z, Voxel voxel, int meta, int blocklight, int sunlight) {
+	public Cell(int x, int y, int z, @Nullable Voxel voxel, int meta, int blocklight, int sunlight) {
 		this.x = x;
 		this.y = y;
 		this.z = z;

@@ -11,6 +11,8 @@ import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.cell.CellData;
 
+import javax.annotation.Nullable;
+
 public interface WorldHeightmaps {
 	
 	/** Return the associated World */
@@ -43,21 +45,25 @@ public interface WorldHeightmaps {
 	/**
 	 * Returns either null or a valid, entirely loaded heightmap if the aquireHeightmap method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Heightmap getHeightmap(int regionX, int regionZ);
 	
 	/**
 	 * Returns either null or a valid, entirely loaded heightmap if the aquireHeightmap method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Heightmap getHeightmapChunkCoordinates(int chunkX, int chunkZ);
 	
 	/**
 	 * Returns either null or a valid, entirely loaded heightmap if the aquireHeightmap method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Heightmap getHeightmapWorldCoordinates(int worldX, int worldZ);
 	
 	/**
 	 * Returns either null or a valid, entirely loaded heightmap if the aquireHeightmap method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Heightmap getHeightmapLocation(Location location);
 	
 	public int getHeightAtWorldCoordinates(int worldX, int worldZ);

@@ -9,6 +9,8 @@ package io.xol.chunkstories.api.math;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 
+import javax.annotation.Nullable;
+
 /* This file is part of the ChunkStories WIP API.
  * Licensing is yet to be decided, please check out the github page for
  * up-to date information. */
@@ -65,7 +67,7 @@ public class Quaternion4d
 		return mult(this, quat, null);
 	}
 	
-	public static Quaternion4d mult(Quaternion4d a, Quaternion4d b, Quaternion4d out)
+	public static Quaternion4d mult(Quaternion4d a, Quaternion4d b, @Nullable Quaternion4d out)
 	{
 		if(out == null)
 			out = new Quaternion4d();

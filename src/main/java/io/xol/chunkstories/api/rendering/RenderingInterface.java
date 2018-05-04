@@ -38,6 +38,8 @@ import io.xol.chunkstories.api.rendering.vertex.Primitive;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 import io.xol.chunkstories.api.rendering.world.WorldRenderer;
 
+import javax.annotation.Nullable;
+
 public interface RenderingInterface
 {
 	public CameraInterface getCamera();
@@ -116,7 +118,7 @@ public interface RenderingInterface
 	 * @throws AttributeNotPresentException If 'attributeName' doesn't resolve to a real attribute location
 	 * Returns the configuration of the bound vertex shader inputs
 	 */
-	public AttributesConfiguration bindAttribute(String attributeName, AttributeSource attributeSource) throws AttributeNotPresentException;
+	public AttributesConfiguration bindAttribute(String attributeName, @Nullable AttributeSource attributeSource) throws AttributeNotPresentException;
 	
 	/** Ensures no attributes are bound left over from previous draw instructions */
 	public AttributesConfiguration unbindAttributes();

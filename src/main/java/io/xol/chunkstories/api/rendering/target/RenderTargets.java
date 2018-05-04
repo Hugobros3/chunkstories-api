@@ -8,6 +8,8 @@ package io.xol.chunkstories.api.rendering.target;
 
 import org.joml.Vector4fc;
 
+import javax.annotation.Nullable;
+
 public interface RenderTargets
 {
 	/** Get the current render targets configured */
@@ -16,10 +18,10 @@ public interface RenderTargets
 	/**
 	 * Binds a new FBO to render to
 	 */
-	public void setConfiguration(RenderTargetsConfiguration fbo);
+	public void setConfiguration(@Nullable RenderTargetsConfiguration fbo);
 	
 	/** Creates a new configuration, depth might be = null and you are prompted to provide an arbitrary number of colour buffers */
-	public RenderTargetsConfiguration newConfiguration(RenderTarget depth, RenderTarget... colors);
+	public RenderTargetsConfiguration newConfiguration(@Nullable RenderTarget depth, @Nullable RenderTarget... colors);
 	
 	/**
 	 * Clears both types of bound rendertargets
@@ -36,7 +38,7 @@ public interface RenderTargets
 	 * Clears the color render target (if bound) to the color specified
 	 * Giving a null Vector4fm is assummed to mean Vector4fm(0, 0, 0, 0);
 	 */
-	public void clearBoundRenderTargetColor(Vector4fc color);
+	public void clearBoundRenderTargetColor(@Nullable Vector4fc color);
 	
 	/**
 	 * Enables or disable the depth mask ( wether or not depth information is written )

@@ -16,6 +16,8 @@ import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.FutureCell;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 
+import javax.annotation.Nullable;
+
 public abstract class Structure {
 	protected Cell[] data;
 	protected Vector3i size;
@@ -99,7 +101,7 @@ public abstract class Structure {
 	
 	public class StructureCell extends Cell {
 
-		public StructureCell(int x, int y, int z, Voxel voxel, int meta, int blocklight, int sunlight) {
+		public StructureCell(int x, int y, int z, @Nullable Voxel voxel, int meta, int blocklight, int sunlight) {
 			super(x, y, z, voxel, meta, blocklight, sunlight);
 		}
 

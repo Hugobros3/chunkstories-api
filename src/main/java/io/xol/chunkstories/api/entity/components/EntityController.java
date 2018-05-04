@@ -21,19 +21,23 @@ import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nullable;
+
 /** Holds information about who controls one entity */
 public class EntityController extends EntityComponent {
+	@Nullable
 	Controller controller = null;
 	
 	public EntityController(Entity entity) {
 		super(entity);
 	}
 
+	@Nullable
 	public Controller getController() {
 		return controller;
 	}
 
-	public void setController(Controller controller) {
+	public void setController(@Nullable Controller controller) {
 		// Checks we are entitled to do this
 		if (!(entity.world instanceof WorldMaster))
 			throw new UnauthorizedClientActionException("setController()");

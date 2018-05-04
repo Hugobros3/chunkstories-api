@@ -15,18 +15,22 @@ import io.xol.chunkstories.api.input.Mouse.MouseButton;
 import io.xol.chunkstories.api.rendering.GameWindow;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 
+import javax.annotation.Nullable;
+
 public class Layer {
 	protected final GameWindow gameWindow;
+	@Nullable
 	protected Layer parentLayer;
 	
 	protected float xPosition, yPosition;
 	protected float width, height;
 	
 	protected List<GuiElement> elements = new LinkedList<GuiElement>();
+	@Nullable
 	protected FocusableGuiElement focusedElement = null;
 	
 	/** parentLayer might be null, but gameWindow can't be ! */
-	public Layer(GameWindow gameWindow, Layer parentLayer) {
+	public Layer(GameWindow gameWindow, @Nullable Layer parentLayer) {
 		this.gameWindow = gameWindow;
 		this.parentLayer = parentLayer;
 		
@@ -43,6 +47,7 @@ public class Layer {
 		return gameWindow;
 	}
 
+	@Nullable
 	public Layer getParentLayer() {
 		return parentLayer;
 	}
@@ -125,11 +130,12 @@ public class Layer {
 		this.height = height;
 	}
 
+	@Nullable
 	public FocusableGuiElement getFocusedElement() {
 		return focusedElement;
 	}
 
-	public void setFocusedElement(FocusableGuiElement focusedElement) {
+	public void setFocusedElement(@Nullable FocusableGuiElement focusedElement) {
 		this.focusedElement = focusedElement;
 	}
 

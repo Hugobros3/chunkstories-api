@@ -85,6 +85,7 @@ dependencies {
 	compile group: 'org.joml', name: 'joml', version: '1.9.3'
 	compile group: 'io.xol.enklume', name: 'enklume', version: 100
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.9'
+	compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 	
 	deployerJars "org.apache.maven.wagon:wagon-ssh:3.0.0"
 }

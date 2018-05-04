@@ -31,12 +31,15 @@ import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.FutureCell;
 
+import javax.annotation.Nullable;
+
 /**
  * An item that contains voxels
  */
 public class ItemVoxel extends Item implements WorldModificationCause {
 	private final Content.Voxels store;
 
+	@Nullable
 	public Voxel voxel = null;
 	public int voxelMeta = 0;
 
@@ -57,6 +60,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 		return "./items/icons/notex.png";
 	}
 
+	@Nullable
 	public Voxel getVoxel() {
 		return voxel;
 		// ((ItemDataVoxel) pile.getData()).voxel;

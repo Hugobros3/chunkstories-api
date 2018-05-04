@@ -19,6 +19,7 @@ import io.xol.chunkstories.api.net.PacketSender;
 import io.xol.chunkstories.api.net.PacketSendingContext;
 import io.xol.chunkstories.api.net.PacketWorld;
 
+import javax.annotation.Nullable;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class PacketVoxelUpdate extends PacketWorld
 		this.context = context;
 	}
 	
-	public PacketVoxelUpdate(ChunkCell context, VoxelComponent componentToUpdate) {
+	public PacketVoxelUpdate(ChunkCell context, @Nullable VoxelComponent componentToUpdate) {
 		super(context.getWorld());
 		this.context = context;
 		this.componentToUpdate = componentToUpdate;
@@ -46,6 +47,7 @@ public class PacketVoxelUpdate extends PacketWorld
 	
 	private ChunkCell context;
 	
+	@Nullable
 	private VoxelComponent componentToUpdate;
 	
 	@SuppressWarnings("deprecation")

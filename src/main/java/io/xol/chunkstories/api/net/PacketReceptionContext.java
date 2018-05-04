@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nullable;
+
 /** Processes received packets */
 public interface PacketReceptionContext {
 
@@ -19,6 +21,7 @@ public interface PacketReceptionContext {
 	
 	public GameContext getContext();
 	
+	@Nullable
 	public World getWorld();
 
 	/** Returns the logger specific to packets processing events */

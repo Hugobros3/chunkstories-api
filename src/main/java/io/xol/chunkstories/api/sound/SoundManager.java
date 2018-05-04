@@ -13,6 +13,8 @@ import org.joml.Vector3fc;
 
 import io.xol.chunkstories.api.sound.SoundSource.Mode;
 
+import javax.annotation.Nullable;
+
 public interface SoundManager
 {
 	/** Plays a soundEffect with no context in the world, for gui or other sounds that need no attenuation or position. */
@@ -35,8 +37,9 @@ public interface SoundManager
 	 * @param attEnd The gain of the sound, ie volume
 	 * @return
 	 */
-	public SoundSource playSoundEffect(String soundEffect, Mode mode, Vector3dc position, float pitch, float gain, float attStart, float attEnd);
+	public SoundSource playSoundEffect(String soundEffect, Mode mode, @Nullable Vector3dc position, float pitch, float gain, float attStart, float attEnd);
 
+	@Nullable
 	public default SoundSource getSoundSourceByUUID(long UUID)
 	{
 		Iterator<SoundSource> i = getAllPlayingSounds();

@@ -23,8 +23,11 @@ import io.xol.enklume.nbt.NBTInt;
 import io.xol.enklume.nbt.NBTShort;
 import io.xol.enklume.nbt.NBTag;
 
+import javax.annotation.Nullable;
+
 public class McSchematicStructure extends Structure {
 
+	@Nullable
 	public static McSchematicStructure fromFile(File file, MinecraftBlocksTranslator translator) {
 		try {
 			NBTFile nbtFile = new NBTFile(file, CompressionScheme.GZIPPED);
@@ -36,6 +39,7 @@ public class McSchematicStructure extends Structure {
 		}
 	}
 	
+	@Nullable
 	public static McSchematicStructure fromAsset(Asset asset, MinecraftBlocksTranslator translator) {
 		try {
 			GZIPInputStream zis = new GZIPInputStream(asset.read());

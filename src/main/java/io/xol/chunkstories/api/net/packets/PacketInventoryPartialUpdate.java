@@ -23,16 +23,20 @@ import io.xol.chunkstories.api.net.PacketWorld;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
 
+import javax.annotation.Nullable;
+
 public class PacketInventoryPartialUpdate extends PacketWorld {
+	@Nullable
 	private Inventory inventory;
 	private int slotx, sloty;
+	@Nullable
 	private ItemPile itemPile;
 
 	public PacketInventoryPartialUpdate(World world) {
 		super(world);
 	}
 
-	public PacketInventoryPartialUpdate(World world, Inventory inventory, int slotx, int sloty, ItemPile newItemPile) {
+	public PacketInventoryPartialUpdate(World world, @Nullable Inventory inventory, int slotx, int sloty, @Nullable ItemPile newItemPile) {
 		super(world);
 		this.inventory = inventory;
 		this.slotx = slotx;

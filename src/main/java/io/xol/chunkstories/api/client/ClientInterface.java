@@ -16,12 +16,15 @@ import io.xol.chunkstories.api.rendering.effects.DecalsManager;
 import io.xol.chunkstories.api.util.Configuration;
 import io.xol.chunkstories.api.world.WorldClient;
 
+import javax.annotation.Nullable;
+
 public interface ClientInterface extends GameContext
 {
 	/** Returns the username logged in */
 	public String username();
 	
 	/** Returns a valid PlayerClient as long as this client is currently in-game */
+	@Nullable
 	public LocalPlayer getPlayer();
 	
 	public GameWindow getGameWindow();
@@ -30,6 +33,7 @@ public interface ClientInterface extends GameContext
 	public void printChat(String textToPrint);
 	
 	/** Returns the currently played world, if such exist or null */
+	@Nullable
 	public WorldClient getWorld();
 	
 	/** Changes the game to a new world */

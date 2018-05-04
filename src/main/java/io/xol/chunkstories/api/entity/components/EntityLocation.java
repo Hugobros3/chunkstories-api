@@ -22,6 +22,8 @@ import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nullable;
+
 /** Holds the information about an entity whereabouts and a flag to mark it as unspawned */
 public class EntityLocation extends EntityComponent {
 	
@@ -37,6 +39,7 @@ public class EntityLocation extends EntityComponent {
 	
 	private final ReentrantLock lock = new ReentrantLock();
 	
+	@Nullable
 	private Chunk chunk;
 	
 	private boolean spawned = false;
@@ -104,6 +107,7 @@ public class EntityLocation extends EntityComponent {
 		return new Location(pos.getWorld(), pos);
 	}
 
+	@Nullable
 	public Chunk getChunk() {
 		return chunk;
 	}

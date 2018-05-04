@@ -19,6 +19,8 @@ import io.xol.chunkstories.api.input.Mouse.MouseButton;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 
+import javax.annotation.Nullable;
+
 public class ScrollableContainer extends FocusableGuiElement implements ClickableGuiElement {
 	protected ScrollableContainer(Layer layer) {
 		super(layer);
@@ -84,12 +86,14 @@ public class ScrollableContainer extends FocusableGuiElement implements Clickabl
 
 	public abstract class ContainerElement {
 
-		public ContainerElement(String name, String descriptionLines) {
+		public ContainerElement(@Nullable String name, @Nullable String descriptionLines) {
 			this.name = name;
 			this.descriptionLines = descriptionLines;
 		}
 
+		@Nullable
 		public String name, topRightString = "";
+		@Nullable
 		public String descriptionLines;
 
 		public String iconTextureLocation = "./textures/gui/info.png";

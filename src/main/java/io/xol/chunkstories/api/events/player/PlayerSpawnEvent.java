@@ -13,6 +13,8 @@ import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.world.WorldMaster;
 
+import javax.annotation.Nullable;
+
 /** Player (re) spawn event - Triggered when a player is spawned into a world */
 public class PlayerSpawnEvent extends CancellableEvent {
 	// Every event class has to have this
@@ -32,10 +34,12 @@ public class PlayerSpawnEvent extends CancellableEvent {
 	private final Player player;
 	private final WorldMaster world;
 
+	@Nullable
 	private Entity entity;
+	@Nullable
 	private Location spawnLocation;
 
-	public PlayerSpawnEvent(Player player, WorldMaster world, Entity entity, Location spawnLocation) {
+	public PlayerSpawnEvent(Player player, WorldMaster world, @Nullable Entity entity, @Nullable Location spawnLocation) {
 		this.player = player;
 		this.world = world;
 
@@ -56,20 +60,22 @@ public class PlayerSpawnEvent extends CancellableEvent {
 	 * exists, else it's null. If no entity is set by a third-party plugin, a
 	 * default one will be provided
 	 */
+	@Nullable
 	public Entity getEntity() {
 		return entity;
 	}
 
 	/** Sets the entity to spawn the player as */
-	public void setEntity(Entity entity) {
+	public void setEntity(@Nullable Entity entity) {
 		this.entity = entity;
 	}
 
+	@Nullable
 	public Location getSpawnLocation() {
 		return spawnLocation;
 	}
 
-	public void setSpawnLocation(Location spawnLocation) {
+	public void setSpawnLocation(@Nullable Location spawnLocation) {
 		this.spawnLocation = spawnLocation;
 	}
 

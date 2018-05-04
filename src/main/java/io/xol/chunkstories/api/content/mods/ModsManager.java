@@ -12,6 +12,8 @@ import java.util.Iterator;
 import io.xol.chunkstories.api.content.Asset;
 import io.xol.chunkstories.api.exceptions.content.mods.NotAllModsLoadedException;
 
+import javax.annotation.Nullable;
+
 /**
  * The ModsManager is responsible for loading mods and maintaining a global filesystem of assets
  */
@@ -25,14 +27,17 @@ public interface ModsManager
 
 	public Iterator<Asset> getAllUniqueFilesLocations();
 
+	@Nullable
 	public Asset getAsset(String assetName);
 
+	@Nullable
 	public AssetHierarchy getAssetInstances(String assetName);
 
 	public Iterator<Asset> getAllAssetsByExtension(String extension);
 
 	public Iterator<Asset> getAllAssetsByPrefix(String prefix);
 
+	@Nullable
 	public Class<?> getClassByName(String className);
 
 	public String[] getEnabledModsString();

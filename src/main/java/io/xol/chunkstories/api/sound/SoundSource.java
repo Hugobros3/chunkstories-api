@@ -8,6 +8,8 @@ package io.xol.chunkstories.api.sound;
 
 import org.joml.Vector3dc;
 
+import javax.annotation.Nullable;
+
 public interface SoundSource
 {
 	public enum Mode {
@@ -59,6 +61,7 @@ public interface SoundSource
 	/** Alternative call for setPosition(). Passing null will throw an exception, ambiant sound sources must be constructed so. */
 	public SoundSource setPosition(Vector3dc location);
 	
+	@Nullable
 	public Vector3dc getPosition();
 	
 	/** Removes and stops the SoundSource. In case this source was using an unique SoundData (ie streamed/buffered) it also deletes the said source and frees ressources. */

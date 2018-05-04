@@ -13,6 +13,8 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
 
+import javax.annotation.Nullable;
+
 public interface WorldCollisionsManager {
 	
 	/**
@@ -20,6 +22,7 @@ public interface WorldCollisionsManager {
 	 * @param limit Between 0 and a finite number
 	 * @return The exact location of the intersection or null if it didn't found one
 	 */
+	@Nullable
 	public Location raytraceSolid(Vector3dc initialPosition, Vector3dc direction, double limit);
 	
 	/**
@@ -27,6 +30,7 @@ public interface WorldCollisionsManager {
 	 * @param limit Between 0 and a finite number
 	 * @return The exact location of the step just before the intersection ( as to get the adjacent block ) or null if it didn't found one
 	 */
+	@Nullable
 	public Location raytraceSolidOuter(Vector3dc initialPosition, Vector3dc direction, double limit);
 	
 	/**
@@ -34,6 +38,7 @@ public interface WorldCollisionsManager {
 	 * @param limit Between 0 and a finite number
 	 * @return The exact location of the intersection or null if it didn't found one
 	 */
+	@Nullable
 	public Location raytraceSelectable(Location initialPosition, Vector3dc direction, double limit);
 	
 	/**

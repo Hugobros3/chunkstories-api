@@ -10,16 +10,18 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nullable;
+
 /** A VoxelContext representing a possible future state for a voxel cell. */
 public class FutureCell extends Cell implements CellData, EditableCell {
 
 	World world;
 
-	public FutureCell(World world, int x, int y, int z, Voxel voxel) {
+	public FutureCell(World world, int x, int y, int z, @Nullable Voxel voxel) {
 		this(world, x, y, z, voxel, -1, -1, -1);
 	}
 	
-	public FutureCell(World world, int x, int y, int z, Voxel voxel, int meta, int blocklight, int sunlight) {
+	public FutureCell(World world, int x, int y, int z, @Nullable Voxel voxel, int meta, int blocklight, int sunlight) {
 		super(x, y, z, voxel, meta, blocklight, sunlight);
 		this.world = world;
 	}

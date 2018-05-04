@@ -9,6 +9,8 @@ package io.xol.chunkstories.api.entity.traits;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
 
+import javax.annotation.Nullable;
+
 /** Any entity with this trait is able to select blocks */
 public abstract class TraitVoxelSelection extends Trait {
 
@@ -22,5 +24,6 @@ public abstract class TraitVoxelSelection extends Trait {
 	 * @param overwriteInstaDestructibleBlocks Would we return a non-air cell provided the voxel in that cell is instantaneously destructible/replaceable ?
 	 * @return
 	 */
+	@Nullable
 	public abstract Location getBlockLookingAt(boolean inside, boolean overwriteInstaDestructibleBlocks);
 }

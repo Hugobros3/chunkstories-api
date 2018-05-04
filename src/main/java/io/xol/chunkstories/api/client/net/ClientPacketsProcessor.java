@@ -11,11 +11,15 @@ import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.world.WorldClient;
 
+import javax.annotation.Nullable;
+
 public interface ClientPacketsProcessor extends PacketReceptionContext {
 	
 	public ClientInterface getContext();
 	
+	@Nullable
 	public WorldClient getWorld();
 	
+	@Nullable
 	public Player getPlayer();
 }

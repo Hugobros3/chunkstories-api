@@ -12,6 +12,8 @@ import org.joml.Vector3dc;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.physics.CollisionBox;
 
+import javax.annotation.Nullable;
+
 public class TraitCollidable extends Trait {
 
 	public TraitCollidable(Entity entity) {
@@ -71,6 +73,7 @@ public class TraitCollidable extends Trait {
 		}
 	}
 	
+	@Nullable
 	public Entity isStuckInEntity() {
 		for(Entity e : entity.world.getEntitiesInBox(entity.getLocation(), new Vector3d(1,2,1))) {
 			if(e != entity) {
