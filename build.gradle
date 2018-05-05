@@ -56,6 +56,7 @@ if(ext.useEclipseCompiler) {
 license {
     header rootProject.file('codequality/header-include-notice.txt')
     strictCheck true
+	ignoreFailures true
 	
 	mapping {
         java='DOUBLESLASH_STYLE'
