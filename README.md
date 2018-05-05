@@ -2,6 +2,8 @@
 
 ![alt text](http://chunkstories.xyz/img/github_header3.png "Header screenshot")
 
+[![Build Status](https://travis-ci.com/Hugobros3/chunkstories-api.svg?branch=master)](https://travis-ci.com/Hugobros3/chunkstories-api)
+
 ### A Voxel Games Framework
 
 Chunk Stories is a fully-featured voxel game engine written in Java, aiming to replace Minecraft/MCP as a modding framework to build mods and total conversions on. It features almost everything the original game could do, but is built in a modular and open fashion : everything is either engine or content. Mods are, by design, first-class citizens, and multiple of them can be loaded at the same time, without requiring a game restart. A server can host it's own custom mods and have the clients download them upon connection. It's basically gmod for Minecraft.
