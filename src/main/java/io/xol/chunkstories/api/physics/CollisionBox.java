@@ -11,6 +11,8 @@ import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nullable;
+
 public final class CollisionBox implements Collidable
 {
 	public double xpos, ypos, zpos;
@@ -99,6 +101,7 @@ public final class CollisionBox implements Collidable
 	 * 
 	 * @return The collision point, or NULL.
 	 */
+	@Nullable
 	public Vector3dc lineIntersection(Vector3dc lineStart, Vector3dc lineDirectionIn)
 	{
 		double minDist = 0.0;

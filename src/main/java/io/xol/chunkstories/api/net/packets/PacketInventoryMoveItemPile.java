@@ -29,9 +29,12 @@ import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.server.ServerPacketsProcessor.ServerPlayerPacketsProcessor;
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nullable;
+
 public class PacketInventoryMoveItemPile extends PacketWorld
 {
 	public ItemPile itemPile;
+	@Nullable
 	public Inventory sourceInventory, destinationInventory;
 	public int sourceX, sourceY, destX, destY;
 	public int amount;

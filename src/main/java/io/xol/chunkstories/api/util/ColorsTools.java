@@ -10,9 +10,12 @@ import java.security.MessageDigest;
 
 import io.xol.chunkstories.api.math.HexTools;
 
+import javax.annotation.Nullable;
+
 /** Some basic helper functions I wrote ages ago, basic RGB/Hex conversions functions and whatnot */
 public class ColorsTools
 {
+	@Nullable
 	public static int[] hexToRGB(String hex)
 	{
 		int[] rgb = new int[3];

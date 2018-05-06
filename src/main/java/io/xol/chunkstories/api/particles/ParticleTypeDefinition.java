@@ -9,6 +9,8 @@ package io.xol.chunkstories.api.particles;
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.Definition;
 
+import javax.annotation.Nullable;
+
 public interface ParticleTypeDefinition extends Definition
 {
 	public String getName();
@@ -38,12 +40,15 @@ public interface ParticleTypeDefinition extends Definition
 	}
 	
 	/** Returns null or a path to an asset. */
+	@Nullable
 	public abstract String getAlbedoTexture();
 	
 	/** Returns null or a path to an asset. */
+	@Nullable
 	public abstract String getNormalTexture();
 
 	/** Returns null or a path to an asset. */
+	@Nullable
 	public abstract String getMaterialTexture();
 	
 	/** Defaults to 1.0f */

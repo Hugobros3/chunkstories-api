@@ -27,6 +27,8 @@ import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nullable;
+
 /**
  * Any entity with this component is considered living, even if it's dead.
  * 
@@ -36,6 +38,7 @@ public class EntityHealth extends EntityComponent {
 	private float value;
 
 	private long damageCooldown = 0;
+	@Nullable
 	private DamageCause lastDamageCause;
 	long deathDespawnTimer = 6000;
 
@@ -174,6 +177,7 @@ public class EntityHealth extends EntityComponent {
 		return getHealth() <= 0;
 	}
 
+	@Nullable
 	public DamageCause getLastDamageCause() {
 		return lastDamageCause;
 	}

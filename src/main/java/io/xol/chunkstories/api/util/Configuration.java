@@ -11,6 +11,8 @@ import java.util.Collection;
 import io.xol.chunkstories.api.content.Definition;
 import io.xol.chunkstories.api.input.KeyboardKeyInput;
 
+import javax.annotation.Nullable;
+
 /** 
  * New fancy way of handling parameters: Options are defined in a NWP file in the loaded mods ressources.<br/> 
  * Any mod can declare it's own configuration options.
@@ -70,6 +72,7 @@ public interface Configuration {
 	}
 	
 	/** Looks for a certain option. May return null. Will return the default value if not set. */
+	@Nullable
 	public Option getOption(String optionName);
 	
 	public boolean getBooleanOption(String optionName);

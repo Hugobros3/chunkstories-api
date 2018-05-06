@@ -17,6 +17,8 @@ import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nullable;
+
 public abstract class VoxelComponent {
 	private final CellComponents holder;
 	
@@ -28,6 +30,7 @@ public abstract class VoxelComponent {
 		return holder;
 	}
 	
+	@Nullable
 	public final String name() {
 		return holder.name(this);
 	}

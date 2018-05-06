@@ -19,6 +19,8 @@ import io.xol.chunkstories.api.voxel.components.VoxelComponent;
 import io.xol.chunkstories.api.voxel.components.VoxelInventoryComponent;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 
+import javax.annotation.Nullable;
+
 /**
  * Helper class to translate inventories accross hosts. The remote server has no
  * concept of an object reference from *your* heap, so you have to put a little
@@ -35,7 +37,7 @@ import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
  * </p>
  */
 public class InventoryTranslator {
-	public static void writeInventoryHandle(DataOutputStream out, Inventory inventory) throws IOException {
+	public static void writeInventoryHandle(DataOutputStream out, @Nullable Inventory inventory) throws IOException {
 		/*
 		 * if(inventory instanceof InventoryLocalCreativeMenu) out.writeByte(0x02); else
 		 */
@@ -61,6 +63,7 @@ public class InventoryTranslator {
 		// "+inventory+", can't describe it in outgoing packets");
 	}
 
+	@Nullable
 	public static Inventory obtainInventoryHandle(DataInputStream in, PacketReceptionContext context) throws IOException {
 		byte holderType = in.readByte();
 		if (holderType == 0x01) {

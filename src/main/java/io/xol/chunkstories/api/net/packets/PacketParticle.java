@@ -22,17 +22,20 @@ import io.xol.chunkstories.api.net.PacketSendingContext;
 import io.xol.chunkstories.api.net.PacketWorld;
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nullable;
+
 public class PacketParticle extends PacketWorld
 {
 	private String particleName = "";
 	private Vector3dc position;
+	@Nullable
 	private Vector3dc velocity;
 	
 	public PacketParticle(World world) {
 		super(world);
 	}
 
-	public PacketParticle(World world, String particleName, Vector3dc position, Vector3dc velocity) {
+	public PacketParticle(World world, String particleName, Vector3dc position, @Nullable Vector3dc velocity) {
 		super(world);
 		this.particleName = particleName;
 		this.position = position;

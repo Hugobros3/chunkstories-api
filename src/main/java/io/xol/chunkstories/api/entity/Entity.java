@@ -34,6 +34,8 @@ import io.xol.chunkstories.api.util.VoidAction;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nullable;
+
 /**
  * <p>
  * Entities are where the real gameplay meat begins: entities roam the world and
@@ -241,11 +243,13 @@ public abstract class Entity {
 			return components.containsKey(componentType);
 		}
 
+		@Nullable
 		@SuppressWarnings("unchecked")
 		public <EC extends EntityComponent> EC get(Class<EC> trait) {
 			return (EC) components.get(trait);
 		}
 
+		@Nullable
 		@SuppressWarnings("unchecked")
 		/**
 		 * Tries to find a component matching this type, executes some action on it and
@@ -334,11 +338,13 @@ public abstract class Entity {
 			return traits.containsKey(trait);
 		}
 
+		@Nullable
 		@SuppressWarnings("unchecked")
 		public <T extends Trait> T get(Class<T> trait) {
 			return (T) traits.get(trait);
 		}
 
+		@Nullable
 		@SuppressWarnings("unchecked")
 		/**
 		 * Tries to find a trait matching this type, executes some action on it and

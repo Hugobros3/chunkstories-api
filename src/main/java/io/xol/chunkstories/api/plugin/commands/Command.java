@@ -6,6 +6,7 @@
 
 package io.xol.chunkstories.api.plugin.commands;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,7 @@ public class Command
 	protected final String name;
 	protected final Set<String> aliases = new HashSet<String>();
 	
+	@Nullable
 	protected CommandHandler handler = null;
 
 	public Command(String name)
@@ -33,11 +35,12 @@ public class Command
 	{
 		return name;
 	}
-	public void setHandler(CommandHandler commandHandler)
+	public void setHandler(@Nullable CommandHandler commandHandler)
 	{
 		this.handler = commandHandler;
 	}
 	
+	@Nullable
 	public CommandHandler getHandler()
 	{
 		return this.handler;

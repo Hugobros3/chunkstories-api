@@ -20,6 +20,8 @@ import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 import io.xol.chunkstories.api.util.IterableIterator;
 
+import javax.annotation.Nullable;
+
 /** Mostly the data structure that actually holds items */
 public class BasicInventory implements Inventory {
 
@@ -158,7 +160,7 @@ public class BasicInventory implements Inventory {
 	}
 
 	@Override
-	public boolean setItemPileAt(int x, int y, ItemPile pile) {
+	public boolean setItemPileAt(int x, int y, @Nullable ItemPile pile) {
 		if (pile == null) {
 			contents[x % width][y % height] = null;
 
@@ -250,7 +252,7 @@ public class BasicInventory implements Inventory {
 	}
 
 	/** Updates the inventory slot for whoever is watching it */
-	public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
+	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
 		// Don't do shit either
 	}
 
@@ -332,13 +334,14 @@ public class BasicInventory implements Inventory {
 		return "Unamed Inventory";
 	}
 
+	@Nullable
 	@Override
 	public InventoryHolder getHolder() {
 		return null;
 	}
 
 	@Override
-	public boolean isAccessibleTo(Entity entity) {
+	public boolean isAccessibleTo(@Nullable Entity entity) {
 		return true;
 	}
 }

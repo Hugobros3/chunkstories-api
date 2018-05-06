@@ -10,6 +10,8 @@ import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.content.Definition;
 import io.xol.chunkstories.api.rendering.item.ItemRenderer;
 
+import javax.annotation.Nullable;
+
 /**
  * Immutable, describes an item type and is a common reference in all items of that type
  * It gets loaded from the .items file
@@ -36,8 +38,10 @@ public interface ItemDefinition extends Definition
 	public int getMaxStackSize();
 
 	/** Instanciates a new item */
+	@Nullable
 	public Item newItem();
 
 	/** Returns a suitable ItemRenderer for this ItemType. Will return null if called on anything else than a Client. */
+	@Nullable
 	public ItemRenderer getRenderer();
 }

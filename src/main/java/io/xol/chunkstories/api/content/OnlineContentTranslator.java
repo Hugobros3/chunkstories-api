@@ -8,6 +8,8 @@ package io.xol.chunkstories.api.content;
 
 import io.xol.chunkstories.api.net.PacketDefinition;
 
+import javax.annotation.Nullable;
+
 /** Additional bindings when connected to a server. */
 public interface OnlineContentTranslator extends ContentTranslator {
 	
@@ -17,5 +19,6 @@ public interface OnlineContentTranslator extends ContentTranslator {
 	//public int getIdForPacket(Packet packet); @see Content
 
 	/** Return the PacketDefinition associated with that ID or null if the ID was outside of bounds */
+	@Nullable
 	public PacketDefinition getPacketForId(int id);
 }

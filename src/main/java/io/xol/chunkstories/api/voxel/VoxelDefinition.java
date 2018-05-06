@@ -13,6 +13,8 @@ import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
+import javax.annotation.Nullable;
+
 public interface VoxelDefinition extends Definition
 {
 	/** Get the store where the voxel definitions are stored. */
@@ -25,6 +27,7 @@ public interface VoxelDefinition extends Definition
 	public VoxelMaterial getMaterial();
 
 	/** Returns the voxelModel specified in the .voxels file, or null. */
+	@Nullable
 	public VoxelRenderer getVoxelModel();
 
 	/** Returns the collisionBox defined in the .voxels file, or a default one if none was. */

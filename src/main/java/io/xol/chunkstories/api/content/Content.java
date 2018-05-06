@@ -29,6 +29,8 @@ import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.generator.WorldGenerator;
 
+import javax.annotation.Nullable;
+
 /**
  * Encapsulates all the user-definable content available
  */
@@ -41,6 +43,7 @@ public interface Content {
 
 	/** Obtains an Asset using it's name string 
 	 *  More advanced options for obtaining assets are avaible using the ModsManager class */
+	@Nullable
 	public Asset getAsset(String assetName);
 	
 	/** 
@@ -57,6 +60,7 @@ public interface Content {
 		/** Returns the 'air' voxel ( No voxel data ) */
 		public Voxel air();
 		
+		@Nullable
 		public Voxel getVoxel(String voxelName);
 		
 		public Iterator<Voxel> all();
@@ -78,6 +82,7 @@ public interface Content {
 		public VoxelModels models();
 		public interface VoxelModels {
 			
+			@Nullable
 			public VoxelModel getVoxelModel(String voxelModelName);
 			
 			public Iterator<VoxelModel> all();
@@ -107,6 +112,7 @@ public interface Content {
 	public ItemsDefinitions items();
 	public interface ItemsDefinitions {
 		
+		@Nullable
 		public ItemDefinition getItemDefinition(String itemName);
 		
 		public Iterator<ItemDefinition> all();
@@ -119,6 +125,7 @@ public interface Content {
 	public EntityDefinitions entities();
 	public interface EntityDefinitions {
 		
+		@Nullable
 		public EntityDefinition getEntityDefinition(String entityName);
 		
 		public Iterator<EntityDefinition> all();
@@ -131,6 +138,7 @@ public interface Content {
 	public ParticlesTypes particles();
 	public interface ParticlesTypes {
 		
+		@Nullable
 		public ParticleTypeHandler getParticleType(String string);
 		
 		public Iterator<ParticleTypeHandler> all();
@@ -143,6 +151,7 @@ public interface Content {
 	public PacketDefinitions packets();
 	public interface PacketDefinitions {
 		
+		@Nullable
 		public PacketDefinition getPacketByName(String name);
 		
 		public PacketDefinition getPacketFromInstance(Packet packet) throws UnknowPacketException;

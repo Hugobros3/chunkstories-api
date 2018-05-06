@@ -8,6 +8,8 @@ package io.xol.chunkstories.api.world;
 
 import io.xol.chunkstories.api.content.Definition;
 
+import javax.annotation.Nullable;
+
 public interface WorldInfo extends Definition
 {
 	public String getInternalName();
@@ -56,6 +58,7 @@ public interface WorldInfo extends Definition
 			return sizes;
 		}
 	
+		@Nullable
 		public static WorldSize getWorldSize(String name)
 		{
 			name.toUpperCase();

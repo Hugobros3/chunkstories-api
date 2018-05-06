@@ -15,6 +15,8 @@ import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 
+import javax.annotation.Nullable;
+
 /** Represents the various VoxelComponents that may exist in one voxel cell */
 public interface CellComponents {
 	public Chunk getChunk();
@@ -42,9 +44,11 @@ public interface CellComponents {
 	///** Add a new named component here */
 	//public void put(String name, VoxelComponent component);
 	
+	@Nullable
 	public VoxelComponent get(String name);
 
 	/** Looks for a VoxelComponent and returns it's name if it is contained in this cell. */
+	@Nullable
 	public String name(VoxelComponent component);
 
 	public IterableIterator<Entry<String, VoxelComponent>> all();

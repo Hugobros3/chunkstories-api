@@ -17,12 +17,15 @@ import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.text.FontRenderer.Font;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 
+import javax.annotation.Nullable;
+
 /** Provides a scalable button */
 public class BaseButton extends FocusableGuiElement implements ClickableGuiElement {
 	protected String text;
 	protected Font font;
 	protected float fontScaler = 1.0f;
 	
+	@Nullable
 	protected Runnable action;
 	
 	public BaseButton(Layer layer, int x, int y, String text) {
@@ -34,7 +37,7 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 		this.setWidth(width);
 	}
 
-	public BaseButton(Layer layer, int x, int y, String text, Runnable action) {
+	public BaseButton(Layer layer, int x, int y, String text, @Nullable Runnable action) {
 		this(layer, layer.getGameWindow().getFontRenderer().getFont("LiberationSans-Regular", 12), x, y, text);
 		this.action = action;
 	}
@@ -100,7 +103,7 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 		return true;
 	}
 
-	public void setAction(Runnable runnable) {
+	public void setAction(@Nullable Runnable runnable) {
 		this.action = runnable;
 	}
 }

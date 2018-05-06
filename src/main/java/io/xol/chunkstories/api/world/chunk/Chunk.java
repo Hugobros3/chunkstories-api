@@ -21,6 +21,8 @@ import io.xol.chunkstories.api.world.World.WorldCell;
 import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.region.Region;
 
+import javax.annotation.Nullable;
+
 public interface Chunk
 {
 	public World getWorld();
@@ -68,7 +70,7 @@ public interface Chunk
 	 * 
 	 * @throws WorldException if it couldn't poke the world at the specified location for some reason
 	 */
-	public ChunkCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException;
+	public ChunkCell poke(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata, @Nullable WorldModificationCause cause) throws WorldException;
 
 	/** 
 	 * Poke new information in a voxel cell.
@@ -80,7 +82,7 @@ public interface Chunk
 	 * 
 	 * It will also trigger lightning and such updates
 	 */
-	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
+	public void pokeSimple(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 	
 	/**
 	 * Poke new information in a voxel cell.
@@ -90,7 +92,7 @@ public interface Chunk
 	 * If 'blocklight' is -1 the blocklight bits will not be updated.
 	 * If 'metadata' is -1 the metadata bits will not be updated.
 	 */
-	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
+	public void pokeSimpleSilently(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 	
 	/** 
 	 * Does the same as {@link #poke(x,y,z,d)} but without creating any VoxelContext object or triggering any updates<br/>

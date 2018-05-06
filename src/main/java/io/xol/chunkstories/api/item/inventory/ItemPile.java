@@ -18,6 +18,8 @@ import io.xol.chunkstories.api.exceptions.UndefinedItemTypeException;
 import io.xol.chunkstories.api.item.Item;
 import io.xol.chunkstories.api.item.ItemDefinition;
 
+import javax.annotation.Nullable;
+
 /** A tangible pile of items in an inventory */
 public class ItemPile
 {
@@ -25,6 +27,7 @@ public class ItemPile
 	
 	private int amount = 1;
 
+	@Nullable
 	private Inventory inventory;
 	private int x;
 	private int y;
@@ -93,7 +96,7 @@ public class ItemPile
 	 * @return null if successfull, this if not.
 	 */
 	//@SuppressWarnings("unchecked")
-	public boolean moveItemPileTo(Inventory destinationInventory, int destinationX, int destinationY, int amountToTransfer)
+	public boolean moveItemPileTo(@Nullable Inventory destinationInventory, int destinationX, int destinationY, int amountToTransfer)
 	{
 		Inventory currentInventory = this.inventory;
 		
@@ -158,6 +161,7 @@ public class ItemPile
 		return leftFromTransaction == null || leftFromTransaction.getAmount() < amountToTransfer;
 	}
 
+	@Nullable
 	public ItemPile setAmount(int amount)
 	{
 		this.amount = amount;
@@ -214,12 +218,13 @@ public class ItemPile
 		return "[ItemPile t:"+getItem()+" a:"+amount+" i:"+inventory+" x:"+x+" y:"+getY()+" ]";
 	}
 
+	@Nullable
 	public Inventory getInventory()
 	{
 		return inventory;
 	}
 
-	public void setInventory(Inventory inventory)
+	public void setInventory(@Nullable Inventory inventory)
 	{
 		this.inventory = inventory;
 	}

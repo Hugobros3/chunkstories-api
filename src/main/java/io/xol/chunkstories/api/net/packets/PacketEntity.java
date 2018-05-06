@@ -26,8 +26,11 @@ import io.xol.chunkstories.api.server.RemotePlayer;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.WorldMaster;
 
+import javax.annotation.Nullable;
+
 public class PacketEntity extends PacketWorld {
 	private Entity entity;
+	@Nullable
 	private EntityComponent updateSpecificComponent;
 
 	public PacketEntity(World world) {
@@ -39,7 +42,7 @@ public class PacketEntity extends PacketWorld {
 		this.entity = entityToUpdate;
 	}
 
-	public PacketEntity(Entity entity, EntityComponent component) {
+	public PacketEntity(Entity entity, @Nullable EntityComponent component) {
 		this(entity);
 		this.updateSpecificComponent = component;
 	}

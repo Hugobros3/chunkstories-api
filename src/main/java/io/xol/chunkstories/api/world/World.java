@@ -36,6 +36,8 @@ import io.xol.chunkstories.api.world.chunk.ChunksIterator;
 import io.xol.chunkstories.api.world.heightmap.WorldHeightmaps;
 import io.xol.chunkstories.api.world.region.Region;
 
+import javax.annotation.Nullable;
+
 public interface World
 {
 	public WorldInfo getWorldInfo();
@@ -102,6 +104,7 @@ public interface World
 	 * @param entityID a valid UUID
 	 * @return null if it can't be found
 	 */
+	@Nullable
 	public Entity getEntityByUUID(long uuid);
 
 	/**
@@ -164,10 +167,10 @@ public interface World
 	 * It will also trigger lightning and such updates
 	 * @throws WorldException if it couldn't poke the world at the specified location, for example if it's not loaded
 	 */
-	public WorldCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException;
+	public WorldCell poke(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata, @Nullable WorldModificationCause cause) throws WorldException;
 
 	/** Simply use a FutureVoxelContext to ease modifications */
-	public CellData poke(FutureCell fvc, WorldModificationCause cause) throws WorldException;
+	public CellData poke(FutureCell fvc, @Nullable WorldModificationCause cause) throws WorldException;
 	
 	/**
 	 * Poke new information in a voxel cell.
@@ -179,7 +182,7 @@ public interface World
 	 * 
 	 * It will also trigger lightning and such updates
 	 */
-	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
+	public void pokeSimple(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 	
 	public void pokeSimple(FutureCell fvc);
 	
@@ -193,7 +196,7 @@ public interface World
 	 * 
 	 * This will *not* trigger any update.
 	 */
-	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata);
+	public void pokeSimpleSilently(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 	
 	public void pokeSimpleSilently(FutureCell fvc);
 	
@@ -218,18 +221,21 @@ public interface World
 	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
 	 * users either unregisters or gets garbage collected and it's reference nulls out.
 	 */
+	@Nullable
 	public ChunkHolder aquireChunkHolderLocation(WorldUser user, Location location);
 	
 	/**
 	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
 	 * users either unregisters or gets garbage collected and it's reference nulls out.
 	 */
+	@Nullable
 	public ChunkHolder aquireChunkHolderWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
 
 	/**
 	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
 	 * users either unregisters or gets garbage collected and it's reference nulls out.
 	 */
+	@Nullable
 	public ChunkHolder aquireChunkHolder(WorldUser user, int chunkX, int chunkY, int chunkZ);
 	
 	/**
@@ -241,16 +247,19 @@ public interface World
 	/**
 	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
 	 */
+	@Nullable
 	public Chunk getChunk(int chunkX, int chunkY, int chunkZ);
 
 	/**
 	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
 	 */
+	@Nullable
 	public Chunk getChunkWorldCoordinates(int worldX, int worldY, int worldZ);
 	
 	/**
 	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
 	 */
+	@Nullable
 	public Chunk getChunkWorldCoordinates(Location location);
 	
 	/**
@@ -264,44 +273,52 @@ public interface World
 	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
+	@Nullable
 	public Region aquireRegion(WorldUser user, int regionX, int regionY, int regionZ);
 	
 	/**
 	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
+	@Nullable
 	public Region aquireRegionChunkCoordinates(WorldUser user, int chunkX, int chunkY, int chunkZ);
 	
 	/**
 	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
+	@Nullable
 	public Region aquireRegionWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
 	
 	/**
 	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
+	@Nullable
 	public Region aquireRegionLocation(WorldUser user, Location location);
 	
 	/**
 	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Region getRegion(int regionX, int regionY, int regionZ);
 
 	/**
 	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Region getRegionChunkCoordinates(int chunkX, int chunkY, int chunkZ);
 	
 	/**
 	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Region getRegionWorldCoordinates(int worldX, int worldY, int worldZ);
 	
 	/**
 	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
 	 */
+	@Nullable
 	public Region getRegionLocation(Location location);
 
 	/* Region Summaries */

@@ -8,12 +8,15 @@ package io.xol.chunkstories.api.animation;
 
 import org.joml.Matrix4fc;
 
+import javax.annotation.Nullable;
+
 /** Describes a full animation, loaded from Content.AnimationsLibrary */
 public interface SkeletalAnimation extends SkeletonAnimator {
 
 	/** How is that bone offset to the center of the model */
 	public Matrix4fc getOffsetMatrix(String boneName);
 	
+	@Nullable
 	public SkeletonBone getBone(String boneName);
 	
 	public interface SkeletonBone {
@@ -25,6 +28,7 @@ public interface SkeletalAnimation extends SkeletonAnimator {
 		public Matrix4fc getTransformationMatrix(double animationTime);
 		
 		/** Boneless Bones */
+		@Nullable
 		public SkeletonBone getParent();
 
 		/** Bameless Bones */

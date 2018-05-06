@@ -14,6 +14,8 @@ import io.xol.chunkstories.api.item.Item;
 import io.xol.chunkstories.api.item.ItemDefinition;
 import io.xol.chunkstories.api.voxel.Voxel;
 
+import javax.annotation.Nullable;
+
 /** 
  * This interface describes the world-specific mapping from named content definitions to integer IDs.
  */
@@ -28,6 +30,7 @@ public interface ContentTranslator {
 	public int getIdForVoxel(Voxel voxel);
 	
 	/** Return the Voxel associated with that ID or null if the ID was outside of bounds */
+	@Nullable
 	public Voxel getVoxelForId(int id);
 	
 	
@@ -38,6 +41,7 @@ public interface ContentTranslator {
 	public int getIdForItem(Item item);
 
 	/** Return the ItemDefinition associated with that ID or null if the ID was outside of bounds */
+	@Nullable
 	public ItemDefinition getItemForId(int id);
 
 	
@@ -48,6 +52,7 @@ public interface ContentTranslator {
 	public int getIdForEntity(Entity entity);
 
 	/** Return the EntityDefinition associated with that ID or null if the ID was outside of bounds */
+	@Nullable
 	public EntityDefinition getEntityForId(int id);
 	
 }

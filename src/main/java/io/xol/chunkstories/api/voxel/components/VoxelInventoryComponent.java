@@ -20,6 +20,8 @@ import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nullable;
+
 public class VoxelInventoryComponent extends VoxelComponent implements InventoryHolder {
 
 	private BasicInventory inventory;
@@ -39,7 +41,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 			}
 
 			@Override
-			public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
+			public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
 				for(WorldUser user : holder.users()) {
 					if(user instanceof RemotePlayer) {
 						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(holder.getWorld(), this, x, y, pileChanged);

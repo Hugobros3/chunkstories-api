@@ -6,6 +6,8 @@
 
 package io.xol.chunkstories.api.input;
 
+import javax.annotation.Nullable;
+
 /**
  * Describe any form of input (keyboard, mouse, controller(planned), virtual(servers or internal))
  */
@@ -29,5 +31,5 @@ public interface Input
 	 *  Returns true if o is a String and o.equals(getName())
 	 *  Returns false otherwise.
 	 */
-	public boolean equals(Object o);
+	public boolean equals(@Nullable Object o);
 }

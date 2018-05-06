@@ -14,6 +14,8 @@ import io.xol.chunkstories.api.voxel.VoxelSide;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nullable;
+
 /** 
  * A CellData is representing the content of a specific cell in the world.
  * 
@@ -36,6 +38,7 @@ public interface CellData
 	}
 	
 	/** Return the Voxel type used in this cell */
+	@Nullable
 	public Voxel getVoxel();
 	
 	public int getMetaData();
@@ -48,6 +51,7 @@ public interface CellData
 	
 	public CellData getNeightbor(int side);
 	
+	@Nullable
 	public default Voxel getNeightborVoxel(int side) {
 		return getNeightbor(side).getVoxel(); // Optimisation hint: do not create the neightbor object if you just want to peek the voxel
 	}
@@ -58,17 +62,20 @@ public interface CellData
 	
 	// Shortcuts
 
+	@Nullable
 	public default VoxelRenderer getVoxelRenderer() {
 		Voxel voxel = getVoxel();
 		return voxel != null ? voxel.getVoxelRenderer(this) : null;
 	}
 
+	@Nullable
 	public default VoxelTexture getTexture(VoxelSide side) {
 		Voxel voxel = getVoxel();
 		return voxel != null ? voxel.getVoxelTexture(side, this) : null;
 	}
 	
 	/** Returns an array (possibly 0-sized) of collision boxes translated to the actual position of the voxel */
+	@Nullable
 	public default CollisionBox[] getTranslatedCollisionBoxes() {
 		Voxel voxel = getVoxel();
 		return voxel != null ? voxel.getTranslatedCollisionBoxes(this) : new CollisionBox[] {};

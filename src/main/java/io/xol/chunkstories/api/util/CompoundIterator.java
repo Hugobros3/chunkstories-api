@@ -6,12 +6,14 @@
 
 package io.xol.chunkstories.api.util;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Iterator;
 
 public class CompoundIterator<T> implements IterableIterator<T> {
 
 	private final Iterator<Iterator<T>> iteratorOfiterators;
+	@Nullable
 	private Iterator<T> currentIterator = null;
 	
 	public CompoundIterator(Collection<Iterator<T>> listOfIterators) {

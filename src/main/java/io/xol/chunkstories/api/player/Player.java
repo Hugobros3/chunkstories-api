@@ -16,6 +16,8 @@ import io.xol.chunkstories.api.net.Interlocutor;
 import io.xol.chunkstories.api.plugin.commands.CommandEmitter;
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nullable;
+
 /** Represents a player (Remote or Local) as the once calling shots */
 public interface Player extends CommandEmitter, Controller, Subscriber, Interlocutor
 {
@@ -32,10 +34,11 @@ public interface Player extends CommandEmitter, Controller, Subscriber, Interloc
 	public GameContext getContext();
 	
 	/** @return the entity this player is controlling */
+	@Nullable
 	public Entity getControlledEntity();
 	
 	/** Sets the entity this player has control over (and tells him) */
-	public boolean setControlledEntity(Entity entity);
+	public boolean setControlledEntity(@Nullable Entity entity);
 	
 	/** Sends a text message to this player chat */
 	public void sendMessage(String msg);

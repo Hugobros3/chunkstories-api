@@ -24,6 +24,8 @@ import io.xol.chunkstories.api.world.cell.FutureCell;
 import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 import io.xol.chunkstories.api.world.chunk.Chunk.FreshChunkCell;
 
+import javax.annotation.Nullable;
+
 /** Defines the behavior for associated with a voxel type declaration */
 public class Voxel
 {
@@ -172,6 +174,7 @@ public class Voxel
 	 * @param data The full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @return An array of CollisionBox or null.
 	 */
+	@Nullable
 	public CollisionBox[] getTranslatedCollisionBoxes(CellData info) {
 		CollisionBox[] boxes = getCollisionBoxes(info);
 		if (boxes != null)
@@ -187,6 +190,7 @@ public class Voxel
 	 *            full 4-byte data related to this voxel ( see {@link VoxelFormat VoxelFormat.class} )
 	 * @return An array of CollisionBox or null.
 	 */
+	@Nullable
 	public CollisionBox[] getCollisionBoxes(CellData info) {
 		//if (!definition.isSolid())
 		//	return new CollisionBox[] {};

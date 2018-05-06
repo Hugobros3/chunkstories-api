@@ -8,9 +8,12 @@ package io.xol.chunkstories.api.entity.ai;
 
 import io.xol.chunkstories.api.entity.Entity;
 
+import javax.annotation.Nullable;
+
 public abstract class AI<T extends Entity>
 {
 	protected T entity;
+	@Nullable
 	protected AiTask currentTask;
 	
 	public abstract class AiTask {
@@ -29,11 +32,12 @@ public abstract class AI<T extends Entity>
 			currentTask.execute();
 	}
 	
-	public void setAiTask(AiTask nextTask)
+	public void setAiTask(@Nullable AiTask nextTask)
 	{
 		this.currentTask = nextTask;
 	}
 	
+	@Nullable
 	public AiTask currentTask()
 	{
 		return currentTask;

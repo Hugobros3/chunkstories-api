@@ -22,6 +22,8 @@ import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nullable;
+
 public class EntityInventory extends EntityComponent implements Inventory {
 	protected BasicInventory actualInventory;
 	public InventoryHolder holder;
@@ -36,7 +38,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 		//Create the REAL inventory but re-route the updaters method to this class so it's functional
 		this.actualInventory = new BasicInventory(width, height, this) {
 			
-			public void refreshItemSlot(int x, int y, ItemPile pileChanged) {
+			public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
 				EntityInventory.this.refreshItemSlot(x, y, pileChanged);
 			}
 
@@ -68,7 +70,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 		actualInventory.refreshItemSlot(x, y);
 	}
 
-	public void refreshItemSlot(int x, int y, ItemPile pileChanged)
+	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged)
 	{
 		Packet packetItemUpdate = new PacketInventoryPartialUpdate(entity.world, this, x, y, pileChanged);
 		entity.components.with(EntityController.class, ecc -> { if(ecc.getController() != null) ecc.getController().pushPacket(packetItemUpdate); } );
@@ -86,7 +88,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 		pushComponentController();
 	}
 	
-	public boolean isAccessibleTo(Entity entity) {
+	public boolean isAccessibleTo(@Nullable Entity entity) {
 		
 		if(entity == null)
 			return true;
@@ -152,6 +154,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 		return actualInventory.getHeight();
 	}
 
+	@Nullable
 	@Override
 	public ItemPile getItemPileAt(int x, int y) {
 		return actualInventory.getItemPileAt(x, y);
@@ -168,7 +171,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 	}
 
 	@Override
-	public boolean setItemPileAt(int x, int y, ItemPile pile) {
+	public boolean setItemPileAt(int x, int y, @Nullable ItemPile pile) {
 		return actualInventory.setItemPileAt(x, y, pile);
 	}
 
