@@ -6,3 +6,10 @@
 .gradle
 gradle.properties
 *.class
+
+# IntelliJ
+/.idea/
+/out/
+*.iml
+*.ipr
+*.iws
