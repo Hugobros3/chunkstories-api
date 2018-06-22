@@ -55,6 +55,8 @@ public interface Shader
 	
 	public void setUniformMatrix3f(String uniformName, Matrix3fc uniformData);
 	
+	public void attachUBO(String bindingPoint, ShaderBuffer ubo);
+	
 	/** Returns the list of parsed texture samplers declared in the fragment shader */
 	public Map<String, SamplerType> samplers();
 	

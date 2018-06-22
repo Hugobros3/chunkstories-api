@@ -23,6 +23,7 @@ import io.xol.chunkstories.api.rendering.lightning.Light;
 import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
 import io.xol.chunkstories.api.rendering.pass.RenderPass;
 import io.xol.chunkstories.api.rendering.shader.Shader;
+import io.xol.chunkstories.api.rendering.shader.ShaderBuffer;
 import io.xol.chunkstories.api.rendering.target.RenderTargets;
 import io.xol.chunkstories.api.rendering.text.FontRenderer;
 import io.xol.chunkstories.api.rendering.textures.ArrayTexture;
@@ -57,6 +58,8 @@ public interface RenderingInterface
 	public Shader useShader(String shaderName) throws InvalidShaderException, ShaderCompileException;
 	
 	public Shader currentShader();
+	
+	public ShaderBuffer newUBO();
 	
 	/* Texturing configuration */
 	
