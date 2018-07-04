@@ -146,19 +146,19 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public ChunkHolder aquireChunkHolderLocation(WorldUser user, Location location) {
+	public ChunkHolder acquireChunkHolderLocation(WorldUser user, Location location) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ChunkHolder aquireChunkHolderWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ) {
+	public ChunkHolder acquireChunkHolderWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ChunkHolder aquireChunkHolder(WorldUser user, int chunkX, int chunkY, int chunkZ) {
+	public ChunkHolder acquireChunkHolder(WorldUser user, int chunkX, int chunkY, int chunkZ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -194,25 +194,25 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public Region aquireRegion(WorldUser user, int regionX, int regionY, int regionZ) {
+	public Region acquireRegion(WorldUser user, int regionX, int regionY, int regionZ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Region aquireRegionChunkCoordinates(WorldUser user, int chunkX, int chunkY, int chunkZ) {
+	public Region acquireRegionChunkCoordinates(WorldUser user, int chunkX, int chunkY, int chunkZ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Region aquireRegionWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ) {
+	public Region acquireRegionWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Region aquireRegionLocation(WorldUser user, Location location) {
+	public Region acquireRegionLocation(WorldUser user, Location location) {
 		// TODO Auto-generated method stub
 		return null;
 	}

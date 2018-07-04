@@ -218,25 +218,25 @@ public interface World
 	/* Chunks */
 	
 	/**
-	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
+	 * acquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
 	 * users either unregisters or gets garbage collected and it's reference nulls out.
 	 */
 	@Nullable
-	public ChunkHolder aquireChunkHolderLocation(WorldUser user, Location location);
+	public ChunkHolder acquireChunkHolderLocation(WorldUser user, Location location);
 	
 	/**
-	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
+	 * acquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
 	 * users either unregisters or gets garbage collected and it's reference nulls out.
 	 */
 	@Nullable
-	public ChunkHolder aquireChunkHolderWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
+	public ChunkHolder acquireChunkHolderWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
 
 	/**
-	 * Aquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
+	 * acquires a ChunkHolder and registers it's user, triggering a load operation for the underlying chunk and preventing it to unload until all the
 	 * users either unregisters or gets garbage collected and it's reference nulls out.
 	 */
 	@Nullable
-	public ChunkHolder aquireChunkHolder(WorldUser user, int chunkX, int chunkY, int chunkZ);
+	public ChunkHolder acquireChunkHolder(WorldUser user, int chunkX, int chunkY, int chunkZ);
 	
 	/**
 	 * Returns true if a chunk was loaded. Not recommanded nor intended to use as a replacement for a '== null' check after getChunk() because of the load/unload
@@ -245,78 +245,78 @@ public interface World
 	public boolean isChunkLoaded(int chunkX, int chunkY, int chunkZ);
 	
 	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was acquired by someone and the chunk had time to load.
 	 */
 	@Nullable
 	public Chunk getChunk(int chunkX, int chunkY, int chunkZ);
 
 	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was acquired by someone and the chunk had time to load.
 	 */
 	@Nullable
 	public Chunk getChunkWorldCoordinates(int worldX, int worldY, int worldZ);
 	
 	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was acquired by someone and the chunk had time to load.
 	 */
 	@Nullable
 	public Chunk getChunkWorldCoordinates(Location location);
 	
 	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was aquired by someone and the chunk had time to load.
+	 * Returns either null or a valid chunk if a corresponding ChunkHolder was acquired by someone and the chunk had time to load.
 	 */
 	public ChunksIterator getAllLoadedChunks();
 	
 	/* Regions */
 	
 	/**
-	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 * acquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
 	@Nullable
-	public Region aquireRegion(WorldUser user, int regionX, int regionY, int regionZ);
+	public Region acquireRegion(WorldUser user, int regionX, int regionY, int regionZ);
 	
 	/**
-	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 * acquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
 	@Nullable
-	public Region aquireRegionChunkCoordinates(WorldUser user, int chunkX, int chunkY, int chunkZ);
+	public Region acquireRegionChunkCoordinates(WorldUser user, int chunkX, int chunkY, int chunkZ);
 	
 	/**
-	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 * acquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
 	@Nullable
-	public Region aquireRegionWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
+	public Region acquireRegionWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
 	
 	/**
-	 * Aquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
+	 * acquires a region and registers it's user, triggering a load operation for the region and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and it's reference nulls out.
 	 */
 	@Nullable
-	public Region aquireRegionLocation(WorldUser user, Location location);
+	public Region acquireRegionLocation(WorldUser user, Location location);
 	
 	/**
-	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 * Returns either null or a valid, entirely loaded region if the acquireRegion method was called and it had time to load and there is still one user using it
 	 */
 	@Nullable
 	public Region getRegion(int regionX, int regionY, int regionZ);
 
 	/**
-	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 * Returns either null or a valid, entirely loaded region if the acquireRegion method was called and it had time to load and there is still one user using it
 	 */
 	@Nullable
 	public Region getRegionChunkCoordinates(int chunkX, int chunkY, int chunkZ);
 	
 	/**
-	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 * Returns either null or a valid, entirely loaded region if the acquireRegion method was called and it had time to load and there is still one user using it
 	 */
 	@Nullable
 	public Region getRegionWorldCoordinates(int worldX, int worldY, int worldZ);
 	
 	/**
-	 * Returns either null or a valid, entirely loaded region if the aquireRegion method was called and it had time to load and there is still one user using it
+	 * Returns either null or a valid, entirely loaded region if the acquireRegion method was called and it had time to load and there is still one user using it
 	 */
 	@Nullable
 	public Region getRegionLocation(Location location);

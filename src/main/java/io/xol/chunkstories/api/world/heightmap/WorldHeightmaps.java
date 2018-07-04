@@ -22,25 +22,25 @@ public interface WorldHeightmaps {
 	 * Aquires a heightmap and registers an user, triggering a load operation for the heightmap and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and their references nulls out.
 	 */
-	public Heightmap aquireHeightmap(WorldUser worldUser, int regionX, int regionZ);
+	public Heightmap acquireHeightmap(WorldUser worldUser, int regionX, int regionZ);
 	
 	/**
 	 * Aquires a heightmap and registers an user, triggering a load operation for the heightmap and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and their references nulls out.
 	 */
-	public Heightmap aquireHeightmapChunkCoordinates(WorldUser worldUser, int chunkX, int chunkZ);
+	public Heightmap acquireHeightmapChunkCoordinates(WorldUser worldUser, int chunkX, int chunkZ);
 	
 	/**
 	 * Aquires a heightmap and registers an user, triggering a load operation for the heightmap and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and their references nulls out.
 	 */
-	public Heightmap aquireHeightmapWorldCoordinates(WorldUser worldUser, int worldX, int worldZ);
+	public Heightmap acquireHeightmapWorldCoordinates(WorldUser worldUser, int worldX, int worldZ);
 	
 	/**
 	 * Aquires a heightmap and registers an user, triggering a load operation for the heightmap and preventing it to unload until all the users
 	 *  either unregisters or gets garbage collected and their references nulls out.
 	 */
-	public Heightmap aquireHeightmapLocation(WorldUser worldUser, Location location);
+	public Heightmap acquireHeightmapLocation(WorldUser worldUser, Location location);
 	
 	/**
 	 * Returns either null or a valid, entirely loaded heightmap if the aquireHeightmap method was called and it had time to load and there is still one user using it
