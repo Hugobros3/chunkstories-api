@@ -86,7 +86,7 @@ public class EntityHealth extends EntityComponent {
 			float damageDealt = event.getDamageDealt();
 
 			// Applies knockback
-			if (cause instanceof Entity || true /* ? */) {
+			if (cause instanceof Entity) {
 				// Only runs if the entity do have a velocity
 				entity.components.with(EntityVelocity.class, ev -> {
 

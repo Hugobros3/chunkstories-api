@@ -123,8 +123,6 @@ public abstract class Entity {
 		for (EntityComponent c : componentsSet) {
 			i = c.id();
 			components.byId[i] = c;
-			//c.setId(i);
-			System.out.println("component "+c+" gets id "+i);
 			i++;
 		}
 		// Build an immutable view of that set
