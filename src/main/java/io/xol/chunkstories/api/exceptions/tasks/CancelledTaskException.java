@@ -12,9 +12,9 @@ import io.xol.chunkstories.api.workers.Task;
 public class CancelledTaskException extends RuntimeException {
 
 	final Task task;
-	
+
 	public CancelledTaskException(Task task) {
-		super("Was waiting on task: "+task + " but it got cancelled.");
+		super("Was waiting on task: " + task + " but it got cancelled.");
 		this.task = task;
 	}
 

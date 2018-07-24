@@ -16,30 +16,27 @@ import io.xol.chunkstories.api.item.inventory.ItemPile;
 
 import javax.annotation.Nullable;
 
-public class EventItemDroppedToWorld extends CancellableEvent
-{
+public class EventItemDroppedToWorld extends CancellableEvent {
 	// Every event class has to have this
-	
+
 	static EventListeners listeners = new EventListeners(EntityDeathEvent.class);
-	
+
 	@Override
-	public EventListeners getListeners()
-	{
+	public EventListeners getListeners() {
 		return listeners;
 	}
-	
-	public static EventListeners getListenersStatic()
-	{
+
+	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
-	
+
 	// Specific event code
-	
+
 	private Location location;
 	@Nullable
 	private Inventory inventoryFrom;
 	private ItemPile itemPile;
-	
+
 	/** The entity to be added to the world that will represent this item pile */
 	private Entity itemEntity;
 
@@ -73,7 +70,7 @@ public class EventItemDroppedToWorld extends CancellableEvent
 	public void setItemPile(ItemPile itemPile) {
 		this.itemPile = itemPile;
 	}
-	
+
 	@Nullable
 	public Entity getItemEntity() {
 		return itemEntity;

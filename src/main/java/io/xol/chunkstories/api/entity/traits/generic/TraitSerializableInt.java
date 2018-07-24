@@ -17,42 +17,36 @@ import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 /**
- * Generic class for not duplacting boring code everywhere
- * Remember: you still have to declare the actual components classes in .components files !
+ * Generic class for not duplacting boring code everywhere Remember: you still
+ * have to declare the actual components classes in .components files !
  */
 @Generalized
-public abstract class TraitSerializableInt extends TraitSerializable
-{
+public abstract class TraitSerializableInt extends TraitSerializable {
 	protected int value;
-	
-	public TraitSerializableInt(Entity entity, int defaultValue)
-	{
+
+	public TraitSerializableInt(Entity entity, int defaultValue) {
 		super(entity);
 		this.value = defaultValue;
 	}
-	
-	public int getValue()
-	{
+
+	public int getValue() {
 		return value;
 	}
-	
-	public boolean setValue(int newValue)
-	{
+
+	public boolean setValue(int newValue) {
 		this.value = newValue;
-		
+
 		this.pushComponentEveryone();
 		return true;
 	}
 
 	@Override
-	protected void push(StreamTarget destinator, DataOutputStream dos) throws IOException
-	{
+	protected void push(StreamTarget destinator, DataOutputStream dos) throws IOException {
 		dos.writeInt(value);
 	}
 
 	@Override
-	protected void pull(StreamSource from, DataInputStream dis) throws IOException
-	{
+	protected void pull(StreamSource from, DataInputStream dis) throws IOException {
 		value = dis.readInt();
 	}
 

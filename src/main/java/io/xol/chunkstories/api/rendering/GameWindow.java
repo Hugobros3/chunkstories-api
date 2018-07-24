@@ -12,23 +12,22 @@ import io.xol.chunkstories.api.gui.GuiRenderer;
 import io.xol.chunkstories.api.gui.Layer;
 import io.xol.chunkstories.api.rendering.text.FontRenderer;
 
-public interface GameWindow
-{
+public interface GameWindow {
 	public ClientInterface getClient();
-	
+
 	public RenderingInterface getRenderingInterface();
-	
+
 	public GuiRenderer getGuiRenderer();
-	
+
 	public FontRenderer getFontRenderer();
-	
-	//TODO float
+
+	// TODO float
 	public int getWidth();
-	
+
 	public int getHeight();
-	
+
 	public Layer getLayer();
-	
+
 	public void setLayer(Layer layer);
 
 	public void close();

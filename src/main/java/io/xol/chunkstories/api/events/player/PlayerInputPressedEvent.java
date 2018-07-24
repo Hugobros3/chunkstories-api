@@ -11,41 +11,35 @@ import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.player.Player;
 
-public class PlayerInputPressedEvent extends CancellableEvent
-{
+public class PlayerInputPressedEvent extends CancellableEvent {
 	// Every event class has to have this
 
 	static EventListeners listeners = new EventListeners(PlayerInputPressedEvent.class);
 
 	@Override
-	public EventListeners getListeners()
-	{
+	public EventListeners getListeners() {
 		return listeners;
 	}
 
-	public static EventListeners getListenersStatic()
-	{
+	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
 
 	// Specific event code
-	
+
 	Player player;
 	Input input;
-	
-	public PlayerInputPressedEvent(Player player, Input input)
-	{
+
+	public PlayerInputPressedEvent(Player player, Input input) {
 		this.player = player;
 		this.input = input;
 	}
-	
-	public Input getInput()
-	{
+
+	public Input getInput() {
 		return input;
 	}
-	
-	public Player getPlayer()
-	{
+
+	public Player getPlayer() {
 		return player;
 	}
 }

@@ -8,9 +8,8 @@ package io.xol.chunkstories.api.particles;
 
 import org.joml.Vector3dc;
 
-public interface ParticlesManager
-{
+public interface ParticlesManager {
 	public void spawnParticleAtPosition(String particleTypeName, Vector3dc position);
-	
+
 	public void spawnParticleAtPositionWithVelocity(String particleTypeName, Vector3dc position, Vector3dc velocity);
 }

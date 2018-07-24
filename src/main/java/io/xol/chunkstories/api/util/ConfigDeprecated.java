@@ -20,13 +20,13 @@ public interface ConfigDeprecated {
 	public String getString(String property, String defaultValue);
 
 	public String getString(String property);
-	
+
 	public int getInteger(String property);
 
 	public int getInteger(String property, int defaultValue);
 
 	public boolean getBoolean(String property);
-	
+
 	public boolean getBoolean(String property, boolean defaultValue);
 
 	public float getFloat(String property);
@@ -38,7 +38,7 @@ public interface ConfigDeprecated {
 	public double getDouble(String property, double defaultValue);
 
 	public long getLong(String property);
-	
+
 	public long getLong(String property, long defaultValue);
 
 	public void setString(String property, String value);
@@ -52,9 +52,9 @@ public interface ConfigDeprecated {
 	public void setFloat(String property, float value);
 
 	public boolean isFieldSet(String string);
-	
+
 	public void removeFieldValue(String string);
-	
+
 	public Iterator<String> getFieldsSet();
 
 }

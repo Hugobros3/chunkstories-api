@@ -7,7 +7,6 @@
 package io.xol.chunkstories.api.item.inventory;
 
 /** Returnable by Inventory.getHolder() */
-public interface InventoryHolder
-{
+public interface InventoryHolder {
 
 }

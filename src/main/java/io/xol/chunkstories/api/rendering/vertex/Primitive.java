@@ -7,8 +7,8 @@
 package io.xol.chunkstories.api.rendering.vertex;
 
 public enum Primitive {
-	POINT, LINE, TRIANGLE, 
-	
+	POINT, LINE, TRIANGLE,
+
 	@Deprecated
 	QUAD;
 }

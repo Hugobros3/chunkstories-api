@@ -45,27 +45,29 @@ public class PacketVelocityDelta extends PacketWorld {
 	private Vector3dc delta;
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
+			throws IOException {
 		out.writeDouble(delta.x());
 		out.writeDouble(delta.y());
 		out.writeDouble(delta.z());
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException {
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
+			throws IOException, PacketProcessingException {
 		Vector3d delta = new Vector3d(in.readDouble(), in.readDouble(), in.readDouble());
 
 		Entity entity = ((ClientPacketsProcessor) processor).getContext().getPlayer().getControlledEntity();
-		
-		//new style
-		if(entity != null) {
+
+		// new style
+		if (entity != null) {
 			entity.traits.with(TraitVelocity.class, ev -> {
 				System.out.println("Debug: received velocity delta " + delta);
 				ev.addVelocity(delta);
 			});
 		}
-		
-		//old style
+
+		// old style
 //		if (entity != null && entity instanceof EntityWithVelocity) {
 //			System.out.println("Debug: received velocity delta " + delta);
 //			((EntityWithVelocity) entity).getVelocityComponent().addVelocity(delta);

@@ -11,38 +11,38 @@ import io.xol.chunkstories.api.content.Definition;
 
 import javax.annotation.Nullable;
 
-public interface ParticleTypeDefinition extends Definition
-{
+public interface ParticleTypeDefinition extends Definition {
 	public String getName();
-	
+
 	public Content.ParticlesTypes store();
-	
-	///** When should we render those particle types */
-	//public enum RenderTime {
-	//	/** Actually iterated anyways! Use case is light particles, mostly. */
-	//	NEVER,
-	//	/** Done after the rest of the opaque GBuffer stuff. */
-	//	GBUFFER,
-	//	FORWARD
-	//	;
-	//}
-	
+
+	/// ** When should we render those particle types */
+	// public enum RenderTime {
+	// /** Actually iterated anyways! Use case is light particles, mostly. */
+	// NEVER,
+	// /** Done after the rest of the opaque GBuffer stuff. */
+	// GBUFFER,
+	// FORWARD
+	// ;
+	// }
+
 	public enum ParticleRenderingMode {
 		BILLBOARD;
 	}
-	
-	/** Returns the name of the render pass we should use to render those particles. */ 
+
+	/**
+	 * Returns the name of the render pass we should use to render those particles.
+	 */
 	public abstract String getRenderPass();
-	
-	public default String getShaderName()
-	{
+
+	public default String getShaderName() {
 		return "particles";
 	}
-	
+
 	/** Returns null or a path to an asset. */
 	@Nullable
 	public abstract String getAlbedoTexture();
-	
+
 	/** Returns null or a path to an asset. */
 	@Nullable
 	public abstract String getNormalTexture();
@@ -50,7 +50,7 @@ public interface ParticleTypeDefinition extends Definition
 	/** Returns null or a path to an asset. */
 	@Nullable
 	public abstract String getMaterialTexture();
-	
+
 	/** Defaults to 1.0f */
 	public abstract float getBillboardSize();
 }

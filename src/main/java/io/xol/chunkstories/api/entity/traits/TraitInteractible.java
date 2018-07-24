@@ -14,6 +14,6 @@ public abstract class TraitInteractible extends Trait {
 	public TraitInteractible(Entity entity) {
 		super(entity);
 	}
-	
+
 	public abstract boolean handleInteraction(Entity entity, Input input);
 }

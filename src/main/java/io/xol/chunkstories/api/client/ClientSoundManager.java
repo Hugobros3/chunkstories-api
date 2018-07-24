@@ -14,7 +14,7 @@ import io.xol.chunkstories.api.sound.SoundSource.Mode;
 
 public interface ClientSoundManager extends SoundManager {
 
-	public SoundSource replicateServerSoundSource(String soundName, Mode mode, Vector3dc position,
-			float pitch, float gain, float attenuationStart, float attenuationEnd, long UUID);
+	public SoundSource replicateServerSoundSource(String soundName, Mode mode, Vector3dc position, float pitch,
+			float gain, float attenuationStart, float attenuationEnd, long UUID);
 
 }

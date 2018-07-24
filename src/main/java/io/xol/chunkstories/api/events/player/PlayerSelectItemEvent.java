@@ -11,39 +11,34 @@ import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.player.Player;
 
-public class PlayerSelectItemEvent extends Event
-{
+public class PlayerSelectItemEvent extends Event {
 	// Every event class has to have this
-	
+
 	static EventListeners listeners = new EventListeners(PlayerSelectItemEvent.class);
-	
+
 	@Override
-	public EventListeners getListeners()
-	{
+	public EventListeners getListeners() {
 		return listeners;
 	}
-	
-	public static EventListeners getListenersStatic()
-	{
+
+	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
-	
+
 	// Specific event code
-	
+
 	public Player player;
 	public Entity entity;
 	public int newSlot;
-	
-	public PlayerSelectItemEvent(Player player, Entity playerEntity, int newSlot)
-	{
+
+	public PlayerSelectItemEvent(Player player, Entity playerEntity, int newSlot) {
 		this.player = player;
 		this.entity = playerEntity;
 		this.newSlot = newSlot;
 	}
 
-	public Player getPlayer()
-	{
+	public Player getPlayer() {
 		return player;
 	}
-	
+
 }

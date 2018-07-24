@@ -8,22 +8,19 @@ package io.xol.chunkstories.api.exceptions.net;
 
 import io.xol.chunkstories.api.net.Packet;
 
-public class IllegalPacketException extends Exception
-{
+public class IllegalPacketException extends Exception {
 
 	Packet packet;
-	
-	public IllegalPacketException(Packet packet)
-	{
+
+	public IllegalPacketException(Packet packet) {
 		this.packet = packet;
 	}
 
 	@Override
-	public String getMessage()
-	{
-		return "Illegal packet received : "+packet.getClass().getName()+"";
+	public String getMessage() {
+		return "Illegal packet received : " + packet.getClass().getName() + "";
 	}
-	
+
 	/**
 	 * 
 	 */

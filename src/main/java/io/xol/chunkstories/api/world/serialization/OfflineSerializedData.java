@@ -9,7 +9,6 @@ package io.xol.chunkstories.api.world.serialization;
 /**
  * Offline serialized data is data from a .csf region or lone entity file.
  */
-public interface OfflineSerializedData extends StreamSource, StreamTarget
-{
+public interface OfflineSerializedData extends StreamSource, StreamTarget {
 
 }

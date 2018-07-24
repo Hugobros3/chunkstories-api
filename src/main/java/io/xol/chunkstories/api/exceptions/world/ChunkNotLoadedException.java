@@ -34,11 +34,11 @@ public class ChunkNotLoadedException extends RegionException {
 
 	@Override
 	public String getMessage() {
-		if(getRegion() == null)
+		if (getRegion() == null)
 			return "Chunk at " + chunkX + ":" + chunkY + ":" + chunkZ + "was not loaded";
 		else
-			return "Chunk at " + chunkX + ":" + chunkY + ":" + chunkZ + "was not loaded (but the underlying region was)";
+			return "Chunk at " + chunkX + ":" + chunkY + ":" + chunkZ
+					+ "was not loaded (but the underlying region was)";
 	}
 
-	
 }

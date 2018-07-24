@@ -13,8 +13,7 @@ import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.exceptions.plugins.PluginCreationException;
 import io.xol.chunkstories.api.plugin.commands.PluginCommand;
 
-public interface PluginInformation
-{
+public interface PluginInformation {
 	public String getName();
 
 	public String getPluginVersion();
@@ -26,11 +25,10 @@ public interface PluginInformation
 	public ChunkStoriesPlugin createInstance(GameContext pluginExecutionContext) throws PluginCreationException;
 
 	public Collection<PluginCommand> getCommands();
-	
+
 	public File getDirectory();
-	
-	public enum PluginType
-	{
+
+	public enum PluginType {
 		UNIVERSAL, CLIENT_ONLY, MASTER;
 	}
 }

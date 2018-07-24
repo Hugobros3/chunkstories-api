@@ -17,9 +17,8 @@ public class PluginCommand extends Command {
 		super(commandName);
 		this.plugin = plugin;
 	}
-	
-	public PluginInformation getPlugin()
-	{
+
+	public PluginInformation getPlugin() {
 		return plugin;
 	}
 

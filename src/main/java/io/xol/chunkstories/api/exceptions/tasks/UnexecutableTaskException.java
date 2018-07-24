@@ -12,13 +12,13 @@ import io.xol.chunkstories.api.workers.Task;
 public class UnexecutableTaskException extends RuntimeException {
 
 	final Task task;
-	
+
 	public UnexecutableTaskException(Task task) {
 		this(task, null);
 	}
-	
+
 	public UnexecutableTaskException(Task task, String reason) {
-		super("Task: "+task + " isn't executable on this context" + (reason != null ? " Reason: " + reason : ""));
+		super("Task: " + task + " isn't executable on this context" + (reason != null ? " Reason: " + reason : ""));
 		this.task = task;
 	}
 

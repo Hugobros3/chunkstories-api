@@ -76,7 +76,7 @@ public abstract class Entity {
 	public final EntityDefinition definition;
 
 	public final Components traits = new Components();
-	//public final Traits traits = new Traits();
+	// public final Traits traits = new Traits();
 	public final Subscribers subscribers = new Subscribers();
 
 	// You cannot change the world of an entity, at least not without serializing it
@@ -121,13 +121,13 @@ public abstract class Entity {
 
 		// Build an immutable view of that set
 		traits.all = Collections.unmodifiableSet(componentsSet);
-		
+
 		// Assign them ids and build an array
 		traits.byId = new Trait[componentsSet.size()];
 		int i = 0;
-		
+
 		System.out.println(componentsSet.size());
-		System.out.println("this = "+this.toString());
+		System.out.println("this = " + this.toString());
 		for (Trait c : componentsSet) {
 			i = c.id();
 			traits.byId[i] = c;
@@ -135,10 +135,10 @@ public abstract class Entity {
 		}
 
 		// Creates an unique set for the traits we end up having
-		//Set<Trait> traitsSet = new HashSet<>();
-		//traitsSet.addAll(traits.traits.values());
+		// Set<Trait> traitsSet = new HashSet<>();
+		// traitsSet.addAll(traits.traits.values());
 		// Build an immutable view of that set
-		//traits.all = Collections.unmodifiableSet(traitsSet);
+		// traits.all = Collections.unmodifiableSet(traitsSet);
 
 		// Set the initialized flag so the above structures become immutable
 		initialized = true;
@@ -154,44 +154,46 @@ public abstract class Entity {
 		protected Trait[] byId = null;
 
 		private int count = 0;
-		
-		
+
 		@SuppressWarnings("unchecked")
 		public int registerTrait(Trait component) {
 			if (initialized)
 				throw new RuntimeException("You can't register traits after the entity initializes.");
 
-			if(map.get(component.getClass()) == component) {
+			if (map.get(component.getClass()) == component) {
 				world.getGameLogic().getGameContext().logger().warn("Tried to register the same trait twice"
 						+ " (hint: don't call registerComponent yourself, the superconstructor does it already )");
 				return component.id();
 			}
-			
-			System.out.println("registering trait "+component);
+
+			System.out.println("registering trait " + component);
 			int id = purge(component);
-			if(id == -1)
+			if (id == -1)
 				id = count++;
-			System.out.println("got id "+id);
-			
+			System.out.println("got id " + id);
+
 			map.put(component.getClass(), component);
 
-			// We allow refering to a component by it's superclass so we bake in all superclasses that component encompasses
+			// We allow refering to a component by it's superclass so we bake in all
+			// superclasses that component encompasses
 			Class<?> c = component.getClass();
 			while (true) {
-				if(c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
-					//System.out.println(c.getSimpleName()+" : this is a specialized class, no overshadowing parents");
+				if (c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
+					// System.out.println(c.getSimpleName()+" : this is a specialized class, no
+					// overshadowing parents");
 					break;
 				}
 				c = c.getSuperclass();
-				if(c == Trait.class)
-					break; //stop there
-				
-				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
-					//System.out.println(c.getSimpleName()+" : this is a generalized class, not overriding that.");
+				if (c == Trait.class)
+					break; // stop there
+
+				if (c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
+					// System.out.println(c.getSimpleName()+" : this is a generalized class, not
+					// overriding that.");
 					break;
 				}
 
-				//System.out.println("registering component with superclass: "+c);
+				// System.out.println("registering component with superclass: "+c);
 				map.put((Class<? extends Trait>) c, component);
 			}
 
@@ -200,46 +202,49 @@ public abstract class Entity {
 
 		private int purge(Trait component) {
 			Trait remove = null;
-			
-			//System.out.println("Purging matching components...");
+
+			// System.out.println("Purging matching components...");
 			Class<?> c = component.getClass();
-			while(true) {
-				if(c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
-					//System.out.println(c.getSimpleName()+" : this is a specialized class, no removing parents");
+			while (true) {
+				if (c.getDeclaredAnnotationsByType(Specialized.class).length != 0) {
+					// System.out.println(c.getSimpleName()+" : this is a specialized class, no
+					// removing parents");
 					break;
 				}
-				
+
 				Trait comp = map.get(c);
-				if(comp != null) {
-					//System.out.println("Found conflicting component: "+comp + "with id "+comp.id());
+				if (comp != null) {
+					// System.out.println("Found conflicting component: "+comp + "with id
+					// "+comp.id());
 					remove = comp;
 					break;
 				}
-				
+
 				c = c.getSuperclass();
-				if(c == Trait.class)
+				if (c == Trait.class)
 					break;
-				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
-					//System.out.println(c.getSimpleName()+" : this is a generalized class, stopping purge");
+				if (c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
+					// System.out.println(c.getSimpleName()+" : this is a generalized class,
+					// stopping purge");
 					break;
 				}
 			}
-			
-			if(remove != null) {
-				System.out.println("Purging matching component: "+remove);
+
+			if (remove != null) {
+				System.out.println("Purging matching component: " + remove);
 				Iterator<Entry<Class<? extends Trait>, Trait>> i = map.entrySet().iterator();
-				while(i.hasNext()) {
+				while (i.hasNext()) {
 					Entry<Class<? extends Trait>, Trait> e = i.next();
-					if(e.getValue() == remove) {
-						//System.out.println("Purging : "+e.getKey());
+					if (e.getValue() == remove) {
+						// System.out.println("Purging : "+e.getKey());
 						i.remove();
 					}
 				}
-				
-				System.out.println("returning purged id:"+remove.id());
+
+				System.out.println("returning purged id:" + remove.id());
 				return remove.id();
 			}
-			
+
 			return -1;
 		}
 
@@ -259,7 +264,8 @@ public abstract class Entity {
 		 * Tries to find a component matching this type, executes some action on it and
 		 * returns the result. Returns null if no such component was found.
 		 */
-		public <EC extends Trait, RETURN_TYPE> RETURN_TYPE tryWith(Class<EC> componentType, ReturnsAction<EC, RETURN_TYPE> action) {
+		public <EC extends Trait, RETURN_TYPE> RETURN_TYPE tryWith(Class<EC> componentType,
+				ReturnsAction<EC, RETURN_TYPE> action) {
 			EC component = (EC) map.get(componentType);
 			if (component != null) {
 				return action.run(component);
@@ -301,18 +307,18 @@ public abstract class Entity {
 		public Trait[] byId() {
 			return byId;
 		}
-		
+
 		@Override
 		public String toString() {
 			String ok = "";
-			for(Trait trait : all())
-				ok += "("+safename(trait.getClass())+", "+trait.id()+")"+", ";
-			return all().size()+"{"+ok+"}";
+			for (Trait trait : all())
+				ok += "(" + safename(trait.getClass()) + ", " + trait.id() + ")" + ", ";
+			return all().size() + "{" + ok + "}";
 		}
-		
+
 		private String safename(Class<?> klass) {
 			String simpleName = klass.getSimpleName();
-			if(simpleName.equals(""))
+			if (simpleName.equals(""))
 				return safename(klass.getSuperclass());
 			return simpleName;
 		}
@@ -377,15 +383,9 @@ public abstract class Entity {
 
 	@Override
 	public String toString() {
-		return "[" + 
-				this.getClass().getSimpleName() + 
-				" Type: " + this.definition + 
-				" subs:" + this.subscribers.subscribers.size() + 
-				"  position : " + this.entityLocation.get() + 
-				" UUID : " + this.uuid  + 
-				" Chunk:" + this.entityLocation.getChunk() + 
-				" Traits:" + this.traits + 
-				" ]";
+		return "[" + this.getClass().getSimpleName() + " Type: " + this.definition + " subs:"
+				+ this.subscribers.subscribers.size() + "  position : " + this.entityLocation.get() + " UUID : "
+				+ this.uuid + " Chunk:" + this.entityLocation.getChunk() + " Traits:" + this.traits + " ]";
 	}
 
 	public final Location getLocation() {

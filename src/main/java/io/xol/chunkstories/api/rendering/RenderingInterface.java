@@ -41,138 +41,147 @@ import io.xol.chunkstories.api.rendering.world.WorldRenderer;
 
 import javax.annotation.Nullable;
 
-public interface RenderingInterface
-{
+public interface RenderingInterface {
 	public CameraInterface getCamera();
 
 	public ClientInterface getClient();
-	
+
 	public GameWindow getWindow();
-	
+
 	public RenderTargets getRenderTargetManager();
-	
+
 	/* Shaders */
-	
+
 	public ShadersLibrary shaders();
-	
+
 	public Shader useShader(String shaderName) throws InvalidShaderException, ShaderCompileException;
-	
+
 	public Shader currentShader();
-	
+
 	public ShaderBuffer newUBO();
-	
+
 	/* Texturing configuration */
-	
+
 	public void bindAlbedoTexture(Texture2D texture);
-	
+
 	public void bindNormalTexture(Texture2D texture);
-	
+
 	public void bindMaterialTexture(Texture2D texture);
 
 	public void bindTexture1D(String textureSamplerName, Texture1D texture);
-	
+
 	public void bindTexture2D(String textureSamplerName, Texture2D texture);
-	
+
 	public void bindTexture3D(String textureSamplerName, Texture3D texture);
-	
+
 	public void bindCubemap(String cubemapSamplerName, Cubemap cubemapTexture);
-	
+
 	public void bindArrayTexture(String textureSamplerName, ArrayTexture texture);
 
 	public TexturesLibrary textures();
-	
+
 	public Texture2DRenderTarget newTexture2D(TextureFormat type, int width, int height);
-	
+
 	public Texture3D newTexture3D(TextureFormat type, int width, int height, int depth);
-	
+
 	/* Object location & Instance Data */
-	
+
 	/** returns the current object matrix */
 	public Matrix4f getObjectMatrix();
-	
-	/** Feeds the 'objectMatrix' and 'objectMatrixNormal' shader inputs ( either uniform or texture-based instanced if shader has support ) */
+
+	/**
+	 * Feeds the 'objectMatrix' and 'objectMatrixNormal' shader inputs ( either
+	 * uniform or texture-based instanced if shader has support )
+	 */
 	public Matrix4f setObjectMatrix(Matrix4f objectMatrix);
-	
-	///** Feeds the 'worldLight' shader inputs ( either uniform or texture-based instanced if shader has support ) */
-	//public void setWorldLight(int sunLight, int blockLight);
-	
+
+	/// ** Feeds the 'worldLight' shader inputs ( either uniform or texture-based
+	/// instanced if shader has support ) */
+	// public void setWorldLight(int sunLight, int blockLight);
+
 	/* Pipeline configuration */
-	
+
 	/** @return The current PipelineConfiguration */
 	public StateMachine getStateMachine();
 
 	public void setDepthTestMode(DepthTestMode depthTestMode);
-	
+
 	public void setCullingMode(CullingMode cullingMode);
 
 	public void setBlendMode(BlendMode blendMode);
 
 	public void setPolygonFillMode(PolygonFillMode polygonFillMode);
-	
+
 	/* Attributes */
-	
+
 	/**
 	 * Returns the configuration of the bound vertex shader inputs
 	 */
-	//public AttributesConfiguration getAttributesConfiguration();
-	
-	/** If attributeSource != null, setups the currently bound vertex shader attribute input 'attributeName' with it
-	 * If attibuteSource == null, disables the shader input 'attributeName'
-	 * @throws AttributeNotPresentException If 'attributeName' doesn't resolve to a real attribute location
-	 * Returns the configuration of the bound vertex shader inputs
+	// public AttributesConfiguration getAttributesConfiguration();
+
+	/**
+	 * If attributeSource != null, setups the currently bound vertex shader
+	 * attribute input 'attributeName' with it If attibuteSource == null, disables
+	 * the shader input 'attributeName'
+	 * 
+	 * @throws AttributeNotPresentException If 'attributeName' doesn't resolve to a
+	 *                                      real attribute location Returns the
+	 *                                      configuration of the bound vertex shader
+	 *                                      inputs
 	 */
-	public AttributesConfiguration bindAttribute(String attributeName, @Nullable AttributeSource attributeSource) throws AttributeNotPresentException;
-	
+	public AttributesConfiguration bindAttribute(String attributeName, @Nullable AttributeSource attributeSource)
+			throws AttributeNotPresentException;
+
 	/** Ensures no attributes are bound left over from previous draw instructions */
 	public AttributesConfiguration unbindAttributes();
-	
+
 	public ClientMeshLibrary meshes();
-	
+
 	public VertexBuffer newVertexBuffer();
-	
+
 	/**
-	 * Draws N primitives made of 'count' vertices, offset at vertice 'startAt', using data specified in the AttributesConfiguration
+	 * Draws N primitives made of 'count' vertices, offset at vertice 'startAt',
+	 * using data specified in the AttributesConfiguration
 	 */
 	public void draw(Primitive primitive, int startAt, int count);
-	
+
 	/** For instanced rendering */
 	public void draw(Primitive primitive, int startAt, int count, int instances);
-	
+
 	/** Equivalent to glMultiDrawArrays */
 	public void drawMany(Primitive primitive, int... startAndCountPairs);
 
 	/** Renders a fullsize quad for whole-screen effects */
 	public void drawFSQuad();
-	
+
 	/**
 	 * Executes ALL commands in the queue up to this point before continuing
 	 */
-	//public void flush();
-	
+	// public void flush();
+
 	/* Statistics */
-	
-	public default long getTotalVramUsage()
-	{
+
+	public default long getTotalVramUsage() {
 		return getVertexDataVramUsage() + getTextureDataVramUsage();
 	}
-	
+
 	public long getVertexDataVramUsage();
-	
+
 	public long getTextureDataVramUsage();
-	
+
 	/* Specific renderers / helpers */
 
 	public GuiRenderer getGuiRenderer();
 
 	public FontRenderer getFontRenderer();
-	
+
 	public WorldRenderer getWorldRenderer();
 
 	/** Shortcut to getWorldRenderer().renderPasses().getcurrentPass() */
 	public RenderPass getCurrentPass();
-	
+
 	public LightsAccumulator getLightsRenderer();
-	
+
 	interface LightsAccumulator {
 		public void queueLight(Light light);
 

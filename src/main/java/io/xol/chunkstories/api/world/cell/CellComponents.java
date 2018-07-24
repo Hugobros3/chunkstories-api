@@ -22,7 +22,7 @@ public interface CellComponents {
 	public Chunk getChunk();
 
 	public World getWorld();
-	
+
 	/** Returns the WORLD x coordinate */
 	public int getX();
 
@@ -31,23 +31,26 @@ public interface CellComponents {
 
 	/** Returns the WORLD z coordinate */
 	public int getZ();
-	
+
 	/** Peeks the cell containing those components */
 	public ChunkCell cell();
-	
+
 	/** Returns a list of users that can see this cell */
 	public IterableIterator<WorldUser> users();
-	
-	///** Removes any components this cell might have had */
-	//public void erase();
-	
-	///** Add a new named component here */
-	//public void put(String name, VoxelComponent component);
-	
+
+	/// ** Removes any components this cell might have had */
+	// public void erase();
+
+	/// ** Add a new named component here */
+	// public void put(String name, VoxelComponent component);
+
 	@Nullable
 	public VoxelComponent get(String name);
 
-	/** Looks for a VoxelComponent and returns it's name if it is contained in this cell. */
+	/**
+	 * Looks for a VoxelComponent and returns it's name if it is contained in this
+	 * cell.
+	 */
 	@Nullable
 	public String name(VoxelComponent component);
 

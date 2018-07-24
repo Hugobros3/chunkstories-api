@@ -37,32 +37,39 @@ public class MeshAsVoxelModel implements VoxelRenderer {
 		int x = cell.getX() & 0x1f;
 		int y = cell.getY() & 0x1f;
 		int z = cell.getZ() & 0x1f;
-		
-		Vector4f vertex = new Vector4f(0,0,0,1f);
-		Vector4f normal = new Vector4f(0,0,0,0f);
-		
+
+		Vector4f vertex = new Vector4f(0, 0, 0, 1f);
+		Vector4f normal = new Vector4f(0, 0, 0, 0f);
+
 		Matrix4f matrix = new Matrix4f();
-		
-		for(MeshMaterial meshMaterial : mesh.getMaterials()) {
-			//System.out.println("material:"+simplify(meshMaterial.getAlbedoTextureName()));
-			baker.usingTexture(store.parent().textures().getVoxelTexture(simplify(meshMaterial.getAlbedoTextureName())));
-			baker.setMaterialFlags(Byte.parseByte(cell.getVoxel().getDefinition().resolveProperty("materialFlags", "0")));
-			baker.setVoxelLight((byte)cell.getSunlight(), (byte)cell.getBlocklight(), (byte)0);
-			
-			for(int j = meshMaterial.firstVertex() / 3; j <= meshMaterial.lastVertex() / 3; j++) {
-				for(int k : new int[] {0,1,2}) {
-					int i = j*3 + k;
-					vertex.set(mesh.getVertices().get(i * 3 + 0), mesh.getVertices().get(i * 3 + 1), mesh.getVertices().get(i * 3 + 2), 1.0f);
-					normal.set(mesh.getNormals().get(i * 3 + 0), mesh.getNormals().get(i * 3 + 1), mesh.getNormals().get(i * 3 + 2), 1.0f);
-					
+
+		for (MeshMaterial meshMaterial : mesh.getMaterials()) {
+			// System.out.println("material:"+simplify(meshMaterial.getAlbedoTextureName()));
+			baker.usingTexture(
+					store.parent().textures().getVoxelTexture(simplify(meshMaterial.getAlbedoTextureName())));
+			baker.setMaterialFlags(
+					Byte.parseByte(cell.getVoxel().getDefinition().resolveProperty("materialFlags", "0")));
+			baker.setVoxelLight((byte) cell.getSunlight(), (byte) cell.getBlocklight(), (byte) 0);
+
+			for (int j = meshMaterial.firstVertex() / 3; j <= meshMaterial.lastVertex() / 3; j++) {
+				for (int k : new int[] { 0, 1, 2 }) {
+					int i = j * 3 + k;
+					vertex.set(mesh.getVertices().get(i * 3 + 0), mesh.getVertices().get(i * 3 + 1),
+							mesh.getVertices().get(i * 3 + 2), 1.0f);
+					normal.set(mesh.getNormals().get(i * 3 + 0), mesh.getNormals().get(i * 3 + 1),
+							mesh.getNormals().get(i * 3 + 2), 1.0f);
+
 					matrix.transform(vertex);
 					matrix.transform(normal);
-					
+
 					baker.beginVertex(x + vertex.x, y + vertex.y, z + vertex.z);
 					baker.setNormal(normal.x, normal.y, normal.z);
-					//baker.beginVertex(x + mesh.getVertices().get(i * 3 + 0), y + mesh.getVertices().get(i * 3 + 1), z + mesh.getVertices().get(i * 3 + 2));
-					//baker.setNormal(mesh.getNormals().get(i * 3 + 0), mesh.getNormals().get(i * 3 + 1), mesh.getNormals().get(i * 3 + 2));
-					baker.setTextureCoordinates(mesh.getTextureCoordinates().get(i * 2 + 0), mesh.getTextureCoordinates().get(i * 2 + 1));
+					// baker.beginVertex(x + mesh.getVertices().get(i * 3 + 0), y +
+					// mesh.getVertices().get(i * 3 + 1), z + mesh.getVertices().get(i * 3 + 2));
+					// baker.setNormal(mesh.getNormals().get(i * 3 + 0), mesh.getNormals().get(i * 3
+					// + 1), mesh.getNormals().get(i * 3 + 2));
+					baker.setTextureCoordinates(mesh.getTextureCoordinates().get(i * 2 + 0),
+							mesh.getTextureCoordinates().get(i * 2 + 1));
 					baker.endVertex();
 				}
 			}

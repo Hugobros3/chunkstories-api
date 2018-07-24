@@ -128,7 +128,7 @@ public class PacketEntity extends PacketWorld {
 		// Loop throught all components
 		while (componentId >= 0) {
 			Trait trait = entity.traits.byId()[componentId];
-			if(trait instanceof TraitSerializable) {
+			if (trait instanceof TraitSerializable) {
 				((TraitSerializable) trait).tryPull(sender, in);
 			}
 			componentId = in.readInt();

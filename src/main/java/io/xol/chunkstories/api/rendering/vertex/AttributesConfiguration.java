@@ -11,10 +11,10 @@ import java.util.Map;
 /**
  * Abstracts the vertex shader inputs
  */
-public interface AttributesConfiguration
-{
+public interface AttributesConfiguration {
 	/**
 	 * Returns the currently bound attributes
+	 * 
 	 * @return
 	 */
 	public Map<String, AttributeSource> getBoundAttributes();

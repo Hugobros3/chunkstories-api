@@ -10,20 +10,17 @@ import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.world.World;
 
-public class WorldTickEvent extends Event
-{
+public class WorldTickEvent extends Event {
 	// Every event class has to have this
 
 	static EventListeners listeners = new EventListeners(WorldTickEvent.class);
 
 	@Override
-	public EventListeners getListeners()
-	{
+	public EventListeners getListeners() {
 		return listeners;
 	}
 
-	public static EventListeners getListenersStatic()
-	{
+	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
 
@@ -31,13 +28,11 @@ public class WorldTickEvent extends Event
 
 	private World world;
 
-	public WorldTickEvent(World world)
-	{
+	public WorldTickEvent(World world) {
 		this.world = world;
 	}
 
-	public World getWorld()
-	{
+	public World getWorld() {
 		return world;
 	}
 }

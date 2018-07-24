@@ -22,13 +22,13 @@ public class NullItemRenderer extends ItemRenderer {
 	@Override
 	public void renderItemInInventory(RenderingInterface renderingInterface, ItemPile pile, float f, float g,
 			int scaling) {
-		//Do absolutely nothing
+		// Do absolutely nothing
 	}
 
 	@Override
 	public void renderItemInWorld(RenderingInterface renderingInterface, ItemPile pile, World world, Location location,
 			Matrix4f transformation) {
-		//Do absolutely nothing
+		// Do absolutely nothing
 	}
 
 }

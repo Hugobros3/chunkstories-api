@@ -18,10 +18,9 @@ public class TraitCreativeMode extends TraitSerializableBoolean {
 	public static final WorldModificationCause CREATIVE_MODE = new WorldModificationCause() {
 
 		@Override
-		public String getName()
-		{
+		public String getName() {
 			return "Creative Mode";
 		}
-		
-};
+
+	};
 }

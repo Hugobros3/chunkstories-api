@@ -11,17 +11,19 @@ import org.joml.Vector3fc;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.shader.Shader;
 
-/** Takes care of rendering the 'background' of a frame, typically using some sort of skybox or fancy props.
- *  Is also responsible to setup shader parameters, such as fog
+/**
+ * Takes care of rendering the 'background' of a frame, typically using some
+ * sort of skybox or fancy props. Is also responsible to setup shader
+ * parameters, such as fog
  */
 public interface SkyRenderer {
-	
+
 	public void render(RenderingInterface renderer);
-	
+
 	public void setupShader(Shader shader);
 
 	public Vector3fc getSunPosition();
-	
+
 	/** Returns daytime (0-10'000) */
 	public float getDayTime();
 }

@@ -20,8 +20,7 @@ import java.io.IOException;
 /**
  * The server just tells the time
  */
-public class PacketTime extends PacketWorld
-{
+public class PacketTime extends PacketWorld {
 	public long time;
 	public float overcastFactor;
 
@@ -30,19 +29,17 @@ public class PacketTime extends PacketWorld
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
-	{
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
+			throws IOException {
 		out.writeLong(time);
 		out.writeFloat(overcastFactor);
 	}
 
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext context) throws IOException
-	{
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext context) throws IOException {
 		time = in.readLong();
 		overcastFactor = in.readFloat();
-		
-		if(!context.isServer() && world != null)
-		{	
+
+		if (!context.isServer() && world != null) {
 			world.setTime(time);
 			world.setWeather(overcastFactor);
 		}

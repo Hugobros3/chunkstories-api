@@ -9,18 +9,17 @@ package io.xol.chunkstories.api.rendering.target;
 /**
  * A 2d surface we can draw stuff to
  */
-public interface RenderTarget
-{
+public interface RenderTarget {
 	public void resize(int width, int height);
-	
+
 	public int getWidth();
-	
+
 	public int getHeight();
 
 	public boolean destroy();
-	
-	//Internal.
+
+	// Internal.
 	public void attachAsDepth();
-	
+
 	public void attachAsColor(int colorAttachement);
 }

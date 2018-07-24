@@ -11,13 +11,12 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 /**
  * Someone we can send packets to
  */
-public interface PacketDestinator extends StreamTarget
-{
+public interface PacketDestinator extends StreamTarget {
 	public void pushPacket(Packet packet);
-	
+
 	public void flush();
-	
+
 	public void disconnect();
-	
+
 	public void disconnect(String disconnectionReason);
 }

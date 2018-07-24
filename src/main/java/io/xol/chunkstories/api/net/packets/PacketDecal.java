@@ -23,8 +23,7 @@ import io.xol.chunkstories.api.net.PacketWorld;
 import io.xol.chunkstories.api.world.World;
 
 /** Simply sends a decal to the client to be drawn */
-public class PacketDecal extends PacketWorld
-{
+public class PacketDecal extends PacketWorld {
 	private String decalName;
 	private Vector3dc position;
 	private Vector3dc orientation;
@@ -33,7 +32,7 @@ public class PacketDecal extends PacketWorld
 	public PacketDecal(World world) {
 		super(world);
 	}
-	
+
 	public PacketDecal(World world, String decalName, Vector3dc position, Vector3dc orientation, Vector3dc size) {
 		super(world);
 		this.decalName = decalName;
@@ -43,8 +42,8 @@ public class PacketDecal extends PacketWorld
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
-	{
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
+			throws IOException {
 		out.writeUTF(decalName);
 		out.writeDouble(position.x());
 		out.writeDouble(position.y());
@@ -58,8 +57,8 @@ public class PacketDecal extends PacketWorld
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
-	{
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
+			throws IOException, PacketProcessingException {
 		decalName = in.readUTF();
 		Vector3d position = new Vector3d();
 		position.x = (in.readDouble());
@@ -75,10 +74,9 @@ public class PacketDecal extends PacketWorld
 		size.x = (in.readDouble());
 		size.y = (in.readDouble());
 		size.z = (in.readDouble());
-		
-		if(processor instanceof ClientPacketsProcessor)
-		{
-			ClientPacketsProcessor cpp = (ClientPacketsProcessor)processor;
+
+		if (processor instanceof ClientPacketsProcessor) {
+			ClientPacketsProcessor cpp = (ClientPacketsProcessor) processor;
 			cpp.getContext().getDecalsManager().drawDecal(position, orientation, size, decalName);
 		}
 	}

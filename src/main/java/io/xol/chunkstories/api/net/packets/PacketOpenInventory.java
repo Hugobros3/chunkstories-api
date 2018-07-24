@@ -23,36 +23,37 @@ import io.xol.chunkstories.api.net.PacketSendingContext;
 import io.xol.chunkstories.api.net.PacketWorld;
 import io.xol.chunkstories.api.world.World;
 
-public class PacketOpenInventory extends PacketWorld
-{
+public class PacketOpenInventory extends PacketWorld {
 	protected Inventory inventory;
-	
+
 	public PacketOpenInventory(World world) {
 		super(world);
 	}
-	
+
 	public PacketOpenInventory(World world, Inventory inventory) {
 		super(world);
 		this.inventory = inventory;
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
-	{
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
+			throws IOException {
 		InventoryTranslator.writeInventoryHandle(out, inventory);
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
-	{
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
+			throws IOException, PacketProcessingException {
 		inventory = InventoryTranslator.obtainInventoryHandle(in, processor);
-		if(processor.getContext() instanceof ClientInterface) {
+		if (processor.getContext() instanceof ClientInterface) {
 			ClientInterface client = (ClientInterface) processor.getContext();
 			Entity currentControlledEntity = client.getPlayer().getControlledEntity();
-			
-			Inventory inventory2 = currentControlledEntity != null ? currentControlledEntity.traits.tryWith(TraitInventory.class, ei -> ei) : null;
-			
-			if(inventory2 != null)
+
+			Inventory inventory2 = currentControlledEntity != null
+					? currentControlledEntity.traits.tryWith(TraitInventory.class, ei -> ei)
+					: null;
+
+			if (inventory2 != null)
 				client.openInventories(inventory2, inventory);
 			else
 				client.openInventories(inventory);

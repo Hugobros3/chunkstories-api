@@ -8,7 +8,6 @@ package io.xol.chunkstories.api.rendering.effects;
 
 import org.joml.Vector3dc;
 
-public interface DecalsManager
-{
+public interface DecalsManager {
 	public void drawDecal(Vector3dc position, Vector3dc orientation, Vector3dc size, String decalName);
 }

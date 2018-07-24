@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.rendering;
 
-public class AttributeNotPresentException extends RuntimeException
-{
+public class AttributeNotPresentException extends RuntimeException {
 
 	private static final long serialVersionUID = 1953400588457304691L;
 

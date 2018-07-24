@@ -16,9 +16,9 @@ public interface PacketSendingContext {
 
 	/** Whoever are we sending packets to ? */
 	public PacketDestinator getInterlocutor();
-	
+
 	public GameContext getContext();
-	
+
 	public World getWorld();
 
 	/** Returns the logger specific to packets processing events */

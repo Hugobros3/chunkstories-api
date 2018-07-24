@@ -23,17 +23,18 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 	public void tick(LocalPlayer controller) {
 		if (!controller.hasFocus())
 			return;
-		
-		//Flying resets the entity velocity, if it has one
+
+		// Flying resets the entity velocity, if it has one
 		entity.traits.with(TraitVelocity.class, ev -> ev.setVelocity(0, 0, 0));
 
 		TraitRotation entityRotation = entity.traits.get(TraitRotation.class);
-		if(entityRotation == null)
-			return; //you must be able to rotate to fly
-		
+		if (entityRotation == null)
+			return; // you must be able to rotate to fly
+
 		TraitCollidable entityCollisions = entity.traits.get(TraitCollidable.class);
-		boolean noclip = entityCollisions == null | this.noclip; //not having collision on an entity means it's always in noclip mode
-		
+		boolean noclip = entityCollisions == null | this.noclip; // not having collision on an entity means it's always
+																	// in noclip mode
+
 		float camspeed = flySpeed;
 		if (controller.getInputsManager().getInputByName("flyReallyFast").isPressed())
 			camspeed *= 8 * 5f;
@@ -44,17 +45,21 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			float a = (float) ((-entityRotation.getHorizontalRotation()) / 180f * Math.PI);
 			float b = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (noclip)
-				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
+						Math.cos(a) * camspeed * Math.cos(b));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
+						Math.cos(a) * camspeed * Math.cos(b));
 		}
 		if (controller.getInputsManager().getInputByName("forward").isPressed()) {
-			float a = (float) ((180 -entityRotation.getHorizontalRotation()) / 180f * Math.PI);
+			float a = (float) ((180 - entityRotation.getHorizontalRotation()) / 180f * Math.PI);
 			float b = (float) ((-entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (noclip)
-				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
+						Math.cos(a) * camspeed * Math.cos(b));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
+						Math.cos(a) * camspeed * Math.cos(b));
 		}
 		if (controller.getInputsManager().getInputByName("right").isPressed()) {
 			float a = (float) ((-entityRotation.getHorizontalRotation() - 90) / 180f * Math.PI);

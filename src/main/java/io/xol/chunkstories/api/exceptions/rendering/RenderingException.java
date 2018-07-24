@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.rendering;
 
-public abstract class RenderingException extends RuntimeException
-{
+public abstract class RenderingException extends RuntimeException {
 	private static final long serialVersionUID = -909127493059626111L;
 
 }

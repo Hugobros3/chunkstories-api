@@ -9,7 +9,6 @@ package io.xol.chunkstories.api.item.interfaces;
 /**
  * An interface for items that modify the FOV
  */
-public interface ItemZoom
-{
+public interface ItemZoom {
 	public float getZoomFactor();
 }

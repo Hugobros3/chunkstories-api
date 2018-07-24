@@ -6,7 +6,6 @@
 
 package io.xol.chunkstories.api.events;
 
-public interface Listener
-{
-	
+public interface Listener {
+
 }

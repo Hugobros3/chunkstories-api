@@ -21,22 +21,22 @@ public class Layer {
 	protected final GameWindow gameWindow;
 	@Nullable
 	protected Layer parentLayer;
-	
+
 	protected float xPosition, yPosition;
 	protected float width, height;
-	
+
 	protected List<GuiElement> elements = new LinkedList<GuiElement>();
 	@Nullable
 	protected FocusableGuiElement focusedElement = null;
-	
+
 	/** parentLayer might be null, but gameWindow can't be ! */
 	public Layer(GameWindow gameWindow, @Nullable Layer parentLayer) {
 		this.gameWindow = gameWindow;
 		this.parentLayer = parentLayer;
-		
-		if(gameWindow == null)
+
+		if (gameWindow == null)
 			throw new RuntimeException("Fuck off");
-		
+
 		xPosition = 0;
 		yPosition = 0;
 		width = gameWindow.getWidth();
@@ -51,51 +51,54 @@ public class Layer {
 	public Layer getParentLayer() {
 		return parentLayer;
 	}
-	
-	/** Draws to the screen (preferably using the defined borders!) 
-	 *  You may render the parent layer to have an overlay effect, but it's not mandatory. */
-	public void render(RenderingInterface renderer) {
-		
-	}
-	
-	public boolean handleInput(Input input) {
-		if(focusedElement != null)
-			if(focusedElement.handleInput(input))
-				return true;
-		
-		if(input instanceof MouseButton) {
-			MouseButton mb = (MouseButton)input;
-			//System.out.println(mb.getMouse().getCursorX());
-			for(GuiElement ge : elements) {
-				if(ge.isMouseOver()) {
 
-					if(ge instanceof FocusableGuiElement)
+	/**
+	 * Draws to the screen (preferably using the defined borders!) You may render
+	 * the parent layer to have an overlay effect, but it's not mandatory.
+	 */
+	public void render(RenderingInterface renderer) {
+
+	}
+
+	public boolean handleInput(Input input) {
+		if (focusedElement != null)
+			if (focusedElement.handleInput(input))
+				return true;
+
+		if (input instanceof MouseButton) {
+			MouseButton mb = (MouseButton) input;
+			// System.out.println(mb.getMouse().getCursorX());
+			for (GuiElement ge : elements) {
+				if (ge.isMouseOver()) {
+
+					if (ge instanceof FocusableGuiElement)
 						this.setFocusedElement((FocusableGuiElement) ge);
-					
-					if(ge instanceof ClickableGuiElement && ((ClickableGuiElement) ge).handleClick(mb))
+
+					if (ge instanceof ClickableGuiElement && ((ClickableGuiElement) ge).handleClick(mb))
 						return true;
 				}
 			}
 		}
-		
-		//Forward to parent if not handled
-		/*Layer parent = this.parentLayer;
-		if(parent != null)
-			return parent.handleInput(input);*/
-		
+
+		// Forward to parent if not handled
+		/*
+		 * Layer parent = this.parentLayer; if(parent != null) return
+		 * parent.handleInput(input);
+		 */
+
 		return false;
 	}
-	
+
 	public boolean handleTextInput(char c) {
-		if(focusedElement != null && focusedElement instanceof InputText)
+		if (focusedElement != null && focusedElement instanceof InputText)
 			return ((InputText) focusedElement).handleTextInput(c);
-		
+
 		return false;
 	}
-	
+
 	/** Frees and closes ressources */
 	public void destroy() {
-		
+
 	}
 
 	public float getxPosition() {
@@ -140,20 +143,20 @@ public class Layer {
 	}
 
 	public final Layer getRootLayer() {
-		if(parentLayer == null)
+		if (parentLayer == null)
 			return this;
 		else
 			return parentLayer.getRootLayer();
 	}
 
 	public void onResize(int newWidth, int newHeight) {
-		if(parentLayer != null)
+		if (parentLayer != null)
 			parentLayer.onResize(newWidth, newHeight);
-		
+
 		this.setWidth(newWidth);
 		this.setHeight(newHeight);
 	}
-	
+
 	public int getGuiScale() {
 		return gameWindow.getGuiScale();
 	}

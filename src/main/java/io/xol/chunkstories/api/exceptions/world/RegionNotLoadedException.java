@@ -37,5 +37,4 @@ public class RegionNotLoadedException extends WorldException {
 		return "Region at " + regionX + ":" + regionY + ":" + regionZ + "was not loaded";
 	}
 
-	
 }

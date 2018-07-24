@@ -6,9 +6,11 @@
 
 package io.xol.chunkstories.api.rendering.target;
 
-/** A semi-obvious proxy for FBO configuration in OGL, abstracting it better would be hard, and 
- * it is'nt that often you find yourself messing with framebuffer output, so isn't that a big deal... is it ?
- * Created using a RenderTargetManager.
+/**
+ * A semi-obvious proxy for FBO configuration in OGL, abstracting it better
+ * would be hard, and it is'nt that often you find yourself messing with
+ * framebuffer output, so isn't that a big deal... is it ? Created using a
+ * RenderTargetManager.
  */
 public interface RenderTargetsConfiguration {
 
@@ -24,6 +26,6 @@ public interface RenderTargetsConfiguration {
 	/** Resizes the framebuffer ( actually resizes it's associated textures ) */
 	public void resize(int width, int height);
 
-	/** Destroys the configuration.*/
+	/** Destroys the configuration. */
 	public void destroy();
 }

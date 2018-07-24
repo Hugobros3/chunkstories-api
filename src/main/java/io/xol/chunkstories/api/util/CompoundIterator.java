@@ -15,30 +15,30 @@ public class CompoundIterator<T> implements IterableIterator<T> {
 	private final Iterator<Iterator<T>> iteratorOfiterators;
 	@Nullable
 	private Iterator<T> currentIterator = null;
-	
+
 	public CompoundIterator(Collection<Iterator<T>> listOfIterators) {
 		this.iteratorOfiterators = listOfIterators.iterator();
 	}
-	
+
 	@Override
 	public boolean hasNext() {
-		
-		while(true) {
-			if(currentIterator == null || !currentIterator.hasNext()) {
-				if(iteratorOfiterators.hasNext())
+
+		while (true) {
+			if (currentIterator == null || !currentIterator.hasNext()) {
+				if (iteratorOfiterators.hasNext())
 					currentIterator = iteratorOfiterators.next();
 				else
 					return false;
 			}
-			
-			if(currentIterator.hasNext())
+
+			if (currentIterator.hasNext())
 				return true;
 		}
 	}
 
 	@Override
 	public T next() {
-		//No failsafe yet if someone spams next() without checking hasNext()
+		// No failsafe yet if someone spams next() without checking hasNext()
 		return currentIterator.next();
 	}
 
@@ -46,5 +46,5 @@ public class CompoundIterator<T> implements IterableIterator<T> {
 	public void remove() {
 		currentIterator.remove();
 	}
-	
+
 }

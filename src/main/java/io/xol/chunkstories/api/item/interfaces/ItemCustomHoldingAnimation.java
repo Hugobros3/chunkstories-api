@@ -7,10 +7,9 @@
 package io.xol.chunkstories.api.item.interfaces;
 
 /** An interface for items that provide their own draw animation */
-public interface ItemCustomHoldingAnimation
-{
+public interface ItemCustomHoldingAnimation {
 	public String getCustomAnimationName();
-	
+
 	public default double transformAnimationTime(double originalTime) {
 		return originalTime;
 	}

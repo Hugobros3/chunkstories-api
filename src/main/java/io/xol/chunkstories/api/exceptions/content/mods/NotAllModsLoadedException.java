@@ -8,25 +8,22 @@ package io.xol.chunkstories.api.exceptions.content.mods;
 
 import java.util.Collection;
 
-public class NotAllModsLoadedException extends Exception
-{
+public class NotAllModsLoadedException extends Exception {
 	Collection<ModLoadFailureException> failed;
-	
-	public NotAllModsLoadedException(Collection<ModLoadFailureException> failed)
-	{
+
+	public NotAllModsLoadedException(Collection<ModLoadFailureException> failed) {
 		this.failed = failed;
 	}
-	
-	public String getMessage()
-	{
+
+	public String getMessage() {
 		String message = "Some mods failed to load : \n";
-		
-		for(ModLoadFailureException e : failed)
+
+		for (ModLoadFailureException e : failed)
 			message += e.getMessage() + "\n";
-		
+
 		return message;
 	}
-	
+
 	/**
 	 * 
 	 */

@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.rendering;
 
-public class NotEnoughtTextureUnitsException extends RenderingException
-{
+public class NotEnoughtTextureUnitsException extends RenderingException {
 
 	/**
 	 * 

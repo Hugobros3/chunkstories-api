@@ -17,7 +17,7 @@ public abstract class RegionException extends WorldException {
 		super(region.getWorld());
 		this.region = region;
 	}
-	
+
 	public Region getRegion() {
 		return region;
 	}

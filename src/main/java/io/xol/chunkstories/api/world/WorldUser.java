@@ -9,7 +9,6 @@ package io.xol.chunkstories.api.world;
 /**
  * A world user requires chunks, regions and summaries to be kept in memory
  */
-public interface WorldUser
-{
-	
+public interface WorldUser {
+
 }

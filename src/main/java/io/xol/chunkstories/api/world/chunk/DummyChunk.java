@@ -18,66 +18,56 @@ import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.cell.DummyCell;
 import io.xol.chunkstories.api.world.region.Region;
 
-/** A fake chunk, for all the non-reality fans 
- * Also, might be usefull when dealing with blocks all by themselves. */
-public class DummyChunk implements Chunk
-{
+/**
+ * A fake chunk, for all the non-reality fans Also, might be usefull when
+ * dealing with blocks all by themselves.
+ */
+public class DummyChunk implements Chunk {
 	@Override
-	public World getWorld()
-	{
+	public World getWorld() {
 		return null;
 	}
 
 	@Override
-	public Region getRegion()
-	{
+	public Region getRegion() {
 		return null;
 	}
 
 	@Override
-	public int getChunkX()
-	{
+	public int getChunkX() {
 		return 0;
 	}
 
 	@Override
-	public int getChunkY()
-	{
+	public int getChunkY() {
 		return 0;
 	}
 
 	@Override
-	public int getChunkZ()
-	{
+	public int getChunkZ() {
 		return 0;
 	}
 
 	@Override
-	public boolean isAirChunk()
-	{
+	public boolean isAirChunk() {
 		return true;
 	}
 
 	@Override
-	public void destroy()
-	{
+	public void destroy() {
 	}
 
 	@Override
-	public IterableIterator<Entity> getEntitiesWithinChunk()
-	{
-		return new IterableIterator<Entity>()
-		{
+	public IterableIterator<Entity> getEntitiesWithinChunk() {
+		return new IterableIterator<Entity>() {
 
 			@Override
-			public boolean hasNext()
-			{
+			public boolean hasNext() {
 				return false;
 			}
 
 			@Override
-			public Entity next()
-			{
+			public Entity next() {
 				return null;
 			}
 
@@ -85,14 +75,12 @@ public class DummyChunk implements Chunk
 	}
 
 	@Override
-	public ChunkCell peek(Vector3dc location)
-	{
-		return peek((int)location.x(), (int)location.y(), (int)location.z());
+	public ChunkCell peek(Vector3dc location) {
+		return peek((int) location.x(), (int) location.y(), (int) location.z());
 	}
 
 	@Override
-	public ChunkCell peek(int x, int y, int z)
-	{
+	public ChunkCell peek(int x, int y, int z) {
 		return new DummyChunkCell(this, x, y, z);
 	}
 
@@ -113,15 +101,14 @@ public class DummyChunk implements Chunk
 			throw new UnsupportedOperationException("components()");
 		}
 	}
-	
+
 	@Override
 	public Voxel peekSimple(int x, int y, int z) {
-		
-		//Return zero by default
+
+		// Return zero by default
 		return null;
 	}
 
-	
 	@Override
 	public CellComponents components(int worldX, int worldY, int worldZ) {
 		throw new UnsupportedOperationException("components()");
@@ -164,25 +151,25 @@ public class DummyChunk implements Chunk
 	@Override
 	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pokeRaw(int x, int y, int z, int newVoxelData) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pokeRawSilently(int x, int y, int z, int newVoxelData) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

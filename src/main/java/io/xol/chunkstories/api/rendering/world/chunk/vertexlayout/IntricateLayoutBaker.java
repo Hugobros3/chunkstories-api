@@ -16,15 +16,18 @@ import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.VertexLayout;
 
-/** Defines the (default) layout used by the game when using the INTRICATE VertexLayout */
+/**
+ * Defines the (default) layout used by the game when using the INTRICATE
+ * VertexLayout
+ */
 public class IntricateLayoutBaker extends BaseLayoutBaker implements VoxelBakerHighPoly {
 
 	public static final VertexLayout IMPLEMENTS() {
 		return VertexLayout.INTRICATE;
 	}
-	
+
 	protected Vector3f currentVertex = new Vector3f();
-	
+
 	public IntricateLayoutBaker(ClientContent content, ByteBuffer output) {
 		super(content, output);
 	}
@@ -51,30 +54,32 @@ public class IntricateLayoutBaker extends BaseLayoutBaker implements VoxelBakerH
 
 	@Override
 	public void endVertex() {
-		if(output.capacity() - output.position() < IMPLEMENTS().bytesPerVertex)
+		if (output.capacity() - output.position() < IMPLEMENTS().bytesPerVertex)
 			return;
-		
-		//The first floats are just outputed bare
+
+		// The first floats are just outputed bare
 		output.putFloat(currentVertex.x);
 		output.putFloat(currentVertex.y);
 		output.putFloat(currentVertex.z);
-		
-		//Resolve the positions in the texture atlas ( as non-float shorts! )
+
+		// Resolve the positions in the texture atlas ( as non-float shorts! )
 		output.putShort((short) (currentTexture.getAtlasS() + texCoords.x * currentTexture.getAtlasOffset()));
 		output.putShort((short) (currentTexture.getAtlasT() + texCoords.y * currentTexture.getAtlasOffset()));
-		
-		//The voxel light data + another byte of padding
+
+		// The voxel light data + another byte of padding
 		output.put(blockLight);
 		output.put(sunLight);
 		output.put(ao);
 		output.put(materialFlags);
-		
-		//1010102 Layout, 3 float components ( precision overkill ? ) + 2-bit flag for wavy grass etc
+
+		// 1010102 Layout, 3 float components ( precision overkill ? ) + 2-bit flag for
+		// wavy grass etc
 		int n0 = BaseLayoutBaker.floatToUnsigned10Bit(normal.x);
 		int n1 = BaseLayoutBaker.floatToUnsigned10Bit(normal.y);
 		int n2 = BaseLayoutBaker.floatToUnsigned10Bit(normal.z);
 		output.putInt(BaseLayoutBaker.pack1010102(n0, n1, n2, wavyFlag ? 3 : 0));
-		
-		//TODO Investigate making use of the padding available and come up with a better default layout
+
+		// TODO Investigate making use of the padding available and come up with a
+		// better default layout
 	}
 }

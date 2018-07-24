@@ -16,16 +16,14 @@ public class OptionSetEvent extends CancellableEvent {
 	static EventListeners listeners = new EventListeners(WorldTickEvent.class);
 
 	@Override
-	public EventListeners getListeners()
-	{
+	public EventListeners getListeners() {
 		return listeners;
 	}
 
-	public static EventListeners getListenersStatic()
-	{
+	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
-	
+
 	final Option option;
 
 	public Option getOption() {

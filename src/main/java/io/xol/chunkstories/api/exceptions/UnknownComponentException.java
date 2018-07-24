@@ -8,26 +8,22 @@ package io.xol.chunkstories.api.exceptions;
 
 import io.xol.chunkstories.api.entity.Entity;
 
-public class UnknownComponentException extends PacketProcessingException
-{
+public class UnknownComponentException extends PacketProcessingException {
 	String message;
-	
-	public UnknownComponentException(int componentId, Class<? extends Entity> entityClass)
-	{
-		message = "The componentId : "+componentId+" for the entity "+entityClass.getName()+" was not found";
+
+	public UnknownComponentException(int componentId, Class<? extends Entity> entityClass) {
+		message = "The componentId : " + componentId + " for the entity " + entityClass.getName() + " was not found";
 	}
 
-	public UnknownComponentException(String componentName, Class<? extends Entity> entityClass)
-	{
-		message = "The componentId : "+componentName+" for the entity "+entityClass.getName()+" was not found";
+	public UnknownComponentException(String componentName, Class<? extends Entity> entityClass) {
+		message = "The componentId : " + componentName + " for the entity " + entityClass.getName() + " was not found";
 	}
 
 	@Override
-	public String getMessage()
-	{
+	public String getMessage() {
 		return message;
 	}
-	
+
 	/**
 	 * 
 	 */

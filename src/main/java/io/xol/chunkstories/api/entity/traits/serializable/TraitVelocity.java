@@ -68,7 +68,7 @@ public class TraitVelocity extends TraitSerializable {
 		this.velocity.add(delta);
 
 		this.pushComponentEveryoneButController();
-		
+
 		// Notify the controller in a special way so they don't experience lag
 		// due to being set back at a previous velocity
 		entity.traits.with(TraitController.class, ecc -> {

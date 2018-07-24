@@ -12,11 +12,11 @@ import java.util.Iterator;
 public class IterableIteratorWrapper<T> implements IterableIterator<T> {
 
 	final Iterator<T> iterator;
-	
+
 	public IterableIteratorWrapper(Iterator<T> iterator) {
 		this.iterator = iterator;
 	}
-	
+
 	@Override
 	public boolean hasNext() {
 		return iterator.hasNext();
@@ -35,5 +35,5 @@ public class IterableIteratorWrapper<T> implements IterableIterator<T> {
 	@Override
 	public Iterator<T> iterator() {
 		return iterator;
-	}	
+	}
 }

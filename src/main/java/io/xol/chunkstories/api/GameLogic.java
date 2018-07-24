@@ -9,16 +9,15 @@ package io.xol.chunkstories.api;
 import io.xol.chunkstories.api.plugin.PluginManager;
 import io.xol.chunkstories.api.plugin.Scheduler;
 
-public interface GameLogic
-{
+public interface GameLogic {
 	public GameContext getGameContext();
-	
+
 	public int getTargetFps();
-	
+
 	public double getSimulationFps();
-	
+
 	public double getSimulationSpeed();
-	
+
 	public PluginManager getPluginsManager();
 
 	public Scheduler getScheduler();

@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 public class TraitController extends TraitSerializable {
 	@Nullable
 	Controller controller = null;
-	
+
 	public TraitController(Entity entity) {
 		super(entity);
 	}
@@ -82,7 +82,7 @@ public class TraitController extends TraitSerializable {
 		if (isControllerNotNull) {
 			long clientUUID = player.getUUID();
 			System.out.println("Entity " + entity + " is now under control of " + controllerUUID + " me=" + clientUUID);
-			
+
 			// This update tells us we are now in control of this entity
 			if (clientUUID == controllerUUID) {
 				// TODO sort out local hosted worlds properly ?

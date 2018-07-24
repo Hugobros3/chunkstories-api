@@ -15,43 +15,31 @@ import java.util.List;
 /**
  * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
  *
- * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
- * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
- * Better rank ordering method by Stefan Gustavson in 2012.
+ * Based on example code by Stefan Gustavson (stegu@itn.liu.se). Optimisations
+ * by Peter Eastman (peastman@drizzle.stanford.edu). Better rank ordering method
+ * by Stefan Gustavson in 2012.
  *
  * This could be speeded up even further, but it's useful as it is.
  *
  * Version 2012-03-09
  *
- * This code was placed in the public domain by its original author,
- * Stefan Gustavson. You may use it as you see fit, but
- * attribution is appreciated.
+ * This code was placed in the public domain by its original author, Stefan
+ * Gustavson. You may use it as you see fit, but attribution is appreciated.
  *
  */
-public class SeededSimplexNoiseGenerator
-{
-	private Grad grad3[] = { new Grad(1, 1, 0), new Grad(-1, 1, 0),
-			new Grad(1, -1, 0), new Grad(-1, -1, 0), new Grad(1, 0, 1),
-			new Grad(-1, 0, 1), new Grad(1, 0, -1), new Grad(-1, 0, -1),
-			new Grad(0, 1, 1), new Grad(0, -1, 1), new Grad(0, 1, -1),
-			new Grad(0, -1, -1) };
+public class SeededSimplexNoiseGenerator {
+	private Grad grad3[] = { new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0),
+			new Grad(1, 0, 1), new Grad(-1, 0, 1), new Grad(1, 0, -1), new Grad(-1, 0, -1), new Grad(0, 1, 1),
+			new Grad(0, -1, 1), new Grad(0, 1, -1), new Grad(0, -1, -1) };
 
-	private Grad grad4[] = { new Grad(0, 1, 1, 1), new Grad(0, 1, 1, -1),
-			new Grad(0, 1, -1, 1), new Grad(0, 1, -1, -1),
-			new Grad(0, -1, 1, 1), new Grad(0, -1, 1, -1),
-			new Grad(0, -1, -1, 1), new Grad(0, -1, -1, -1),
-			new Grad(1, 0, 1, 1), new Grad(1, 0, 1, -1), new Grad(1, 0, -1, 1),
-			new Grad(1, 0, -1, -1), new Grad(-1, 0, 1, 1),
-			new Grad(-1, 0, 1, -1), new Grad(-1, 0, -1, 1),
-			new Grad(-1, 0, -1, -1), new Grad(1, 1, 0, 1),
-			new Grad(1, 1, 0, -1), new Grad(1, -1, 0, 1),
-			new Grad(1, -1, 0, -1), new Grad(-1, 1, 0, 1),
-			new Grad(-1, 1, 0, -1), new Grad(-1, -1, 0, 1),
-			new Grad(-1, -1, 0, -1), new Grad(1, 1, 1, 0),
-			new Grad(1, 1, -1, 0), new Grad(1, -1, 1, 0),
-			new Grad(1, -1, -1, 0), new Grad(-1, 1, 1, 0),
-			new Grad(-1, 1, -1, 0), new Grad(-1, -1, 1, 0),
-			new Grad(-1, -1, -1, 0) };
+	private Grad grad4[] = { new Grad(0, 1, 1, 1), new Grad(0, 1, 1, -1), new Grad(0, 1, -1, 1), new Grad(0, 1, -1, -1),
+			new Grad(0, -1, 1, 1), new Grad(0, -1, 1, -1), new Grad(0, -1, -1, 1), new Grad(0, -1, -1, -1),
+			new Grad(1, 0, 1, 1), new Grad(1, 0, 1, -1), new Grad(1, 0, -1, 1), new Grad(1, 0, -1, -1),
+			new Grad(-1, 0, 1, 1), new Grad(-1, 0, 1, -1), new Grad(-1, 0, -1, 1), new Grad(-1, 0, -1, -1),
+			new Grad(1, 1, 0, 1), new Grad(1, 1, 0, -1), new Grad(1, -1, 0, 1), new Grad(1, -1, 0, -1),
+			new Grad(-1, 1, 0, 1), new Grad(-1, 1, 0, -1), new Grad(-1, -1, 0, 1), new Grad(-1, -1, 0, -1),
+			new Grad(1, 1, 1, 0), new Grad(1, 1, -1, 0), new Grad(1, -1, 1, 0), new Grad(1, -1, -1, 0),
+			new Grad(-1, 1, 1, 0), new Grad(-1, 1, -1, 0), new Grad(-1, -1, 1, 0), new Grad(-1, -1, -1, 0) };
 
 	private short p[];
 	// To remove the need for index wrapping, float the permutation table
@@ -59,32 +47,26 @@ public class SeededSimplexNoiseGenerator
 	private short perm[] = new short[512];
 	private short permMod12[] = new short[512];
 
-	public SeededSimplexNoiseGenerator(String seed)
-	{
+	public SeededSimplexNoiseGenerator(String seed) {
 		// Init p array based on seed
 		p = new short[256];
 		List<Short> temp = new ArrayList<Short>();
-		for (short i = 0; i < 256; i++)
-		{
+		for (short i = 0; i < 256; i++) {
 			temp.add(i);
 		}
 		byte[] seedBytes = seed.getBytes();
-		for (int i = 0; i < 256; i++)
-		{
+		for (int i = 0; i < 256; i++) {
 			int select = seedBytes[i % seedBytes.length];
-			if (select < temp.size())
-			{
+			if (select < temp.size()) {
 				p[i] = temp.get(select);
 				temp.remove(select);
-			} else
-			{
+			} else {
 				p[i] = temp.get(0);
 				temp.remove(0);
 			}
 		}
 		// Init perm arrays
-		for (int i = 0; i < 512; i++)
-		{
+		for (int i = 0; i < 512; i++) {
 			perm[i] = p[i & 255];
 			permMod12[i] = (short) (perm[i] % 12);
 		}
@@ -99,35 +81,28 @@ public class SeededSimplexNoiseGenerator
 	private final float G4 = (float) ((5.0f - Math.sqrt(5.0)) / 20.0);
 
 	// This method is a *lot* faster than using (int)Math.floor(x)
-	private int fastfloor(float x)
-	{
+	private int fastfloor(float x) {
 		int xi = (int) x;
 		return x < xi ? xi - 1 : xi;
 	}
 
-	private float dot(Grad g, float x, float y)
-	{
+	private float dot(Grad g, float x, float y) {
 		return g.x * x + g.y * y;
 	}
 
-	private float dot(Grad g, float x, float y, float z)
-	{
+	private float dot(Grad g, float x, float y, float z) {
 		return g.x * x + g.y * y + g.z * z;
 	}
 
-	private float dot(Grad g, float x, float y, float z, float w)
-	{
+	private float dot(Grad g, float x, float y, float z, float w) {
 		return g.x * x + g.y * y + g.z * z + g.w * w;
 	}
 
-	public float looped_noise(float x, float y, float period)
-	{
+	public float looped_noise(float x, float y, float period) {
 		return looped_noise(x, y, period, 0, 0, 1, 1);
 	}
 
-	public float looped_noise3d(float x, float y, float z, float period,
-			float x1, float y1, float x2, float y2)
-	{
+	public float looped_noise3d(float x, float y, float z, float period, float x1, float y1, float x2, float y2) {
 		float s = x / period;
 		float t = y / period;
 
@@ -143,9 +118,7 @@ public class SeededSimplexNoiseGenerator
 		return (noise(nx, ny, z) + noise(nz, nw, z)) / 2;
 	}
 
-	public float looped_noise(float x, float y, float period, float x1,
-			float y1, float x2, float y2)
-	{
+	public float looped_noise(float x, float y, float period, float x1, float y1, float x2, float y2) {
 		// Hugo 'Gobrosse' Devillers 2015
 
 		float s = x / period;
@@ -170,14 +143,13 @@ public class SeededSimplexNoiseGenerator
 		 * float result = 0; result+=noise(x,y)*(period-x)*(period-y);
 		 * result+=noise(x-period,y)*(x)*(period-y);
 		 * result+=noise(x-period,y-period)*(x)*(y);
-		 * result+=noise(x,y-period)*(period-x)*(y); result/=period*period;
-		 * return result;
+		 * result+=noise(x,y-period)*(period-x)*(y); result/=period*period; return
+		 * result;
 		 */
 	}
 
 	// 2D simplex noise
-	public float noise(float xin, float yin)
-	{
+	public float noise(float xin, float yin) {
 		float n0, n1, n2; // Noise contributions from the three corners
 		// Skew the input space to determine which simplex cell we're in
 		float s = (xin + yin) * F2; // Hairy factor for 2D
@@ -192,19 +164,17 @@ public class SeededSimplexNoiseGenerator
 		// Determine which simplex we are in.
 		int i1, j1; // Offsets for second (middle) corner of simplex in (i,j)
 					// coords
-		if (x0 > y0)
-		{
+		if (x0 > y0) {
 			i1 = 1;
 			j1 = 0;
 		} // lower triangle, XY order: (0,0)->(1,0)->(1,1)
-		else
-		{
+		else {
 			i1 = 0;
 			j1 = 1;
 		} // upper triangle, YX order: (0,0)->(0,1)->(1,1)
-		// A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
-		// a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
-		// c = (3-sqrt(3))/6
+			// A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
+			// a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
+			// c = (3-sqrt(3))/6
 		float x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed
 									// coords
 		float y1 = y0 - j1 + G2;
@@ -221,8 +191,7 @@ public class SeededSimplexNoiseGenerator
 		float t0 = 0.5f - x0 * x0 - y0 * y0;
 		if (t0 < 0)
 			n0 = 0.0f;
-		else
-		{
+		else {
 			t0 *= t0;
 			n0 = t0 * t0 * dot(grad3[gi0], x0, y0); // (x,y) of grad3 used for
 													// 2D gradient
@@ -230,16 +199,14 @@ public class SeededSimplexNoiseGenerator
 		float t1 = 0.5f - x1 * x1 - y1 * y1;
 		if (t1 < 0)
 			n1 = 0.0f;
-		else
-		{
+		else {
 			t1 *= t1;
 			n1 = t1 * t1 * dot(grad3[gi1], x1, y1);
 		}
 		float t2 = 0.5f - x2 * x2 - y2 * y2;
 		if (t2 < 0)
 			n2 = 0.0f;
-		else
-		{
+		else {
 			t2 *= t2;
 			n2 = t2 * t2 * dot(grad3[gi2], x2, y2);
 		}
@@ -249,8 +216,7 @@ public class SeededSimplexNoiseGenerator
 	}
 
 	// 3D simplex noise
-	public float noise(float xin, float yin, float zin)
-	{
+	public float noise(float xin, float yin, float zin) {
 		float n0, n1, n2, n3; // Noise contributions from the four corners
 		// Skew the input space to determine which simplex cell we're in
 		float s = (xin + yin + zin) * F3; // Very nice and simple skew factor
@@ -271,10 +237,8 @@ public class SeededSimplexNoiseGenerator
 		int i1, j1, k1; // Offsets for second corner of simplex in (i,j,k)
 						// coords
 		int i2, j2, k2; // Offsets for third corner of simplex in (i,j,k) coords
-		if (x0 >= y0)
-		{
-			if (y0 >= z0)
-			{
+		if (x0 >= y0) {
+			if (y0 >= z0) {
 				i1 = 1;
 				j1 = 0;
 				k1 = 0;
@@ -282,8 +246,7 @@ public class SeededSimplexNoiseGenerator
 				j2 = 1;
 				k2 = 0;
 			} // X Y Z order
-			else if (x0 >= z0)
-			{
+			else if (x0 >= z0) {
 				i1 = 1;
 				j1 = 0;
 				k1 = 0;
@@ -291,8 +254,7 @@ public class SeededSimplexNoiseGenerator
 				j2 = 0;
 				k2 = 1;
 			} // X Z Y order
-			else
-			{
+			else {
 				i1 = 0;
 				j1 = 0;
 				k1 = 1;
@@ -300,10 +262,8 @@ public class SeededSimplexNoiseGenerator
 				j2 = 0;
 				k2 = 1;
 			} // Z X Y order
-		} else
-		{ // x0<y0
-			if (y0 < z0)
-			{
+		} else { // x0<y0
+			if (y0 < z0) {
 				i1 = 0;
 				j1 = 0;
 				k1 = 1;
@@ -311,8 +271,7 @@ public class SeededSimplexNoiseGenerator
 				j2 = 1;
 				k2 = 1;
 			} // Z Y X order
-			else if (x0 < z0)
-			{
+			else if (x0 < z0) {
 				i1 = 0;
 				j1 = 1;
 				k1 = 0;
@@ -320,8 +279,7 @@ public class SeededSimplexNoiseGenerator
 				j2 = 1;
 				k2 = 1;
 			} // Y Z X order
-			else
-			{
+			else {
 				i1 = 0;
 				j1 = 1;
 				k1 = 0;
@@ -359,32 +317,28 @@ public class SeededSimplexNoiseGenerator
 		float t0 = 0.6f - x0 * x0 - y0 * y0 - z0 * z0;
 		if (t0 < 0)
 			n0 = 0.0f;
-		else
-		{
+		else {
 			t0 *= t0;
 			n0 = t0 * t0 * dot(grad3[gi0], x0, y0, z0);
 		}
 		float t1 = 0.6f - x1 * x1 - y1 * y1 - z1 * z1;
 		if (t1 < 0)
 			n1 = 0.0f;
-		else
-		{
+		else {
 			t1 *= t1;
 			n1 = t1 * t1 * dot(grad3[gi1], x1, y1, z1);
 		}
 		float t2 = 0.6f - x2 * x2 - y2 * y2 - z2 * z2;
 		if (t2 < 0)
 			n2 = 0.0f;
-		else
-		{
+		else {
 			t2 *= t2;
 			n2 = t2 * t2 * dot(grad3[gi2], x2, y2, z2);
 		}
 		float t3 = 0.6f - x3 * x3 - y3 * y3 - z3 * z3;
 		if (t3 < 0)
 			n3 = 0.0f;
-		else
-		{
+		else {
 			t3 *= t3;
 			n3 = t3 * t3 * dot(grad3[gi3], x3, y3, z3);
 		}
@@ -394,8 +348,7 @@ public class SeededSimplexNoiseGenerator
 	}
 
 	// 4D simplex noise, better simplex rank ordering method 2012-03-09
-	public float noise(float x, float y, float z, float w)
-	{
+	public float noise(float x, float y, float z, float w) {
 
 		float n0, n1, n2, n3, n4; // Noise contributions from the five corners
 		// Skew the (x,y,z,w) space to determine which cell of 24 simplices
@@ -511,40 +464,35 @@ public class SeededSimplexNoiseGenerator
 		float t0 = 0.6f - x0 * x0 - y0 * y0 - z0 * z0 - w0 * w0;
 		if (t0 < 0)
 			n0 = 0.0f;
-		else
-		{
+		else {
 			t0 *= t0;
 			n0 = t0 * t0 * dot(grad4[gi0], x0, y0, z0, w0);
 		}
 		float t1 = 0.6f - x1 * x1 - y1 * y1 - z1 * z1 - w1 * w1;
 		if (t1 < 0)
 			n1 = 0.0f;
-		else
-		{
+		else {
 			t1 *= t1;
 			n1 = t1 * t1 * dot(grad4[gi1], x1, y1, z1, w1);
 		}
 		float t2 = 0.6f - x2 * x2 - y2 * y2 - z2 * z2 - w2 * w2;
 		if (t2 < 0f)
 			n2 = 0.0f;
-		else
-		{
+		else {
 			t2 *= t2;
 			n2 = t2 * t2 * dot(grad4[gi2], x2, y2, z2, w2);
 		}
 		float t3 = 0.6f - x3 * x3 - y3 * y3 - z3 * z3 - w3 * w3;
 		if (t3 < 0f)
 			n3 = 0.0f;
-		else
-		{
+		else {
 			t3 *= t3;
 			n3 = t3 * t3 * dot(grad4[gi3], x3, y3, z3, w3);
 		}
 		float t4 = 0.6f - x4 * x4 - y4 * y4 - z4 * z4 - w4 * w4;
 		if (t4 < 0f)
 			n4 = 0.0f;
-		else
-		{
+		else {
 			t4 *= t4;
 			n4 = t4 * t4 * dot(grad4[gi4], x4, y4, z4, w4);
 		}
@@ -554,19 +502,16 @@ public class SeededSimplexNoiseGenerator
 
 	// Inner class to speed upp gradient computations
 	// (array access is a lot slower than member access)
-	private class Grad
-	{
+	private class Grad {
 		float x, y, z, w;
 
-		Grad(float x, float y, float z)
-		{
+		Grad(float x, float y, float z) {
 			this.x = x;
 			this.y = y;
 			this.z = z;
 		}
 
-		Grad(float x, float y, float z, float w)
-		{
+		Grad(float x, float y, float z, float w) {
 			this.x = x;
 			this.y = y;
 			this.z = z;

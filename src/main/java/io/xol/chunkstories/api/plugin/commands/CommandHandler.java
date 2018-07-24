@@ -6,7 +6,6 @@
 
 package io.xol.chunkstories.api.plugin.commands;
 
-public interface CommandHandler
-{
+public interface CommandHandler {
 	public boolean handleCommand(CommandEmitter emitter, Command command, String[] arguments);
 }

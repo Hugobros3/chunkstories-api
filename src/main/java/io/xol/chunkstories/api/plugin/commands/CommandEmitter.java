@@ -7,10 +7,10 @@
 package io.xol.chunkstories.api.plugin.commands;
 
 /**
- * Can represent the server console, a server player, the local client in case of local plugins, and so on...
+ * Can represent the server console, a server player, the local client in case
+ * of local plugins, and so on...
  */
-public interface CommandEmitter
-{
+public interface CommandEmitter {
 	public String getName();
 
 	public void sendMessage(String msg);

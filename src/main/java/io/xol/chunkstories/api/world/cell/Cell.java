@@ -12,25 +12,25 @@ import javax.annotation.Nullable;
 
 public abstract class Cell implements CellData {
 	final protected int x, y, z;
-	
+
 	@Nullable
 	protected Voxel voxel;
 	protected int metadata, blocklight, sunlight;
-	
+
 	public Cell(int x, int y, int z, @Nullable Voxel voxel, int meta, int blocklight, int sunlight) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		
+
 		this.voxel = voxel;
 		this.metadata = meta;
 		this.blocklight = blocklight;
 		this.sunlight = sunlight;
-		
-		//if(!voxel.getName().equals("air"))
-		//	System.out.println(voxel.getName());
+
+		// if(!voxel.getName().equals("air"))
+		// System.out.println(voxel.getName());
 	}
-	
+
 	@Override
 	public int getX() {
 		return x;
@@ -77,12 +77,13 @@ public abstract class Cell implements CellData {
 	public void setSunlight(int sunlight) {
 		this.sunlight = sunlight;
 	}
-	
+
 	public void setBlocklight(int blocklight) {
 		this.blocklight = blocklight;
 	}
-	
+
 	public String toString() {
-		return "[Cell "+x+", "+y+", "+z+" "+voxel+" "+sunlight+":"+blocklight+":"+metadata+"]";
+		return "[Cell " + x + ", " + y + ", " + z + " " + voxel + " " + sunlight + ":" + blocklight + ":" + metadata
+				+ "]";
 	}
 }

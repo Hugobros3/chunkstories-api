@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions;
 
-public class IllegalUUIDChangeException extends RuntimeException
-{
+public class IllegalUUIDChangeException extends RuntimeException {
 
 	/**
 	 * 

@@ -10,10 +10,13 @@ import io.xol.chunkstories.api.content.Asset;
 import io.xol.chunkstories.api.exceptions.content.MeshLoadException;
 
 public interface MeshLoader {
-	
-	/** What extension does this loader provides support for ? (ie: .obj .col .dae .h3d ) */
+
+	/**
+	 * What extension does this loader provides support for ? (ie: .obj .col .dae
+	 * .h3d )
+	 */
 	public String getExtension();
-	
+
 	/** Returns a loaded Mesh or MultiPartMesh */
 	public Mesh loadMeshFromAsset(Asset a) throws MeshLoadException;
 }

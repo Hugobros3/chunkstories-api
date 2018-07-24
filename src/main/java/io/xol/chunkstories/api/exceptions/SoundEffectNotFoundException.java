@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions;
 
-public class SoundEffectNotFoundException extends Exception
-{
+public class SoundEffectNotFoundException extends Exception {
 
 	/**
 	 * 

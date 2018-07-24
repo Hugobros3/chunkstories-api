@@ -6,19 +6,16 @@
 
 package io.xol.chunkstories.api.exceptions.content.mods;
 
-public class ModNotFoundException extends ModLoadFailureException
-{
+public class ModNotFoundException extends ModLoadFailureException {
 	String modName;
-	
-	public ModNotFoundException(String modName)
-	{
+
+	public ModNotFoundException(String modName) {
 		super(null, null);
 		this.modName = modName;
 	}
 
-	public String getMessage()
-	{
-		return "Mod '"+modName+"' was not found.";
+	public String getMessage() {
+		return "Mod '" + modName + "' was not found.";
 	}
 
 	/**

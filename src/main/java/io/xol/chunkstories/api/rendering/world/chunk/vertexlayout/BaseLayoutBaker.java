@@ -17,9 +17,12 @@ import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderCo
 import io.xol.chunkstories.api.voxel.VoxelSide.Corners;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
-/** In a move to abstract away the buffer layout from mods, these classes now serve to link the abstract layout in the
- * VoxelBaker* classes to the actual layout used by the game, which may now change without breaking mods, since they won't rely
- * on knowing it explicitly to send their mesh data to the engine.
+/**
+ * In a move to abstract away the buffer layout from mods, these classes now
+ * serve to link the abstract layout in the VoxelBaker* classes to the actual
+ * layout used by the game, which may now change without breaking mods, since
+ * they won't rely on knowing it explicitly to send their mesh data to the
+ * engine.
  * 
  * These classes effectively replace RenderByteBuffer.java
  */
@@ -27,35 +30,35 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 
 	protected final ClientContent content;
 	protected final VoxelTexture defaultTexture;
-	
+
 	protected ByteBuffer output;
-	
+
 	/** If you want to make your own layout baker that does not use a ByteBuffer */
 	public BaseLayoutBaker(ClientContent content) {
 		this.content = content;
-		
+
 		this.defaultTexture = content.voxels().textures().getVoxelTexture("notex");
 		this.currentTexture = defaultTexture;
-		
-		//Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java
-		//this.reset();
+
+		// Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java
+		// this.reset();
 	}
-	
+
 	/** Used by subclasses */
 	BaseLayoutBaker(ClientContent content, ByteBuffer output) {
-		if(output == null)
+		if (output == null)
 			throw new NullPointerException();
-		
+
 		this.content = content;
 		this.output = output;
-		
+
 		this.defaultTexture = content.voxels().textures().getVoxelTexture("notex");
 		this.currentTexture = defaultTexture;
-		
-		//Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java
-		//this.reset();
+
+		// Leaving this in causes a NPE in IntricateLayoutBaker :( Silly Java
+		// this.reset();
 	}
-	
+
 	protected byte sunLight, blockLight, ao;
 	protected VoxelTexture currentTexture = null;
 	protected Vector2f texCoords = new Vector2f();
@@ -63,7 +66,7 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 	protected byte materialFlags;
 
 	protected boolean wavyFlag;
-	
+
 	public void reset() {
 		sunLight = 15;
 		blockLight = 0;
@@ -74,7 +77,7 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 		materialFlags = 0;
 		wavyFlag = false;
 	}
-	
+
 	@Override
 	public void setVoxelLight(byte sunLight, byte blockLight, byte ao) {
 		this.sunLight = (byte) (sunLight & 0xF);
@@ -88,15 +91,16 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 
 	@Override
 	public void setVoxelLightAuto(VoxelLighter voxelLighter, Corners corner) {
-		setVoxelLight(voxelLighter.getSunlightLevelForCorner(corner), voxelLighter.getBlocklightLevelForCorner(corner), voxelLighter.getAoLevelForCorner(corner));
+		setVoxelLight(voxelLighter.getSunlightLevelForCorner(corner), voxelLighter.getBlocklightLevelForCorner(corner),
+				voxelLighter.getAoLevelForCorner(corner));
 	}
 
 	@Override
 	public void usingTexture(VoxelTexture voxelTexture) {
-		if(voxelTexture == null) {
+		if (voxelTexture == null) {
 			throw new NullPointerException("usingTexture(null)!");
 		}
-		
+
 		this.currentTexture = voxelTexture;
 	}
 
@@ -118,38 +122,38 @@ public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 	public void changeOutput(ByteBuffer output) {
 		this.output = output;
 	}
-	
+
 	public static final byte floatToSignedByte(float f) {
 		int i = (int) (f * 128);
-		if(i > 127)
-			return (byte)127;
-		else if(i < -128)
-			return (byte)-128;
-		
+		if (i > 127)
+			return (byte) 127;
+		else if (i < -128)
+			return (byte) -128;
+
 		byte b = (byte) (i & 0xFF);
-		
+
 		return b;
 	}
-	
+
 	public static final int floatToUnsigned10Bit(float f) {
 		int i = (int) (512 + f * 512);
-		if(i > 1023)
+		if (i > 1023)
 			return 1023;
-		else if(i < 0)
+		else if (i < 0)
 			return 0;
-		
+
 		return i;
 	}
-	
+
 	public static final int pack1010102(int i0, int i1, int i2, int extra) {
 		int a = (i0) & 0x3FF;
 		int b = ((i1) & 0x3FF) << 10;
 		int c = ((i2) & 0x3FF) << 20;
-		
+
 		int d = (extra & 0x3) << 30;
 		return a | b | c | d;
 	}
-	
+
 	@Override
 	/** Actual dirty work goes here: the rest is just interface work */
 	public abstract void endVertex();

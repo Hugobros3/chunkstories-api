@@ -8,10 +8,8 @@ package io.xol.chunkstories.api.exceptions.content.mods;
 
 import io.xol.chunkstories.api.content.mods.ModInfo;
 
-public class MalformedModTxtException extends ModLoadFailureException
-{
-	public MalformedModTxtException(ModInfo ok)
-	{
+public class MalformedModTxtException extends ModLoadFailureException {
+	public MalformedModTxtException(ModInfo ok) {
 		super(null, "Malformed txt info file or  missing one.");
 	}
 

@@ -15,17 +15,17 @@ import io.xol.chunkstories.api.world.WorldUser;
 import javax.annotation.Nullable;
 
 /**
- * The Controller is a special subscriber that don't receive normal tracking updates and can push changes to the controlled entity
+ * The Controller is a special subscriber that don't receive normal tracking
+ * updates and can push changes to the controlled entity
  */
-public interface Controller extends Subscriber, WorldUser
-{
+public interface Controller extends Subscriber, WorldUser {
 	public InputsManager getInputsManager();
-	
+
 	@Nullable
 	public Entity getControlledEntity();
-	
+
 	public boolean setControlledEntity(@Nullable Entity entity);
-	
+
 	public SoundManager getSoundManager();
 
 	public ParticlesManager getParticlesManager();

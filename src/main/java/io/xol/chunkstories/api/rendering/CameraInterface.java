@@ -15,22 +15,21 @@ import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.shader.Shader;
 
 //TODO oh boi this is due for a refactor
-public interface CameraInterface
-{
+public interface CameraInterface {
 	public boolean isBoxInFrustrum(Vector3fc center, Vector3fc dimensions);
-	
+
 	public boolean isBoxInFrustrum(CollisionBox box);
 
 	public void setupShader(Shader shaderProgram);
 
 	public Vector3dc getCameraPosition();
-	
+
 	public void setCameraPosition(Vector3dc pos);
 
 	public Vector3fc getViewDirection();
-	
+
 	public float getFOV();
-	
+
 	public void setFOV(float fov);
 
 	public Vector3fc transform3DCoordinate(Vector3fc vector3f);
@@ -48,7 +47,7 @@ public interface CameraInterface
 	float getRotationX();
 
 	public void setupUsingScreenSize(int width, int height);
-	
+
 	public Matrix4f getProjectionMatrix4f();
 
 	public Matrix4f getProjectionMatrix4fInverted();

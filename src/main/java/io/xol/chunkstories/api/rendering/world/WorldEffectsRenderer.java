@@ -11,8 +11,7 @@ import io.xol.chunkstories.api.rendering.RenderingInterface;
 /**
  * Handles weather and other whole-world effects
  */
-public interface WorldEffectsRenderer
-{
+public interface WorldEffectsRenderer {
 	/**
 	 * Called when rendering a frame
 	 */

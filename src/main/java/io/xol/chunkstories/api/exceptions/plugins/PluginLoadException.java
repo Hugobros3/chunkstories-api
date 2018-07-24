@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.plugins;
 
-public abstract class PluginLoadException extends Exception
-{
+public abstract class PluginLoadException extends Exception {
 
 	/**
 	 * 

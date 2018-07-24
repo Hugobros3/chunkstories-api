@@ -45,7 +45,10 @@ import io.xol.chunkstories.api.world.cell.DummyCell;
 import io.xol.chunkstories.api.world.chunk.DummyChunk;
 
 // TODO : Explicit thumbnail rendering path in VoxelRenderer to avoid this mess ?
-/** Over-engineered way of turning VoxelRenderer output to render a voxel as an item */
+/**
+ * Over-engineered way of turning VoxelRenderer output to render a voxel as an
+ * item
+ */
 public class VoxelItemRenderer extends ItemRenderer {
 	final ClientContent content;
 
@@ -145,12 +148,14 @@ public class VoxelItemRenderer extends ItemRenderer {
 	}
 
 	@Override
-	public void renderItemInInventory(RenderingInterface renderer, ItemPile pile, float screenPositionX, float screenPositionY, int scaling) {
+	public void renderItemInInventory(RenderingInterface renderer, ItemPile pile, float screenPositionX,
+			float screenPositionY, int scaling) {
 
-		/*if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
-			fallbackRenderer.renderItemInInventory(renderer, pile, screenPositionX, screenPositionY, scaling);
-			return;
-		}*/
+		/*
+		 * if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
+		 * fallbackRenderer.renderItemInInventory(renderer, pile, screenPositionX,
+		 * screenPositionY, scaling); return; }
+		 */
 
 		int slotSize = 24 * scaling;
 		Shader program = renderer.useShader("inventory_blockmodel");
@@ -159,7 +164,8 @@ public class VoxelItemRenderer extends ItemRenderer {
 		renderer.setDepthTestMode(DepthTestMode.LESS_OR_EQUAL);
 
 		program.setUniform2f("screenSize", renderer.getWindow().getWidth(), renderer.getWindow().getHeight());
-		program.setUniform2f("dekal", screenPositionX + pile.getItem().getDefinition().getSlotsWidth() * slotSize / 2, screenPositionY + pile.getItem().getDefinition().getSlotsHeight() * slotSize / 2);
+		program.setUniform2f("dekal", screenPositionX + pile.getItem().getDefinition().getSlotsWidth() * slotSize / 2,
+				screenPositionY + pile.getItem().getDefinition().getSlotsHeight() * slotSize / 2);
 		program.setUniform1f("scaling", slotSize / 1.65f);
 
 		transformation.identity();
@@ -173,11 +179,11 @@ public class VoxelItemRenderer extends ItemRenderer {
 		if (voxel == null) {
 			int width = slotSize * pile.getItem().getDefinition().getSlotsWidth();
 			int height = slotSize * pile.getItem().getDefinition().getSlotsHeight();
-			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(screenPositionX, screenPositionY, width,
-					height, 0, 1, 1, 0, content.textures().getTexture("./items/icons/notex.png"), true, true, null);
+			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(screenPositionX, screenPositionY, width, height, 0, 1,
+					1, 0, content.textures().getTexture("./items/icons/notex.png"), true, true, null);
 			return;
 		}
-		
+
 		Texture2D texture = content.voxels().textures().getDiffuseAtlasTexture();
 		texture.setLinearFiltering(false);
 		renderer.bindAlbedoTexture(texture);
@@ -191,9 +197,9 @@ public class VoxelItemRenderer extends ItemRenderer {
 		renderer.bindMaterialTexture(materialTexture);
 
 		CellData fakeCell = new DummyCell(0, 0, 0, voxel, 0, 0, 0) {
-			
+
 			CellData air = new DummyCell(0, 1, 0, voxel.store().air(), 0, 0, 0);
-			
+
 			@Override
 			public int getBlocklight() {
 				return voxel.getEmittedLightLevel(this);
@@ -209,26 +215,28 @@ public class VoxelItemRenderer extends ItemRenderer {
 				return ((ItemVoxel) pile.getItem()).getVoxelMeta();
 			}
 		};
-		
+
 		renderFakeVoxel(renderer, fakeCell);
 	}
 
 	@Override
-	public void renderItemInWorld(RenderingInterface renderer, ItemPile pile, World world, Location location, Matrix4f handTransformation) {
+	public void renderItemInWorld(RenderingInterface renderer, ItemPile pile, World world, Location location,
+			Matrix4f handTransformation) {
 
-		/*if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
-			fallbackRenderer.renderItemInWorld(renderer, pile, world, location, handTransformation);
-			return;
-		}*/
+		/*
+		 * if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
+		 * fallbackRenderer.renderItemInWorld(renderer, pile, world, location,
+		 * handTransformation); return; }
+		 */
 
 		Voxel voxel = ((ItemVoxel) pile.getItem()).getVoxel();
 		if (voxel == null)
 			return;
 
 		CellData fakeCell = new DummyCell(0, 0, 0, voxel, 0, 0, 0) {
-			
+
 			CellData air = new DummyCell(0, 1, 0, voxel.store().air(), 0, 0, 0);
-			
+
 			@Override
 			public int getBlocklight() {
 				return voxel.getEmittedLightLevel(this);
@@ -251,13 +259,13 @@ public class VoxelItemRenderer extends ItemRenderer {
 		renderer.setObjectMatrix(handTransformation);
 
 		// Add a light only on the opaque pass
-		if (fakeCell.getBlocklight() > 0
-				&& renderer.getCurrentPass().name.contains("gBuffers")) {
+		if (fakeCell.getBlocklight() > 0 && renderer.getCurrentPass().name.contains("gBuffers")) {
 			Vector4f lightposition = new Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 
 			handTransformation.transform(lightposition);
 
-			Light heldBlockLight = new Light(new Vector3f(0.6f, 0.50f, 0.4f).mul(0.5f), new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()), 15f);
+			Light heldBlockLight = new Light(new Vector3f(0.6f, 0.50f, 0.4f).mul(0.5f),
+					new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()), 15f);
 			renderer.getLightsRenderer().queueLight(heldBlockLight);
 
 			// If we hold a light source, prepare the shader accordingly
@@ -277,7 +285,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 		Texture2D materialTexture = content.voxels().textures().getMaterialAtlasTexture();
 		materialTexture.setLinearFiltering(false);
 		renderer.bindMaterialTexture(materialTexture);
-		
+
 		renderFakeVoxel(renderer, fakeCell);
 	}
 
@@ -344,7 +352,7 @@ public class VoxelItemRenderer extends ItemRenderer {
 		if (voxelRenderer == null) {
 			voxelRenderer = cell.getVoxel().store().models().getVoxelModel("default");
 		}
-		
+
 		// Render into a dummy chunk ( containing only that one voxel we want )
 		voxelRenderer.bakeInto(chunkRenderer, bakingContext, new DummyChunk() {
 
@@ -361,11 +369,11 @@ public class VoxelItemRenderer extends ItemRenderer {
 		buffer.flip();
 		mesh.uploadData(buffer);
 	}
-	
+
 	/** Look for this configuration of the Voxel in the local cache */
 	private void renderFakeVoxel(RenderingInterface renderingContext, CellData cell) {
 		String hash = cell.getVoxel().getName() + cell.getMetaData();
-		
+
 		// If we did not already cache this variant of the model
 		if (!voxelItemsModelBuffer.containsKey(hash)) {
 			// Generous allocation TODO use JEmalloc here

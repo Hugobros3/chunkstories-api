@@ -24,14 +24,14 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 	protected String text;
 	protected Font font;
 	protected float fontScaler = 1.0f;
-	
+
 	@Nullable
 	protected Runnable action;
-	
+
 	public BaseButton(Layer layer, int x, int y, String text) {
 		this(layer, x, y, text, null);
 	}
-	
+
 	public BaseButton(Layer layer, int x, int y, int width, String text) {
 		this(layer, x, y, text, null);
 		this.setWidth(width);
@@ -45,28 +45,27 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 	public BaseButton(Layer layer, Font font, int x, int y, String text) {
 		super(layer);
 		this.font = font;
-		
+
 		this.xPosition = x;
 		this.yPosition = y;
 		this.text = text;
 		this.height = 22;
 	}
-	
+
 	protected int scale() {
 		return layer.getGuiScale();
 	}
 
-	public float getWidth()
-	{
+	public float getWidth() {
 		String localizedText = layer.getGameWindow().getClient().getContent().localization().localize(text);
 		float width = font.getWidth(localizedText) * fontScaler + 8;
-		
-		if(this.width > width)
+
+		if (this.width > width)
 			width = this.width;
-		
+
 		return (width) * scale();
 	}
-	
+
 	public float getHeight() {
 		return height * scale();
 	}
@@ -80,26 +79,28 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 	public void render(RenderingInterface renderer) {
 		float width = getWidth();
 		String localizedText = layer.getGameWindow().getClient().getContent().localization().localize(text);
-		
+
 		Texture2D buttonTexture = renderer.textures().getTexture("./textures/gui/scalableButton2.png");
 		if (isFocused() || isMouseOver())
 			buttonTexture = renderer.textures().getTexture("./textures/gui/scalableButtonOver2.png");
-			
+
 		buttonTexture.setLinearFiltering(false);
-		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, width, getHeight(), 4 * scale(), buttonTexture, 32, scale());
-		renderer.getFontRenderer().drawString(font, xPosition + 4 * scale(), yPosition, localizedText, fontScaler * scale(), new Vector4f(0,0,0,1));//new Vector4f(76/255f, 76/255f, 76/255f, 1));
+		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, width, getHeight(), 4 * scale(),
+				buttonTexture, 32, scale());
+		renderer.getFontRenderer().drawString(font, xPosition + 4 * scale(), yPosition, localizedText,
+				fontScaler * scale(), new Vector4f(0, 0, 0, 1));// new Vector4f(76/255f, 76/255f, 76/255f, 1));
 	}
 
 	@Override
 	public boolean handleClick(MouseButton mouseButton) {
-		if(!mouseButton.equals("mouse.left"))
+		if (!mouseButton.equals("mouse.left"))
 			return false;
-		
+
 		this.layer.getGameWindow().getClient().getSoundManager().playSoundEffect("./sounds/gui/gui_click2.ogg");
-		
-		if(this.action != null)
+
+		if (this.action != null)
 			this.action.run();
-		
+
 		return true;
 	}
 

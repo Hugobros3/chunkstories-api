@@ -10,34 +10,29 @@ import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.rendering.CameraInterface;
 
-public class CameraSetupEvent extends Event
-{
+public class CameraSetupEvent extends Event {
 	// Every event class has to have this
-	
+
 	static EventListeners listeners = new EventListeners(CameraSetupEvent.class);
-	
+
 	@Override
-	public EventListeners getListeners()
-	{
+	public EventListeners getListeners() {
 		return listeners;
 	}
-	
-	public static EventListeners getListenersStatic()
-	{
+
+	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
-	
+
 	// Specific event code
-	
+
 	private CameraInterface camera;
-	
-	public CameraSetupEvent(CameraInterface camera)
-	{
+
+	public CameraSetupEvent(CameraInterface camera) {
 		this.camera = camera;
 	}
-	
-	public CameraInterface getCamera()
-	{
+
+	public CameraInterface getCamera() {
 		return camera;
 	}
 }

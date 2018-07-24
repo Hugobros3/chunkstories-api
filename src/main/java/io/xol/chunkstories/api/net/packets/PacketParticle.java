@@ -24,13 +24,12 @@ import io.xol.chunkstories.api.world.World;
 
 import javax.annotation.Nullable;
 
-public class PacketParticle extends PacketWorld
-{
+public class PacketParticle extends PacketWorld {
 	private String particleName = "";
 	private Vector3dc position;
 	@Nullable
 	private Vector3dc velocity;
-	
+
 	public PacketParticle(World world) {
 		super(world);
 	}
@@ -43,15 +42,14 @@ public class PacketParticle extends PacketWorld
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException
-	{
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
+			throws IOException {
 		out.writeUTF(particleName);
 		out.writeDouble(position.x());
 		out.writeDouble(position.y());
 		out.writeDouble(position.z());
 		out.writeBoolean(velocity != null);
-		if (velocity != null)
-		{
+		if (velocity != null) {
 			out.writeDouble(velocity.x());
 			out.writeDouble(velocity.y());
 			out.writeDouble(velocity.z());
@@ -59,26 +57,25 @@ public class PacketParticle extends PacketWorld
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException
-	{
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
+			throws IOException, PacketProcessingException {
 		particleName = in.readUTF();
 		Vector3d position = new Vector3d();
 		position.x = (in.readDouble());
 		position.y = (in.readDouble());
 		position.z = (in.readDouble());
-		
+
 		Vector3d velocity = new Vector3d();
-		if(in.readBoolean())
-		{
+		if (in.readBoolean()) {
 			velocity.x = (in.readDouble());
 			velocity.y = (in.readDouble());
 			velocity.z = (in.readDouble());
 		}
-		
-		if(processor instanceof ClientPacketsProcessor)
-		{
-			ClientPacketsProcessor cpp = (ClientPacketsProcessor)processor;
-			cpp.getContext().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position, velocity);
+
+		if (processor instanceof ClientPacketsProcessor) {
+			ClientPacketsProcessor cpp = (ClientPacketsProcessor) processor;
+			cpp.getContext().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position,
+					velocity);
 		}
 	}
 }

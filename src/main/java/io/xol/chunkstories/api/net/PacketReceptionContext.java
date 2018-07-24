@@ -18,15 +18,15 @@ public interface PacketReceptionContext {
 
 	/** Whoever are we sending packets to ? */
 	public PacketSender getInterlocutor();
-	
+
 	public GameContext getContext();
-	
+
 	@Nullable
 	public World getWorld();
 
 	/** Returns the logger specific to packets processing events */
 	public Logger logger();
-	
+
 	/** A fast way to tell if we are a server */
 	public boolean isServer();
 }

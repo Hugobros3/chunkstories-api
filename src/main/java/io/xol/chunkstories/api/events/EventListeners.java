@@ -11,136 +11,118 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EventListeners
-{
+public class EventListeners {
 	RegisteredListener[] listenersBaked;
 	Set<RegisteredListener> unbaked = new HashSet<RegisteredListener>();
-	
+
 	Set<EventListeners> children = new HashSet<EventListeners>();
 	EventListeners[] childrenBaked;
-	
+
 	final String owningEventName;
-	
-	public EventListeners()
-	{
+
+	public EventListeners() {
 		owningEventName = "Anonymous event";
 		bake();
 		bakeChildren();
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public EventListeners(Class<? extends Event> eventClass)
-	{
+	public EventListeners(Class<? extends Event> eventClass) {
 		owningEventName = eventClass.getName();
-		System.out.println("Building EventListener for "+eventClass);
+		System.out.println("Building EventListener for " + eventClass);
 		Class<? extends Event> son = eventClass;
-		//EventListeners sonListener = this;
-		
+		// EventListeners sonListener = this;
+
 		try {
-			while(true) {
+			while (true) {
 				Class<?> dad = son.getSuperclass();
-				if(Event.class.isAssignableFrom(dad))
-				{
-					//Security
-					if(Event.class == dad || CancellableEvent.class == dad)
+				if (Event.class.isAssignableFrom(dad)) {
+					// Security
+					if (Event.class == dad || CancellableEvent.class == dad)
 						break;
-					
+
 					System.out.println("Found superclass " + dad);
-					
+
 					try {
 						Method m = dad.getMethod("getListenersStatic");
-					
+
 						Object o = m.invoke(null);
-						EventListeners daddyEars = (EventListeners)o;
-						
-						//Notice me daddy
+						EventListeners daddyEars = (EventListeners) o;
+
+						// Notice me daddy
 						daddyEars.declareChildren(this);
-						
-						//Oedipe time
+
+						// Oedipe time
 						son = (Class<? extends Event>) dad;
-					}
-					catch(NullPointerException npe) {
+					} catch (NullPointerException npe) {
 						System.out.println("Stopping inheritance lookup; stepped on NPE");
 						npe.printStackTrace();
 						break;
-					}
-					catch(NoSuchMethodException nsme) {
+					} catch (NoSuchMethodException nsme) {
 						System.out.println("Stopping inheritance lookup; stepped on NSME");
 						nsme.printStackTrace();
 						break;
 					}
-				}
-				else
-				{
+				} else {
 					break;
 				}
 			}
-		}
-		catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error while setting up events inheritance");
 		}
-		
+
 		bake();
-		bakeChildren();
-	}
-	
-	void declareChildren(EventListeners heyDad) {
-		children.add(heyDad);
-		
-		//Debug thingie
-		System.out.print("EventListener for "+ owningEventName + ", childrens = ");
-		for(EventListeners l : children)
-		{
-			System.out.print(l.owningEventName + ", ");
-		}
-		System.out.println();
-		
 		bakeChildren();
 	}
 
-	public void registerListener(RegisteredListener RegisteredListener)
-	{
+	void declareChildren(EventListeners heyDad) {
+		children.add(heyDad);
+
+		// Debug thingie
+		System.out.print("EventListener for " + owningEventName + ", childrens = ");
+		for (EventListeners l : children) {
+			System.out.print(l.owningEventName + ", ");
+		}
+		System.out.println();
+
+		bakeChildren();
+	}
+
+	public void registerListener(RegisteredListener RegisteredListener) {
 		unbaked.add(RegisteredListener);
 		bake();
 	}
-	
-	public void unRegisterListener(RegisteredListener RegisteredListener)
-	{
+
+	public void unRegisterListener(RegisteredListener RegisteredListener) {
 		unbaked.remove(RegisteredListener);
 		bake();
 	}
-	
-	private void bakeChildren()
-	{
+
+	private void bakeChildren() {
 		childrenBaked = new EventListeners[children.size()];
 		int i = 0;
-		for(EventListeners l : children)
-		{
+		for (EventListeners l : children) {
 			childrenBaked[i] = l;
 			i++;
 		}
 	}
-	
-	private void bake()
-	{
+
+	private void bake() {
 		listenersBaked = new RegisteredListener[unbaked.size()];
-		//TODO weight by priority
+		// TODO weight by priority
 		int i = 0;
-		for(RegisteredListener l : unbaked)
-		{
+		for (RegisteredListener l : unbaked) {
 			listenersBaked[i] = l;
 			i++;
 		}
 	}
 
-	public RegisteredListener[] getListeners()
-	{
+	public RegisteredListener[] getListeners() {
 		return listenersBaked;
 	}
 
-	public EventListeners[] getChildrens()
-	{
+	public EventListeners[] getChildrens() {
 		return childrenBaked;
 	}
 }

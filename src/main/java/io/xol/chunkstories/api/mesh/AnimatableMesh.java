@@ -15,8 +15,9 @@ public class AnimatableMesh extends Mesh {
 	protected final ByteBuffer boneIds; // Store 4 bone ids per vertice
 	protected final ByteBuffer boneWeights; // Store the relative weights of these referenced bones.
 	// Normalized by the engine from 0-255 range to 0.0-1.0
-	
-	public AnimatableMesh(FloatBuffer vertices, FloatBuffer textureCoordinates, FloatBuffer normals, String[] names, ByteBuffer ids, ByteBuffer weights, MeshMaterial materials[]) {
+
+	public AnimatableMesh(FloatBuffer vertices, FloatBuffer textureCoordinates, FloatBuffer normals, String[] names,
+			ByteBuffer ids, ByteBuffer weights, MeshMaterial materials[]) {
 		super(vertices, textureCoordinates, normals, materials);
 		this.boneNames = names;
 		this.boneIds = ids;

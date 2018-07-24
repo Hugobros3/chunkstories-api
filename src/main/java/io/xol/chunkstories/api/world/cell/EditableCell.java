@@ -10,12 +10,12 @@ import io.xol.chunkstories.api.voxel.Voxel;
 
 /** A cell we have the right to edit. */
 public interface EditableCell extends CellData {
-	
+
 	public void setVoxel(Voxel voxel);
 
 	public void setMetaData(int metadata);
 
 	public void setSunlight(int sunlight);
-	
+
 	public void setBlocklight(int blocklight);
 }

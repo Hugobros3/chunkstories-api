@@ -18,64 +18,69 @@ import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.textures.TextureFormat;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
+/** Extension of Content for clientside-only content */
 public interface ClientContent extends Content {
 	/** Get the associated ClientInterface that loaded all this */
 	public ClientInterface getContext();
-	
+
 	public ClientMeshLibrary meshes();
-	
+
 	public ClientVoxels voxels();
+
 	public interface ClientVoxels extends Voxels {
-		
+
 		public ClientVoxelTextures textures();
+
 		public interface ClientVoxelTextures extends VoxelTextures {
-			
+
 			public Texture2D getDiffuseAtlasTexture();
-			
+
 			public Texture2D getNormalAtlasTexture();
-			
+
 			public Texture2D getMaterialAtlasTexture();
-			
+
 			public VoxelTexture getVoxelTexture(String voxelTextureName);
-			
+
 			public Iterator<VoxelTexture> all();
 
 			public Voxels parent();
-			
+
 			public Logger logger();
 		}
 	}
 
 	public TexturesLibrary textures();
+
 	public interface TexturesLibrary {
 
 		public Texture2D nullTexture();
-		
+
 		public Texture2D getTexture(String assetName);
-		
+
 		public Texture2D newTexture2D(TextureFormat type, int width, int height);
-		
+
 		public Cubemap getCubemap(String cubemapName);
-		
+
 		/** Drops all textures loaded in VRAM */
 		public void reloadAll();
-		
+
 		public ClientContent parent();
-		
+
 		public Logger logger();
 	}
-	
+
 	public ShadersLibrary shaders();
+
 	public interface ShadersLibrary {
 
 		public Shader getShaderProgram(String shaderName);
-		
+
 		public void reloadShader(String shaderName);
-		
+
 		public void reloadAll();
-		
+
 		public ClientContent parent();
-		
+
 		public Logger logger();
 	}
 }

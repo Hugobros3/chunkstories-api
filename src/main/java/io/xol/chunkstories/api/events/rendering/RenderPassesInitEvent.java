@@ -22,7 +22,7 @@ public class RenderPassesInitEvent extends Event {
 	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
-	
+
 	final RenderPasses passes;
 
 	public RenderPassesInitEvent(RenderPasses pipeline) {

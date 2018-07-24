@@ -8,19 +8,16 @@ package io.xol.chunkstories.api.exceptions;
 
 import java.io.DataInputStream;
 
-public class NullItemException extends ItemException
-{
+public class NullItemException extends ItemException {
 	DataInputStream stream;
-	
-	public NullItemException(DataInputStream stream)
-	{
+
+	public NullItemException(DataInputStream stream) {
 		this.stream = stream;
 	}
-	
+
 	@Override
-	public String getMessage()
-	{
-		return "(Notice) Read a null ItemPile (ItemId=0) from stream "+stream;
+	public String getMessage() {
+		return "(Notice) Read a null ItemPile (ItemId=0) from stream " + stream;
 	}
 
 	/**

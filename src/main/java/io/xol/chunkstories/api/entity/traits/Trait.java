@@ -16,7 +16,7 @@ public abstract class Trait {
 		this.entity = entity;
 		id = entity.traits.registerTrait(this);
 	}
-	
+
 	public int id() {
 		return id;
 	}

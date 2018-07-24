@@ -7,7 +7,7 @@
 package io.xol.chunkstories.api.server;
 
 public interface DedicatedServerInterface extends ServerInterface {
-	
+
 	/** Stops the server. */
 	public void stop();
 }

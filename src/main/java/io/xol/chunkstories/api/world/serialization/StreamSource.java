@@ -9,7 +9,6 @@ package io.xol.chunkstories.api.world.serialization;
 /**
  * Some<i>thing</i> we can read data from
  */
-public interface StreamSource
-{
+public interface StreamSource {
 
 }

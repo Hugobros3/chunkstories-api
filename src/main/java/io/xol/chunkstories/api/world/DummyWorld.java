@@ -34,21 +34,21 @@ import io.xol.chunkstories.api.world.generator.WorldGenerator;
 import io.xol.chunkstories.api.world.heightmap.WorldHeightmaps;
 import io.xol.chunkstories.api.world.region.Region;
 
-/** 
- * DummyWorld doesn't exist. DummyWorld is immutable. DummyWorld is unique.
- * You can't prove the existence of the DummyWorld, but neither can you disprove it. 
+/**
+ * DummyWorld doesn't exist. DummyWorld is immutable. DummyWorld is unique. You
+ * can't prove the existence of the DummyWorld, but neither can you disprove it.
  * Don't mess with the forces at play here. You have been warned.
  */
 public class DummyWorld implements World {
 
 	static DummyWorld instance = null;
-	
+
 	public static DummyWorld get() {
-		if(instance == null)
+		if (instance == null)
 			instance = new DummyWorld();
 		return instance;
 	}
-	
+
 	@Override
 	public WorldInfo getWorldInfo() {
 		// TODO Auto-generated method stub
@@ -76,7 +76,7 @@ public class DummyWorld implements World {
 	@Override
 	public void addEntity(Entity entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -250,7 +250,7 @@ public class DummyWorld implements World {
 	@Override
 	public void redrawEverything() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -262,7 +262,7 @@ public class DummyWorld implements World {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -274,13 +274,13 @@ public class DummyWorld implements World {
 	@Override
 	public void setDefaultSpawnLocation(Location location) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setTime(long time) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -298,13 +298,13 @@ public class DummyWorld implements World {
 	@Override
 	public void setWeather(float overcastFactor) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void tick() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -365,19 +365,19 @@ public class DummyWorld implements World {
 	@Override
 	public void pokeSimpleSilently(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pokeRaw(int x, int y, int z, int newVoxelData) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pokeRawSilently(int x, int y, int z, int newVoxelData) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -389,19 +389,19 @@ public class DummyWorld implements World {
 	@Override
 	public void pokeSimple(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pokeSimple(FutureCell fvc) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pokeSimpleSilently(FutureCell fvc) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

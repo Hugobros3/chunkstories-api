@@ -24,9 +24,12 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 import javax.annotation.Nullable;
 
-/** Holds the information about an entity whereabouts and a flag to mark it as unspawned */
+/**
+ * Holds the information about an entity whereabouts and a flag to mark it as
+ * unspawned
+ */
 public class TraitLocation extends TraitSerializable {
-	
+
 	public TraitLocation(Entity entity, Location location) {
 		super(entity);
 
@@ -36,19 +39,19 @@ public class TraitLocation extends TraitSerializable {
 
 	private World world;
 	private final Location pos;
-	
+
 	private final ReentrantLock lock = new ReentrantLock();
-	
+
 	@Nullable
 	private Chunk chunk;
-	
+
 	private boolean spawned = false;
 	private boolean removed = false;
 
 	public void set(Location location) {
-		if(location.world != this.world)
+		if (location.world != this.world)
 			throw new RuntimeException("Entities can't teleport between worlds directly.");
-		
+
 		set((Vector3dc) location);
 	}
 
@@ -59,7 +62,7 @@ public class TraitLocation extends TraitSerializable {
 	public void set(double x, double y, double z) {
 		EntityTeleportEvent event = new EntityTeleportEvent(entity, new Location(world, x, y, z));
 		entity.world.getGameContext().getPluginManager().fireEvent(event);
-		
+
 		try {
 			lock.lock();
 			this.pos.x = (x);
@@ -96,12 +99,14 @@ public class TraitLocation extends TraitSerializable {
 		this.pushComponentEveryone();
 	}
 
-	public void move(Vector3dc delta)
-	{
+	public void move(Vector3dc delta) {
 		move(delta.x(), delta.y(), delta.z());
 	}
-	
-	/** Copies the location and returns it. The actual location is never mutated outside of set(). */
+
+	/**
+	 * Copies the location and returns it. The actual location is never mutated
+	 * outside of set().
+	 */
 	public Location get() {
 		Location pos = this.pos;
 		return new Location(pos.getWorld(), pos);
@@ -121,18 +126,18 @@ public class TraitLocation extends TraitSerializable {
 
 	@Override
 	public void pull(StreamSource from, DataInputStream dis) throws IOException {
-		//pos = new Location(world, 0, 0, 0);
+		// pos = new Location(world, 0, 0, 0);
 
 		double x = dis.readDouble();
 		double y = dis.readDouble();
 		double z = dis.readDouble();
-		
+
 		try {
 			lock.lock();
 			this.pos.x = x;
 			this.pos.y = y;
 			this.pos.z = z;
-	
+
 			sanitize();
 		} finally {
 			lock.unlock();
@@ -164,27 +169,28 @@ public class TraitLocation extends TraitSerializable {
 			pos.z = pos.z() + worldSize;
 		else if (pos.z() > worldSize)
 			pos.z = pos.z() % worldSize;
-	
+
 		if (pos.y < 0)
 			pos.y = 0;
-		
+
 		if (pos.y > world.getMaxHeight())
 			pos.y = world.getMaxHeight();
 
 		// Get local chunk co-ordinate
-		int chunkX = ((int)pos.x()) >> 5;
-		int chunkY = ((int)pos.y()) >> 5;
-		int chunkZ = ((int)pos.z()) >> 5;
+		int chunkX = ((int) pos.x()) >> 5;
+		int chunkY = ((int) pos.y()) >> 5;
+		int chunkZ = ((int) pos.z()) >> 5;
 
 		// Don't touch updates once the entity was removed
-		if (removed /*!entity.exists() */)
+		if (removed /* !entity.exists() */)
 			return false;
 
 		// Entities not in the world should never be added to it
 		if (!spawned)
 			return false;
 
-		if (chunk != null && chunk.getChunkX() == chunkX && chunk.getChunkY() == chunkY && chunk.getChunkZ() == chunkZ) {
+		if (chunk != null && chunk.getChunkX() == chunkX && chunk.getChunkY() == chunkY
+				&& chunk.getChunkZ() == chunkZ) {
 			return false; // Nothing to do !
 		} else {
 			if (chunk != null)
@@ -202,19 +208,21 @@ public class TraitLocation extends TraitSerializable {
 	public void onRemoval() {
 		try {
 			lock.lock();
-			
-			if(chunk != null)
+
+			if (chunk != null)
 				chunk.removeEntity(entity);
-			
+
 			removed = true;
 		} finally {
 			lock.unlock();
 		}
-		
+
 		this.pushComponentEveryone();
-		
-		//Tell anyone still subscribed to this entity to sod off
-		entity.subscribers.all().forEach(subscriber -> { subscriber.unsubscribe(entity); });
+
+		// Tell anyone still subscribed to this entity to sod off
+		entity.subscribers.all().forEach(subscriber -> {
+			subscriber.unsubscribe(entity);
+		});
 	}
 
 	public boolean wasRemoved() {
@@ -225,7 +233,7 @@ public class TraitLocation extends TraitSerializable {
 		try {
 			lock.lock();
 			spawned = true;
-			
+
 			sanitize();
 		} finally {
 			lock.unlock();

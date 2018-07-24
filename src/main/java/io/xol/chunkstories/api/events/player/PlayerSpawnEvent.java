@@ -39,7 +39,8 @@ public class PlayerSpawnEvent extends CancellableEvent {
 	@Nullable
 	private Location spawnLocation;
 
-	public PlayerSpawnEvent(Player player, WorldMaster world, @Nullable Entity entity, @Nullable Location spawnLocation) {
+	public PlayerSpawnEvent(Player player, WorldMaster world, @Nullable Entity entity,
+			@Nullable Location spawnLocation) {
 		this.player = player;
 		this.world = world;
 

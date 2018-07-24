@@ -8,38 +8,33 @@ package io.xol.chunkstories.api.plugin;
 
 import io.xol.chunkstories.api.GameContext;
 
-public abstract class ChunkStoriesPlugin
-{
+public abstract class ChunkStoriesPlugin {
 	protected final GameContext pluginExecutionContext;
-	
+
 	private final PluginInformation pluginInformation;
-	
-	public ChunkStoriesPlugin(PluginInformation pluginInformation, GameContext pluginExecutionContext)
-	{
+
+	public ChunkStoriesPlugin(PluginInformation pluginInformation, GameContext pluginExecutionContext) {
 		this.pluginInformation = pluginInformation;
 		this.pluginExecutionContext = pluginExecutionContext;
 	}
-	
-	public PluginInformation getPluginInformation()
-	{
+
+	public PluginInformation getPluginInformation() {
 		return pluginInformation;
 	}
-	
-	public GameContext getPluginExecutionContext()
-	{
+
+	public GameContext getPluginExecutionContext() {
 		return pluginExecutionContext;
 	}
-	
-	public PluginManager getPluginManager()
-	{
+
+	public PluginManager getPluginManager() {
 		return pluginExecutionContext.getPluginManager();
 	}
-	
+
 	public abstract void onEnable();
+
 	public abstract void onDisable();
 
-	public String getName()
-	{
+	public String getName() {
 		return pluginInformation.getName();
 	}
 }

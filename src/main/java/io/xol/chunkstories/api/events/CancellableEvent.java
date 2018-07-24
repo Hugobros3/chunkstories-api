@@ -7,16 +7,14 @@
 package io.xol.chunkstories.api.events;
 
 public abstract class CancellableEvent extends Event {
-	
+
 	private boolean canceled = false;
 
-	public void setCancelled(boolean canceled)
-	{
-		this.canceled  = canceled;
+	public void setCancelled(boolean canceled) {
+		this.canceled = canceled;
 	}
-	
-	public boolean isCancelled()
-	{
+
+	public boolean isCancelled() {
 		return canceled;
 	}
 }

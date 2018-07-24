@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.rendering;
 
-public class InvalidShaderException extends RuntimeException
-{
+public class InvalidShaderException extends RuntimeException {
 
 	private static final long serialVersionUID = 1584268365284341323L;
 

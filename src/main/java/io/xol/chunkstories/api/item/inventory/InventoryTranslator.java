@@ -64,14 +64,15 @@ public class InventoryTranslator {
 	}
 
 	@Nullable
-	public static Inventory obtainInventoryHandle(DataInputStream in, PacketReceptionContext context) throws IOException {
+	public static Inventory obtainInventoryHandle(DataInputStream in, PacketReceptionContext context)
+			throws IOException {
 		byte holderType = in.readByte();
 		if (holderType == 0x01) {
 			long uuid = in.readLong();
 			short traitId = in.readShort();
 
 			Entity entity = context.getWorld().getEntityByUUID(uuid);
-			
+
 			Trait trait = entity.traits.byId()[traitId];
 			if (trait != null && trait instanceof TraitInventory) {
 				return ((TraitInventory) trait);

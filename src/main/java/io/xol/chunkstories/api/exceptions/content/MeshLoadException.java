@@ -18,8 +18,7 @@ public class MeshLoadException extends AssetException {
 
 	@Override
 	public String getMessage() {
-		return "Mesh from asset "+getAsset()+" failed to load.";
+		return "Mesh from asset " + getAsset() + " failed to load.";
 	}
 
-	
 }

@@ -31,13 +31,15 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 	public TraitInventory(Entity entity, int width, int height) {
 		super(entity);
 		if (!(entity instanceof InventoryHolder))
-			throw new RuntimeException("You can only add an inventory to an entity if it implements the InventoryHolder interface.");
+			throw new RuntimeException(
+					"You can only add an inventory to an entity if it implements the InventoryHolder interface.");
 
 		this.holder = (InventoryHolder) entity;
-		
-		//Create the REAL inventory but re-route the updaters method to this class so it's functional
+
+		// Create the REAL inventory but re-route the updaters method to this class so
+		// it's functional
 		this.actualInventory = new BasicInventory(width, height, this) {
-			
+
 			public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
 				TraitInventory.this.refreshItemSlot(x, y, pileChanged);
 			}
@@ -47,63 +49,61 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 				TraitInventory.this.refreshCompleteInventory();
 			}
 		};
-		
+
 	}
 
 	@Override
 	public InventoryHolder getHolder() {
 		return holder;
 	}
-	
+
 	@Override
-	public String getInventoryName()
-	{
+	public String getInventoryName() {
 		String name = entity.traits.tryWith(TraitName.class, en -> en.getName());
-		//if (holder instanceof EntityNameable)
-		//	return ((EntityNameable) holder).getName();
+		// if (holder instanceof EntityNameable)
+		// return ((EntityNameable) holder).getName();
 		return name != null ? "[entity has no name]" : holder.getClass().getSimpleName();
 	}
 
 	@Override
-	public void refreshItemSlot(int x, int y)
-	{
+	public void refreshItemSlot(int x, int y) {
 		actualInventory.refreshItemSlot(x, y);
 	}
 
-	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged)
-	{
+	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
 		Packet packetItemUpdate = new PacketInventoryPartialUpdate(entity.world, this, x, y, pileChanged);
-		entity.traits.with(TraitController.class, ecc -> { if(ecc.getController() != null) ecc.getController().pushPacket(packetItemUpdate); } );
+		entity.traits.with(TraitController.class, ecc -> {
+			if (ecc.getController() != null)
+				ecc.getController().pushPacket(packetItemUpdate);
+		});
 	}
-	
-	public void refreshCompleteInventory()
-	{
+
+	public void refreshCompleteInventory() {
 		pushComponentController();
 	}
-	
+
 	public boolean isAccessibleTo(@Nullable Entity entity) {
-		
-		if(entity == null)
+
+		if (entity == null)
 			return true;
-		
-		//You always have access to yourself
-		if(entity == TraitInventory.this.entity)
+
+		// You always have access to yourself
+		if (entity == TraitInventory.this.entity)
 			return true;
-		
-		//Dead entities ain't got no rights
-		//TODO this should be a more general ban on interaction from dead stuff
-		
-		//if(EntityInventory.this.entity instanceof EntityLiving && ((EntityLiving)EntityInventory.this.entity).isDead())
-		//	return true;
-		
+
+		// Dead entities ain't got no rights
+		// TODO this should be a more general ban on interaction from dead stuff
+
+		// if(EntityInventory.this.entity instanceof EntityLiving &&
+		// ((EntityLiving)EntityInventory.this.entity).isDead())
+		// return true;
+
 		return false;
 	}
 
 	// Room for expansion
-	public enum UpdateMode
-	{
-		TOTAL_REFRESH,
-		NEVERMIND,
+	public enum UpdateMode {
+		TOTAL_REFRESH, NEVERMIND,
 	}
 
 	@Override
@@ -125,13 +125,12 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 	}
 
 	@Override
-	protected void pull(StreamSource from, DataInputStream stream) throws IOException
-	{
-		//Unused
+	protected void pull(StreamSource from, DataInputStream stream) throws IOException {
+		// Unused
 		byte b = stream.readByte();
-		
-		//Ignore NVM stuff
-		if(b == UpdateMode.NEVERMIND.ordinal())
+
+		// Ignore NVM stuff
+		if (b == UpdateMode.NEVERMIND.ordinal())
 			return;
 
 		actualInventory.pullInventory(from, stream, entity.world.getContentTranslator());

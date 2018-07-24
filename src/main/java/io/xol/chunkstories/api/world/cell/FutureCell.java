@@ -20,20 +20,22 @@ public class FutureCell extends Cell implements CellData, EditableCell {
 	public FutureCell(World world, int x, int y, int z, @Nullable Voxel voxel) {
 		this(world, x, y, z, voxel, -1, -1, -1);
 	}
-	
+
 	public FutureCell(World world, int x, int y, int z, @Nullable Voxel voxel, int meta, int blocklight, int sunlight) {
 		super(x, y, z, voxel, meta, blocklight, sunlight);
 		this.world = world;
 	}
-	
+
 	public FutureCell(CellData ogContext) {
-		super(ogContext.getX(), ogContext.getY(), ogContext.getZ(), ogContext.getVoxel(), ogContext.getMetaData(), ogContext.getBlocklight(), ogContext.getSunlight());
+		super(ogContext.getX(), ogContext.getY(), ogContext.getZ(), ogContext.getVoxel(), ogContext.getMetaData(),
+				ogContext.getBlocklight(), ogContext.getSunlight());
 		this.world = ogContext.getWorld();
 	}
 
 	@Deprecated
 	public int getData() {
-		return VoxelFormat.format(world.getContentTranslator().getIdForVoxel(getVoxel()), metadata, sunlight, blocklight);
+		return VoxelFormat.format(world.getContentTranslator().getIdForVoxel(getVoxel()), metadata, sunlight,
+				blocklight);
 	}
 
 	@Deprecated

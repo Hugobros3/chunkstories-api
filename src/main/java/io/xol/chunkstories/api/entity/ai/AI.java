@@ -10,36 +10,31 @@ import io.xol.chunkstories.api.entity.Entity;
 
 import javax.annotation.Nullable;
 
-public abstract class AI<T extends Entity>
-{
+public abstract class AI<T extends Entity> {
 	protected T entity;
 	@Nullable
 	protected AiTask currentTask;
-	
+
 	public abstract class AiTask {
 
 		public abstract void execute();
 	}
-	
-	public AI(T entity)
-	{
+
+	public AI(T entity) {
 		this.entity = entity;
 	}
-	
-	public void tick()
-	{
-		if(currentTask != null)
+
+	public void tick() {
+		if (currentTask != null)
 			currentTask.execute();
 	}
-	
-	public void setAiTask(@Nullable AiTask nextTask)
-	{
+
+	public void setAiTask(@Nullable AiTask nextTask) {
 		this.currentTask = nextTask;
 	}
-	
+
 	@Nullable
-	public AiTask currentTask()
-	{
+	public AiTask currentTask() {
 		return currentTask;
 	}
 }

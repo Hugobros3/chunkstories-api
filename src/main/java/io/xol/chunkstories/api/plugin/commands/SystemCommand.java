@@ -12,10 +12,10 @@ import io.xol.chunkstories.api.GameContext;
 public class SystemCommand extends Command {
 
 	final GameContext gameContext;
-	
+
 	public SystemCommand(GameContext gameContext, String name) {
 		super(name);
-		
+
 		this.gameContext = gameContext;
 	}
 

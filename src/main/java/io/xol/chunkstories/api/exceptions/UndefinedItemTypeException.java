@@ -6,19 +6,16 @@
 
 package io.xol.chunkstories.api.exceptions;
 
-public class UndefinedItemTypeException extends ItemException
-{
+public class UndefinedItemTypeException extends ItemException {
 	int itemId;
-	
-	public UndefinedItemTypeException(int itemId)
-	{
+
+	public UndefinedItemTypeException(int itemId) {
 		this.itemId = itemId;
 	}
-	
+
 	@Override
-	public String getMessage()
-	{
-		return "Unknown ItemType by id="+itemId;
+	public String getMessage() {
+		return "Unknown ItemType by id=" + itemId;
 	}
 
 	/**

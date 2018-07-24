@@ -10,7 +10,7 @@ import io.xol.chunkstories.api.input.Input;
 
 /** Elements that can be focused, either by tab-ing on them, or by clicking */
 public abstract class FocusableGuiElement extends GuiElement {
-	
+
 	protected FocusableGuiElement(Layer layer) {
 		super(layer);
 	}
@@ -18,7 +18,7 @@ public abstract class FocusableGuiElement extends GuiElement {
 	public boolean isFocused() {
 		return this.equals(layer.getFocusedElement());
 	}
-	
+
 	/** When focused an element receives input from the keyboard */
 	public boolean handleInput(Input input) {
 		return false;

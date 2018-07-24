@@ -32,6 +32,7 @@ public class TraitSelectedItem extends TraitSerializable {
 
 	/**
 	 * Selects the slot given
+	 * 
 	 * @param newSlot
 	 */
 	public void setSelectedSlot(int newSlot) {
@@ -69,7 +70,8 @@ public class TraitSelectedItem extends TraitSerializable {
 		// System.out.println("Sending slot"+pile);
 		// don't bother writing the item pile if we're not master or if we'd be telling
 		// the controller about his own item pile
-		if (pile == null || !(entity.getWorld() instanceof WorldMaster) || entity.traits.tryWithBoolean(TraitController.class, ec -> ec.getController() == destinator))
+		if (pile == null || !(entity.getWorld() instanceof WorldMaster)
+				|| entity.traits.tryWithBoolean(TraitController.class, ec -> ec.getController() == destinator))
 			dos.writeBoolean(false);
 		else {
 			dos.writeBoolean(true);
@@ -91,7 +93,7 @@ public class TraitSelectedItem extends TraitSerializable {
 				itemPile = ItemPile.obtainItemPileFromStream(entity.getWorld().getContentTranslator(), dis);
 			} catch (NullItemException e) {
 				// Don't do anything about it, no big deal
-				
+
 			} catch (UndefinedItemTypeException e) {
 				// This is slightly more problematic
 				this.entity.getWorld().getGameContext().logger().info(e.getMessage());

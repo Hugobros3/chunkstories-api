@@ -11,11 +11,11 @@ import io.xol.chunkstories.api.world.World;
 @SuppressWarnings("serial")
 public abstract class WorldException extends Exception {
 	public final World world;
-	
+
 	public WorldException(World world) {
 		this.world = world;
 	}
-	
+
 	public World getWorld() {
 		return world;
 	}

@@ -10,7 +10,10 @@ import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.voxel.VoxelFormat;
 import io.xol.chunkstories.api.world.World;
 
-/** A special cell outside of any physical realm; using id-relative or world-relative methods will throw exceptions. */
+/**
+ * A special cell outside of any physical realm; using id-relative or
+ * world-relative methods will throw exceptions.
+ */
 public class DummyCell extends Cell implements CellData, EditableCell {
 
 	public DummyCell(int x, int y, int z, Voxel voxel, int meta, int blocklight, int sunlight) {
@@ -24,7 +27,7 @@ public class DummyCell extends Cell implements CellData, EditableCell {
 
 	@Deprecated
 	public int getData() {
-		//Make up ids
+		// Make up ids
 		return VoxelFormat.format(0xDEAD, metadata, sunlight, blocklight);
 	}
 

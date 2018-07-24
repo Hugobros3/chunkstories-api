@@ -6,7 +6,6 @@
 
 package io.xol.chunkstories.api.events;
 
-public interface EventExecutor
-{
+public interface EventExecutor {
 	public void fireEvent(Event event) throws Exception;
 }

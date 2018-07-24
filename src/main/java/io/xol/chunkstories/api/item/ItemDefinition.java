@@ -13,25 +13,30 @@ import io.xol.chunkstories.api.rendering.item.ItemRenderer;
 import javax.annotation.Nullable;
 
 /**
- * Immutable, describes an item type and is a common reference in all items of that type
- * It gets loaded from the .items file
+ * Immutable, describes an item type and is a common reference in all items of
+ * that type It gets loaded from the .items file
  */
-public interface ItemDefinition extends Definition
-{
-	///** @return Returns the associated ID in the .items files */
-	//public int getID();
-	
+public interface ItemDefinition extends Definition {
+	/// ** @return Returns the associated ID in the .items files */
+	// public int getID();
+
 	/** @return The name this item is declared by */
 	public String getInternalName();
-	
+
 	public Content.ItemsDefinitions store();
 
-	/** Items in chunk stories can take up more than one slot.
-	 * @return How many slots this items use, horizontally */
+	/**
+	 * Items in chunk stories can take up more than one slot.
+	 * 
+	 * @return How many slots this items use, horizontally
+	 */
 	public int getSlotsWidth();
 
-	/** Items in chunk stories can take up more than one slot.
-	 * @return How many slots this items use, vertically */
+	/**
+	 * Items in chunk stories can take up more than one slot.
+	 * 
+	 * @return How many slots this items use, vertically
+	 */
 	public int getSlotsHeight();
 
 	/** Defines the maximal 'amount' an ItemPile can have of this item. */
@@ -41,7 +46,10 @@ public interface ItemDefinition extends Definition
 	@Nullable
 	public Item newItem();
 
-	/** Returns a suitable ItemRenderer for this ItemType. Will return null if called on anything else than a Client. */
+	/**
+	 * Returns a suitable ItemRenderer for this ItemType. Will return null if called
+	 * on anything else than a Client.
+	 */
 	@Nullable
 	public ItemRenderer getRenderer();
 }

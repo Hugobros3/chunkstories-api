@@ -12,7 +12,7 @@ import io.xol.chunkstories.api.world.chunk.Chunk;
 public abstract class ChunkException extends RegionException {
 
 	private final Chunk chunk;
-	
+
 	public ChunkException(Chunk chunk) {
 		super(chunk.getRegion());
 		this.chunk = chunk;
@@ -21,5 +21,5 @@ public abstract class ChunkException extends RegionException {
 	public Chunk getChunk() {
 		return chunk;
 	}
-	
+
 }

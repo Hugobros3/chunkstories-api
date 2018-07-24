@@ -11,15 +11,15 @@ import io.xol.chunkstories.api.rendering.world.WorldRenderer;
 
 public interface RenderPasses {
 	public RenderingInterface getRenderingInterface();
-	
+
 	public WorldRenderer getWorldRenderer();
-	
+
 	public void registerRenderPass(RenderPass pass);
 
 	public RenderPass getRenderPass(String name);
-	
+
 	public RenderPass getCurrentPass();
-	
+
 	/** Marks the rendering graph to be redone next frame */
 	public void reloadPasses();
 }

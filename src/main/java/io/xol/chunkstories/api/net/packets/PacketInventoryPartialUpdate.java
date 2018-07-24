@@ -36,7 +36,8 @@ public class PacketInventoryPartialUpdate extends PacketWorld {
 		super(world);
 	}
 
-	public PacketInventoryPartialUpdate(World world, @Nullable Inventory inventory, int slotx, int sloty, @Nullable ItemPile newItemPile) {
+	public PacketInventoryPartialUpdate(World world, @Nullable Inventory inventory, int slotx, int sloty,
+			@Nullable ItemPile newItemPile) {
 		super(world);
 		this.inventory = inventory;
 		this.slotx = slotx;

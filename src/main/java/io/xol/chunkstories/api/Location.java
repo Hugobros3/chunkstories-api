@@ -30,11 +30,11 @@ public class Location extends Vector3d {
 		this.y = (location.y);
 		this.z = (location.z);
 	}
-	
+
 	public void set(Location loc) {
-		if(loc.world != this.world)
+		if (loc.world != this.world)
 			throw new RuntimeException("You can't change the world of a location.");
-		
+
 		super.set(loc);
 	}
 

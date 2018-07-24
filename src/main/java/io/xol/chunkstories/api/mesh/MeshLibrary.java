@@ -11,14 +11,14 @@ import io.xol.chunkstories.api.content.Content;
 import javax.annotation.Nullable;
 
 public interface MeshLibrary {
-	
+
 	@Nullable
 	public Mesh getMesh(String meshName);
-	
+
 	@Nullable
 	public AnimatableMesh getAnimatableMesh(String meshName);
-	
+
 	public void reloadAll();
-	
+
 	public Content parent();
 }

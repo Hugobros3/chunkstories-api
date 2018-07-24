@@ -9,13 +9,14 @@ package io.xol.chunkstories.api.rendering;
 import io.xol.chunkstories.api.exceptions.rendering.RenderingException;
 
 /**
- * A self-contained object that can render itself in a single method, taking care of setting up uniforms etc itself.
+ * A self-contained object that can render itself in a single method, taking
+ * care of setting up uniforms etc itself.
  */
-public interface Renderable
-{
+public interface Renderable {
 	/**
 	 * Setups the RenderingInterface as it needs and registers RenderingCommands
-	 * @throws RenderingException 
+	 * 
+	 * @throws RenderingException
 	 */
 	public void render(RenderingInterface renderingInterface) throws RenderingException;
 }

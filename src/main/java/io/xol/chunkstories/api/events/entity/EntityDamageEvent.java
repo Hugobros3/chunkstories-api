@@ -14,53 +14,45 @@ import io.xol.chunkstories.api.events.EventListeners;
 /**
  * When a EntityLiving damage() method is called
  */
-public class EntityDamageEvent extends CancellableEvent
-{
+public class EntityDamageEvent extends CancellableEvent {
 	// Every event class has to have this
-	
+
 	static EventListeners listeners = new EventListeners(EntityDamageEvent.class);
-	
+
 	@Override
-	public EventListeners getListeners()
-	{
+	public EventListeners getListeners() {
 		return listeners;
 	}
-	
-	public static EventListeners getListenersStatic()
-	{
+
+	public static EventListeners getListenersStatic() {
 		return listeners;
 	}
-	
+
 	// Specific event code
-	
+
 	final Entity entity;
 	final DamageCause cause;
 	float damage;
-	
-	public EntityDamageEvent(Entity entity, DamageCause cause, float damage)
-	{
+
+	public EntityDamageEvent(Entity entity, DamageCause cause, float damage) {
 		this.entity = entity;
 		this.cause = cause;
 		this.damage = damage;
 	}
-	
-	public Entity getEntity()
-	{
+
+	public Entity getEntity() {
 		return entity;
 	}
 
-	public DamageCause getDamageCause()
-	{
+	public DamageCause getDamageCause() {
 		return cause;
 	}
-	
-	public void setDamageDealt(float damage)
-	{
+
+	public void setDamageDealt(float damage) {
 		this.damage = damage;
 	}
-	
-	public float getDamageDealt()
-	{
+
+	public float getDamageDealt() {
 		return damage;
 	}
 }

@@ -8,7 +8,6 @@ package io.xol.chunkstories.api.plugin;
 
 import io.xol.chunkstories.api.server.ServerInterface;
 
-public interface ServerPluginManager extends PluginManager
-{
+public interface ServerPluginManager extends PluginManager {
 	public ServerInterface getServerInterface();
 }

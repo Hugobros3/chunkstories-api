@@ -6,8 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.plugins;
 
-public class PluginCreationException extends Exception
-{
+public class PluginCreationException extends Exception {
 
 	/**
 	 * 

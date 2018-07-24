@@ -14,7 +14,7 @@ public abstract class TraitHasOverlay extends Trait {
 	public TraitHasOverlay(Entity entity) {
 		super(entity);
 	}
-	
+
 	public abstract void drawEntityOverlay(RenderingInterface renderingInterface);
 
 }
