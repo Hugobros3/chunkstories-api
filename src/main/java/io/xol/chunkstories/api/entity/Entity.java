@@ -176,7 +176,7 @@ public abstract class Entity {
 					break;
 				}
 				c = c.getSuperclass();
-				if(c == TraitSerializable.class)
+				if(c == Trait.class)
 					break; //stop there
 				
 				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
@@ -185,7 +185,7 @@ public abstract class Entity {
 				}
 
 				//System.out.println("registering component with superclass: "+c);
-				map.put((Class<? extends TraitSerializable>) c, component);
+				map.put((Class<? extends Trait>) c, component);
 			}
 
 			return id;
@@ -236,7 +236,7 @@ public abstract class Entity {
 			return -1;
 		}
 
-		public boolean has(Class<? extends TraitSerializable> componentType) {
+		public boolean has(Class<? extends Trait> componentType) {
 			return map.containsKey(componentType);
 		}
 
