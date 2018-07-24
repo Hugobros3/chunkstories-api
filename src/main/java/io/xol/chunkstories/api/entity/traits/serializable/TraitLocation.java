@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -25,9 +25,9 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 import javax.annotation.Nullable;
 
 /** Holds the information about an entity whereabouts and a flag to mark it as unspawned */
-public class EntityLocation extends EntityComponent {
+public class TraitLocation extends TraitSerializable {
 	
-	public EntityLocation(Entity entity, Location location) {
+	public TraitLocation(Entity entity, Location location) {
 		super(entity);
 
 		this.pos = location;

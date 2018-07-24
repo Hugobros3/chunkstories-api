@@ -14,8 +14,8 @@ import org.joml.Vector4f;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.components.EntityRotation;
 import io.xol.chunkstories.api.entity.traits.TraitAnimated;
+import io.xol.chunkstories.api.entity.traits.serializable.TraitRotation;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.vertex.Primitive;
 import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
@@ -72,7 +72,7 @@ public class EntityHitbox {
 		Entity playerEntity = ((WorldClient) entity.getWorld()).getClient().getPlayer().getControlledEntity();
 		if (playerEntity != null) {
 			// Only entities with a rotation component may highlight stuff
-			playerEntity.components.with(EntityRotation.class, er -> {
+			playerEntity.traits.with(TraitRotation.class, er -> {
 				if (lineIntersection(context.getCamera().getCameraPosition(), er.getDirectionLookingAt()) != null)
 					context.currentShader().setUniform4f("colorIn", 1.0, 0.0, 0.0, 1.0);
 			});

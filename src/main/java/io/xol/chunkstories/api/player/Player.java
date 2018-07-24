@@ -10,7 +10,7 @@ import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.components.Subscriber;
+import io.xol.chunkstories.api.entity.Subscriber;
 import io.xol.chunkstories.api.item.inventory.Inventory;
 import io.xol.chunkstories.api.net.Interlocutor;
 import io.xol.chunkstories.api.plugin.commands.CommandEmitter;

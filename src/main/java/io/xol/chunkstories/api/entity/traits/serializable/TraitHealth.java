@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
  * 
  * Handles health management and death
  */
-public class EntityHealth extends EntityComponent {
+public class TraitHealth extends TraitSerializable {
 	private float value;
 
 	private long damageCooldown = 0;
@@ -42,7 +42,7 @@ public class EntityHealth extends EntityComponent {
 	private DamageCause lastDamageCause;
 	long deathDespawnTimer = 6000;
 
-	public EntityHealth(Entity entity) {
+	public TraitHealth(Entity entity) {
 		super(entity);
 		this.value = Float.parseFloat(entity.getDefinition().resolveProperty("startHealth", "100"));
 	}
@@ -88,7 +88,7 @@ public class EntityHealth extends EntityComponent {
 			// Applies knockback
 			if (cause instanceof Entity) {
 				// Only runs if the entity do have a velocity
-				entity.components.with(EntityVelocity.class, ev -> {
+				entity.traits.with(TraitVelocity.class, ev -> {
 
 					Entity attacker = (Entity) cause;
 					Vector3d attackKnockback = entity.getLocation().sub(attacker.getLocation().add(0d, 0d, 0d));
@@ -131,7 +131,7 @@ public class EntityHealth extends EntityComponent {
 		entity.getWorld().getGameLogic().getPluginsManager().fireEvent(entityDeathEvent);
 
 		// Handles cases of controlled player death
-		entity.components.with(EntityController.class, ec -> {
+		entity.traits.with(TraitController.class, ec -> {
 			Controller controller = ec.getController();
 			if (controller != null) {
 				controller.setControlledEntity(null);

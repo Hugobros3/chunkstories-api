@@ -6,7 +6,6 @@
 
 package io.xol.chunkstories.api.entity;
 
-import io.xol.chunkstories.api.entity.components.Subscriber;
 import io.xol.chunkstories.api.input.InputsManager;
 import io.xol.chunkstories.api.particles.ParticlesManager;
 import io.xol.chunkstories.api.rendering.effects.DecalsManager;

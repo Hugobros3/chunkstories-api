@@ -4,13 +4,14 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.generic;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.entity.traits.serializable.TraitSerializable;
 import io.xol.chunkstories.api.util.Generalized;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
@@ -20,11 +21,11 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
  * Remember: you still have to declare the actual components classes in .components files !
  */
 @Generalized
-public abstract class EntityComponentGenericIntValue extends EntityComponent
+public abstract class TraitSerializableInt extends TraitSerializable
 {
 	protected int value;
 	
-	public EntityComponentGenericIntValue(Entity entity, int defaultValue)
+	public TraitSerializableInt(Entity entity, int defaultValue)
 	{
 		super(entity);
 		this.value = defaultValue;

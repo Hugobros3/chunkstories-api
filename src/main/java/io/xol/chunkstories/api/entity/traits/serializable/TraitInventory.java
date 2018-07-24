@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,11 +24,11 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 import javax.annotation.Nullable;
 
-public class EntityInventory extends EntityComponent implements Inventory {
+public class TraitInventory extends TraitSerializable implements Inventory {
 	protected BasicInventory actualInventory;
 	public InventoryHolder holder;
 
-	public EntityInventory(Entity entity, int width, int height) {
+	public TraitInventory(Entity entity, int width, int height) {
 		super(entity);
 		if (!(entity instanceof InventoryHolder))
 			throw new RuntimeException("You can only add an inventory to an entity if it implements the InventoryHolder interface.");
@@ -39,12 +39,12 @@ public class EntityInventory extends EntityComponent implements Inventory {
 		this.actualInventory = new BasicInventory(width, height, this) {
 			
 			public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
-				EntityInventory.this.refreshItemSlot(x, y, pileChanged);
+				TraitInventory.this.refreshItemSlot(x, y, pileChanged);
 			}
 
 			@Override
 			public void refreshCompleteInventory() {
-				EntityInventory.this.refreshCompleteInventory();
+				TraitInventory.this.refreshCompleteInventory();
 			}
 		};
 		
@@ -58,7 +58,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 	@Override
 	public String getInventoryName()
 	{
-		String name = entity.components.tryWith(EntityName.class, en -> en.getName());
+		String name = entity.traits.tryWith(TraitName.class, en -> en.getName());
 		//if (holder instanceof EntityNameable)
 		//	return ((EntityNameable) holder).getName();
 		return name != null ? "[entity has no name]" : holder.getClass().getSimpleName();
@@ -73,14 +73,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged)
 	{
 		Packet packetItemUpdate = new PacketInventoryPartialUpdate(entity.world, this, x, y, pileChanged);
-		entity.components.with(EntityController.class, ecc -> { if(ecc.getController() != null) ecc.getController().pushPacket(packetItemUpdate); } );
-		
-		/*Controller controller = null;
-		if (entity instanceof EntityControllable)
-			controller = ((EntityControllable) entity).getControllerComponent().getController();
-
-		if (controller != null)
-			controller.pushPacket(packetItemUpdate);*/
+		entity.traits.with(TraitController.class, ecc -> { if(ecc.getController() != null) ecc.getController().pushPacket(packetItemUpdate); } );
 	}
 	
 	public void refreshCompleteInventory()
@@ -94,7 +87,7 @@ public class EntityInventory extends EntityComponent implements Inventory {
 			return true;
 		
 		//You always have access to yourself
-		if(entity == EntityInventory.this.entity)
+		if(entity == TraitInventory.this.entity)
 			return true;
 		
 		//Dead entities ain't got no rights

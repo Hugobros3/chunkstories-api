@@ -15,7 +15,7 @@ import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.components.EntityVelocity;
+import io.xol.chunkstories.api.entity.traits.serializable.TraitVelocity;
 import io.xol.chunkstories.api.exceptions.PacketProcessingException;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
@@ -59,7 +59,7 @@ public class PacketVelocityDelta extends PacketWorld {
 		
 		//new style
 		if(entity != null) {
-			entity.components.with(EntityVelocity.class, ev -> {
+			entity.traits.with(TraitVelocity.class, ev -> {
 				System.out.println("Debug: received velocity delta " + delta);
 				ev.addVelocity(delta);
 			});

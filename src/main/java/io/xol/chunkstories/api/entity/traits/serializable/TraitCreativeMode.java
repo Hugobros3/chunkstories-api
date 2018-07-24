@@ -4,13 +4,14 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import io.xol.chunkstories.api.entity.Entity;
+import io.xol.chunkstories.api.entity.traits.generic.TraitSerializableBoolean;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 
-public class EntityCreativeMode extends EntityComponentGenericBoolean {
-	public EntityCreativeMode(Entity entity) {
+public class TraitCreativeMode extends TraitSerializableBoolean {
+	public TraitCreativeMode(Entity entity) {
 		super(entity);
 	}
 

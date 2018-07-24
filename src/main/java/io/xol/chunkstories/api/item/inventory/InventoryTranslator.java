@@ -11,8 +11,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.components.EntityComponent;
-import io.xol.chunkstories.api.entity.components.EntityInventory;
+import io.xol.chunkstories.api.entity.traits.Trait;
+import io.xol.chunkstories.api.entity.traits.serializable.TraitInventory;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
 import io.xol.chunkstories.api.voxel.components.VoxelComponent;
@@ -43,8 +43,8 @@ public class InventoryTranslator {
 		 */
 		if (inventory == null || inventory.getHolder() == null)
 			out.writeByte(0x00);
-		else if (inventory instanceof EntityInventory) {
-			EntityInventory entityInventory = (EntityInventory) inventory;
+		else if (inventory instanceof TraitInventory) {
+			TraitInventory entityInventory = (TraitInventory) inventory;
 
 			out.writeByte(0x01);
 			out.writeLong(((Entity) inventory.getHolder()).getUUID());
@@ -68,23 +68,24 @@ public class InventoryTranslator {
 		byte holderType = in.readByte();
 		if (holderType == 0x01) {
 			long uuid = in.readLong();
-			short componentId = in.readShort();
+			short traitId = in.readShort();
 
 			Entity entity = context.getWorld().getEntityByUUID(uuid);
-			EntityComponent cpn = entity.components.byId()[componentId];
-			if (cpn != null && cpn instanceof EntityInventory) {
-				return ((EntityInventory) cpn);
+			
+			Trait trait = entity.traits.byId()[traitId];
+			if (trait != null && trait instanceof TraitInventory) {
+				return ((TraitInventory) trait);
 			}
 		} else if (holderType == 0x03) {
 			int x = in.readInt();
 			int y = in.readInt();
 			int z = in.readInt();
 
-			String componentName = in.readUTF();
+			String traitName = in.readUTF();
 
 			try {
 				ChunkCell voxelContext = context.getWorld().peek(x, y, z);
-				VoxelComponent com = voxelContext.components().get(componentName);
+				VoxelComponent com = voxelContext.components().get(traitName);
 				if (com != null && com instanceof VoxelInventoryComponent) {
 					VoxelInventoryComponent comp = (VoxelInventoryComponent) com;
 					return comp.getInventory();

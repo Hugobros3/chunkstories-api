@@ -15,8 +15,8 @@ import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.content.Content;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.components.EntityCreativeMode;
 import io.xol.chunkstories.api.entity.traits.TraitVoxelSelection;
+import io.xol.chunkstories.api.entity.traits.serializable.TraitCreativeMode;
 import io.xol.chunkstories.api.events.player.voxel.PlayerVoxelModificationEvent;
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
@@ -77,15 +77,15 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 			if (entity.getWorld() instanceof WorldMaster && input.getName().equals("mouse.right")) {
 				// Require entities to be of the right kind
 				if (!(entity instanceof WorldModificationCause)) {
-					
 					return true;
 				}
 
 				WorldModificationCause modifierEntity = (WorldModificationCause) entity;
 
-				boolean isEntityCreativeMode = entity.components.tryWithBoolean(EntityCreativeMode.class, ecm -> ecm.get());
+				boolean isEntityCreativeMode = entity.traits.tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get());
 
-				Location blockLocation = entity.traits.tryWith(TraitVoxelSelection.class, tvs -> tvs.getBlockLookingAt(false, true));
+				Location blockLocation = entity.traits.tryWith(TraitVoxelSelection.class,
+						tvs -> tvs.getBlockLookingAt(false, true));
 
 				if (blockLocation != null) {
 					FutureCell fvc = new FutureCell(entity.getWorld().peekSafely(blockLocation));
@@ -106,7 +106,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 						Player player = (Player) controller;
 						CellData ctx = entity.getWorld().peek(blockLocation);
 						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, fvc,
-								isEntityCreativeMode ? EntityCreativeMode.CREATIVE_MODE : this, player);
+								isEntityCreativeMode ? TraitCreativeMode.CREATIVE_MODE : this, player);
 
 						// Anyone has objections ?
 						entity.getWorld().getGameContext().getPluginManager().fireEvent(event);
@@ -114,7 +114,8 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 						if (event.isCancelled())
 							return true;
 
-						entity.getWorld().getSoundManager().playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, fvc.getLocation(), 1.0f, 1.0f);
+						entity.getWorld().getSoundManager().playSoundEffect("sounds/gameplay/voxel_place.ogg",
+								Mode.NORMAL, fvc.getLocation(), 1.0f, 1.0f);
 					}
 
 					entity.getWorld().poke(fvc, modifierEntity);
@@ -163,7 +164,8 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 	public boolean canMergeWith(Item item) {
 		if (item instanceof ItemVoxel) {
 			ItemVoxel itemVoxel = (ItemVoxel) item;
-			return super.canMergeWith(itemVoxel) && itemVoxel.getVoxel().sameKind(getVoxel()) && itemVoxel.getVoxelMeta() == this.getVoxelMeta();
+			return super.canMergeWith(itemVoxel) && itemVoxel.getVoxel().sameKind(getVoxel())
+					&& itemVoxel.getVoxelMeta() == this.getVoxelMeta();
 		}
 		return false;
 	}

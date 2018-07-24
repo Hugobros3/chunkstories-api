@@ -4,15 +4,16 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import io.xol.chunkstories.api.client.LocalPlayer;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.traits.TraitCollidable;
+import io.xol.chunkstories.api.entity.traits.generic.TraitSerializableBoolean;
 
 /** Keeps track of the flying flag and performs the flying movement logic */
-public class EntityFlyingMode extends EntityComponentGenericBoolean {
-	public EntityFlyingMode(Entity entity) {
+public class TraitFlyingMode extends TraitSerializableBoolean {
+	public TraitFlyingMode(Entity entity) {
 		super(entity);
 	}
 
@@ -24,9 +25,9 @@ public class EntityFlyingMode extends EntityComponentGenericBoolean {
 			return;
 		
 		//Flying resets the entity velocity, if it has one
-		entity.components.with(EntityVelocity.class, ev -> ev.setVelocity(0, 0, 0));
+		entity.traits.with(TraitVelocity.class, ev -> ev.setVelocity(0, 0, 0));
 
-		EntityRotation entityRotation = entity.components.get(EntityRotation.class);
+		TraitRotation entityRotation = entity.traits.get(TraitRotation.class);
 		if(entityRotation == null)
 			return; //you must be able to rotate to fly
 		

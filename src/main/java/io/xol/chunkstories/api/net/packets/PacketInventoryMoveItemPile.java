@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.components.EntityCreativeMode;
+import io.xol.chunkstories.api.entity.traits.serializable.TraitCreativeMode;
 import io.xol.chunkstories.api.events.item.EventItemDroppedToWorld;
 import io.xol.chunkstories.api.events.player.PlayerMoveItemEvent;
 import io.xol.chunkstories.api.exceptions.NullItemException;
@@ -150,7 +150,7 @@ public class PacketInventoryMoveItemPile extends PacketWorld
 				// player.sendMessage("Notice : dragging stuff from /dev/null to your inventory
 				// should be limited by permission.");
 
-				if (player.hasPermission("items.spawn") || playerEntity.components.tryWithBoolean(EntityCreativeMode.class, ecm -> ecm.get())) {
+				if (player.hasPermission("items.spawn") || playerEntity.traits.tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get())) {
 					// Let it happen when in creative mode or owns items.spawn perm
 				} else {
 					player.sendMessage("#C00000You are neither in creative mode nor have the items.spawn permission.");

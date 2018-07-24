@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,13 +19,13 @@ import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
-public class EntityRotation extends EntityComponent {
+public class TraitRotation extends TraitSerializable {
 	private float rotationHorizontal = 0f;
 	private float rotationVertical = 0f;
 
 	private Vector2f rotationImpulse = new Vector2f();
 
-	public EntityRotation(Entity entity) {
+	public TraitRotation(Entity entity) {
 		super(entity);
 	}
 

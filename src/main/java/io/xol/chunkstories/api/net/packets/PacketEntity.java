@@ -13,8 +13,9 @@ import java.io.IOException;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.client.net.ClientPacketsProcessor;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.components.EntityComponent;
-import io.xol.chunkstories.api.entity.components.Subscriber;
+import io.xol.chunkstories.api.entity.Subscriber;
+import io.xol.chunkstories.api.entity.traits.Trait;
+import io.xol.chunkstories.api.entity.traits.serializable.TraitSerializable;
 import io.xol.chunkstories.api.exceptions.UnknownComponentException;
 import io.xol.chunkstories.api.net.PacketDestinator;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
@@ -31,7 +32,7 @@ import javax.annotation.Nullable;
 public class PacketEntity extends PacketWorld {
 	private Entity entity;
 	@Nullable
-	private EntityComponent updateSpecificComponent;
+	private TraitSerializable updateSpecificComponent;
 
 	public PacketEntity(World world) {
 		super(world);
@@ -42,13 +43,14 @@ public class PacketEntity extends PacketWorld {
 		this.entity = entityToUpdate;
 	}
 
-	public PacketEntity(Entity entity, @Nullable EntityComponent component) {
+	public PacketEntity(Entity entity, @Nullable TraitSerializable component) {
 		this(entity);
 		this.updateSpecificComponent = component;
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
+			throws IOException {
 		long entityUUID = entity.getUUID();
 		short entityTypeID = (short) entity.getWorld().getContentTranslator().getIdForEntity(entity);
 
@@ -56,8 +58,9 @@ public class PacketEntity extends PacketWorld {
 		if (destinator instanceof Subscriber)
 			hideEntity |= !entity.subscribers.isRegistered(destinator);
 
-		//System.out.println("telling "+destinator+" about "+entity +" (hide:"+hideEntity+", reg="+entity.subscribers.isRegistered(destinator)+")");
-		
+		// System.out.println("telling "+destinator+" about "+entity +"
+		// (hide:"+hideEntity+", reg="+entity.subscribers.isRegistered(destinator)+")");
+
 		out.writeLong(entityUUID);
 		out.writeShort(entityTypeID);
 
@@ -71,9 +74,11 @@ public class PacketEntity extends PacketWorld {
 				// can't use shorter method because of exceptions handling >:(
 				// entity.components.all().forEach(c -> c.pushComponentInStream(destinator,
 				// out));
-
-				for (EntityComponent c : entity.components.all())
-					c.pushComponentInStream(destinator, out);
+				for (Trait trait : entity.traits.all()) {
+					if (trait instanceof TraitSerializable) {
+						((TraitSerializable) trait).pushComponentInStream(destinator, out);
+					}
+				}
 
 			} else {
 				updateSpecificComponent.pushComponentInStream(destinator, out);
@@ -84,7 +89,8 @@ public class PacketEntity extends PacketWorld {
 		out.writeInt(-1);
 	}
 
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, UnknownComponentException {
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
+			throws IOException, UnknownComponentException {
 		long entityUUID = in.readLong();
 		short entityTypeID = in.readShort();
 
@@ -97,7 +103,7 @@ public class PacketEntity extends PacketWorld {
 		if (world == null)
 			return;
 
-		//System.out.println("received packet entity");
+		// System.out.println("received packet entity");
 		Entity entity = world.getEntityByUUID(entityUUID);
 
 		boolean addToWorld = false;
@@ -105,11 +111,13 @@ public class PacketEntity extends PacketWorld {
 		// Create an entity if the servers tells you to do so
 		if (entity == null) {
 			if (world instanceof WorldMaster && sender instanceof RemotePlayer) {
-				((Player) sender).sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
+				((Player) sender)
+						.sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
 				return;
 			} else if (!hideEntity) {
-				entity = processor.getWorld().getContentTranslator().getEntityForId(entityTypeID).create(new Location(world, 0, 0, 0)); // This is technically
-																
+				entity = processor.getWorld().getContentTranslator().getEntityForId(entityTypeID)
+						.create(new Location(world, 0, 0, 0)); // This is technically
+
 				entity.setUUID(entityUUID);
 
 				addToWorld = true;
@@ -119,8 +127,10 @@ public class PacketEntity extends PacketWorld {
 		int componentId = in.readInt();
 		// Loop throught all components
 		while (componentId >= 0) {
-			//System.out.println("reading component "+componentId);
-			entity.components.byId()[componentId].tryPull(sender, in);
+			Trait trait = entity.traits.byId()[componentId];
+			if(trait instanceof TraitSerializable) {
+				((TraitSerializable) trait).tryPull(sender, in);
+			}
 			componentId = in.readInt();
 		}
 
@@ -130,8 +140,8 @@ public class PacketEntity extends PacketWorld {
 			if (processor instanceof ClientPacketsProcessor)
 				processor.getWorld().addEntity(entity);
 		}
-		
-		if(hideEntity && entity != null) {
+
+		if (hideEntity && entity != null) {
 			world.removeEntity(entity);
 		}
 	}

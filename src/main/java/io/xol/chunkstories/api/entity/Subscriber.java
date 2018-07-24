@@ -4,11 +4,10 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity;
 
 import java.util.Iterator;
 
-import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 

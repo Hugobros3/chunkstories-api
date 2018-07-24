@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -20,10 +20,10 @@ import io.xol.chunkstories.api.world.serialization.OfflineSerializedData;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
-public class EntitySelectedItem extends EntityComponent {
+public class TraitSelectedItem extends TraitSerializable {
 	Inventory inventory;
 
-	public EntitySelectedItem(Entity entity, EntityInventory inventory) {
+	public TraitSelectedItem(Entity entity, TraitInventory inventory) {
 		super(entity);
 		this.inventory = inventory;
 	}
@@ -32,7 +32,6 @@ public class EntitySelectedItem extends EntityComponent {
 
 	/**
 	 * Selects the slot given
-	 * 
 	 * @param newSlot
 	 */
 	public void setSelectedSlot(int newSlot) {
@@ -42,19 +41,6 @@ public class EntitySelectedItem extends EntityComponent {
 
 		// TODO permissions check
 		this.pushComponentEveryone();
-
-		/*
-		 * if(this.holder != null && this.holder instanceof Entity && this.holder
-		 * instanceof EntityControllable &&
-		 * ((EntityControllable)this.holder).getController() != null &&
-		 * ((EntityControllable)this.holder).getController() instanceof
-		 * ClientController) { PacketItemUsage packet = new PacketItemUsage(true);
-		 * packet.usage = ItemUsage.SELECT; packet.complementInfo = (byte) newSlot;
-		 * if(((Entity) this.holder).getWorld() instanceof WorldRemoteClient)
-		 * Client.connection.sendPacket(packet);
-		 * //((ClientController)((EntityControllable)this.holder).getController()).
-		 * notifySelectedItemChange(); }
-		 */
 	}
 
 	/**
@@ -83,7 +69,7 @@ public class EntitySelectedItem extends EntityComponent {
 		// System.out.println("Sending slot"+pile);
 		// don't bother writing the item pile if we're not master or if we'd be telling
 		// the controller about his own item pile
-		if (pile == null || !(entity.getWorld() instanceof WorldMaster) || entity.components.tryWithBoolean(EntityController.class, ec -> ec.getController() == destinator))
+		if (pile == null || !(entity.getWorld() instanceof WorldMaster) || entity.traits.tryWithBoolean(TraitController.class, ec -> ec.getController() == destinator))
 			dos.writeBoolean(false);
 		else {
 			dos.writeBoolean(true);
@@ -105,25 +91,15 @@ public class EntitySelectedItem extends EntityComponent {
 				itemPile = ItemPile.obtainItemPileFromStream(entity.getWorld().getContentTranslator(), dis);
 			} catch (NullItemException e) {
 				// Don't do anything about it, no big deal
+				
 			} catch (UndefinedItemTypeException e) {
 				// This is slightly more problematic
-				// Logger logger = this.entity.getWorld().getGameContext().logger();
 				this.entity.getWorld().getGameContext().logger().info(e.getMessage());
-				// e.printStackTrace(logger.getPrintWriter());
 			}
 
 			// Ensures only client worlds accepts such pushes
 			if (!(entity.getWorld() instanceof WorldMaster))
 				inventory.setItemPileAt(selectedSlot, 0, itemPile);
-
-			/*
-			 * int id = dis.readInt() & 0x00FFFFFF; ItemDefinition itemType =
-			 * ItemDefinitions.getItemDefinitionById(id); if(itemType != null) { Item item =
-			 * itemType.newItem(); pile = new ItemPile(item, dis); if(pile != null &&
-			 * !(entity.getWorld() instanceof WorldMaster)) {
-			 * //System.out.println("got held item for "+entity + " : "+pile);
-			 * inventory.setItemPileAt(selectedSlot, 0, pile); } }
-			 */
 		}
 
 		this.pushComponentEveryoneButController();

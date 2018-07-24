@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package io.xol.chunkstories.api.entity.components;
+package io.xol.chunkstories.api.entity.traits.serializable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,11 +24,11 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 import javax.annotation.Nullable;
 
 /** Holds information about who controls one entity */
-public class EntityController extends EntityComponent {
+public class TraitController extends TraitSerializable {
 	@Nullable
 	Controller controller = null;
 	
-	public EntityController(Entity entity) {
+	public TraitController(Entity entity) {
 		super(entity);
 	}
 
