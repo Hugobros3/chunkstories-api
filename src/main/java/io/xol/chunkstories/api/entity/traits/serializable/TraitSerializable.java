@@ -16,11 +16,13 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.Subscriber;
 import io.xol.chunkstories.api.entity.traits.Trait;
 import io.xol.chunkstories.api.net.packets.PacketEntity;
+import io.xol.chunkstories.api.util.Generalized;
 import io.xol.chunkstories.api.util.SerializedName;
 import io.xol.chunkstories.api.world.serialization.OfflineSerializedData;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+@Generalized
 public abstract class TraitSerializable extends Trait {
 	/** Reflects the name declared in the @SerializedName annotation, or the the top level class name if none is declared */
 	public final String name;

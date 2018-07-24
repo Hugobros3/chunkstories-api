@@ -118,17 +118,21 @@ public abstract class Entity {
 		// Creates an unique set for the components we end up having
 		Set<Trait> componentsSet = new HashSet<>();
 		componentsSet.addAll(traits.map.values());
+
+		// Build an immutable view of that set
+		traits.all = Collections.unmodifiableSet(componentsSet);
+		
 		// Assign them ids and build an array
 		traits.byId = new Trait[componentsSet.size()];
 		int i = 0;
 		
+		System.out.println(componentsSet.size());
+		System.out.println("this = "+this.toString());
 		for (Trait c : componentsSet) {
 			i = c.id();
 			traits.byId[i] = c;
 			i++;
 		}
-		// Build an immutable view of that set
-		traits.all = Collections.unmodifiableSet(componentsSet);
 
 		// Creates an unique set for the traits we end up having
 		//Set<Trait> traitsSet = new HashSet<>();
@@ -151,6 +155,7 @@ public abstract class Entity {
 
 		private int count = 0;
 		
+		
 		@SuppressWarnings("unchecked")
 		public int registerTrait(Trait component) {
 			if (initialized)
@@ -159,12 +164,14 @@ public abstract class Entity {
 			if(map.get(component.getClass()) == component) {
 				world.getGameLogic().getGameContext().logger().warn("Tried to register the same trait twice"
 						+ " (hint: don't call registerComponent yourself, the superconstructor does it already )");
-				return -1;
+				return component.id();
 			}
 			
+			System.out.println("registering trait "+component);
 			int id = purge(component);
 			if(id == -1)
 				id = count++;
+			System.out.println("got id "+id);
 			
 			map.put(component.getClass(), component);
 
@@ -201,25 +208,25 @@ public abstract class Entity {
 					//System.out.println(c.getSimpleName()+" : this is a specialized class, no removing parents");
 					break;
 				}
-				c = c.getSuperclass();
-				if(c == Trait.class)
-					break; //stop there
 				
-				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
-					//System.out.println(c.getSimpleName()+" : this is a generalized class, stopping purge");
-					break;
-				}
-
 				Trait comp = map.get(c);
 				if(comp != null) {
 					//System.out.println("Found conflicting component: "+comp + "with id "+comp.id());
 					remove = comp;
 					break;
 				}
+				
+				c = c.getSuperclass();
+				if(c == Trait.class)
+					break;
+				if(c.getDeclaredAnnotationsByType(Generalized.class).length != 0) {
+					//System.out.println(c.getSimpleName()+" : this is a generalized class, stopping purge");
+					break;
+				}
 			}
 			
 			if(remove != null) {
-				//System.out.println("Purging matching component: "+remove);
+				System.out.println("Purging matching component: "+remove);
 				Iterator<Entry<Class<? extends Trait>, Trait>> i = map.entrySet().iterator();
 				while(i.hasNext()) {
 					Entry<Class<? extends Trait>, Trait> e = i.next();
@@ -229,7 +236,7 @@ public abstract class Entity {
 					}
 				}
 				
-				//System.out.println("returning purged id:"+remove.id());
+				System.out.println("returning purged id:"+remove.id());
 				return remove.id();
 			}
 			
@@ -298,9 +305,16 @@ public abstract class Entity {
 		@Override
 		public String toString() {
 			String ok = "";
-			for(Trait c : all())
-				ok += c.getClass().getSimpleName()+", ";
+			for(Trait trait : all())
+				ok += "("+safename(trait.getClass())+", "+trait.id()+")"+", ";
 			return all().size()+"{"+ok+"}";
+		}
+		
+		private String safename(Class<?> klass) {
+			String simpleName = klass.getSimpleName();
+			if(simpleName.equals(""))
+				return safename(klass.getSuperclass());
+			return simpleName;
 		}
 	}
 
