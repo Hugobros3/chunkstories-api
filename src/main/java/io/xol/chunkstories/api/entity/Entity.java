@@ -31,6 +31,7 @@ import io.xol.chunkstories.api.util.VoidAction;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -67,14 +68,13 @@ import javax.annotation.Nullable;
  * </p>
  */
 public abstract class Entity {
-	/*
-	 * Warning: this class is kind of complicated! It does a bunch of internal stuff
+	/* Warning: this class is kind of complicated! It does a bunch of internal stuff
 	 * you don't need to understand as a modder, and should definitely not touch
 	 * unless you're an engine dev with a good reason. For more information on how
-	 * to program entities, please check the wiki page at <TODO>
-	 */
+	 * to program entities, please check the wiki page at <TODO> */
 	public final EntityDefinition definition;
 
+	@Nonnull
 	public final Components traits = new Components();
 	// public final Traits traits = new Traits();
 	public final Subscribers subscribers = new Subscribers();
@@ -161,8 +161,8 @@ public abstract class Entity {
 				throw new RuntimeException("You can't register traits after the entity initializes.");
 
 			if (map.get(component.getClass()) == component) {
-				world.getGameLogic().getGameContext().logger().warn("Tried to register the same trait twice"
-						+ " (hint: don't call registerComponent yourself, the superconstructor does it already )");
+				world.getGameLogic().getGameContext().logger().warn(
+						"Tried to register the same trait twice" + " (hint: don't call registerComponent yourself, the superconstructor does it already )");
 				return component.id();
 			}
 
@@ -260,12 +260,9 @@ public abstract class Entity {
 
 		@Nullable
 		@SuppressWarnings("unchecked")
-		/**
-		 * Tries to find a component matching this type, executes some action on it and
-		 * returns the result. Returns null if no such component was found.
-		 */
-		public <EC extends Trait, RETURN_TYPE> RETURN_TYPE tryWith(Class<EC> componentType,
-				ReturnsAction<EC, RETURN_TYPE> action) {
+		/** Tries to find a component matching this type, executes some action on it and
+		 * returns the result. Returns null if no such component was found. */
+		public <EC extends Trait, RETURN_TYPE> RETURN_TYPE tryWith(Class<EC> componentType, ReturnsAction<EC, RETURN_TYPE> action) {
 			EC component = (EC) map.get(componentType);
 			if (component != null) {
 				return action.run(component);
@@ -274,10 +271,9 @@ public abstract class Entity {
 		}
 
 		@SuppressWarnings("unchecked")
-		/**
-		 * Tries to find a component matching this type, executes some boolean action on
-		 * it and returns the result. Returns false if no such component was found.
-		 */
+		/** Tries to find a component matching this type, executes some boolean action
+		 * on it and returns the result. Returns false if no such component was
+		 * found. */
 		public <EC extends Trait> boolean tryWithBoolean(Class<EC> componentType, BooleanAction<EC> action) {
 			EC component = (EC) map.get(componentType);
 			if (component != null) {
@@ -287,10 +283,8 @@ public abstract class Entity {
 		}
 
 		@SuppressWarnings("unchecked")
-		/**
-		 * Tries to find a component matching this type, executes some action on it and
-		 * returns true. Returns false if no such component was found.
-		 */
+		/** Tries to find a component matching this type, executes some action on it and
+		 * returns true. Returns false if no such component was found. */
 		public <EC extends Trait> boolean with(Class<EC> componentType, VoidAction<EC> action) {
 			EC component = (EC) map.get(componentType);
 			if (component != null) {
@@ -327,10 +321,8 @@ public abstract class Entity {
 	public class Subscribers {
 		final private Set<Subscriber> subscribers = ConcurrentHashMap.newKeySet();
 
-		/**
-		 * Internal method called by a {@link subscriber} ( like a {@link Player} ... )
-		 * when he subscribe() to this entity
-		 */
+		/** Internal method called by a {@link subscriber} ( like a {@link Player} ... )
+		 * when he subscribe() to this entity */
 		public final boolean register(Subscriber subscriber) {
 			// If it didn't already contain the subscriber ...
 			if (subscribers.add(subscriber)) {
@@ -339,10 +331,8 @@ public abstract class Entity {
 			return false;
 		}
 
-		/**
-		 * Internal method called by a {@link subscriber} ( like a {@link Player} ... )
-		 * when he unsubscribe() to this entity
-		 */
+		/** Internal method called by a {@link subscriber} ( like a {@link Player} ... )
+		 * when he unsubscribe() to this entity */
 		public boolean unregister(Subscriber subscriber) {
 			if (subscribers.remove(subscriber)) {
 				subscriber.pushPacket(new PacketEntity(Entity.this));
@@ -383,9 +373,8 @@ public abstract class Entity {
 
 	@Override
 	public String toString() {
-		return "[" + this.getClass().getSimpleName() + " Type: " + this.definition + " subs:"
-				+ this.subscribers.subscribers.size() + "  position : " + this.entityLocation.get() + " UUID : "
-				+ this.uuid + " Chunk:" + this.entityLocation.getChunk() + " Traits:" + this.traits + " ]";
+		return "[" + this.getClass().getSimpleName() + " Type: " + this.definition + " subs:" + this.subscribers.subscribers.size() + "  position : "
+				+ this.entityLocation.get() + " UUID : " + this.uuid + " Chunk:" + this.entityLocation.getChunk() + " Traits:" + this.traits + " ]";
 	}
 
 	public final Location getLocation() {
@@ -399,12 +388,10 @@ public abstract class Entity {
 		return ((Entity) o).getUUID() == uuid;
 	}
 
-	/**
-	 * The bounding box is used for any entity, it is used to determine the "rough
+	/** The bounding box is used for any entity, it is used to determine the "rough
 	 * size" of it, rendering, collisions, iterations etc purposes.<br/>
 	 * The bounding box should always be at least as big as the model and optional
-	 * collision boxes
-	 */
+	 * collision boxes */
 	public CollisionBox getBoundingBox() {
 		return new CollisionBox(1.0, 1.0, 1.0).translate(-0.5, 0.0, -0.5);
 	}

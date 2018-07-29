@@ -6,6 +6,8 @@
 
 package io.xol.chunkstories.api.plugin;
 
+import java.io.File;
+
 import io.xol.chunkstories.api.GameContext;
 
 public abstract class ChunkStoriesPlugin {
@@ -28,6 +30,10 @@ public abstract class ChunkStoriesPlugin {
 
 	public PluginManager getPluginManager() {
 		return pluginExecutionContext.getPluginManager();
+	}
+	
+	public File getDirectory() {
+		return pluginInformation.getDirectory();
 	}
 
 	public abstract void onEnable();

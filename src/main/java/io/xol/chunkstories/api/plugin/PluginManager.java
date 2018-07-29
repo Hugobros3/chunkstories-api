@@ -30,8 +30,6 @@ public interface PluginManager {
 	/** Lists active plugins */
 	public IterableIterator<ChunkStoriesPlugin> activePlugins();
 
-	/* Commands management */
-
 	/**
 	 * Dispatches an command to the plugins
 	 * 
@@ -44,10 +42,6 @@ public interface PluginManager {
 
 	/** Register a new system command */
 	public SystemCommand registerCommand(String commandName, String... aliases);
-
-	/** Un-register a system command */
-	// Is this relevant ?
-	// public void unregisterCommand(SystemCommand command);
 
 	/** Assigns a new command handler to a command */
 	public void registerCommandHandler(String commandName, CommandHandler commandHandler);
@@ -62,17 +56,12 @@ public interface PluginManager {
 
 	/**
 	 * Register a Listener in an plugin
-	 * 
-	 * @param l
-	 * @param plugin
 	 */
 	public void registerEventListener(Listener listener, ChunkStoriesPlugin plugin);
 
 	/**
 	 * Fires an Event, pass it to all plugins that are listening for this kind of
 	 * event
-	 * 
-	 * @param event
 	 */
 	public void fireEvent(Event event);
 }
