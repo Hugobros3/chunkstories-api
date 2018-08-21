@@ -8,19 +8,18 @@ buildscript {
 		//mavenLocal()
 		mavenCentral()	
 		maven { url "http://maven.xol.io/repository/public/" }
-		//maven { url 'https://jitpack.io' }
-		//maven { url "https://plugins.gradle.org/m2/" }
 	}
 
 	dependencies {
-		//classpath "gradle.plugin.de.set.gradle:gradle-eclipse-compiler-plugin:1.1.0"		
-		//classpath 'com.github.johni0702:gradle-ecj-plugin:master-SNAPSHOT'
 		classpath 'de.johni0702.gradle:gradle-ecj-plugin:1.1-JAVA9'
 	}
 }
 
 plugins {
-    id "com.github.hierynomus.license" version "0.14.0"
+
+	//TODO
+	id "com.diffplug.gradle.spotless" version "3.14.0"
+    //id "com.github.hierynomus.license" version "0.14.0"
 }
 
 apply plugin: 'java'
@@ -40,6 +39,20 @@ description = 'API for the game \'Chunk Stories\''
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
+spotless {
+	java {
+		licenseHeaderFile 'codequality/header-include-notice.txt'
+		//importOrder 'java', 'javax', 'org', 'com', 'com.diffplug', ''
+		//removeUnusedImports()
+		//eclipse().configFile 'codequality/style.xml'
+	}
+
+	kotlin {
+		indentWithTabs()
+		licenseHeaderFile 'codequality/header-include-notice.txt'
+	}
+}
+
 repositories {
 	mavenLocal()
 	mavenCentral()
@@ -53,7 +66,7 @@ if(ext.useEclipseCompiler) {
 	println "Using ECJ compiler"
 }
 
-license {
+/*license {
     header rootProject.file('codequality/header-include-notice.txt')
     strictCheck true
 	ignoreFailures true
@@ -61,7 +74,7 @@ license {
 	mapping {
         java='DOUBLESLASH_STYLE'
     }
-}
+}*/
 
 compileJava {
 	options.encoding = 'utf-8'
