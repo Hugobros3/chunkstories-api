@@ -75,7 +75,7 @@ public abstract class Entity {
 	public final EntityDefinition definition;
 
 	@Nonnull
-	public final Components traits = new Components();
+	public final Traits traits = new Traits();
 	// public final Traits traits = new Traits();
 	public final Subscribers subscribers = new Subscribers();
 
@@ -148,7 +148,7 @@ public abstract class Entity {
 		uuid = -1;
 	}
 
-	public final class Components {
+	public final class Traits {
 		protected Map<Class<? extends Trait>, Trait> map = new HashMap<>();
 		protected Set<Trait> all = null;
 		protected Trait[] byId = null;
