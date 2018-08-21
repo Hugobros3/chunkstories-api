@@ -9,6 +9,7 @@ package io.xol.chunkstories.api.rendering.vertex;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
+import io.xol.chunkstories.api.graphics.VertexFormat;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 
 public interface VertexBuffer {

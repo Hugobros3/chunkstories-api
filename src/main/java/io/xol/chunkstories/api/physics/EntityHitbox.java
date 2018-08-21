@@ -18,7 +18,7 @@ import io.xol.chunkstories.api.entity.traits.TraitAnimated;
 import io.xol.chunkstories.api.entity.traits.serializable.TraitRotation;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.vertex.Primitive;
-import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
+import io.xol.chunkstories.api.graphics.VertexFormat;
 import io.xol.chunkstories.api.world.WorldClient;
 
 public class EntityHitbox {

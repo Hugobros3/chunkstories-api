@@ -15,7 +15,7 @@ import io.xol.chunkstories.api.rendering.mesh.ClientMeshLibrary;
 import io.xol.chunkstories.api.rendering.shader.Shader;
 import io.xol.chunkstories.api.rendering.textures.Cubemap;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
-import io.xol.chunkstories.api.rendering.textures.TextureFormat;
+import io.xol.chunkstories.api.graphics.TextureFormat;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
 /** Extension of Content for clientside-only content */

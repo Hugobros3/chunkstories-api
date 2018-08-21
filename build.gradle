@@ -4,6 +4,8 @@
  */
 
 buildscript {
+	ext.kotlin_version = '1.2.60'
+
 	repositories {
 		//mavenLocal()
 		mavenCentral()	
@@ -12,6 +14,7 @@ buildscript {
 
 	dependencies {
 		classpath 'de.johni0702.gradle:gradle-ecj-plugin:1.1-JAVA9'
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
 }
 
@@ -99,6 +102,8 @@ dependencies {
 	compile group: 'io.xol.enklume', name: 'enklume', version: 100
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.9'
 	compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 	
 	deployerJars "org.apache.maven.wagon:wagon-ssh:3.0.0"
 }

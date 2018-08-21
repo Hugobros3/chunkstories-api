@@ -32,7 +32,7 @@ import io.xol.chunkstories.api.rendering.textures.Texture1D;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.textures.Texture2DRenderTarget;
 import io.xol.chunkstories.api.rendering.textures.Texture3D;
-import io.xol.chunkstories.api.rendering.textures.TextureFormat;
+import io.xol.chunkstories.api.graphics.TextureFormat;
 import io.xol.chunkstories.api.rendering.vertex.AttributeSource;
 import io.xol.chunkstories.api.rendering.vertex.AttributesConfiguration;
 import io.xol.chunkstories.api.rendering.vertex.Primitive;

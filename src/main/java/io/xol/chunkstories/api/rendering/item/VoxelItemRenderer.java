@@ -27,7 +27,7 @@ import io.xol.chunkstories.api.rendering.shader.Shader;
 import io.xol.chunkstories.api.rendering.textures.Texture2D;
 import io.xol.chunkstories.api.rendering.vertex.Primitive;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
-import io.xol.chunkstories.api.rendering.vertex.VertexFormat;
+import io.xol.chunkstories.api.graphics.VertexFormat;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCubic;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
 import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;

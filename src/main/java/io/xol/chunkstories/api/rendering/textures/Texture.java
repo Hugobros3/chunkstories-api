@@ -6,6 +6,7 @@
 
 package io.xol.chunkstories.api.rendering.textures;
 
+import io.xol.chunkstories.api.graphics.TextureFormat;
 import io.xol.chunkstories.api.rendering.shader.Shader.SamplerType;
 
 /** Completely abstracted-out Texture class. Represents some kind of picture on
