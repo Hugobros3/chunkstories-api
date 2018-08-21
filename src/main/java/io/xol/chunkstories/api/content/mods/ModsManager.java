@@ -14,10 +14,8 @@ import io.xol.chunkstories.api.exceptions.content.mods.NotAllModsLoadedException
 
 import javax.annotation.Nullable;
 
-/**
- * The ModsManager is responsible for loading mods and maintaining a global
- * filesystem of assets
- */
+/** The ModsManager is responsible for loading mods and maintaining a global
+ * filesystem of assets */
 public interface ModsManager {
 	public void setEnabledMods(String... modsEnabled);
 

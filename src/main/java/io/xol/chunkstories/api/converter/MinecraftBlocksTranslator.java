@@ -27,7 +27,8 @@ public class MinecraftBlocksTranslator {
 
 	private Mapper[] mappers = new Mapper[MINECRAFT_IDS_CAP * MINECRAFT_METADATA_SIZE];
 
-	enum Section {
+	enum Section
+	{
 		NONE, MAPPERS, MAPPINGS,
 	}
 
@@ -59,8 +60,7 @@ public class MinecraftBlocksTranslator {
 
 						try {
 							@SuppressWarnings("unchecked")
-							Class<? extends Mapper> mapperClass = (Class<? extends Mapper>) context.getContent()
-									.modsManager().getClassByName(className);
+							Class<? extends Mapper> mapperClass = (Class<? extends Mapper>) context.getContent().modsManager().getClassByName(className);
 							Constructor<? extends Mapper> mapperConstructor = mapperClass.getConstructor(Voxel.class);
 							customMappers.put(name, mapperConstructor);
 						} catch (Exception e) {
@@ -98,8 +98,7 @@ public class MinecraftBlocksTranslator {
 
 						Voxel voxel = context.getContent().voxels().getVoxel(chunkStoriesName);
 						if (voxel == null) {
-							System.out.println("Error: Voxel '" + chunkStoriesName
-									+ "' is nowhere to be found in the loaded content.");
+							System.out.println("Error: Voxel '" + chunkStoriesName + "' is nowhere to be found in the loaded content.");
 							System.out.println("Skipping line : '" + line + "'.");
 							continue;
 						}
@@ -119,8 +118,7 @@ public class MinecraftBlocksTranslator {
 
 							try {
 								mapper = mapperConstructor.newInstance(voxel);
-							} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-									| InvocationTargetException e) {
+							} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 								e.printStackTrace();
 								continue;
 							}

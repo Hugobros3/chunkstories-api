@@ -8,21 +8,17 @@ package io.xol.chunkstories.api.rendering.textures;
 
 import io.xol.chunkstories.api.rendering.shader.Shader.SamplerType;
 
-/**
- * Completely abstracted-out Texture class. Represents some kind of picture on
- * the GPU.
- */
+/** Completely abstracted-out Texture class. Represents some kind of picture on
+ * the GPU. */
 public interface Texture {
 
 	public TextureFormat getType();
 
 	public void bind();
 
-	/**
-	 * Unloads the texture from memory and frees the associated memory. Not actually
-	 * recommanded since GC works on texture objects and will clear linked GPU
-	 * memory as well.
-	 */
+	/** Unloads the texture from memory and frees the associated memory. Not
+	 * actually recommanded since GC works on texture objects and will clear linked
+	 * GPU memory as well. */
 	public boolean destroy();
 
 	/** Returns the VRAM usage, in bytes */

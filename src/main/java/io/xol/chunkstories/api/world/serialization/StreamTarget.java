@@ -6,9 +6,7 @@
 
 package io.xol.chunkstories.api.world.serialization;
 
-/**
- * Some<i>thing</i> we can send data to
- */
+/** Some<i>thing</i> we can send data to */
 public interface StreamTarget {
 
 }

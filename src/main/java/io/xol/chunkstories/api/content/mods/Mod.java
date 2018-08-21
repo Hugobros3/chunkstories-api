@@ -11,15 +11,11 @@ import io.xol.chunkstories.api.util.IterableIterator;
 
 import javax.annotation.Nullable;
 
-/**
- * A mod contains assets that add to or override the game's defaults.
- */
+/** A mod contains assets that add to or override the game's defaults. */
 public interface Mod {
-	/**
-	 * Returns the asset corresponding to the provided path, matching the syntax
+	/** Returns the asset corresponding to the provided path, matching the syntax
 	 * ./directory/subdirectory/asset.txt Returns only the version defined in this
-	 * mod. Returns null if the asset couln't be found
-	 */
+	 * mod. Returns null if the asset couln't be found */
 	@Nullable
 	public Asset getAssetByName(String name);
 

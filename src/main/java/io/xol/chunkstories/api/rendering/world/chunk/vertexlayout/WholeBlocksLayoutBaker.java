@@ -12,10 +12,8 @@ import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerCubic;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.VertexLayout;
 
-/**
- * Defines the (default) layout used by the game when using the WHOLE_BLOCKS
- * VertexLayout
- */
+/** Defines the (default) layout used by the game when using the WHOLE_BLOCKS
+ * VertexLayout */
 public class WholeBlocksLayoutBaker extends BaseLayoutBaker implements VoxelBakerCubic {
 
 	public static final VertexLayout IMPLEMENTS() {

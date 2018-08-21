@@ -17,15 +17,13 @@ import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderCo
 import io.xol.chunkstories.api.voxel.VoxelSide.Corners;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 
-/**
- * In a move to abstract away the buffer layout from mods, these classes now
+/** In a move to abstract away the buffer layout from mods, these classes now
  * serve to link the abstract layout in the VoxelBaker* classes to the actual
  * layout used by the game, which may now change without breaking mods, since
  * they won't rely on knowing it explicitly to send their mesh data to the
  * engine.
  * 
- * These classes effectively replace RenderByteBuffer.java
- */
+ * These classes effectively replace RenderByteBuffer.java */
 public abstract class BaseLayoutBaker implements VoxelBakerCommon {
 
 	protected final ClientContent content;

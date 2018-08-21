@@ -37,9 +37,7 @@ public class TraitRotation extends TraitSerializable {
 		return rotationVertical;
 	}
 
-	/**
-	 * @return A vector3d for the direction
-	 */
+	/** @return A vector3d for the direction */
 	public Vector3dc getDirectionLookingAt() {
 		Vector3d direction = new Vector3d();
 
@@ -85,16 +83,12 @@ public class TraitRotation extends TraitSerializable {
 			this.pushComponentEveryoneButController();
 	}
 
-	/**
-	 * Sends the view flying about
-	 */
+	/** Sends the view flying about */
 	public void applyInpulse(double inpulseHorizontal, double inpulseVertical) {
 		rotationImpulse.add(new Vector2f((float) inpulseHorizontal, (float) inpulseVertical));
 	}
 
-	/**
-	 * Reduces the acceleration and returns it
-	 */
+	/** Reduces the acceleration and returns it */
 	public Vector2f tickInpulse() {
 		rotationImpulse.mul(0.50f);
 		if (rotationImpulse.length() < 0.05)

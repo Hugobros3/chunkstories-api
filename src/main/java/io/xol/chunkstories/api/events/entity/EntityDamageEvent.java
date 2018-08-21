@@ -11,9 +11,7 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.CancellableEvent;
 import io.xol.chunkstories.api.events.EventListeners;
 
-/**
- * When a EntityLiving damage() method is called
- */
+/** When a EntityLiving damage() method is called */
 public class EntityDamageEvent extends CancellableEvent {
 	// Every event class has to have this
 

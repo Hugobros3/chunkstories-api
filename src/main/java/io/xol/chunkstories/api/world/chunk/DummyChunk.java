@@ -18,10 +18,8 @@ import io.xol.chunkstories.api.world.cell.CellComponents;
 import io.xol.chunkstories.api.world.cell.DummyCell;
 import io.xol.chunkstories.api.world.region.Region;
 
-/**
- * A fake chunk, for all the non-reality fans Also, might be usefull when
- * dealing with blocks all by themselves.
- */
+/** A fake chunk, for all the non-reality fans Also, might be usefull when
+ * dealing with blocks all by themselves. */
 public class DummyChunk implements Chunk {
 	@Override
 	public World getWorld() {
@@ -142,8 +140,7 @@ public class DummyChunk implements Chunk {
 	}
 
 	@Override
-	public ChunkCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
-			WorldModificationCause cause) throws WorldException {
+	public ChunkCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
 	}

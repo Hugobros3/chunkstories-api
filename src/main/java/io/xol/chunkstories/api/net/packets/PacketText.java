@@ -28,8 +28,7 @@ public class PacketText extends Packet {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		out.writeUTF(text);
 	}
 

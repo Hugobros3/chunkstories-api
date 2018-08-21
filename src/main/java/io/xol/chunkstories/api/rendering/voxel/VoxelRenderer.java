@@ -11,11 +11,8 @@ import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderCo
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 
-/**
- * Implement this interface to make a custom Voxel renderer for your custom
- * Voxels
- */
+/** Implement this interface to make a custom Voxel renderer for your custom
+ * Voxels */
 public interface VoxelRenderer {
-	public int bakeInto(ChunkRenderer chunkRenderer, ChunkRenderContext bakingContext, Chunk chunk,
-			CellData voxelInformations);
+	public int bakeInto(ChunkRenderer chunkRenderer, ChunkRenderContext bakingContext, Chunk chunk, CellData voxelInformations);
 }

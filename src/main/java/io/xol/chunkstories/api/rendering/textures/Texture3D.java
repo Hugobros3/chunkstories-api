@@ -13,11 +13,9 @@ public interface Texture3D extends Texture {
 	/** Overload of uploadTextureData() using level = 0 */
 	public boolean uploadTextureData(int width, int height, int depth, ByteBuffer data);
 
-	/**
-	 * Uploads image data into the said level. Actual upload might be delayed,
+	/** Uploads image data into the said level. Actual upload might be delayed,
 	 * thread-safe ( in any other thread than rendering, upload will be scheduled
-	 * for later ).
-	 */
+	 * for later ). */
 	public boolean uploadTextureData(int width, int height, int depth, int level, ByteBuffer data);
 
 	public void bind();
@@ -25,10 +23,8 @@ public interface Texture3D extends Texture {
 	/** Determines if a texture will loop arround itself or clamp to it's edges */
 	public void setTextureWrapping(boolean on);
 
-	/**
-	 * Enables the use of 'blur' on the texture. Disable for a crips, pixelated
-	 * effect
-	 */
+	/** Enables the use of 'blur' on the texture. Disable for a crips, pixelated
+	 * effect */
 	public void setLinearFiltering(boolean on);
 
 	/** Enables or disable the user of mip-maps */

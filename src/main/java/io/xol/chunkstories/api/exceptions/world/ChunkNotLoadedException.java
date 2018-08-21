@@ -37,8 +37,7 @@ public class ChunkNotLoadedException extends RegionException {
 		if (getRegion() == null)
 			return "Chunk at " + chunkX + ":" + chunkY + ":" + chunkZ + "was not loaded";
 		else
-			return "Chunk at " + chunkX + ":" + chunkY + ":" + chunkZ
-					+ "was not loaded (but the underlying region was)";
+			return "Chunk at " + chunkX + ":" + chunkY + ":" + chunkZ + "was not loaded (but the underlying region was)";
 	}
 
 }

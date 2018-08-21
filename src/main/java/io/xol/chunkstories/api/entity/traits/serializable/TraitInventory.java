@@ -31,8 +31,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 	public TraitInventory(Entity entity, int width, int height) {
 		super(entity);
 		if (!(entity instanceof InventoryHolder))
-			throw new RuntimeException(
-					"You can only add an inventory to an entity if it implements the InventoryHolder interface.");
+			throw new RuntimeException("You can only add an inventory to an entity if it implements the InventoryHolder interface.");
 
 		this.holder = (InventoryHolder) entity;
 
@@ -102,7 +101,8 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 	}
 
 	// Room for expansion
-	public enum UpdateMode {
+	public enum UpdateMode
+	{
 		TOTAL_REFRESH, NEVERMIND,
 	}
 

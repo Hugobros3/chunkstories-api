@@ -34,11 +34,9 @@ import io.xol.chunkstories.api.world.generator.WorldGenerator;
 import io.xol.chunkstories.api.world.heightmap.WorldHeightmaps;
 import io.xol.chunkstories.api.world.region.Region;
 
-/**
- * DummyWorld doesn't exist. DummyWorld is immutable. DummyWorld is unique. You
+/** DummyWorld doesn't exist. DummyWorld is immutable. DummyWorld is unique. You
  * can't prove the existence of the DummyWorld, but neither can you disprove it.
- * Don't mess with the forces at play here. You have been warned.
- */
+ * Don't mess with the forces at play here. You have been warned. */
 public class DummyWorld implements World {
 
 	static DummyWorld instance = null;
@@ -356,8 +354,7 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public WorldCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata,
-			WorldModificationCause cause) throws WorldException {
+	public WorldCell poke(int x, int y, int z, Voxel voxel, int sunlight, int blocklight, int metadata, WorldModificationCause cause) throws WorldException {
 		// TODO Auto-generated method stub
 		return null;
 	}

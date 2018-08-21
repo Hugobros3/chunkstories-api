@@ -29,11 +29,9 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 import javax.annotation.Nullable;
 
-/**
- * Any entity with this component is considered living, even if it's dead.
+/** Any entity with this component is considered living, even if it's dead.
  * 
- * Handles health management and death
- */
+ * Handles health management and death */
 public class TraitHealth extends TraitSerializable {
 	private float value;
 
@@ -144,8 +142,7 @@ public class TraitHealth extends TraitSerializable {
 					entity.getWorld().getGameLogic().getPluginsManager().fireEvent(event);
 
 					// When a player dies, delete his save as well
-					File playerSavefile = new File(((WorldMaster) entity.getWorld()).getFolderPath() + "/players/"
-							+ player.getName().toLowerCase() + ".csf");
+					File playerSavefile = new File(((WorldMaster) entity.getWorld()).getFolderPath() + "/players/" + player.getName().toLowerCase() + ".csf");
 					if (playerSavefile.exists()) {
 						// Player save file is deleted upon death
 						playerSavefile.delete();
@@ -194,8 +191,7 @@ public class TraitHealth extends TraitSerializable {
 	}
 
 	public float getMaxHealth() {
-		return Float.parseFloat(entity.getDefinition().resolveProperty("maxHealth",
-				entity.getDefinition().resolveProperty("startHealth", "100")));
+		return Float.parseFloat(entity.getDefinition().resolveProperty("maxHealth", entity.getDefinition().resolveProperty("startHealth", "100")));
 	}
 
 }

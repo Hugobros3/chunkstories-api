@@ -12,8 +12,7 @@ import java.util.List;
 // This class takes care of providing the simplex noise functions for the world
 // generator. It is based on other people's work as the comments below show.
 
-/**
- * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
+/** A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
  *
  * Based on example code by Stefan Gustavson (stegu@itn.liu.se). Optimisations
  * by Peter Eastman (peastman@drizzle.stanford.edu). Better rank ordering method
@@ -24,22 +23,17 @@ import java.util.List;
  * Version 2012-03-09
  *
  * This code was placed in the public domain by its original author, Stefan
- * Gustavson. You may use it as you see fit, but attribution is appreciated.
- *
- */
+ * Gustavson. You may use it as you see fit, but attribution is appreciated. */
 public class SeededSimplexNoiseGenerator {
-	private Grad grad3[] = { new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0),
-			new Grad(1, 0, 1), new Grad(-1, 0, 1), new Grad(1, 0, -1), new Grad(-1, 0, -1), new Grad(0, 1, 1),
-			new Grad(0, -1, 1), new Grad(0, 1, -1), new Grad(0, -1, -1) };
+	private Grad grad3[] = { new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0), new Grad(1, 0, 1), new Grad(-1, 0, 1),
+			new Grad(1, 0, -1), new Grad(-1, 0, -1), new Grad(0, 1, 1), new Grad(0, -1, 1), new Grad(0, 1, -1), new Grad(0, -1, -1) };
 
-	private Grad grad4[] = { new Grad(0, 1, 1, 1), new Grad(0, 1, 1, -1), new Grad(0, 1, -1, 1), new Grad(0, 1, -1, -1),
-			new Grad(0, -1, 1, 1), new Grad(0, -1, 1, -1), new Grad(0, -1, -1, 1), new Grad(0, -1, -1, -1),
-			new Grad(1, 0, 1, 1), new Grad(1, 0, 1, -1), new Grad(1, 0, -1, 1), new Grad(1, 0, -1, -1),
-			new Grad(-1, 0, 1, 1), new Grad(-1, 0, 1, -1), new Grad(-1, 0, -1, 1), new Grad(-1, 0, -1, -1),
-			new Grad(1, 1, 0, 1), new Grad(1, 1, 0, -1), new Grad(1, -1, 0, 1), new Grad(1, -1, 0, -1),
-			new Grad(-1, 1, 0, 1), new Grad(-1, 1, 0, -1), new Grad(-1, -1, 0, 1), new Grad(-1, -1, 0, -1),
-			new Grad(1, 1, 1, 0), new Grad(1, 1, -1, 0), new Grad(1, -1, 1, 0), new Grad(1, -1, -1, 0),
-			new Grad(-1, 1, 1, 0), new Grad(-1, 1, -1, 0), new Grad(-1, -1, 1, 0), new Grad(-1, -1, -1, 0) };
+	private Grad grad4[] = { new Grad(0, 1, 1, 1), new Grad(0, 1, 1, -1), new Grad(0, 1, -1, 1), new Grad(0, 1, -1, -1), new Grad(0, -1, 1, 1),
+			new Grad(0, -1, 1, -1), new Grad(0, -1, -1, 1), new Grad(0, -1, -1, -1), new Grad(1, 0, 1, 1), new Grad(1, 0, 1, -1), new Grad(1, 0, -1, 1),
+			new Grad(1, 0, -1, -1), new Grad(-1, 0, 1, 1), new Grad(-1, 0, 1, -1), new Grad(-1, 0, -1, 1), new Grad(-1, 0, -1, -1), new Grad(1, 1, 0, 1),
+			new Grad(1, 1, 0, -1), new Grad(1, -1, 0, 1), new Grad(1, -1, 0, -1), new Grad(-1, 1, 0, 1), new Grad(-1, 1, 0, -1), new Grad(-1, -1, 0, 1),
+			new Grad(-1, -1, 0, -1), new Grad(1, 1, 1, 0), new Grad(1, 1, -1, 0), new Grad(1, -1, 1, 0), new Grad(1, -1, -1, 0), new Grad(-1, 1, 1, 0),
+			new Grad(-1, 1, -1, 0), new Grad(-1, -1, 1, 0), new Grad(-1, -1, -1, 0) };
 
 	private short p[];
 	// To remove the need for index wrapping, float the permutation table
@@ -139,13 +133,11 @@ public class SeededSimplexNoiseGenerator {
 
 		// Old dirty method
 		// shall be replaced by a proper 4D dual-circle thing
-		/*
-		 * float result = 0; result+=noise(x,y)*(period-x)*(period-y);
+		/* float result = 0; result+=noise(x,y)*(period-x)*(period-y);
 		 * result+=noise(x-period,y)*(x)*(period-y);
 		 * result+=noise(x-period,y-period)*(x)*(y);
 		 * result+=noise(x,y-period)*(period-x)*(y); result/=period*period; return
-		 * result;
-		 */
+		 * result; */
 	}
 
 	// 2D simplex noise

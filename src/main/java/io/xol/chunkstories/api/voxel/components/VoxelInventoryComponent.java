@@ -44,8 +44,7 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 			public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
 				for (WorldUser user : holder.users()) {
 					if (user instanceof RemotePlayer) {
-						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(holder.getWorld(), this,
-								x, y, pileChanged);
+						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(holder.getWorld(), this, x, y, pileChanged);
 						RemotePlayer player = (RemotePlayer) user;
 						player.pushPacket(packet);
 					}

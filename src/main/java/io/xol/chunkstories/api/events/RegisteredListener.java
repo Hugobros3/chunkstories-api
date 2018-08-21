@@ -8,18 +8,15 @@ package io.xol.chunkstories.api.events;
 
 import io.xol.chunkstories.api.plugin.ChunkStoriesPlugin;
 
-/**
- * Describes a successfully processed event handler annotation, called when a
- * specific event happens
- */
+/** Describes a successfully processed event handler annotation, called when a
+ * specific event happens */
 public class RegisteredListener {
 	Listener listener;
 	ChunkStoriesPlugin plugin;
 	EventExecutor executor;
 	EventHandler.EventPriority priority;
 
-	public RegisteredListener(Listener listener, ChunkStoriesPlugin plugin, EventExecutor executor,
-			EventHandler.EventPriority priority) {
+	public RegisteredListener(Listener listener, ChunkStoriesPlugin plugin, EventExecutor executor, EventHandler.EventPriority priority) {
 		this.listener = listener;
 		this.plugin = plugin;
 		this.executor = executor;

@@ -42,8 +42,7 @@ public class PacketParticle extends PacketWorld {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		out.writeUTF(particleName);
 		out.writeDouble(position.x());
 		out.writeDouble(position.y());
@@ -57,8 +56,7 @@ public class PacketParticle extends PacketWorld {
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
-			throws IOException, PacketProcessingException {
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException {
 		particleName = in.readUTF();
 		Vector3d position = new Vector3d();
 		position.x = (in.readDouble());
@@ -74,8 +72,7 @@ public class PacketParticle extends PacketWorld {
 
 		if (processor instanceof ClientPacketsProcessor) {
 			ClientPacketsProcessor cpp = (ClientPacketsProcessor) processor;
-			cpp.getContext().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position,
-					velocity);
+			cpp.getContext().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position, velocity);
 		}
 	}
 }

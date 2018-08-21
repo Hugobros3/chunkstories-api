@@ -11,8 +11,7 @@ import org.joml.Matrix4fc;
 
 import io.xol.chunkstories.api.animation.SkeletalAnimation.SkeletonBone;
 
-/**
- * Helper class to build compound animations: use different animations for each
+/** Helper class to build compound animations: use different animations for each
  * bone, depending on arbitrary parameters.
  * 
  * Works using actual SkeletalAnimation (not SkeletonAnimator! ) obtained
@@ -20,23 +19,17 @@ import io.xol.chunkstories.api.animation.SkeletalAnimation.SkeletonBone;
  * 
  * For this system to work two assertions need to be valid : all animations used
  * have the same tree structure, and the distances/position of the bones are the
- * same. Otherwrise unpredictable results may occur;
- */
+ * same. Otherwrise unpredictable results may occur; */
 public abstract class CompoundAnimationHelper implements SkeletonAnimator {
-	/**
-	 * Key of this class : returns whatever SkeletalAnimation to use with wich bone
+	/** Key of this class : returns whatever SkeletalAnimation to use with wich bone
 	 * at wich point, possibly depending of external factors of the implemting
-	 * subclass
-	 */
+	 * subclass */
 	public abstract SkeletalAnimation getAnimationPlayingForBone(String boneName, double animationTime);
 
-	/**
-	 * Returns the local matrix to use for a bone, by default grabs it for the
-	 * playing animation, but you can change that for some effects
-	 */
+	/** Returns the local matrix to use for a bone, by default grabs it for the
+	 * playing animation, but you can change that for some effects */
 	public Matrix4fc getBoneTransformationMatrix(String boneName, double animationTime) {
-		return getAnimationPlayingForBone(boneName, animationTime).getBone(boneName)
-				.getTransformationMatrix(animationTime);
+		return getAnimationPlayingForBone(boneName, animationTime).getBone(boneName).getTransformationMatrix(animationTime);
 	}
 
 	private final Matrix4fc getBoneHierarchyTransformationMatrixInternal(String boneName, double animationTime) {
@@ -56,8 +49,7 @@ public abstract class CompoundAnimationHelper implements SkeletonAnimator {
 		if (parent != null) {
 
 			Matrix4f thisBoneMatrix2 = new Matrix4f();
-			getBoneHierarchyTransformationMatrixInternal(parent.getName(), animationTime).mul(thisBoneMatrix,
-					thisBoneMatrix2);
+			getBoneHierarchyTransformationMatrixInternal(parent.getName(), animationTime).mul(thisBoneMatrix, thisBoneMatrix2);
 
 			return thisBoneMatrix2;
 		}
@@ -65,24 +57,18 @@ public abstract class CompoundAnimationHelper implements SkeletonAnimator {
 		return thisBoneMatrix;
 	}
 
-	/**
-	 * Returns a matrix to offset the rigged mesh
-	 */
+	/** Returns a matrix to offset the rigged mesh */
 	public Matrix4fc getBoneHierarchyMeshOffsetMatrix(String boneName, double animationTime) {
 		SkeletalAnimation animation = getAnimationPlayingForBone(boneName, animationTime);
 		return animation.getOffsetMatrix(boneName);
 	}
 
-	/**
-	 * Used to draw debug bone armature
-	 */
+	/** Used to draw debug bone armature */
 	public Matrix4fc getBoneHierarchyTransformationMatrix(String nameOfEndBone, double animationTime) {
 		return getBoneHierarchyTransformationMatrixInternal(nameOfEndBone, animationTime);
 	}
 
-	/**
-	 * Used to draw mesh parts in OpenGL
-	 */
+	/** Used to draw mesh parts in OpenGL */
 	public Matrix4fc getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, double animationTime) {
 		Matrix4f matrix = new Matrix4f(getBoneHierarchyTransformationMatrix(nameOfEndBone, animationTime));
 

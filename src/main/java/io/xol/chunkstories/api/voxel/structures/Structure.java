@@ -55,8 +55,7 @@ public abstract class Structure {
 		for (int x = 0; x < size.x; x++) {
 			for (int y = 0; y < size.y; y++) {
 				for (int z = 0; z < size.z; z++) {
-					FutureCell future = new FutureCell(world, actualPosition.x + x, actualPosition.y + y,
-							actualPosition.z + z, null);
+					FutureCell future = new FutureCell(world, actualPosition.x + x, actualPosition.y + y, actualPosition.z + z, null);
 					future.setVoxel(data[x + y * size.x + z * size.x * size.y].getVoxel());
 					// world.poke(future, null);
 
@@ -84,13 +83,12 @@ public abstract class Structure {
 		for (int x = initX; x < boundX; x++) {
 			for (int y = initY; y < boundY; y++) {
 				for (int z = initZ; z < boundZ; z++) {
-					FutureCell future = new FutureCell(chunk.getWorld(), actualPosition.x + x, actualPosition.y + y,
-							actualPosition.z + z, null);
+					FutureCell future = new FutureCell(chunk.getWorld(), actualPosition.x + x, actualPosition.y + y, actualPosition.z + z, null);
 					future.setVoxel(data[x + y * size.x + z * size.x * size.y].getVoxel());
 
 					if (!future.getVoxel().isAir() || (flags & FLAG_DONT_OVERWRITE_AIR) == 0)
-						chunk.pokeSimpleSilently(actualPosition.x + x, actualPosition.y + y, actualPosition.z + z,
-								future.getVoxel(), future.getMetaData(), 0, 0);
+						chunk.pokeSimpleSilently(actualPosition.x + x, actualPosition.y + y, actualPosition.z + z, future.getVoxel(), future.getMetaData(), 0,
+								0);
 				}
 			}
 		}

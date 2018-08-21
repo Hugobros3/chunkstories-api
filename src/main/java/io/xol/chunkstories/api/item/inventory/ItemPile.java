@@ -48,8 +48,7 @@ public class ItemPile {
 		this(definition.newItem(), amount);
 	}
 
-	public static ItemPile obtainItemPileFromStream(ContentTranslator translator, DataInputStream stream)
-			throws IOException, UndefinedItemTypeException, NullItemException {
+	public static ItemPile obtainItemPileFromStream(ContentTranslator translator, DataInputStream stream) throws IOException, UndefinedItemTypeException, NullItemException {
 		int itemId = stream.readInt();
 		if (itemId == 0)
 			throw new NullItemException(stream);
@@ -79,17 +78,14 @@ public class ItemPile {
 		item.save(stream);
 	}
 
-	/**
-	 * Try to move an item to another slot
+	/** Try to move an item to another slot
 	 * 
 	 * @param destinationInventory new slot's inventory
 	 * @param destinationX
 	 * @param destinationY
-	 * @return null if successfull, this if not.
-	 */
+	 * @return null if successfull, this if not. */
 	// @SuppressWarnings("unchecked")
-	public boolean moveItemPileTo(@Nullable Inventory destinationInventory, int destinationX, int destinationY,
-			int amountToTransfer) {
+	public boolean moveItemPileTo(@Nullable Inventory destinationInventory, int destinationX, int destinationY, int amountToTransfer) {
 		Inventory currentInventory = this.inventory;
 
 		// If moving to itself
@@ -175,9 +171,7 @@ public class ItemPile {
 		return this.getItem().canMergeWith(itemPile.getItem());
 	}
 
-	/**
-	 * Returns an exact copy of this pile
-	 */
+	/** Returns an exact copy of this pile */
 	public ItemPile duplicate() {
 		ItemPile pile = new ItemPile(this.item, this.amount);
 		ByteArrayOutputStream data = new ByteArrayOutputStream();

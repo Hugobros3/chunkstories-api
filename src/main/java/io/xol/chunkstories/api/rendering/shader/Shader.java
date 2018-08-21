@@ -42,11 +42,9 @@ public interface Shader {
 
 	public void setUniform3f(String uniformName, Vector3dc uniformData);
 
-	public void setUniform4f(String uniformName, float uniformData_x, float uniformData_y, float uniformData_z,
-			float uniformData_w);
+	public void setUniform4f(String uniformName, float uniformData_x, float uniformData_y, float uniformData_z, float uniformData_w);
 
-	public void setUniform4f(String uniformName, double uniformData_x, double uniformData_y, double uniformData_z,
-			double uniformData_w);
+	public void setUniform4f(String uniformName, double uniformData_x, double uniformData_y, double uniformData_z, double uniformData_w);
 
 	public void setUniform4f(String uniformName, Vector4fc uniformData);
 
@@ -58,12 +56,12 @@ public interface Shader {
 
 	public void attachUBO(String bindingPoint, ShaderBuffer ubo);
 
-	/**
-	 * Returns the list of parsed texture samplers declared in the fragment shader
-	 */
+	/** Returns the list of parsed texture samplers declared in the fragment
+	 * shader */
 	public Map<String, SamplerType> samplers();
 
-	public enum SamplerType {
+	public enum SamplerType
+	{
 		TEXTURE_1D, TEXTURE_2D, TEXTURE_3D, CUBEMAP, ARRAY_TEXTURE_2D;
 	}
 

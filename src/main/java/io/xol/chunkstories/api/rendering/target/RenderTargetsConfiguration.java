@@ -6,12 +6,10 @@
 
 package io.xol.chunkstories.api.rendering.target;
 
-/**
- * A semi-obvious proxy for FBO configuration in OGL, abstracting it better
+/** A semi-obvious proxy for FBO configuration in OGL, abstracting it better
  * would be hard, and it is'nt that often you find yourself messing with
  * framebuffer output, so isn't that a big deal... is it ? Created using a
- * RenderTargetManager.
- */
+ * RenderTargetManager. */
 public interface RenderTargetsConfiguration {
 
 	/** Enables or disables specific render targets in this configuration */

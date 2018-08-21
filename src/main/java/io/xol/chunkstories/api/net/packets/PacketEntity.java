@@ -49,8 +49,7 @@ public class PacketEntity extends PacketWorld {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		long entityUUID = entity.getUUID();
 		short entityTypeID = (short) entity.getWorld().getContentTranslator().getIdForEntity(entity);
 
@@ -89,8 +88,7 @@ public class PacketEntity extends PacketWorld {
 		out.writeInt(-1);
 	}
 
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
-			throws IOException, UnknownComponentException {
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, UnknownComponentException {
 		long entityUUID = in.readLong();
 		short entityTypeID = in.readShort();
 
@@ -111,12 +109,10 @@ public class PacketEntity extends PacketWorld {
 		// Create an entity if the servers tells you to do so
 		if (entity == null) {
 			if (world instanceof WorldMaster && sender instanceof RemotePlayer) {
-				((Player) sender)
-						.sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
+				((Player) sender).sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
 				return;
 			} else if (!hideEntity) {
-				entity = processor.getWorld().getContentTranslator().getEntityForId(entityTypeID)
-						.create(new Location(world, 0, 0, 0)); // This is technically
+				entity = processor.getWorld().getContentTranslator().getEntityForId(entityTypeID).create(new Location(world, 0, 0, 0)); // This is technically
 
 				entity.setUUID(entityUUID);
 

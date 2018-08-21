@@ -36,22 +36,18 @@ public class PacketOpenInventory extends PacketWorld {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		InventoryTranslator.writeInventoryHandle(out, inventory);
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
-			throws IOException, PacketProcessingException {
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException {
 		inventory = InventoryTranslator.obtainInventoryHandle(in, processor);
 		if (processor.getContext() instanceof ClientInterface) {
 			ClientInterface client = (ClientInterface) processor.getContext();
 			Entity currentControlledEntity = client.getPlayer().getControlledEntity();
 
-			Inventory inventory2 = currentControlledEntity != null
-					? currentControlledEntity.traits.tryWith(TraitInventory.class, ei -> ei)
-					: null;
+			Inventory inventory2 = currentControlledEntity != null ? currentControlledEntity.traits.tryWith(TraitInventory.class, ei -> ei) : null;
 
 			if (inventory2 != null)
 				client.openInventories(inventory2, inventory);

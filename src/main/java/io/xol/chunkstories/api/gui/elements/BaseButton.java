@@ -71,8 +71,8 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 	}
 
 	public boolean isMouseOver(Mouse mouse) {
-		return (mouse.getCursorX() >= xPosition && mouse.getCursorX() < xPosition + getWidth()
-				&& mouse.getCursorY() >= yPosition && mouse.getCursorY() <= yPosition + getHeight());
+		return (mouse.getCursorX() >= xPosition && mouse.getCursorX() < xPosition + getWidth() && mouse.getCursorY() >= yPosition
+				&& mouse.getCursorY() <= yPosition + getHeight());
 	}
 
 	@Override
@@ -85,10 +85,12 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 			buttonTexture = renderer.textures().getTexture("./textures/gui/scalableButtonOver2.png");
 
 		buttonTexture.setLinearFiltering(false);
-		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, width, getHeight(), 4 * scale(),
-				buttonTexture, 32, scale());
-		renderer.getFontRenderer().drawString(font, xPosition + 4 * scale(), yPosition, localizedText,
-				fontScaler * scale(), new Vector4f(0, 0, 0, 1));// new Vector4f(76/255f, 76/255f, 76/255f, 1));
+		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, width, getHeight(), 4 * scale(), buttonTexture, 32, scale());
+		renderer.getFontRenderer().drawString(font, xPosition + 4 * scale(), yPosition, localizedText, fontScaler * scale(), new Vector4f(0, 0, 0, 1));// new
+																																						// Vector4f(76/255f,
+																																						// 76/255f,
+																																						// 76/255f,
+																																						// 1));
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 /** Ensures that VoxelFormat doesn't specify nonsense */
 public class TestVoxelFormat {
-	
+
 	@Test
 	public void testVoxelFormat() {
 		// Demo-debug
@@ -45,44 +45,48 @@ public class TestVoxelFormat {
 				System.out.println(sunLight + " vs " + sunlight(formatted));
 				System.out.println(metaData + " vs " + meta(formatted));
 				fail();
-				//throw new RuntimeException("Test failed.");
+				// throw new RuntimeException("Test failed.");
 			}
 
 			int blockId2 = random.nextInt(65536);
 			int blockLight2 = random.nextInt(16);
 			int sunLight2 = random.nextInt(16);
 			int metaData2 = random.nextInt(256);
-			
+
 			int blockIdExpected = blockId;
 			int blockLightExpected = blockLight;
 			int sunLightExpected = sunLight;
 			int metaDataExpected = metaData;
-			
+
 			blockIdExpected = blockId2;
 			formatted = changeId(formatted, blockIdExpected);
-			
-			if(!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted) && metaDataExpected == meta(formatted)))
+
+			if (!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted)
+					&& metaDataExpected == meta(formatted)))
 				fail();
-			
+
 			metaDataExpected = metaData2;
 			formatted = changeMeta(formatted, metaDataExpected);
-			
-			if(!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted) && metaDataExpected == meta(formatted)))
+
+			if (!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted)
+					&& metaDataExpected == meta(formatted)))
 				fail();
-			
+
 			sunLightExpected = sunLight2;
 			formatted = changeSunlight(formatted, sunLightExpected);
-			
-			if(!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted) && metaDataExpected == meta(formatted)))
+
+			if (!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted)
+					&& metaDataExpected == meta(formatted)))
 				fail();
-			
+
 			blockLightExpected = blockLight2;
 			formatted = changeBlocklight(formatted, blockLightExpected);
-			
-			if(!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted) && metaDataExpected == meta(formatted)))
+
+			if (!(blockIdExpected == id(formatted) && blockLightExpected == blocklight(formatted) && sunLightExpected == sunlight(formatted)
+					&& metaDataExpected == meta(formatted)))
 				fail();
 		}
-		
-		System.out.println("Ran through "+tests+" runs of testing just fine.");
+
+		System.out.println("Ran through " + tests + " runs of testing just fine.");
 	}
 }

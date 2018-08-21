@@ -52,8 +52,7 @@ public class McSchematicStructure extends Structure {
 	}
 
 	public McSchematicStructure(NBTCompound root, MinecraftBlocksTranslator translator) {
-		super(((NBTShort) root.getTag("Width")).data, ((NBTShort) root.getTag("Height")).data,
-				((NBTShort) root.getTag("Length")).data);
+		super(((NBTShort) root.getTag("Width")).data, ((NBTShort) root.getTag("Height")).data, ((NBTShort) root.getTag("Length")).data);
 
 		int width = ((NBTShort) root.getTag("Width")).data;
 		int height = ((NBTShort) root.getTag("Height")).data;
@@ -81,8 +80,7 @@ public class McSchematicStructure extends Structure {
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
 					int mcindex = (y * length + z) * width + x;
-					translator.getMapper(blocks.data[mcindex], blocksdata.data[mcindex]).output(blocks.data[mcindex],
-							blocksdata.data[mcindex], future);
+					translator.getMapper(blocks.data[mcindex], blocksdata.data[mcindex]).output(blocks.data[mcindex], blocksdata.data[mcindex], future);
 
 					StructureCell cell = new StructureCell(x, y, z, null, 0, 0, 0);
 					cell.setVoxel(future.getVoxel());

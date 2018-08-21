@@ -108,36 +108,30 @@ public class ScrollableContainer extends FocusableGuiElement implements Clickabl
 		public void render(RenderingInterface renderer) {
 			int s = ScrollableContainer.this.scale();
 			// Setup textures
-			Texture2D bgTexture = renderer.textures()
-					.getTexture(isMouseOver(renderer.getClient().getInputsManager().getMouse())
-							? "./textures/gui/genericOver.png"
-							: "./textures/gui/generic.png");
+			Texture2D bgTexture = renderer.textures().getTexture(
+					isMouseOver(renderer.getClient().getInputsManager().getMouse()) ? "./textures/gui/genericOver.png" : "./textures/gui/generic.png");
 			bgTexture.setLinearFiltering(false);
 
 			// Render graphical base
-			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(positionX, positionY, width * s, height * s, 0, 1, 1,
-					0, bgTexture, true, false, new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-			// Render icon
-			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(positionX + 4 * s, positionY + 4 * s, 64 * s, 64 * s,
-					0, 1, 1, 0, renderer.textures().getTexture(iconTextureLocation), true, false,
+			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(positionX, positionY, width * s, height * s, 0, 1, 1, 0, bgTexture, true, false,
 					new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
+			// Render icon
+			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(positionX + 4 * s, positionY + 4 * s, 64 * s, 64 * s, 0, 1, 1, 0,
+					renderer.textures().getTexture(iconTextureLocation), true, false, new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 			// Text !
 			if (name != null)
-				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12),
-						positionX + 70 * s, positionY + 54 * s, name, s, new Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12), positionX + 70 * s, positionY + 54 * s,
+						name, s, new Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
 
 			if (topRightString != null) {
-				float dekal = width
-						- renderer.getFontRenderer().getFont("LiberationSans-Regular", 12).getWidth(topRightString) - 4;
-				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12),
-						positionX + dekal * s, positionY + 54 * s, topRightString, s,
-						new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
+				float dekal = width - renderer.getFontRenderer().getFont("LiberationSans-Regular", 12).getWidth(topRightString) - 4;
+				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12), positionX + dekal * s,
+						positionY + 54 * s, topRightString, s, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
 			}
 
 			if (descriptionLines != null)
-				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12),
-						positionX + 70 * s, positionY + 38 * s, descriptionLines, s,
-						new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
+				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12), positionX + 70 * s, positionY + 38 * s,
+						descriptionLines, s, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
 
 		}
 

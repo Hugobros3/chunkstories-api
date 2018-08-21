@@ -83,7 +83,6 @@ public abstract class Cell implements CellData {
 	}
 
 	public String toString() {
-		return "[Cell " + x + ", " + y + ", " + z + " " + voxel + " " + sunlight + ":" + blocklight + ":" + metadata
-				+ "]";
+		return "[Cell " + x + ", " + y + ", " + z + " " + voxel + " " + sunlight + ":" + blocklight + ":" + metadata + "]";
 	}
 }

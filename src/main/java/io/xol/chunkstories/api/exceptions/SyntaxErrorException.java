@@ -36,11 +36,9 @@ public class SyntaxErrorException extends Exception {
 	@Override
 	public String getMessage() {
 		if (asset != null)
-			return "Parse error " + (customMsg == null ? "" : ("( " + customMsg + " )")) + " at line " + line
-					+ " of asset " + asset;
+			return "Parse error " + (customMsg == null ? "" : ("( " + customMsg + " )")) + " at line " + line + " of asset " + asset;
 
-		return "Parse error " + (customMsg == null ? "" : ("( " + customMsg + " )")) + " at line " + line + " of file "
-				+ file.getAbsolutePath();
+		return "Parse error " + (customMsg == null ? "" : ("( " + customMsg + " )")) + " at line " + line + " of file " + file.getAbsolutePath();
 	}
 
 	private static final long serialVersionUID = 4922242735691620666L;

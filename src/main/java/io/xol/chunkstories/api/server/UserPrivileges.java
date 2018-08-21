@@ -23,10 +23,8 @@ public interface UserPrivileges {
 
 	public void setUserWhitelisted(String username, boolean whitelisted);
 
-	/**
-	 * Warning: This method won't kick the player, just prevent him from
-	 * reconnecting
-	 */
+	/** Warning: This method won't kick the player, just prevent him from
+	 * reconnecting */
 	public void setUserBanned(String username, boolean banned);
 
 	public void setIpBanned(String ip, boolean banned);

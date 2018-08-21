@@ -41,10 +41,8 @@ public abstract class RenderPass {
 		this.exports = new ArrayList<>(Arrays.asList(exports));
 	}
 
-	/**
-	 * Called when all the required render passes have been initialized and
-	 * resolvedInputs is filled with them.
-	 */
+	/** Called when all the required render passes have been initialized and
+	 * resolvedInputs is filled with them. */
 	public abstract void onResolvedInputs();
 
 	/** Inputs you requested are found here */
@@ -57,10 +55,8 @@ public abstract class RenderPass {
 
 	public abstract void onScreenResize(int width, int height);
 
-	/**
-	 * Called when switching shader in the pass, you can setup any
-	 * pass/shader-specific uniforms that would be required during this pass
-	 */
+	/** Called when switching shader in the pass, you can setup any
+	 * pass/shader-specific uniforms that would be required during this pass */
 	public void setupShader(RenderingInterface renderer, Shader shader) {
 
 		renderer.getCamera().setupShader(shader);
@@ -69,10 +65,8 @@ public abstract class RenderPass {
 		renderer.currentShader().setUniform1i("isShadowPass", 0);
 	}
 
-	/**
-	 * Called when switching shader in the pass, will automatically try to bind the
-	 * available textures to the sampler
-	 */
+	/** Called when switching shader in the pass, will automatically try to bind the
+	 * available textures to the sampler */
 	public void autoBindInputs(RenderingInterface renderer, Shader shader) {
 		for (Entry<String, SamplerType> e : shader.samplers().entrySet()) {
 

@@ -16,8 +16,7 @@ public class UnknowPacketException extends Exception {
 	}
 
 	public UnknowPacketException(Packet packet) {
-		this.m = "Couldn't determine the ID for the packet : " + packet.getClass().getSimpleName()
-				+ ", is it declared in a .packets file ?";
+		this.m = "Couldn't determine the ID for the packet : " + packet.getClass().getSimpleName() + ", is it declared in a .packets file ?";
 	}
 
 	@Override

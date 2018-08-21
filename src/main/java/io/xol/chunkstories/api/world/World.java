@@ -55,76 +55,56 @@ public interface World {
 	/** Returns the ContentTranslator associated with this world */
 	public ContentTranslator getContentTranslator();
 
-	/**
-	 * @return The height of the world, default worlds are 1024
-	 */
+	/** @return The height of the world, default worlds are 1024 */
 	public default int getMaxHeight() {
 		return getWorldInfo().getSize().heightInChunks * 32;
 	}
 
-	/**
-	 * @return The size of the side of the world, divided by 32
-	 */
+	/** @return The size of the side of the world, divided by 32 */
 	public default int getSizeInChunks() {
 		return getWorldInfo().getSize().sizeInChunks;
 	}
 
-	/**
-	 * @return The size of the side of the world
-	 */
+	/** @return The size of the side of the world */
 	public default double getWorldSize() {
 		return getSizeInChunks() * 32;
 	}
 
 	/* Entity management */
 
-	/**
-	 * Adds an entity to the world, the entity location is supposed to be already
+	/** Adds an entity to the world, the entity location is supposed to be already
 	 * defined
 	 * 
-	 * @param entity
-	 */
+	 * @param entity */
 	public void addEntity(Entity entity);
 
-	/**
-	 * Removes an entity from the world, matches the object
+	/** Removes an entity from the world, matches the object
 	 * 
-	 * @param entity
-	 */
+	 * @param entity */
 	public boolean removeEntity(Entity entity);
 
-	/**
-	 * Removes an entity from the world, based on UUID
+	/** Removes an entity from the world, based on UUID
 	 * 
-	 * @param entityFollowed
-	 */
+	 * @param entityFollowed */
 	public boolean removeEntityByUUID(long uuid);
 
-	/**
-	 * @param entityID a valid UUID
-	 * @return null if it can't be found
-	 */
+	/** @param entityID a valid UUID
+	 * @return null if it can't be found */
 	@Nullable
 	public Entity getEntityByUUID(long uuid);
 
-	/**
-	 * Returns an iterator containing all the loaded entities. Supposedly
-	 * thread-safe
-	 */
+	/** Returns an iterator containing all the loaded entities. Supposedly
+	 * thread-safe */
 	public IterableIterator<Entity> getAllLoadedEntities();
 
-	/**
-	 * Returns an iterator containing all the entities from within the box defined
-	 * by center and boxSize
-	 */
+	/** Returns an iterator containing all the entities from within the box defined
+	 * by center and boxSize */
 	public NearEntitiesIterator getEntitiesInBox(Vector3dc center, Vector3dc boxSize);
 
 	interface NearEntitiesIterator extends IterableIterator<Entity> {
 
-		/**
-		 * Returns the distance of the last entity returned by next() to the center of
-		 * the box
-		 */
+		/** Returns the distance of the last entity returned by next() to the center of
+		 * the box */
 		public double distance();
 	}
 
@@ -134,46 +114,36 @@ public interface World {
 		public World getWorld();
 	}
 
-	/**
-	 * Get the data contained in this cell as full 32-bit data format ( see
+	/** Get the data contained in this cell as full 32-bit data format ( see
 	 * {@link VoxelFormat})
 	 * 
 	 * @return the data contained in this chunk as full 32-bit data format ( see
 	 *         {@link VoxelFormat})
 	 * @throws WorldException if it couldn't peek the world at the specified
-	 *                        location for some reason
-	 */
+	 *             location for some reason */
 	public ChunkCell peek(int x, int y, int z) throws WorldException;
 
-	/**
-	 * Convenient overload of peek() to take a Vector3dc derivative ( ie: a Location
-	 * object )
-	 */
+	/** Convenient overload of peek() to take a Vector3dc derivative ( ie: a
+	 * Location object ) */
 	public ChunkCell peek(Vector3dc location) throws WorldException;
 
-	/**
-	 * Safely calls peek() and returns a WorldVoxelContext no matter what.
-	 * Zeroes-out if the normal peek() would have failed.
-	 */
+	/** Safely calls peek() and returns a WorldVoxelContext no matter what.
+	 * Zeroes-out if the normal peek() would have failed. */
 	public WorldCell peekSafely(int x, int y, int z);
 
-	/**
-	 * Convenient overload of peekSafely() to take a Vector3dc derivative ( ie: a
-	 * Location object )
-	 */
+	/** Convenient overload of peekSafely() to take a Vector3dc derivative ( ie: a
+	 * Location object ) */
 	public WorldCell peekSafely(Vector3dc location);
 
-	/**
-	 * Alternative to peek() that does not create any VoxelContext object<br/>
-	 * <b>Does not throw exceptions</b>, instead safely returns zero upon failure.
-	 */
+	/** Alternative to peek() that does not create any VoxelContext object<br/>
+	 * <b>Does not throw exceptions</b>, instead safely returns zero upon
+	 * failure. */
 	public Voxel peekSimple(int x, int y, int z);
 
 	/** Peek the raw data of the chunk */
 	public int peekRaw(int x, int y, int z);
 
-	/**
-	 * Poke new information in a voxel cell.
+	/** Poke new information in a voxel cell.
 	 * 
 	 * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
 	 * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -183,180 +153,137 @@ public interface World {
 	 * It will also trigger lightning and such updates
 	 * 
 	 * @throws WorldException if it couldn't poke the world at the specified
-	 *                        location, for example if it's not loaded
-	 */
-	public WorldCell poke(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata,
-			@Nullable WorldModificationCause cause) throws WorldException;
+	 *             location, for example if it's not loaded */
+	public WorldCell poke(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata, @Nullable WorldModificationCause cause) throws WorldException;
 
 	/** Simply use a FutureVoxelContext to ease modifications */
 	public CellData poke(FutureCell fvc, @Nullable WorldModificationCause cause) throws WorldException;
 
-	/**
-	 * Poke new information in a voxel cell.
+	/** Poke new information in a voxel cell.
 	 * 
 	 * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
 	 * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
 	 * bits will not be updated. If 'metadata' is -1 the metadata bits will not be
 	 * updated.
 	 * 
-	 * It will also trigger lightning and such updates
-	 */
+	 * It will also trigger lightning and such updates */
 	public void pokeSimple(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 
 	public void pokeSimple(FutureCell fvc);
 
-	/**
-	 * Poke new information in a voxel cell.
+	/** Poke new information in a voxel cell.
 	 * 
 	 * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
 	 * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
 	 * bits will not be updated. If 'metadata' is -1 the metadata bits will not be
 	 * updated.
 	 * 
-	 * This will *not* trigger any update.
-	 */
-	public void pokeSimpleSilently(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight,
-			int metadata);
+	 * This will *not* trigger any update. */
+	public void pokeSimpleSilently(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 
 	public void pokeSimpleSilently(FutureCell fvc);
 
-	/**
-	 * Poke the raw data for a voxel cell Takes a full 32-bit data format ( see
-	 * {@link VoxelFormat})
-	 */
+	/** Poke the raw data for a voxel cell Takes a full 32-bit data format ( see
+	 * {@link VoxelFormat}) */
 	public void pokeRaw(int x, int y, int z, int newVoxelData);
 
-	/**
-	 * Poke the raw data for a voxel cell Takes a full 32-bit data format ( see
-	 * {@link VoxelFormat}) Does not trigger any updates.
-	 */
+	/** Poke the raw data for a voxel cell Takes a full 32-bit data format ( see
+	 * {@link VoxelFormat}) Does not trigger any updates. */
 	public void pokeRawSilently(int x, int y, int z, int newVoxelData);
 
 	public IterableIterator<CellData> getVoxelsWithin(CollisionBox boundingBox);
 
 	/* Chunks */
 
-	/**
-	 * acquires a ChunkHolder and registers it's user, triggering a load operation
+	/** acquires a ChunkHolder and registers it's user, triggering a load operation
 	 * for the underlying chunk and preventing it to unload until all the users
-	 * either unregisters or gets garbage collected and it's reference nulls out.
-	 */
+	 * either unregisters or gets garbage collected and it's reference nulls out. */
 	@Nullable
 	public ChunkHolder acquireChunkHolderLocation(WorldUser user, Location location);
 
-	/**
-	 * acquires a ChunkHolder and registers it's user, triggering a load operation
+	/** acquires a ChunkHolder and registers it's user, triggering a load operation
 	 * for the underlying chunk and preventing it to unload until all the users
-	 * either unregisters or gets garbage collected and it's reference nulls out.
-	 */
+	 * either unregisters or gets garbage collected and it's reference nulls out. */
 	@Nullable
 	public ChunkHolder acquireChunkHolderWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
 
-	/**
-	 * acquires a ChunkHolder and registers it's user, triggering a load operation
+	/** acquires a ChunkHolder and registers it's user, triggering a load operation
 	 * for the underlying chunk and preventing it to unload until all the users
-	 * either unregisters or gets garbage collected and it's reference nulls out.
-	 */
+	 * either unregisters or gets garbage collected and it's reference nulls out. */
 	@Nullable
 	public ChunkHolder acquireChunkHolder(WorldUser user, int chunkX, int chunkY, int chunkZ);
 
-	/**
-	 * Returns true if a chunk was loaded. Not recommanded nor intended to use as a
+	/** Returns true if a chunk was loaded. Not recommanded nor intended to use as a
 	 * replacement for a '== null' check after getChunk() because of the load/unload
-	 * mechanisms !
-	 */
+	 * mechanisms ! */
 	public boolean isChunkLoaded(int chunkX, int chunkY, int chunkZ);
 
-	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was
-	 * acquired by someone and the chunk had time to load.
-	 */
+	/** Returns either null or a valid chunk if a corresponding ChunkHolder was
+	 * acquired by someone and the chunk had time to load. */
 	@Nullable
 	public Chunk getChunk(int chunkX, int chunkY, int chunkZ);
 
-	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was
-	 * acquired by someone and the chunk had time to load.
-	 */
+	/** Returns either null or a valid chunk if a corresponding ChunkHolder was
+	 * acquired by someone and the chunk had time to load. */
 	@Nullable
 	public Chunk getChunkWorldCoordinates(int worldX, int worldY, int worldZ);
 
-	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was
-	 * acquired by someone and the chunk had time to load.
-	 */
+	/** Returns either null or a valid chunk if a corresponding ChunkHolder was
+	 * acquired by someone and the chunk had time to load. */
 	@Nullable
 	public Chunk getChunkWorldCoordinates(Location location);
 
-	/**
-	 * Returns either null or a valid chunk if a corresponding ChunkHolder was
-	 * acquired by someone and the chunk had time to load.
-	 */
+	/** Returns either null or a valid chunk if a corresponding ChunkHolder was
+	 * acquired by someone and the chunk had time to load. */
 	public ChunksIterator getAllLoadedChunks();
 
 	/* Regions */
 
-	/**
-	 * acquires a region and registers it's user, triggering a load operation for
+	/** acquires a region and registers it's user, triggering a load operation for
 	 * the region and preventing it to unload until all the users either unregisters
-	 * or gets garbage collected and it's reference nulls out.
-	 */
+	 * or gets garbage collected and it's reference nulls out. */
 	@Nullable
 	public Region acquireRegion(WorldUser user, int regionX, int regionY, int regionZ);
 
-	/**
-	 * acquires a region and registers it's user, triggering a load operation for
+	/** acquires a region and registers it's user, triggering a load operation for
 	 * the region and preventing it to unload until all the users either unregisters
-	 * or gets garbage collected and it's reference nulls out.
-	 */
+	 * or gets garbage collected and it's reference nulls out. */
 	@Nullable
 	public Region acquireRegionChunkCoordinates(WorldUser user, int chunkX, int chunkY, int chunkZ);
 
-	/**
-	 * acquires a region and registers it's user, triggering a load operation for
+	/** acquires a region and registers it's user, triggering a load operation for
 	 * the region and preventing it to unload until all the users either unregisters
-	 * or gets garbage collected and it's reference nulls out.
-	 */
+	 * or gets garbage collected and it's reference nulls out. */
 	@Nullable
 	public Region acquireRegionWorldCoordinates(WorldUser user, int worldX, int worldY, int worldZ);
 
-	/**
-	 * acquires a region and registers it's user, triggering a load operation for
+	/** acquires a region and registers it's user, triggering a load operation for
 	 * the region and preventing it to unload until all the users either unregisters
-	 * or gets garbage collected and it's reference nulls out.
-	 */
+	 * or gets garbage collected and it's reference nulls out. */
 	@Nullable
 	public Region acquireRegionLocation(WorldUser user, Location location);
 
-	/**
-	 * Returns either null or a valid, entirely loaded region if the acquireRegion
+	/** Returns either null or a valid, entirely loaded region if the acquireRegion
 	 * method was called and it had time to load and there is still one user using
-	 * it
-	 */
+	 * it */
 	@Nullable
 	public Region getRegion(int regionX, int regionY, int regionZ);
 
-	/**
-	 * Returns either null or a valid, entirely loaded region if the acquireRegion
+	/** Returns either null or a valid, entirely loaded region if the acquireRegion
 	 * method was called and it had time to load and there is still one user using
-	 * it
-	 */
+	 * it */
 	@Nullable
 	public Region getRegionChunkCoordinates(int chunkX, int chunkY, int chunkZ);
 
-	/**
-	 * Returns either null or a valid, entirely loaded region if the acquireRegion
+	/** Returns either null or a valid, entirely loaded region if the acquireRegion
 	 * method was called and it had time to load and there is still one user using
-	 * it
-	 */
+	 * it */
 	@Nullable
 	public Region getRegionWorldCoordinates(int worldX, int worldY, int worldZ);
 
-	/**
-	 * Returns either null or a valid, entirely loaded region if the acquireRegion
+	/** Returns either null or a valid, entirely loaded region if the acquireRegion
 	 * method was called and it had time to load and there is still one user using
-	 * it
-	 */
+	 * it */
 	@Nullable
 	public Region getRegionLocation(Location location);
 
@@ -364,61 +291,47 @@ public interface World {
 
 	public WorldHeightmaps getRegionsSummariesHolder();
 
-	/**
-	 * For dirty hacks that need so
-	 */
+	/** For dirty hacks that need so */
 	// TODO put that in WorldClient
 	public void redrawEverything();
 
-	/**
-	 * Blocking method saving all loaded chunks
+	/** Blocking method saving all loaded chunks
 	 * 
-	 * @return a Fence that clears once that's done
-	 */
+	 * @return a Fence that clears once that's done */
 	public Fence saveEverything();
 
-	/**
-	 * Destroys the world, kill threads and frees stuff
-	 */
+	/** Destroys the world, kill threads and frees stuff */
 	public void destroy();
 
 	public Location getDefaultSpawnLocation();
 
 	public void setDefaultSpawnLocation(Location location);
 
-	/**
-	 * Sets the time of the World. By default the time is set at 5000 and it uses a
+	/** Sets the time of the World. By default the time is set at 5000 and it uses a
 	 * 10.000 cycle, 0 being midnight and 5000 being midday
 	 * 
-	 * @param time
-	 */
+	 * @param time */
 	public void setTime(long time);
 
 	public long getTime();
 
-	/**
-	 * The weather is represented by a normalised float value 0.0 equals dead dry
+	/** The weather is represented by a normalised float value 0.0 equals dead dry
 	 * 0.2 equals sunny 0.4 equals overcast 0.5 equals foggy/cloudy >0.5 rains 0.8
 	 * max rain intensity 0.9 lightning 1.0 hurricane
 	 * 
-	 * @return
-	 */
+	 * @return */
 	public float getWeather();
 
 	public void setWeather(float overcastFactor);
 
-	/**
-	 * Game-logic function. Not something you'd be supposed to call
-	 */
+	/** Game-logic function. Not something you'd be supposed to call */
 	public void tick();
 
 	public long getTicksElapsed();
 
-	/**
-	 * Called when some controllable entity try to interact with the world
+	/** Called when some controllable entity try to interact with the world
 	 * 
-	 * @return true if the interaction was handled
-	 */
+	 * @return true if the interaction was handled */
 	public boolean handleInteraction(Entity entity, Location blockLocation, Input input);
 
 	/* Raytracers and methods to grab entities */

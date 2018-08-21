@@ -42,8 +42,7 @@ public class PlayerMoveItemEvent extends CancellableEvent {
 
 	private final int amount;
 
-	public PlayerMoveItemEvent(Player player, ItemPile pile, Inventory from, Inventory to, int fromX, int fromY,
-			int toX, int toY, int amount) {
+	public PlayerMoveItemEvent(Player player, ItemPile pile, Inventory from, Inventory to, int fromX, int fromY, int toX, int toY, int amount) {
 		this.player = player;
 		this.pile = pile;
 

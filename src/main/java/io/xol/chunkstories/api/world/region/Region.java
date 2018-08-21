@@ -15,9 +15,7 @@ import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.chunk.ChunkHolder;
 
-/**
- * A region is 8x8x8 chunks and contains entities
- */
+/** A region is 8x8x8 chunks and contains entities */
 public interface Region {
 
 	public World getWorld();
@@ -34,9 +32,7 @@ public interface Region {
 
 	boolean unregisterUser(WorldUser user);
 
-	/**
-	 * @return An iterator over each entity within this region
-	 */
+	/** @return An iterator over each entity within this region */
 	public Iterator<Entity> getEntitiesWithinRegion();
 
 	public int getNumberOfLoadedChunks();
@@ -51,10 +47,8 @@ public interface Region {
 
 	// public boolean isUnused();
 
-	/**
-	 * Will be traversable once the file representing the region at the time of
-	 * calling this is done writing.
-	 */
+	/** Will be traversable once the file representing the region at the time of
+	 * calling this is done writing. */
 	public Fence save();
 
 	/// ** Same as above, but unloads first */

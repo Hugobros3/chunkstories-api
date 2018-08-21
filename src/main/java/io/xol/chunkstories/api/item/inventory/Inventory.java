@@ -24,49 +24,37 @@ public interface Inventory extends Iterable<ItemPile> {
 	/** Name displayed in GUI, among other things */
 	public String getInventoryName();
 
-	/**
-	 * Does someone 'owns' this ? Returns NULL or something implementing
-	 * InventoryHolder.
-	 */
+	/** Does someone 'owns' this ? Returns NULL or something implementing
+	 * InventoryHolder. */
 	@Nullable
 	public InventoryHolder getHolder();
 
-	/**
-	 * Returns the ItemPile in that position. This functions considers the fact that
-	 * some items are wider than others, thus checking different positions can
-	 * return the same items.
-	 */
+	/** Returns the ItemPile in that position. This functions considers the fact
+	 * that some items are wider than others, thus checking different positions can
+	 * return the same items. */
 	@Nullable
 	public ItemPile getItemPileAt(int x, int y);
 
-	/**
-	 * Checks if a spot in the inventory is eligible for placement of an ItemPile.
-	 * Takes into account the size of the items, as well as item stacking.
-	 */
+	/** Checks if a spot in the inventory is eligible for placement of an ItemPile.
+	 * Takes into account the size of the items, as well as item stacking. */
 	public boolean canPlaceItemAt(int x, int y, ItemPile pile);
 
-	/**
-	 * Tries to place an item at that location, it returns the argument 'pile' if it
-	 * can't place it.
-	 */
+	/** Tries to place an item at that location, it returns the argument 'pile' if
+	 * it can't place it. */
 	@Nullable
 	public ItemPile placeItemPileAt(int x, int y, ItemPile pile);
 
-	/**
-	 * Tries to replace the pile in the inventory with another pile The failure
+	/** Tries to replace the pile in the inventory with another pile The failure
 	 * condition is that replacing the pile would cause it to 'overlap' neightbours
 	 * and to prevent that the game will not let you do so.
 	 * 
-	 * @return true if it succeeds, false else
-	 */
+	 * @return true if it succeeds, false else */
 	public boolean setItemPileAt(int x, int y, @Nullable ItemPile pile);
 
-	/**
-	 * Try to add a pile to this inventory.
+	/** Try to add a pile to this inventory.
 	 * 
 	 * @param pile
-	 * @return Null if it succeeds or the input pile if it fails
-	 */
+	 * @return Null if it succeeds or the input pile if it fails */
 	@Nullable
 	public ItemPile addItemPile(ItemPile pile);
 

@@ -61,8 +61,7 @@ public final class CollisionBox implements Collidable {
 
 	public boolean collidesWith(World world) {
 		// TODO actually iterate over the space rather than assuming a small volume
-		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getDefinition()
-				.isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getDefinition().isSolid())
 			return true;
 		if (world.peekSafely((int) (xpos + xw), (int) (ypos), (int) (zpos + zw)).getVoxel().getDefinition().isSolid())
 			return true;
@@ -91,12 +90,10 @@ public final class CollisionBox implements Collidable {
 		return false;
 	}
 
-	/**
-	 * Box / Line collision check Returns null if no collision, a Vector3dm if
+	/** Box / Line collision check Returns null if no collision, a Vector3dm if
 	 * collision, containing the collision point.
 	 * 
-	 * @return The collision point, or NULL.
-	 */
+	 * @return The collision point, or NULL. */
 	@Nullable
 	public Vector3dc lineIntersection(Vector3dc lineStart, Vector3dc lineDirectionIn) {
 		double minDist = 0.0;
@@ -164,8 +161,7 @@ public final class CollisionBox implements Collidable {
 
 	@Override
 	public String toString() {
-		return "Collision Box : position = [" + xpos + ", " + ypos + ", " + zpos + "] size = [" + xw + ", " + h + ", "
-				+ zw + "]";
+		return "Collision Box : position = [" + xpos + ", " + ypos + ", " + zpos + "] size = [" + xw + ", " + h + ", " + zw + "]";
 	}
 
 	@Override
@@ -177,8 +173,7 @@ public final class CollisionBox implements Collidable {
 	}
 
 	public boolean collidesWith(CollisionBox b) {
-		if (ypos + h <= b.ypos || ypos >= b.ypos + b.h || xpos + xw <= b.xpos || xpos >= b.xpos + b.xw
-				|| zpos + zw <= b.zpos || zpos >= b.zpos + b.zw) {
+		if (ypos + h <= b.ypos || ypos >= b.ypos + b.h || xpos + xw <= b.xpos || xpos >= b.xpos + b.xw || zpos + zw <= b.zpos || zpos >= b.zpos + b.zw) {
 			return false;
 		}
 		return true;

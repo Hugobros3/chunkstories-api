@@ -33,9 +33,7 @@ import io.xol.chunkstories.api.world.cell.FutureCell;
 
 import javax.annotation.Nullable;
 
-/**
- * An item that contains voxels
- */
+/** An item that contains voxels */
 public class ItemVoxel extends Item implements WorldModificationCause {
 	private final Content.Voxels store;
 
@@ -84,8 +82,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 
 				boolean isEntityCreativeMode = entity.traits.tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get());
 
-				Location blockLocation = entity.traits.tryWith(TraitVoxelSelection.class,
-						tvs -> tvs.getBlockLookingAt(false, true));
+				Location blockLocation = entity.traits.tryWith(TraitVoxelSelection.class, tvs -> tvs.getBlockLookingAt(false, true));
 
 				if (blockLocation != null) {
 					FutureCell fvc = new FutureCell(entity.getWorld().peekSafely(blockLocation));
@@ -114,8 +111,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 						if (event.isCancelled())
 							return true;
 
-						entity.getWorld().getSoundManager().playSoundEffect("sounds/gameplay/voxel_place.ogg",
-								Mode.NORMAL, fvc.getLocation(), 1.0f, 1.0f);
+						entity.getWorld().getSoundManager().playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, fvc.getLocation(), 1.0f, 1.0f);
 					}
 
 					entity.getWorld().poke(fvc, modifierEntity);
@@ -157,15 +153,12 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 	}
 
 	@Override
-	/**
-	 * Two ItemVoxel can merge if they represent the same voxel & they share the
-	 * same 8 bits of metadata
-	 */
+	/** Two ItemVoxel can merge if they represent the same voxel & they share the
+	 * same 8 bits of metadata */
 	public boolean canMergeWith(Item item) {
 		if (item instanceof ItemVoxel) {
 			ItemVoxel itemVoxel = (ItemVoxel) item;
-			return super.canMergeWith(itemVoxel) && itemVoxel.getVoxel().sameKind(getVoxel())
-					&& itemVoxel.getVoxelMeta() == this.getVoxelMeta();
+			return super.canMergeWith(itemVoxel) && itemVoxel.getVoxel().sameKind(getVoxel()) && itemVoxel.getVoxelMeta() == this.getVoxelMeta();
 		}
 		return false;
 	}

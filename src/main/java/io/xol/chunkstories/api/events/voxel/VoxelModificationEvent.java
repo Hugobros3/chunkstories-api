@@ -53,7 +53,8 @@ public class VoxelModificationEvent extends VoxelEvent {
 		}
 	}
 
-	public enum ModifiationType {
+	public enum ModifiationType
+	{
 		DESTRUCTION, PLACEMENT, REPLACEMENT;
 	}
 }

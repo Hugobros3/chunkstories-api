@@ -47,8 +47,8 @@ public class EntityHitbox {
 
 		Matrix4f boneTransormation = new Matrix4f();
 		if (this.animationTrait != null)
-			boneTransormation.set(animationTrait.getAnimatedSkeleton()
-					.getBoneHierarchyTransformationMatrix(skeletonPart, System.currentTimeMillis() % 1000000));
+			boneTransormation
+					.set(animationTrait.getAnimatedSkeleton().getBoneHierarchyTransformationMatrix(skeletonPart, System.currentTimeMillis() % 1000000));
 
 		Matrix4f worldPositionTransformation = new Matrix4f();
 
@@ -82,15 +82,12 @@ public class EntityHitbox {
 		context.currentShader().setUniform1i("doTransform", 0);
 	}
 
-	/**
-	 * Tricky maths; transforms the inbound ray so the hitbox would be at 0.0.0 and
-	 * axis-aligned
-	 */
+	/** Tricky maths; transforms the inbound ray so the hitbox would be at 0.0.0 and
+	 * axis-aligned */
 	public Vector3dc lineIntersection(Vector3dc lineStart, Vector3dc lineDirection) {
 		Matrix4f fromAABBToWorld = new Matrix4f();
 		if (this.animationTrait != null)
-			fromAABBToWorld.set(animationTrait.getAnimatedSkeleton().getBoneHierarchyTransformationMatrix(skeletonPart,
-					System.currentTimeMillis() % 1000000));
+			fromAABBToWorld.set(animationTrait.getAnimatedSkeleton().getBoneHierarchyTransformationMatrix(skeletonPart, System.currentTimeMillis() % 1000000));
 
 		Matrix4f worldPositionTransformation = new Matrix4f();
 
@@ -108,8 +105,7 @@ public class EntityHitbox {
 
 		// Transform line start into AABB space
 		Vector4f lineStart4 = new Vector4f((float) lineStart.x(), (float) lineStart.y(), (float) lineStart.z(), 1.0f);
-		Vector4f lineDirection4 = new Vector4f((float) lineDirection.x(), (float) lineDirection.y(),
-				(float) lineDirection.z(), 0.0f);
+		Vector4f lineDirection4 = new Vector4f((float) lineDirection.x(), (float) lineDirection.y(), (float) lineDirection.z(), 0.0f);
 
 		fromWorldToAABB.transform(lineStart4);
 		fromWorldToAABB.transform(lineDirection4);
@@ -126,8 +122,7 @@ public class EntityHitbox {
 		Vector4f hitPoint4 = new Vector4f((float) hitPoint.x(), (float) hitPoint.y(), (float) hitPoint.z(), 1.0f);
 		fromAABBToWorld.transform(hitPoint4);
 
-		return new Vector3d((double) (float) hitPoint4.x(), (double) (float) hitPoint4.y(),
-				(double) (float) hitPoint4.z());
+		return new Vector3d((double) (float) hitPoint4.x(), (double) (float) hitPoint4.y(), (double) (float) hitPoint4.z());
 	}
 
 	public String getName() {

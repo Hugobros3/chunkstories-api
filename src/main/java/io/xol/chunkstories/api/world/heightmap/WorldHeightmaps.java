@@ -18,63 +18,47 @@ public interface WorldHeightmaps {
 	/** Return the associated World */
 	public World getWorld();
 
-	/**
-	 * Aquires a heightmap and registers an user, triggering a load operation for
+	/** Aquires a heightmap and registers an user, triggering a load operation for
 	 * the heightmap and preventing it to unload until all the users either
-	 * unregisters or gets garbage collected and their references nulls out.
-	 */
+	 * unregisters or gets garbage collected and their references nulls out. */
 	public Heightmap acquireHeightmap(WorldUser worldUser, int regionX, int regionZ);
 
-	/**
-	 * Aquires a heightmap and registers an user, triggering a load operation for
+	/** Aquires a heightmap and registers an user, triggering a load operation for
 	 * the heightmap and preventing it to unload until all the users either
-	 * unregisters or gets garbage collected and their references nulls out.
-	 */
+	 * unregisters or gets garbage collected and their references nulls out. */
 	public Heightmap acquireHeightmapChunkCoordinates(WorldUser worldUser, int chunkX, int chunkZ);
 
-	/**
-	 * Aquires a heightmap and registers an user, triggering a load operation for
+	/** Aquires a heightmap and registers an user, triggering a load operation for
 	 * the heightmap and preventing it to unload until all the users either
-	 * unregisters or gets garbage collected and their references nulls out.
-	 */
+	 * unregisters or gets garbage collected and their references nulls out. */
 	public Heightmap acquireHeightmapWorldCoordinates(WorldUser worldUser, int worldX, int worldZ);
 
-	/**
-	 * Aquires a heightmap and registers an user, triggering a load operation for
+	/** Aquires a heightmap and registers an user, triggering a load operation for
 	 * the heightmap and preventing it to unload until all the users either
-	 * unregisters or gets garbage collected and their references nulls out.
-	 */
+	 * unregisters or gets garbage collected and their references nulls out. */
 	public Heightmap acquireHeightmapLocation(WorldUser worldUser, Location location);
 
-	/**
-	 * Returns either null or a valid, entirely loaded heightmap if the
+	/** Returns either null or a valid, entirely loaded heightmap if the
 	 * aquireHeightmap method was called and it had time to load and there is still
-	 * one user using it
-	 */
+	 * one user using it */
 	@Nullable
 	public Heightmap getHeightmap(int regionX, int regionZ);
 
-	/**
-	 * Returns either null or a valid, entirely loaded heightmap if the
+	/** Returns either null or a valid, entirely loaded heightmap if the
 	 * aquireHeightmap method was called and it had time to load and there is still
-	 * one user using it
-	 */
+	 * one user using it */
 	@Nullable
 	public Heightmap getHeightmapChunkCoordinates(int chunkX, int chunkZ);
 
-	/**
-	 * Returns either null or a valid, entirely loaded heightmap if the
+	/** Returns either null or a valid, entirely loaded heightmap if the
 	 * aquireHeightmap method was called and it had time to load and there is still
-	 * one user using it
-	 */
+	 * one user using it */
 	@Nullable
 	public Heightmap getHeightmapWorldCoordinates(int worldX, int worldZ);
 
-	/**
-	 * Returns either null or a valid, entirely loaded heightmap if the
+	/** Returns either null or a valid, entirely loaded heightmap if the
 	 * aquireHeightmap method was called and it had time to load and there is still
-	 * one user using it
-	 */
+	 * one user using it */
 	@Nullable
 	public Heightmap getHeightmapLocation(Location location);
 

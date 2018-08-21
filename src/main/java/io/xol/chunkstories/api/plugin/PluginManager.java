@@ -16,10 +16,8 @@ import io.xol.chunkstories.api.plugin.commands.CommandHandler;
 import io.xol.chunkstories.api.plugin.commands.SystemCommand;
 import io.xol.chunkstories.api.util.IterableIterator;
 
-/**
- * The Plugin manager is responsible for loading/unloading of plugins, handling
- * of commands and handling of events
- */
+/** The Plugin manager is responsible for loading/unloading of plugins, handling
+ * of commands and handling of events */
 public interface PluginManager {
 	/** (Re)Loads all necessary plugins */
 	public void reloadPlugins();
@@ -30,14 +28,12 @@ public interface PluginManager {
 	/** Lists active plugins */
 	public IterableIterator<ChunkStoriesPlugin> activePlugins();
 
-	/**
-	 * Dispatches an command to the plugins
+	/** Dispatches an command to the plugins
 	 * 
-	 * @param emitter     Whoever sent it
+	 * @param emitter Whoever sent it
 	 * @param commandName The command name
-	 * @param arguments   The arguments, splitted by spaces
-	 * @return Whether the command executed sucessfully
-	 */
+	 * @param arguments The arguments, splitted by spaces
+	 * @return Whether the command executed sucessfully */
 	public boolean dispatchCommand(CommandEmitter emitter, String commandName, String[] arguments);
 
 	/** Register a new system command */
@@ -54,14 +50,10 @@ public interface PluginManager {
 
 	/* Events handling */
 
-	/**
-	 * Register a Listener in an plugin
-	 */
+	/** Register a Listener in an plugin */
 	public void registerEventListener(Listener listener, ChunkStoriesPlugin plugin);
 
-	/**
-	 * Fires an Event, pass it to all plugins that are listening for this kind of
-	 * event
-	 */
+	/** Fires an Event, pass it to all plugins that are listening for this kind of
+	 * event */
 	public void fireEvent(Event event);
 }

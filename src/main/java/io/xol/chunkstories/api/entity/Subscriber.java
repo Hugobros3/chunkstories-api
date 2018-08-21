@@ -11,20 +11,14 @@ import java.util.Iterator;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
-/**
- * A subscriber wants to be kept up-to-date with the latest changes in his
- * environment
- */
+/** A subscriber wants to be kept up-to-date with the latest changes in his
+ * environment */
 public interface Subscriber extends StreamTarget {
-	/**
-	 * @return An unique ID to discriminate it against all others -1 is reserved for
-	 *         server all positive ids are hashmaps of the client username
-	 */
+	/** @return An unique ID to discriminate it against all others -1 is reserved
+	 *         for server all positive ids are hashmaps of the client username */
 	public long getUUID();
 
-	/**
-	 * @return All Entities it is subscribed to
-	 */
+	/** @return All Entities it is subscribed to */
 	public Iterator<Entity> getSubscribedToList();
 
 	public boolean subscribe(Entity entity);

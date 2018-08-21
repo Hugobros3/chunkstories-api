@@ -52,10 +52,8 @@ public class Layer {
 		return parentLayer;
 	}
 
-	/**
-	 * Draws to the screen (preferably using the defined borders!) You may render
-	 * the parent layer to have an overlay effect, but it's not mandatory.
-	 */
+	/** Draws to the screen (preferably using the defined borders!) You may render
+	 * the parent layer to have an overlay effect, but it's not mandatory. */
 	public void render(RenderingInterface renderer) {
 
 	}
@@ -81,10 +79,8 @@ public class Layer {
 		}
 
 		// Forward to parent if not handled
-		/*
-		 * Layer parent = this.parentLayer; if(parent != null) return
-		 * parent.handleInput(input);
-		 */
+		/* Layer parent = this.parentLayer; if(parent != null) return
+		 * parent.handleInput(input); */
 
 		return false;
 	}

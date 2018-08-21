@@ -21,10 +21,8 @@ public class TraitCollidable extends Trait {
 	}
 
 	public Vector3dc moveWithCollisionRestrain(Vector3dc delta) {
-		Vector3dc movementLeft = entity.world.collisionsManager().runEntityAgainstWorldVoxels(entity,
-				entity.getLocation(), delta);
-		entity.entityLocation.move(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(),
-				delta.z() - movementLeft.z());
+		Vector3dc movementLeft = entity.world.collisionsManager().runEntityAgainstWorldVoxels(entity, entity.getLocation(), delta);
+		entity.entityLocation.move(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(), delta.z() - movementLeft.z());
 		return movementLeft;
 	}
 
@@ -32,14 +30,12 @@ public class TraitCollidable extends Trait {
 		return moveWithCollisionRestrain(new Vector3d(mx, my, mz));
 	}
 
-	/**
-	 * Does the hitboxes computations to determine if that entity could move that
+	/** Does the hitboxes computations to determine if that entity could move that
 	 * delta
 	 * 
 	 * @return The remaining distance in each dimension if he got stuck ( with
 	 *         vec3(0.0, 0.0, 0.0) meaning it can move without colliding with
-	 *         anything )
-	 */
+	 *         anything ) */
 	public Vector3dc canMoveWithCollisionRestrain(Vector3dc delta) {
 		return entity.world.collisionsManager().runEntityAgainstWorldVoxels(entity, entity.getLocation(), delta);
 	}
@@ -48,16 +44,14 @@ public class TraitCollidable extends Trait {
 		return canMoveWithCollisionRestrain(new Vector3d(dx, dy, dz));
 	}
 
-	/**
-	 * Does the hitboxes computations to determine if that entity could move that
+	/** Does the hitboxes computations to determine if that entity could move that
 	 * delta
 	 * 
 	 * @param from Change the origin of the movement from the default ( current
-	 *             entity position )
+	 *            entity position )
 	 * @return The remaining distance in each dimension if he got stuck ( with
 	 *         vec3(0.0, 0.0, 0.0) meaning it can move without colliding with
-	 *         anything )
-	 */
+	 *         anything ) */
 	public Vector3dc canMoveWithCollisionRestrain(Vector3dc from, Vector3dc delta) {
 		return entity.world.collisionsManager().runEntityAgainstWorldVoxels(entity, from, delta);
 	}
@@ -67,9 +61,7 @@ public class TraitCollidable extends Trait {
 	public boolean isOnGround() {
 		// System.out.println(canMoveWithCollisionRestrain(onGroundTest_).length());
 		if (isStuckInEntity() == null)
-			return entity.world.collisionsManager()
-					.runEntityAgainstWorldVoxelsAndEntities(entity, entity.getLocation(), onGroundTest_)
-					.length() != 0.0d;
+			return entity.world.collisionsManager().runEntityAgainstWorldVoxelsAndEntities(entity, entity.getLocation(), onGroundTest_).length() != 0.0d;
 		else
 			return canMoveWithCollisionRestrain(onGroundTest_).length() != 0.0d;
 	}
@@ -103,13 +95,11 @@ public class TraitCollidable extends Trait {
 				}
 			}
 
-			/*
-			 * if(e != entity && e.traits.tryWithBoolean(TraitCollidable.class, tc ->
+			/* if(e != entity && e.traits.tryWithBoolean(TraitCollidable.class, tc ->
 			 * e.definition.collidesWithEntities())) { //Broad
 			 * if(e.getBoundingBox().collidesWith(this.getBoundingBox())) //Fine
 			 * for(CollisionBox b : e.getTranslatedCollisionBoxes()) for(CollisionBox c :
-			 * this.getTranslatedCollisionBoxes()) if(b.collidesWith(c)) return e; }
-			 */
+			 * this.getTranslatedCollisionBoxes()) if(b.collidesWith(c)) return e; } */
 		}
 		return null;
 	}

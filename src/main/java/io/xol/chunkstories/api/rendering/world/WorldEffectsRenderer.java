@@ -8,22 +8,14 @@ package io.xol.chunkstories.api.rendering.world;
 
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 
-/**
- * Handles weather and other whole-world effects
- */
+/** Handles weather and other whole-world effects */
 public interface WorldEffectsRenderer {
-	/**
-	 * Called when rendering a frame
-	 */
+	/** Called when rendering a frame */
 	public void renderEffects(RenderingInterface renderingContext);
 
-	/**
-	 * Called each tick (default is 60 tps)
-	 */
+	/** Called each tick (default is 60 tps) */
 	public void tick();
 
-	/**
-	 * Called when cleaning up ( deletes vbos, frees textures )
-	 */
+	/** Called when cleaning up ( deletes vbos, frees textures ) */
 	public void destroy();
 }

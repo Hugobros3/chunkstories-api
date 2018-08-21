@@ -26,7 +26,8 @@ public interface ParticleTypeDefinition extends Definition {
 	// ;
 	// }
 
-	public enum ParticleRenderingMode {
+	public enum ParticleRenderingMode
+	{
 		BILLBOARD;
 	}
 

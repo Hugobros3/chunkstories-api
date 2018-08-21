@@ -6,9 +6,7 @@
 
 package io.xol.chunkstories.api.rendering.target;
 
-/**
- * A 2d surface we can draw stuff to
- */
+/** A 2d surface we can draw stuff to */
 public interface RenderTarget {
 	public void resize(int width, int height);
 

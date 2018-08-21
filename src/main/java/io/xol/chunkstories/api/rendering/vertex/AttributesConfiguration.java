@@ -8,14 +8,10 @@ package io.xol.chunkstories.api.rendering.vertex;
 
 import java.util.Map;
 
-/**
- * Abstracts the vertex shader inputs
- */
+/** Abstracts the vertex shader inputs */
 public interface AttributesConfiguration {
-	/**
-	 * Returns the currently bound attributes
+	/** Returns the currently bound attributes
 	 * 
-	 * @return
-	 */
+	 * @return */
 	public Map<String, AttributeSource> getBoundAttributes();
 }

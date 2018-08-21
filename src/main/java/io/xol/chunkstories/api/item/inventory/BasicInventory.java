@@ -71,8 +71,7 @@ public class BasicInventory implements Inventory {
 						break;
 					p = contents[i % width][j % height];
 					if (p != null) {
-						if (i + p.getItem().getDefinition().getSlotsWidth() - 1 >= x
-								&& j + p.getItem().getDefinition().getSlotsHeight() - 1 >= y)
+						if (i + p.getItem().getDefinition().getSlotsWidth() - 1 >= x && j + p.getItem().getDefinition().getSlotsHeight() - 1 >= y)
 							return p;
 					}
 				}
@@ -99,8 +98,7 @@ public class BasicInventory implements Inventory {
 					// Check nearby items don't overlap our pile
 					p = contents[i % width][j % height];
 					if (p != null) {
-						if (i + p.getItem().getDefinition().getSlotsWidth() - 1 >= x
-								&& j + p.getItem().getDefinition().getSlotsHeight() - 1 >= y)
+						if (i + p.getItem().getDefinition().getSlotsWidth() - 1 >= x && j + p.getItem().getDefinition().getSlotsHeight() - 1 >= y)
 							return false;
 					}
 				}
@@ -127,8 +125,7 @@ public class BasicInventory implements Inventory {
 			return null;
 		}
 		// If the two piles are similar we can try to merge them
-		if (currentPileAtLocation != null && currentPileAtLocation.canMergeWith(itemPile)
-				&& !currentPileAtLocation.equals(itemPile)) {
+		if (currentPileAtLocation != null && currentPileAtLocation.canMergeWith(itemPile) && !currentPileAtLocation.equals(itemPile)) {
 			Item item = currentPileAtLocation.getItem();
 			int currentAmount = currentPileAtLocation.getAmount();
 			int wouldBeAddedAmount = itemPile.getAmount();
@@ -265,8 +262,7 @@ public class BasicInventory implements Inventory {
 	}
 
 	/** Saves the inventory content to a data stream */
-	public void pushInventory(StreamTarget destinator, DataOutputStream stream, ContentTranslator translator)
-			throws IOException {
+	public void pushInventory(StreamTarget destinator, DataOutputStream stream, ContentTranslator translator) throws IOException {
 		stream.writeInt(width);
 		stream.writeInt(height);
 
@@ -282,15 +278,12 @@ public class BasicInventory implements Inventory {
 			}
 	}
 
-	/**
-	 * Loads the inventory content from a data stream
+	/** Loads the inventory content from a data stream
 	 * 
 	 * @param content Requires a reference to a Content instance so it can
-	 *                instanciate the items
-	 * @throws IOException
-	 */
-	public void pullInventory(StreamSource from, DataInputStream stream, ContentTranslator translator)
-			throws IOException {
+	 *            instanciate the items
+	 * @throws IOException */
+	public void pullInventory(StreamSource from, DataInputStream stream, ContentTranslator translator) throws IOException {
 		this.width = stream.readInt();
 		this.height = stream.readInt();
 

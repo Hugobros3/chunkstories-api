@@ -17,16 +17,12 @@ public interface ChunkRenderable extends Chunk {
 		/** Increments the needed updates counter but doesn't spawn a task */
 		public void incrementPendingUpdates();
 
-		/**
-		 * Increments the needed updates counter, spawns a task if none exists or is
-		 * pending execution
-		 */
+		/** Increments the needed updates counter, spawns a task if none exists or is
+		 * pending execution */
 		public Fence requestMeshUpdate();
 
-		/**
-		 * Spawns a TaskLightChunk if there are unbaked modifications and no task is
-		 * pending execution
-		 */
+		/** Spawns a TaskLightChunk if there are unbaked modifications and no task is
+		 * pending execution */
 		public void spawnUpdateTaskIfNeeded();
 
 		/** Returns how many light updates have yet to be done */

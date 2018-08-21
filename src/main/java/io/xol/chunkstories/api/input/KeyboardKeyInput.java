@@ -6,19 +6,13 @@
 
 package io.xol.chunkstories.api.input;
 
-/**
- * Describes a key assignated to some action
- */
+/** Describes a key assignated to some action */
 public interface KeyboardKeyInput extends Input {
-	/**
-	 * Returns the name of the bind
-	 */
+	/** Returns the name of the bind */
 	@Override
 	public String getName();
 
-	/**
-	 * Returns true if the key is pressed
-	 */
+	/** Returns true if the key is pressed */
 	@Override
 	public boolean isPressed();
 }

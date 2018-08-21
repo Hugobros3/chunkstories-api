@@ -44,7 +44,7 @@ spotless {
 		licenseHeaderFile 'codequality/header-include-notice.txt'
 		//importOrder 'java', 'javax', 'org', 'com', 'com.diffplug', ''
 		//removeUnusedImports()
-		//eclipse().configFile 'codequality/style.xml'
+		eclipse().configFile 'codequality/style.xml'
 	}
 
 	kotlin {

@@ -9,9 +9,7 @@ package io.xol.chunkstories.api.math;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
-/**
- * Helper class to do crappy simple math
- */
+/** Helper class to do crappy simple math */
 public class Math2 {
 	public static int floor(double x) {
 		int xi = (int) x;

@@ -14,7 +14,7 @@ import org.joml.Vector3fc;
 import io.xol.chunkstories.api.physics.CollisionBox;
 import io.xol.chunkstories.api.rendering.shader.Shader;
 
-//TODO oh boi this is due for a refactor
+// TODO oh boi this is due for a refactor
 public interface CameraInterface {
 	public boolean isBoxInFrustrum(Vector3fc center, Vector3fc dimensions);
 

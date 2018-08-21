@@ -12,11 +12,9 @@ public interface Texture1D extends Texture {
 
 	boolean uploadTextureData(int width, ByteBuffer data);
 
-	/**
-	 * Determines if a texture will loop arround itself or clamp to it's edges
+	/** Determines if a texture will loop arround itself or clamp to it's edges
 	 * 
-	 * @param on
-	 */
+	 * @param on */
 	void setTextureWrapping(boolean on);
 
 	void setLinearFiltering(boolean on);

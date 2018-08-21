@@ -11,10 +11,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * A command is a special token the game uses to call the execution of a certain
- * tool
- */
+/** A command is a special token the game uses to call the execution of a
+ * certain tool */
 public class Command {
 	protected final String name;
 	protected final Set<String> aliases = new HashSet<String>();

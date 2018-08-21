@@ -44,11 +44,10 @@ import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.DummyCell;
 import io.xol.chunkstories.api.world.chunk.DummyChunk;
 
-// TODO : Explicit thumbnail rendering path in VoxelRenderer to avoid this mess ?
-/**
- * Over-engineered way of turning VoxelRenderer output to render a voxel as an
- * item
- */
+// TODO : Explicit thumbnail rendering path in VoxelRenderer to avoid this mess
+// ?
+/** Over-engineered way of turning VoxelRenderer output to render a voxel as an
+ * item */
 public class VoxelItemRenderer extends ItemRenderer {
 	final ClientContent content;
 
@@ -148,14 +147,11 @@ public class VoxelItemRenderer extends ItemRenderer {
 	}
 
 	@Override
-	public void renderItemInInventory(RenderingInterface renderer, ItemPile pile, float screenPositionX,
-			float screenPositionY, int scaling) {
+	public void renderItemInInventory(RenderingInterface renderer, ItemPile pile, float screenPositionX, float screenPositionY, int scaling) {
 
-		/*
-		 * if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
+		/* if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
 		 * fallbackRenderer.renderItemInInventory(renderer, pile, screenPositionX,
-		 * screenPositionY, scaling); return; }
-		 */
+		 * screenPositionY, scaling); return; } */
 
 		int slotSize = 24 * scaling;
 		Shader program = renderer.useShader("inventory_blockmodel");
@@ -179,8 +175,8 @@ public class VoxelItemRenderer extends ItemRenderer {
 		if (voxel == null) {
 			int width = slotSize * pile.getItem().getDefinition().getSlotsWidth();
 			int height = slotSize * pile.getItem().getDefinition().getSlotsHeight();
-			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(screenPositionX, screenPositionY, width, height, 0, 1,
-					1, 0, content.textures().getTexture("./items/icons/notex.png"), true, true, null);
+			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(screenPositionX, screenPositionY, width, height, 0, 1, 1, 0,
+					content.textures().getTexture("./items/icons/notex.png"), true, true, null);
 			return;
 		}
 
@@ -220,14 +216,11 @@ public class VoxelItemRenderer extends ItemRenderer {
 	}
 
 	@Override
-	public void renderItemInWorld(RenderingInterface renderer, ItemPile pile, World world, Location location,
-			Matrix4f handTransformation) {
+	public void renderItemInWorld(RenderingInterface renderer, ItemPile pile, World world, Location location, Matrix4f handTransformation) {
 
-		/*
-		 * if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
+		/* if (((ItemVoxel) pile.getItem()).getVoxel() instanceof VoxelCustomIcon) {
 		 * fallbackRenderer.renderItemInWorld(renderer, pile, world, location,
-		 * handTransformation); return; }
-		 */
+		 * handTransformation); return; } */
 
 		Voxel voxel = ((ItemVoxel) pile.getItem()).getVoxel();
 		if (voxel == null)
@@ -264,13 +257,12 @@ public class VoxelItemRenderer extends ItemRenderer {
 
 			handTransformation.transform(lightposition);
 
-			Light heldBlockLight = new Light(new Vector3f(0.6f, 0.50f, 0.4f).mul(0.5f),
-					new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()), 15f);
+			Light heldBlockLight = new Light(new Vector3f(0.6f, 0.50f, 0.4f).mul(0.5f), new Vector3f(lightposition.x(), lightposition.y(), lightposition.z()),
+					15f);
 			renderer.getLightsRenderer().queueLight(heldBlockLight);
 
 			// If we hold a light source, prepare the shader accordingly
-			renderer.currentShader().setUniform2f("worldLightIn",
-					Math.max(world.peekSafely(location).getBlocklight(), fakeCell.getBlocklight()),
+			renderer.currentShader().setUniform2f("worldLightIn", Math.max(world.peekSafely(location).getBlocklight(), fakeCell.getBlocklight()),
 					world.peekSafely(location).getSunlight());
 		}
 
@@ -289,10 +281,8 @@ public class VoxelItemRenderer extends ItemRenderer {
 		renderFakeVoxel(renderer, fakeCell);
 	}
 
-	/**
-	 * The purpose of this class is to bake the voxel mesh by itself in a single VBO
-	 * used by the item render, and that uses a specific layout
-	 */
+	/** The purpose of this class is to bake the voxel mesh by itself in a single
+	 * VBO used by the item render, and that uses a specific layout */
 	private class VoxelInHandLayoutBaker extends IntricateLayoutBaker implements VoxelBakerCubic {
 
 		VoxelInHandLayoutBaker(ClientContent content, ByteBuffer output) {

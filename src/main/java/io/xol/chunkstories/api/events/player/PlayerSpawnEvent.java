@@ -39,8 +39,7 @@ public class PlayerSpawnEvent extends CancellableEvent {
 	@Nullable
 	private Location spawnLocation;
 
-	public PlayerSpawnEvent(Player player, WorldMaster world, @Nullable Entity entity,
-			@Nullable Location spawnLocation) {
+	public PlayerSpawnEvent(Player player, WorldMaster world, @Nullable Entity entity, @Nullable Location spawnLocation) {
 		this.player = player;
 		this.world = world;
 
@@ -56,11 +55,9 @@ public class PlayerSpawnEvent extends CancellableEvent {
 		return world;
 	}
 
-	/**
-	 * By default the entity is loaded from the players/[username].csf file if it
+	/** By default the entity is loaded from the players/[username].csf file if it
 	 * exists, else it's null. If no entity is set by a third-party plugin, a
-	 * default one will be provided
-	 */
+	 * default one will be provided */
 	@Nullable
 	public Entity getEntity() {
 		return entity;

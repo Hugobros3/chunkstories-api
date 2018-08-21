@@ -35,10 +35,8 @@ public abstract class VoxelComponent {
 		return holder.name(this);
 	}
 
-	/**
-	 * Pushes the component to every client subscribed to the chunk owning this
-	 * voxel
-	 */
+	/** Pushes the component to every client subscribed to the chunk owning this
+	 * voxel */
 	public void pushComponentEveryone() {
 		for (WorldUser user : holder.users()) {
 			if (user instanceof RemotePlayer) {

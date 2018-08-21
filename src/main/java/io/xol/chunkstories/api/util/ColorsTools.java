@@ -12,10 +12,8 @@ import io.xol.chunkstories.api.math.HexTools;
 
 import javax.annotation.Nullable;
 
-/**
- * Some basic helper functions I wrote ages ago, basic RGB/Hex conversions
- * functions and whatnot
- */
+/** Some basic helper functions I wrote ages ago, basic RGB/Hex conversions
+ * functions and whatnot */
 public class ColorsTools {
 	@Nullable
 	public static int[] hexToRGB(String hex) {
@@ -59,11 +57,10 @@ public class ColorsTools {
 	// HEXADECIMAL TO ANSI CONVERTER
 	// Usefull ? Quite not. But it does display in color !
 
-	static int[][] ansiRGB = { { 0, 0, 0 }, { 187, 0, 0 }, { 0, 187, 0 }, { 187, 187, 0 }, { 0, 0, 187 },
-			{ 187, 0, 187 }, { 0, 187, 187 }, { 187, 187, 187 }, };
+	static int[][] ansiRGB = { { 0, 0, 0 }, { 187, 0, 0 }, { 0, 187, 0 }, { 187, 187, 0 }, { 0, 0, 187 }, { 187, 0, 187 }, { 0, 187, 187 },
+			{ 187, 187, 187 }, };
 
-	static String[] ansiEscape = { "\u001B[0m", "\u001B[31m", "\u001B[32m", "\u001B[33m", "\u001B[34m", "\u001B[35m",
-			"\u001B[36m", "\u001B[37m" };
+	static String[] ansiEscape = { "\u001B[0m", "\u001B[31m", "\u001B[32m", "\u001B[33m", "\u001B[34m", "\u001B[35m", "\u001B[36m", "\u001B[37m" };
 
 	public static String convertToAnsi(String text) {
 		boolean doConvert = true; // !System.getProperty("os.name").toLowerCase().contains("windows");
@@ -97,8 +94,7 @@ public class ColorsTools {
 		int distance = 999999999; // <- should do it
 		int best = 0;
 		for (int i = 0; i < ansiRGB.length; i++) {
-			int distance2 = Math.abs(ansiRGB[i][0] - rgb[0]) + Math.abs(ansiRGB[i][1] - rgb[1])
-					+ Math.abs(ansiRGB[i][2] - rgb[2]);
+			int distance2 = Math.abs(ansiRGB[i][0] - rgb[0]) + Math.abs(ansiRGB[i][1] - rgb[1]) + Math.abs(ansiRGB[i][2] - rgb[2]);
 			if (distance2 < distance) {
 				best = i;
 				distance = distance2;

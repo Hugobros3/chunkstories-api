@@ -42,8 +42,7 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 		super(world);
 	}
 
-	public PacketInventoryMoveItemPile(World world, ItemPile itemPile, Inventory from, Inventory to, int oldX, int oldY,
-			int newX, int newY, int amount) {
+	public PacketInventoryMoveItemPile(World world, ItemPile itemPile, Inventory from, Inventory to, int oldX, int oldY, int newX, int newY, int amount) {
 		super(world);
 		this.itemPile = itemPile;
 		this.sourceInventory = from;
@@ -56,8 +55,7 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		// Describe the move
 		out.writeInt(sourceX);
 		out.writeInt(sourceY);
@@ -78,8 +76,8 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 
 	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException {
 		if (!(processor instanceof ServerPlayerPacketsProcessor)) {
-			processor.logger().warn("Received a " + this.getClass().getSimpleName()
-					+ " but this GameContext isn't providen with a packet processor made to deal with it");
+			processor.logger().warn(
+					"Received a " + this.getClass().getSimpleName() + " but this GameContext isn't providen with a packet processor made to deal with it");
 			return;
 		}
 
@@ -130,8 +128,8 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 		}
 
 		// Check using event
-		PlayerMoveItemEvent moveItemEvent = new PlayerMoveItemEvent(player, itemPile, sourceInventory,
-				destinationInventory, sourceX, sourceY, destX, destY, amount);
+		PlayerMoveItemEvent moveItemEvent = new PlayerMoveItemEvent(player, itemPile, sourceInventory, destinationInventory, sourceX, sourceY, destX, destY,
+				amount);
 		player.getContext().getPluginManager().fireEvent(moveItemEvent);
 
 		if (!moveItemEvent.isCancelled()) {
@@ -140,8 +138,7 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 				// player.sendMessage("Notice : dragging stuff from /dev/null to your inventory
 				// should be limited by permission.");
 
-				if (player.hasPermission("items.spawn")
-						|| playerEntity.traits.tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get())) {
+				if (player.hasPermission("items.spawn") || playerEntity.traits.tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get())) {
 					// Let it happen when in creative mode or owns items.spawn perm
 				} else {
 					player.sendMessage("#C00000You are neither in creative mode nor have the items.spawn permission.");

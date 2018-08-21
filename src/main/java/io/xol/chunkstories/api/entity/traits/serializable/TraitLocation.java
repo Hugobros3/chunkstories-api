@@ -24,10 +24,8 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 import javax.annotation.Nullable;
 
-/**
- * Holds the information about an entity whereabouts and a flag to mark it as
- * unspawned
- */
+/** Holds the information about an entity whereabouts and a flag to mark it as
+ * unspawned */
 public class TraitLocation extends TraitSerializable {
 
 	public TraitLocation(Entity entity, Location location) {
@@ -103,10 +101,8 @@ public class TraitLocation extends TraitSerializable {
 		move(delta.x(), delta.y(), delta.z());
 	}
 
-	/**
-	 * Copies the location and returns it. The actual location is never mutated
-	 * outside of set().
-	 */
+	/** Copies the location and returns it. The actual location is never mutated
+	 * outside of set(). */
 	public Location get() {
 		Location pos = this.pos;
 		return new Location(pos.getWorld(), pos);
@@ -149,10 +145,8 @@ public class TraitLocation extends TraitSerializable {
 			pushComponentEveryoneButController();
 	}
 
-	/**
-	 * Prevents entities from going outside the world area and updates the
-	 * parentHolder reference
-	 */
+	/** Prevents entities from going outside the world area and updates the
+	 * parentHolder reference */
 	protected final boolean sanitize() {
 		double worldSize = world.getWorldSize();
 
@@ -189,8 +183,7 @@ public class TraitLocation extends TraitSerializable {
 		if (!spawned)
 			return false;
 
-		if (chunk != null && chunk.getChunkX() == chunkX && chunk.getChunkY() == chunkY
-				&& chunk.getChunkZ() == chunkZ) {
+		if (chunk != null && chunk.getChunkX() == chunkX && chunk.getChunkY() == chunkY && chunk.getChunkZ() == chunkZ) {
 			return false; // Nothing to do !
 		} else {
 			if (chunk != null)

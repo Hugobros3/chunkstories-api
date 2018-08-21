@@ -62,9 +62,8 @@ public class Voxel {
 		return store().air().sameKind(this);
 	}
 
-	/**
-	 * Returns the internal, non localized name of this voxel, shortcut to VoxelType
-	 */
+	/** Returns the internal, non localized name of this voxel, shortcut to
+	 * VoxelType */
 	public final String getName() {
 		return definition.getName();
 	}
@@ -79,131 +78,109 @@ public class Voxel {
 		return voxelRenderer;
 	}
 
-	/**
-	 * Called before setting a cell to this Voxel type. Previous state is assumed to
-	 * be air.
+	/** Called before setting a cell to this Voxel type. Previous state is assumed
+	 * to be air.
 	 * 
 	 * @param newData The data we want to place here. You are welcome to modify it !
 	 * @throws Throw a IllegalBlockModificationException if you want to stop the
-	 *               modification from happening altogether.
-	 */
+	 *             modification from happening altogether. */
 	public void onPlace(FutureCell cell, WorldModificationCause cause) throws WorldException {
 		// Do nothing
 	}
 
-	/**
-	 * Called <i>after</i> a cell was successfully placed. Unlike onPlace you can
+	/** Called <i>after</i> a cell was successfully placed. Unlike onPlace you can
 	 * add your voxelComponents here.
 	 * 
-	 * @param cell
-	 */
+	 * @param cell */
 	public void whenPlaced(FreshChunkCell cell) {
 
 	}
 
-	/**
-	 * Called before replacing a cell contaning this voxel type with air.
+	/** Called before replacing a cell contaning this voxel type with air.
 	 * 
 	 * @param context Current data in this cell.
-	 * @param cause   The cause of this modification ( can be an Entity )
+	 * @param cause The cause of this modification ( can be an Entity )
 	 * @throws Throw a IllegalBlockModificationException if you want to stop the
-	 *               modification from happening.
-	 */
+	 *             modification from happening. */
 	public void onRemove(ChunkCell cell, WorldModificationCause cause) throws WorldException {
 		// Do nothing
 	}
 
-	/**
-	 * Called when either the metadata, block_light or sun_light values of a cell of
-	 * this Voxel type is touched.
+	/** Called when either the metadata, block_light or sun_light values of a cell
+	 * of this Voxel type is touched.
 	 * 
 	 * @param context The current data in this cell.
 	 * @param newData The future data we want to put there
-	 * @param cause   The cause of this modification ( can be an Entity )
-	 * @throws IllegalBlockModificationException If we want to prevent it
-	 */
-	public void onModification(ChunkCell context, FutureCell newData, WorldModificationCause cause)
-			throws WorldException {
+	 * @param cause The cause of this modification ( can be an Entity )
+	 * @throws IllegalBlockModificationException If we want to prevent it */
+	public void onModification(ChunkCell context, FutureCell newData, WorldModificationCause cause) throws WorldException {
 		// Do nothing
 	}
 
-	/**
-	 * Called when an Entity's controller sends an Input while looking at this Cell
+	/** Called when an Entity's controller sends an Input while looking at this Cell
 	 * 
 	 * @return True if the interaction was 'handled', and won't be passed to the
-	 *         next stage of the input pipeline
-	 */
+	 *         next stage of the input pipeline */
 	public boolean handleInteraction(Entity entity, ChunkCell voxelContext, Input input) {
 		return false;
 	}
 
-	/**
-	 * Gets the Blocklight level this voxel emits
+	/** Gets the Blocklight level this voxel emits
 	 * 
-	 * @return The aformentioned light level
-	 */
+	 * @return The aformentioned light level */
 	public byte getEmittedLightLevel(CellData info) {
 		// By default the light output is the one defined in the type, you can change it
 		// depending on the provided data
 		return definition.getEmittedLightLevel();
 	}
 
-	/**
-	 * Gets the texture for this voxel
+	/** Gets the texture for this voxel
 	 * 
 	 * @param side The side of the block we want the texture of ( see
-	 *             {@link VoxelSide VoxelSides.class} )
-	 */
+	 *            {@link VoxelSide VoxelSides.class} ) */
 	public VoxelTexture getVoxelTexture(VoxelSide side, CellData info) {
 		// By default we don't care about context, we give the same texture to everyone
 		return definition.getVoxelTexture(side);
 	}
 
-	/**
-	 * Gets the reduction of the light that will transfer from this block to
+	/** Gets the reduction of the light that will transfer from this block to
 	 * another, based on data from the two blocks and the side from wich it's
 	 * leaving the first block from.
 	 * 
-	 * @param in   The cell the light is going into (==this one) ( see
-	 *             {@link CellData CellData.class} )
-	 * @param out  The cell the light is coming from ( see {@link CellData
-	 *             CellData.class} )
+	 * @param in The cell the light is going into (==this one) ( see {@link CellData
+	 *            CellData.class} )
+	 * @param out The cell the light is coming from ( see {@link CellData
+	 *            CellData.class} )
 	 * @param side The side of the block light would come out of ( see
-	 *             {@link VoxelSide VoxelSides.class} )
-	 * @return The reduction to apply to the light level on exit
-	 */
+	 *            {@link VoxelSide VoxelSides.class} )
+	 * @return The reduction to apply to the light level on exit */
 	public int getLightLevelModifier(CellData in, CellData out, VoxelSide side) {
 		if (getDefinition().isOpaque()) // Opaque voxels destroy all light
 			return 15;
 		return definition.getShadingLightLevel();
 	}
 
-	/**
-	 * Used to fine-tune the culling system, allows for a precise, per-face approach
-	 * to culling.
+	/** Used to fine-tune the culling system, allows for a precise, per-face
+	 * approach to culling.
 	 * 
-	 * @param face     The side of the block BEING DREW ( not the one we are asking
-	 *                 ), so in fact we have to answer for the opposite face, that
-	 *                 is the one that this voxel connects with. To get a reference
-	 *                 on the sides conventions, see {@link VoxelSide
-	 *                 VoxelSides.class}
+	 * @param face The side of the block BEING DREW ( not the one we are asking ),
+	 *            so in fact we have to answer for the opposite face, that is the
+	 *            one that this voxel connects with. To get a reference on the sides
+	 *            conventions, see {@link VoxelSide VoxelSides.class}
 	 * @param metadata The 8 bits of metadata associated with the block we
-	 *                 represent.
+	 *            represent.
 	 * @return Whether or not that face occlude a whole face and thus we can discard
-	 *         it
-	 */
+	 *         it */
 	public boolean isFaceOpaque(VoxelSide side, int metadata) {
 		return definition.isOpaque();
 	}
 
-	/**
-	 * Get the collision boxes for this object, centered as if the block was in
+	/** Get the collision boxes for this object, centered as if the block was in
 	 * x,y,z
 	 * 
 	 * @param data The full 4-byte data related to this voxel ( see
-	 *             {@link VoxelFormat VoxelFormat.class} )
-	 * @return An array of CollisionBox or null.
-	 */
+	 *            {@link VoxelFormat VoxelFormat.class} )
+	 * @return An array of CollisionBox or null. */
 	@Nullable
 	public CollisionBox[] getTranslatedCollisionBoxes(CellData info) {
 		CollisionBox[] boxes = getCollisionBoxes(info);
@@ -213,14 +190,12 @@ public class Voxel {
 		return boxes;
 	}
 
-	/**
-	 * Get the collision boxes for this object, centered as if the block was in
+	/** Get the collision boxes for this object, centered as if the block was in
 	 * 0,0,0
 	 * 
 	 * @param The full 4-byte data related to this voxel ( see {@link VoxelFormat
 	 *            VoxelFormat.class} )
-	 * @return An array of CollisionBox or null.
-	 */
+	 * @return An array of CollisionBox or null. */
 	@Nullable
 	public CollisionBox[] getCollisionBoxes(CellData info) {
 		// if (!definition.isSolid())
@@ -235,22 +210,18 @@ public class Voxel {
 		return this.getDefinition() == voxel.getDefinition();
 	}
 
-	/**
-	 * @return Returns an array of ItemPiles for all the player-placeable variants
-	 *         of this Voxel
-	 */
+	/** @return Returns an array of ItemPiles for all the player-placeable variants
+	 *         of this Voxel */
 	public ItemPile[] getItems() {
 		// We spawn a ItemVoxel and set it to reflect this one
-		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemDefinition("item_voxel")
-				.newItem();
+		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemDefinition("item_voxel").newItem();
 		itemVoxel.voxel = this;
 		return new ItemPile[] { new ItemPile(itemVoxel) };
 	}
 
 	/** Returns what's dropped when a cell using this voxel type is destroyed */
 	public ItemPile[] getLoot(CellData cell, WorldModificationCause cause) {
-		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemDefinition("item_voxel")
-				.newItem();
+		ItemVoxel itemVoxel = (ItemVoxel) this.getDefinition().store().parent().items().getItemDefinition("item_voxel").newItem();
 		itemVoxel.voxel = this;
 		itemVoxel.voxelMeta = cell.getMetaData();
 

@@ -8,9 +8,7 @@ package io.xol.chunkstories.api.net;
 
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 
-/**
- * Someone we can receive packets from
- */
+/** Someone we can receive packets from */
 public interface PacketSender extends StreamSource {
 
 }

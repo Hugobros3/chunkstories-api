@@ -30,11 +30,9 @@ public class TraitSelectedItem extends TraitSerializable {
 
 	int selectedSlot = 0;
 
-	/**
-	 * Selects the slot given
+	/** Selects the slot given
 	 * 
-	 * @param newSlot
-	 */
+	 * @param newSlot */
 	public void setSelectedSlot(int newSlot) {
 		while (newSlot < 0)
 			newSlot += inventory.getWidth();
@@ -44,20 +42,16 @@ public class TraitSelectedItem extends TraitSerializable {
 		this.pushComponentEveryone();
 	}
 
-	/**
-	 * Returns the selected slot
+	/** Returns the selected slot
 	 * 
-	 * @return
-	 */
+	 * @return */
 	public int getSelectedSlot() {
 		return selectedSlot;
 	}
 
-	/**
-	 * Returns the selected item
+	/** Returns the selected item
 	 * 
-	 * @return
-	 */
+	 * @return */
 	public ItemPile getSelectedItem() {
 		return inventory.getItemPileAt(selectedSlot, 0);
 	}

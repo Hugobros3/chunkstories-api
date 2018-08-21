@@ -45,21 +45,17 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			float a = (float) ((-entityRotation.getHorizontalRotation()) / 180f * Math.PI);
 			float b = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (noclip)
-				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
-						Math.cos(a) * camspeed * Math.cos(b));
+				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
-						Math.cos(a) * camspeed * Math.cos(b));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
 		}
 		if (controller.getInputsManager().getInputByName("forward").isPressed()) {
 			float a = (float) ((180 - entityRotation.getHorizontalRotation()) / 180f * Math.PI);
 			float b = (float) ((-entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (noclip)
-				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
-						Math.cos(a) * camspeed * Math.cos(b));
+				entity.entityLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed,
-						Math.cos(a) * camspeed * Math.cos(b));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
 		}
 		if (controller.getInputsManager().getInputByName("right").isPressed()) {
 			float a = (float) ((-entityRotation.getHorizontalRotation() - 90) / 180f * Math.PI);

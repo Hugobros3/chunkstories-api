@@ -17,7 +17,8 @@ public interface ChunkStoriesLogger_ {
 	public void log(String text, LogType type, LogLevel level);
 
 	/** What are we logging about */
-	public enum LogType {
+	public enum LogType
+	{
 		UNSPECIFIED, INTERNAL, RENDERING
 		/** Stuff that has to do with putting pixels on the screen */
 		, CLIENT
@@ -44,7 +45,8 @@ public interface ChunkStoriesLogger_ {
 		;
 	}
 
-	public enum LogLevel {
+	public enum LogLevel
+	{
 		ALL, INFO, DEBUG, WARN, ERROR, CRITICAL, NONE;
 	}
 

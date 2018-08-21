@@ -16,9 +16,7 @@ public interface RenderableMesh extends Renderable {
 	/** Renders the mesh geometry */
 	public void render(RenderingInterface renderer) throws RenderingException;
 
-	/**
-	 * Renders the mesh using the materials and textures defined in the mesh file,
-	 * if present
-	 */
+	/** Renders the mesh using the materials and textures defined in the mesh file,
+	 * if present */
 	public void renderUsingMaterials(RenderingInterface renderer) throws RenderingException;
 }

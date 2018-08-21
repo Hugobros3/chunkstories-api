@@ -75,8 +75,8 @@ public class InputText extends FocusableGuiElement {
 	}
 
 	public boolean isMouseOver(Mouse mouse) {
-		return (mouse.getCursorX() >= xPosition && mouse.getCursorX() < xPosition + getWidth()
-				&& mouse.getCursorY() >= yPosition && mouse.getCursorY() <= yPosition + getHeight());
+		return (mouse.getCursorX() >= xPosition && mouse.getCursorX() < xPosition + getWidth() && mouse.getCursorY() >= yPosition
+				&& mouse.getCursorY() <= yPosition + getHeight());
 	}
 
 	@Override
@@ -91,19 +91,16 @@ public class InputText extends FocusableGuiElement {
 			text = passworded;
 		}
 
-		Texture2D backgroundTexture = renderer.textures()
-				.getTexture(isFocused() ? "./textures/gui/textbox.png" : "./textures/gui/textboxnofocus.png");
+		Texture2D backgroundTexture = renderer.textures().getTexture(isFocused() ? "./textures/gui/textbox.png" : "./textures/gui/textboxnofocus.png");
 		if (this.isTransparent)
-			backgroundTexture = renderer.textures().getTexture(
-					isFocused() ? "./textures/gui/textboxnofocustransp.png" : "./textures/gui/textboxtransp.png");
+			backgroundTexture = renderer.textures().getTexture(isFocused() ? "./textures/gui/textboxnofocustransp.png" : "./textures/gui/textboxtransp.png");
 
 		backgroundTexture.setLinearFiltering(false);
 
-		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition - 0 * scale(), yPosition - 0 * scale(),
-				getWidth() + 0 * scale(), getHeight() + 0 * scale(), 4, backgroundTexture, 32, scale());
+		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition - 0 * scale(), yPosition - 0 * scale(), getWidth() + 0 * scale(), getHeight() + 0 * scale(), 4,
+				backgroundTexture, 32, scale());
 		renderer.getFontRenderer().drawStringWithShadow(ttfFont, xPosition + 4 * scale(), yPosition + 1 * scale(),
-				text + ((isFocused() && System.currentTimeMillis() % 1000 > 500) ? "|" : ""), scale(), scale(),
-				new Vector4f(1.0f));
+				text + ((isFocused() && System.currentTimeMillis() % 1000 > 500) ? "|" : ""), scale(), scale(), new Vector4f(1.0f));
 
 	}
 

@@ -11,11 +11,9 @@ import org.joml.Vector3fc;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.rendering.shader.Shader;
 
-/**
- * Takes care of rendering the 'background' of a frame, typically using some
+/** Takes care of rendering the 'background' of a frame, typically using some
  * sort of skybox or fancy props. Is also responsible to setup shader
- * parameters, such as fog
- */
+ * parameters, such as fog */
 public interface SkyRenderer {
 
 	public void render(RenderingInterface renderer);

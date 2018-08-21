@@ -13,14 +13,16 @@ public interface PacketDefinition extends Definition {
 
 	public AllowedFrom allowedFrom();
 
-	public enum AllowedFrom {
+	public enum AllowedFrom
+	{
 		ALL, CLIENT, SERVER;
 	}
 
 	public PacketGenre getGenre();
 
 	/** There are only 4 genders */
-	public enum PacketGenre {
+	public enum PacketGenre
+	{
 		/** Internal packets the engine uses to negociate connections and do it's job */
 		SYSTEM,
 		/** For miscalineous uses, both the engine & mods may use those */

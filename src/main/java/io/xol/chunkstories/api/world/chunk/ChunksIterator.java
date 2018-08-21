@@ -8,12 +8,9 @@ package io.xol.chunkstories.api.world.chunk;
 
 import io.xol.chunkstories.api.util.IterableIterator;
 
-/**
- * An Iterator used specifically for chunks, returned by some objects
+/** An Iterator used specifically for chunks, returned by some objects
  * 
- * @author Hugo
- *
- */
+ * @author Hugo */
 public interface ChunksIterator extends IterableIterator<Chunk> {
 
 }

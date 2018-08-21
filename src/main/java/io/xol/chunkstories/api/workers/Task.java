@@ -40,9 +40,7 @@ public abstract class Task implements Fence {
 	}
 
 	private final void signalDone() {
-		/*
-		 * synchronized(this) { done = true; notifyAll(); }
-		 */
+		/* synchronized(this) { done = true; notifyAll(); } */
 		if (done.compareAndSet(false, true))
 			wait.release(1);
 	}
@@ -66,14 +64,12 @@ public abstract class Task implements Fence {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			/*
-			 * synchronized(this) { if(done) // Check again break;
+			/* synchronized(this) { if(done) // Check again break;
 			 * 
 			 * if(cancelled) throw new CancelledTaskException(this);
 			 * 
 			 * try // Well we wait { wait(); } catch (InterruptedException e) {
-			 * e.printStackTrace(); } }
-			 */
+			 * e.printStackTrace(); } } */
 		}
 	}
 

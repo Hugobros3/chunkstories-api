@@ -16,10 +16,8 @@ import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.rendering.voxel.VoxelBakerHighPoly;
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.VertexLayout;
 
-/**
- * Defines the (default) layout used by the game when using the INTRICATE
- * VertexLayout
- */
+/** Defines the (default) layout used by the game when using the INTRICATE
+ * VertexLayout */
 public class IntricateLayoutBaker extends BaseLayoutBaker implements VoxelBakerHighPoly {
 
 	public static final VertexLayout IMPLEMENTS() {

@@ -13,19 +13,14 @@ import io.xol.chunkstories.api.rendering.world.chunk.ChunkRenderer.ChunkRenderCo
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 
-/**
- * Represents a voxel .model file loaded by the engine. Look up the syntax on
- * the wiki for more information.
- */
+/** Represents a voxel .model file loaded by the engine. Look up the syntax on
+ * the wiki for more information. */
 public interface VoxelModel extends VoxelRenderer {
 	public String getName();
 
-	/**
-	 * The actual rendering method used internally, you can use it to divert the
-	 * rendering to another baker than the default one (opaque & any lod)
-	 */
-	public int renderInto(VoxelBakerHighPoly baker, ChunkRenderContext bakingContext, CellData info, Chunk chunk, int x,
-			int y, int z);
+	/** The actual rendering method used internally, you can use it to divert the
+	 * rendering to another baker than the default one (opaque & any lod) */
+	public int renderInto(VoxelBakerHighPoly baker, ChunkRenderContext bakingContext, CellData info, Chunk chunk, int x, int y, int z);
 
 	public int getSizeInVertices();
 

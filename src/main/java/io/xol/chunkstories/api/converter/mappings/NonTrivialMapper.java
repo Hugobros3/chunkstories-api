@@ -11,10 +11,8 @@ import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.cell.FutureCell;
 import io.xol.enklume.MinecraftRegion;
 
-/**
- * For blocks that have some fancy properties we need to consider, like doors or
- * signs.
- */
+/** For blocks that have some fancy properties we need to consider, like doors
+ * or signs. */
 public abstract class NonTrivialMapper extends Mapper {
 
 	public NonTrivialMapper(Voxel voxel) {
@@ -28,7 +26,5 @@ public abstract class NonTrivialMapper extends Mapper {
 	}
 
 	/** Responsible of re-building the input block in chunkstories-space. */
-	public abstract void output(World csWorld, int csX, int csY, int csZ, int minecraftBlockId, int minecraftMetaData,
-			MinecraftRegion region, int minecraftCuurrentChunkXinsideRegion, int minecraftCuurrentChunkZinsideRegion,
-			int x, int y, int z);
+	public abstract void output(World csWorld, int csX, int csY, int csZ, int minecraftBlockId, int minecraftMetaData, MinecraftRegion region, int minecraftCuurrentChunkXinsideRegion, int minecraftCuurrentChunkZinsideRegion, int x, int y, int z);
 }

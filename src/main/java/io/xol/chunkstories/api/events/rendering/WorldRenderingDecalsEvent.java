@@ -12,10 +12,8 @@ import io.xol.chunkstories.api.rendering.effects.DecalsRenderer;
 import io.xol.chunkstories.api.rendering.world.WorldRenderer;
 import io.xol.chunkstories.api.world.World;
 
-/**
- * Called during the decals rendering pass, after the default renderer is done
- * rendering the normal decals
- */
+/** Called during the decals rendering pass, after the default renderer is done
+ * rendering the normal decals */
 public class WorldRenderingDecalsEvent extends WorldRenderingEvent {
 
 	static EventListeners listeners = new EventListeners(WorldRenderingDecalsEvent.class);
@@ -29,8 +27,7 @@ public class WorldRenderingDecalsEvent extends WorldRenderingEvent {
 		return listeners;
 	}
 
-	public WorldRenderingDecalsEvent(World world, WorldRenderer worldRenderer, RenderingInterface renderingInterface,
-			DecalsRenderer decalsRenderer) {
+	public WorldRenderingDecalsEvent(World world, WorldRenderer worldRenderer, RenderingInterface renderingInterface, DecalsRenderer decalsRenderer) {
 		super(world, worldRenderer, renderingInterface);
 
 		this.decalsRenderer = decalsRenderer;

@@ -9,9 +9,8 @@ package io.xol.chunkstories.api.entity;
 public interface DamageCause {
 	public String getName();
 
-	/**
-	 * How many milliseconds should the target be set invulnerable after an attack
-	 */
+	/** How many milliseconds should the target be set invulnerable after an
+	 * attack */
 	public default long getCooldownInMs() {
 		return 0;
 	}

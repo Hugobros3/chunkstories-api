@@ -31,7 +31,7 @@ public abstract class ChunkStoriesPlugin {
 	public PluginManager getPluginManager() {
 		return pluginExecutionContext.getPluginManager();
 	}
-	
+
 	public File getDirectory() {
 		return pluginInformation.getDirectory();
 	}

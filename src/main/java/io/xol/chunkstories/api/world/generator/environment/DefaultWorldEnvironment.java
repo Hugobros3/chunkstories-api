@@ -38,8 +38,7 @@ public class DefaultWorldEnvironment implements WorldEnvironment {
 		snowTransition = Integer.parseInt(world.getWorldInfo().resolveProperty("snowTransition", "20"));
 		canSnow = snowStartHeight >= 0;
 
-		grassColorTexture = world.getWorldInfo().resolveProperty("grassColorTexture",
-				"./textures/environement/grassColor.png");
+		grassColorTexture = world.getWorldInfo().resolveProperty("grassColorTexture", "./textures/environement/grassColor.png");
 
 		sunColorSunny = loadVec3f(world.getWorldInfo(), "sunColorSunny", "1.0 1.0 1.0");
 		sunColorMoody = loadVec3f(world.getWorldInfo(), "sunColorMoody", "0.5 0.5 0.5");

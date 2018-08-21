@@ -17,9 +17,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/**
- * The server just tells the time
- */
+/** The server just tells the time */
 public class PacketTime extends PacketWorld {
 	public long time;
 	public float overcastFactor;
@@ -29,8 +27,7 @@ public class PacketTime extends PacketWorld {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		out.writeLong(time);
 		out.writeFloat(overcastFactor);
 	}

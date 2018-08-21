@@ -28,7 +28,8 @@ public interface PluginInformation {
 
 	public File getDirectory();
 
-	public enum PluginType {
+	public enum PluginType
+	{
 		UNIVERSAL, CLIENT_ONLY, MASTER;
 	}
 }

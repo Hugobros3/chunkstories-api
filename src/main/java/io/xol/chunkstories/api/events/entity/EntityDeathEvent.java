@@ -10,11 +10,9 @@ import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.events.Event;
 import io.xol.chunkstories.api.events.EventListeners;
 
-/**
- * This event is called upon confirmed death of a living entity. You can't and
+/** This event is called upon confirmed death of a living entity. You can't and
  * shouldn't prevent it from dying here, instead use the EntityDamageEvent to
- * cancel the damage.
- */
+ * cancel the damage. */
 public class EntityDeathEvent extends Event {
 	// Every event class has to have this
 

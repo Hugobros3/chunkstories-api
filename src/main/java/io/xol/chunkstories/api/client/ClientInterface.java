@@ -44,20 +44,14 @@ public interface ClientInterface extends GameContext {
 	/** Closes current world and exits to main menu with an error message */
 	public void exitToMainMenu(String errorMessage);
 
-	/**
-	 * Opens the inventory GUI with all the specified inventories opened
-	 */
+	/** Opens the inventory GUI with all the specified inventories opened */
 	public void openInventories(Inventory... inventories);
 
-	/**
-	 * @return Is the game GUI in focus or obstructed by other things ?
-	 */
+	/** @return Is the game GUI in focus or obstructed by other things ? */
 	public boolean hasFocus();
 
-	/**
-	 * Reloads all assets, shaders, sounds and whatnot from the mods and the main
-	 * game.
-	 */
+	/** Reloads all assets, shaders, sounds and whatnot from the mods and the main
+	 * game. */
 	public void reloadAssets();
 
 	public ClientContent getContent();

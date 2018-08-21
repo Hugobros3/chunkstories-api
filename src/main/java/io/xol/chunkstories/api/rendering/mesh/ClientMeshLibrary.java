@@ -10,10 +10,8 @@ import io.xol.chunkstories.api.client.ClientContent;
 import io.xol.chunkstories.api.mesh.MeshLibrary;
 import io.xol.chunkstories.api.rendering.vertex.VertexBuffer;
 
-/**
- * Extends {@link MeshLibrary} by giving access to meshes in a renderable
- * fashion.
- */
+/** Extends {@link MeshLibrary} by giving access to meshes in a renderable
+ * fashion. */
 public interface ClientMeshLibrary extends MeshLibrary {
 
 	public RenderableMesh getRenderableMesh(String meshName);

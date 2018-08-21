@@ -17,11 +17,9 @@ import io.xol.chunkstories.api.net.PacketWorld;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.net.PacketReceptionContext;
 
-/**
- * Packet the client sends to the server to tell him what he requests it to load
- * in. Server may answer with an UNREGISTER_CHUNK_... packet if we requested a
- * chunk that is too far away for us to be allowed to request it
- */
+/** Packet the client sends to the server to tell him what he requests it to
+ * load in. Server may answer with an UNREGISTER_CHUNK_... packet if we
+ * requested a chunk that is too far away for us to be allowed to request it */
 public class PacketWorldUser extends PacketWorld {
 
 	public static PacketWorldUser registerChunkPacket(World world, int chunkX, int chunkY, int chunkZ) {
@@ -43,7 +41,8 @@ public class PacketWorldUser extends PacketWorld {
 	protected Type type;
 	protected int x, y, z;
 
-	public enum Type {
+	public enum Type
+	{
 		REGISTER_CHUNK, UNREGISTER_CHUNK, REGISTER_SUMMARY, UNREGISTER_SUMMARY
 	}
 
@@ -60,8 +59,7 @@ public class PacketWorldUser extends PacketWorld {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		out.writeByte(type.ordinal());
 		if (type == Type.REGISTER_SUMMARY || type == Type.UNREGISTER_SUMMARY) {
 			out.writeInt(x);

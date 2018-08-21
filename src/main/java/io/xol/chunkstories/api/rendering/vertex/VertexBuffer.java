@@ -13,8 +13,7 @@ import io.xol.chunkstories.api.util.concurrency.Fence;
 
 public interface VertexBuffer {
 
-	/**
-	 * Uploads new data to this buffer, replacing former content.<br/>
+	/** Uploads new data to this buffer, replacing former content.<br/>
 	 * <u>IF THIS IS CALLED IN THE MAIN THREAD:</u><br/>
 	 * * Uploading of data is queued for the next time this object is used in a
 	 * drawcall ( an attribute source is setup, namely )<br/>
@@ -43,12 +42,10 @@ public interface VertexBuffer {
 	 *         </ul>
 	 * 
 	 *         //@return True if the data was uploaded ( or rather, queued for
-	 *         upload on use ), false if it was deffered to the next frame
-	 */
+	 *         upload on use ), false if it was deffered to the next frame */
 	public Fence uploadData(ByteBuffer dataToUpload);
 
-	/**
-	 * Uploads new data to this buffer, replacing former content.<br/>
+	/** Uploads new data to this buffer, replacing former content.<br/>
 	 * <u>IF THIS IS CALLED IN THE MAIN THREAD:</u><br/>
 	 * * Uploading of data is queued for the next time this object is used in a
 	 * drawcall ( an attribute source is setup, namely )<br/>
@@ -69,19 +66,16 @@ public interface VertexBuffer {
 	 * VerticesObject content and updating it's size.
 	 * 
 	 * @return True if the data was uploaded ( or rather, queued for upload on use
-	 *         ), false if it was deffered to the next frame
-	 */
+	 *         ), false if it was deffered to the next frame */
 	public Fence uploadData(FloatBuffer dataToUpload);
 
 	public Fence uploadData(RecyclableByteBuffer dataToUpload);
 
-	/**
-	 * Notice : there is no risk of synchronisation issues with an object suddently
+	/** Notice : there is no risk of synchronisation issues with an object suddently
 	 * being destroyed during because actual destruction of the objects only occur
 	 * at the end of the frame !
 	 * 
-	 * @return True if data is present and the verticesObject can be drawn
-	 */
+	 * @return True if data is present and the verticesObject can be drawn */
 	public boolean isDataPresent();
 
 	/** The easy way to feed vertex shaders */
@@ -94,16 +88,13 @@ public interface VertexBuffer {
 	public AttributeSource asAttributeSource(VertexFormat format, int dimensions, int stride, long offset, int divisor);
 
 	/** Attribute source for ivec/int vertex shader inputs */
-	public AttributeSource asIntegerAttributeSource(VertexFormat format, int dimensions, int stride, long offset,
-			int divisor);
+	public AttributeSource asIntegerAttributeSource(VertexFormat format, int dimensions, int stride, long offset, int divisor);
 
 	public long getVramUsage();
 
-	/**
-	 * Synchronized, returns true only when it actually deletes the OpenGL buffer As
-	 * with textures, a GC mechanism is in place if you forget to delete your
-	 * buffers !
-	 */
+	/** Synchronized, returns true only when it actually deletes the OpenGL buffer
+	 * As with textures, a GC mechanism is in place if you forget to delete your
+	 * buffers ! */
 	public boolean destroy();
 
 }

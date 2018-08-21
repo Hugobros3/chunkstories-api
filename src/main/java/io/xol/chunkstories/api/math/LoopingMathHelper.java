@@ -6,13 +6,10 @@
 
 package io.xol.chunkstories.api.math;
 
-/**
- * As chunkstories uses fixed-size, wrapping-around-themselves worlds, we need
+/** As chunkstories uses fixed-size, wrapping-around-themselves worlds, we need
  * some convinience methods
  * 
- * @author Gobrosse
- *
- */
+ * @author Gobrosse */
 public class LoopingMathHelper {
 	public static int moduloDistance(int a, int b, int mod) {
 		a = a % mod;

@@ -21,11 +21,10 @@ import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 
 import javax.annotation.Nullable;
 
-/**
- * Helper class to translate inventories accross hosts. The remote server has no
- * concept of an object reference from *your* heap, so you have to put a little
- * more work to describe what inventory you are talking about in terms the both
- * of you can understand.
+/** Helper class to translate inventories accross hosts. The remote server has
+ * no concept of an object reference from *your* heap, so you have to put a
+ * little more work to describe what inventory you are talking about in terms
+ * the both of you can understand.
  * 
  * <p>
  * For null inventories, you send a magic byte <br/>
@@ -38,9 +37,8 @@ import javax.annotation.Nullable;
  */
 public class InventoryTranslator {
 	public static void writeInventoryHandle(DataOutputStream out, @Nullable Inventory inventory) throws IOException {
-		/*
-		 * if(inventory instanceof InventoryLocalCreativeMenu) out.writeByte(0x02); else
-		 */
+		/* if(inventory instanceof InventoryLocalCreativeMenu) out.writeByte(0x02);
+		 * else */
 		if (inventory == null || inventory.getHolder() == null)
 			out.writeByte(0x00);
 		else if (inventory instanceof TraitInventory) {
@@ -64,8 +62,7 @@ public class InventoryTranslator {
 	}
 
 	@Nullable
-	public static Inventory obtainInventoryHandle(DataInputStream in, PacketReceptionContext context)
-			throws IOException {
+	public static Inventory obtainInventoryHandle(DataInputStream in, PacketReceptionContext context) throws IOException {
 		byte holderType = in.readByte();
 		if (holderType == 0x01) {
 			long uuid = in.readLong();

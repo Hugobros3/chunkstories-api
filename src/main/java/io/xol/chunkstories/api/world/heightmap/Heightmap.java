@@ -12,10 +12,8 @@ import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.world.WorldUser;
 import io.xol.chunkstories.api.world.cell.CellData;
 
-/**
- * Represents the topmost cell for 256 * 256 area. X and Z coordinates match
- * those of regions
- */
+/** Represents the topmost cell for 256 * 256 area. X and Z coordinates match
+ * those of regions */
 public interface Heightmap {
 	public final int NO_DATA = -1;
 
@@ -35,9 +33,8 @@ public interface Heightmap {
 
 	public Iterator<WorldUser> getUsers();
 
-	/**
-	 * Return the height of the topmost block or NO_DATA is no data is yet available
-	 */
+	/** Return the height of the topmost block or NO_DATA is no data is yet
+	 * available */
 	public int getHeight(int x, int z);
 
 	public CellData getTopCell(int x, int z);

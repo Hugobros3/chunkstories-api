@@ -16,8 +16,7 @@ import io.xol.chunkstories.api.rendering.textures.Texture2D;
 public class LargeButton extends BaseButton {
 
 	public LargeButton(Layer layer, String text) {
-		super(layer, layer.getGameWindow().getFontRenderer().getFont("LiberationSansNarrow-Bold__aa", 18.666f), 0, 0,
-				text);
+		super(layer, layer.getGameWindow().getFontRenderer().getFont("LiberationSansNarrow-Bold__aa", 18.666f), 0, 0, text);
 		this.width = 96;
 		this.height = 24;
 
@@ -33,17 +32,15 @@ public class LargeButton extends BaseButton {
 			buttonTexture = renderer.textures().getTexture("./textures/gui/mainMenuOver.png");
 
 		buttonTexture.setLinearFiltering(false);
-		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, getWidth(), getHeight(), 4 * scale(),
-				buttonTexture, 32, scale());
+		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, getWidth(), getHeight(), 4 * scale(), buttonTexture, 32, scale());
 
-		Font font = layer.getGameWindow().getRenderingInterface().getFontRenderer()
-				.getFont("LiberationSansNarrow-Bold__aa", 16f * scale());
+		Font font = layer.getGameWindow().getRenderingInterface().getFontRenderer().getFont("LiberationSansNarrow-Bold__aa", 16f * scale());
 		float a = 1f / scale();
 
 		float yPositionText = yPosition + 2.5f * scale();
 		float centering = getWidth() / 2 - font.getWidth(localizedText) * a * scale() / 2;
-		renderer.getFontRenderer().drawString(font, xPosition + centering + scale(), yPositionText - scale(),
-				localizedText, a * scale(), new Vector4f(161 / 255f, 161 / 255f, 161 / 255f, 1));
+		renderer.getFontRenderer().drawString(font, xPosition + centering + scale(), yPositionText - scale(), localizedText, a * scale(),
+				new Vector4f(161 / 255f, 161 / 255f, 161 / 255f, 1));
 		renderer.getFontRenderer().drawString(font, xPosition + centering, yPositionText, localizedText, a * scale(),
 				new Vector4f(38 / 255f, 38 / 255f, 38 / 255f, 1));
 	}

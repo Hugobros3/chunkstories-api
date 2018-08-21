@@ -89,10 +89,8 @@ public interface RenderingInterface {
 	/** returns the current object matrix */
 	public Matrix4f getObjectMatrix();
 
-	/**
-	 * Feeds the 'objectMatrix' and 'objectMatrixNormal' shader inputs ( either
-	 * uniform or texture-based instanced if shader has support )
-	 */
+	/** Feeds the 'objectMatrix' and 'objectMatrixNormal' shader inputs ( either
+	 * uniform or texture-based instanced if shader has support ) */
 	public Matrix4f setObjectMatrix(Matrix4f objectMatrix);
 
 	/// ** Feeds the 'worldLight' shader inputs ( either uniform or texture-based
@@ -114,23 +112,17 @@ public interface RenderingInterface {
 
 	/* Attributes */
 
-	/**
-	 * Returns the configuration of the bound vertex shader inputs
-	 */
+	/** Returns the configuration of the bound vertex shader inputs */
 	// public AttributesConfiguration getAttributesConfiguration();
 
-	/**
-	 * If attributeSource != null, setups the currently bound vertex shader
+	/** If attributeSource != null, setups the currently bound vertex shader
 	 * attribute input 'attributeName' with it If attibuteSource == null, disables
 	 * the shader input 'attributeName'
 	 * 
 	 * @throws AttributeNotPresentException If 'attributeName' doesn't resolve to a
-	 *                                      real attribute location Returns the
-	 *                                      configuration of the bound vertex shader
-	 *                                      inputs
-	 */
-	public AttributesConfiguration bindAttribute(String attributeName, @Nullable AttributeSource attributeSource)
-			throws AttributeNotPresentException;
+	 *             real attribute location Returns the configuration of the bound
+	 *             vertex shader inputs */
+	public AttributesConfiguration bindAttribute(String attributeName, @Nullable AttributeSource attributeSource) throws AttributeNotPresentException;
 
 	/** Ensures no attributes are bound left over from previous draw instructions */
 	public AttributesConfiguration unbindAttributes();
@@ -139,10 +131,8 @@ public interface RenderingInterface {
 
 	public VertexBuffer newVertexBuffer();
 
-	/**
-	 * Draws N primitives made of 'count' vertices, offset at vertice 'startAt',
-	 * using data specified in the AttributesConfiguration
-	 */
+	/** Draws N primitives made of 'count' vertices, offset at vertice 'startAt',
+	 * using data specified in the AttributesConfiguration */
 	public void draw(Primitive primitive, int startAt, int count);
 
 	/** For instanced rendering */
@@ -154,9 +144,7 @@ public interface RenderingInterface {
 	/** Renders a fullsize quad for whole-screen effects */
 	public void drawFSQuad();
 
-	/**
-	 * Executes ALL commands in the queue up to this point before continuing
-	 */
+	/** Executes ALL commands in the queue up to this point before continuing */
 	// public void flush();
 
 	/* Statistics */

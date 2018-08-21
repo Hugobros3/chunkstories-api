@@ -47,10 +47,8 @@ public interface CellComponents {
 	@Nullable
 	public VoxelComponent get(String name);
 
-	/**
-	 * Looks for a VoxelComponent and returns it's name if it is contained in this
-	 * cell.
-	 */
+	/** Looks for a VoxelComponent and returns it's name if it is contained in this
+	 * cell. */
 	@Nullable
 	public String name(VoxelComponent component);
 

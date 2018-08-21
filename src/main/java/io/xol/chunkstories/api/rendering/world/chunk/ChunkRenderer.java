@@ -12,10 +12,8 @@ import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.LodLe
 import io.xol.chunkstories.api.rendering.world.chunk.ChunkMeshDataSubtypes.ShadingType;
 import io.xol.chunkstories.api.voxel.VoxelSide;
 
-/**
- * This interface is the context in which chunks are rendered, it's implemented
- * by the thread-pool rendering the chunks
- */
+/** This interface is the context in which chunks are rendered, it's implemented
+ * by the thread-pool rendering the chunks */
 public interface ChunkRenderer {
 	public VoxelBakerHighPoly getHighpolyBakerFor(LodLevel lodLevel, ShadingType renderPass);
 
@@ -34,22 +32,16 @@ public interface ChunkRenderer {
 
 		public boolean isBackChunkLoaded();
 
-		/**
-		 * Returns the INTERNAL X coordinate of the voxel currently being rendered, in
-		 * the chunk (0-31)
-		 */
+		/** Returns the INTERNAL X coordinate of the voxel currently being rendered, in
+		 * the chunk (0-31) */
 		public int getRenderedVoxelPositionInChunkX();
 
-		/**
-		 * Returns the INTERNAL Y coordinate of the voxel currently being rendered, in
-		 * the chunk (0-31)
-		 */
+		/** Returns the INTERNAL Y coordinate of the voxel currently being rendered, in
+		 * the chunk (0-31) */
 		public int getRenderedVoxelPositionInChunkY();
 
-		/**
-		 * Returns the INTERNAL Z coordinate of the voxel currently being rendered, in
-		 * the chunk (0-31)
-		 */
+		/** Returns the INTERNAL Z coordinate of the voxel currently being rendered, in
+		 * the chunk (0-31) */
 		public int getRenderedVoxelPositionInChunkZ();
 
 		public VoxelLighter getCurrentVoxelLighter();

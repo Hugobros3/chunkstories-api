@@ -31,9 +31,7 @@ import io.xol.chunkstories.api.world.generator.WorldGenerator;
 
 import javax.annotation.Nullable;
 
-/**
- * Encapsulates all the user-definable content available
- */
+/** Encapsulates all the user-definable content available */
 public interface Content {
 	/** Returns the game context that owns this */
 	public GameContext getContext();
@@ -41,18 +39,14 @@ public interface Content {
 	/** Returns the ModManager that was used to load this content */
 	public ModsManager modsManager();
 
-	/**
-	 * Obtains an Asset using it's name string More advanced options for obtaining
-	 * assets are avaible using the ModsManager class
-	 */
+	/** Obtains an Asset using it's name string More advanced options for obtaining
+	 * assets are avaible using the ModsManager class */
 	@Nullable
 	public Asset getAsset(String assetName);
 
-	/**
-	 * Reloads everything. Warning: might not be appropriate as this will reload
+	/** Reloads everything. Warning: might not be appropriate as this will reload
 	 * classes you will most likely have instanced into objects, causing weird
-	 * errors if you do this while in a world.
-	 */
+	 * errors if you do this while in a world. */
 	public void reload();
 
 	public Voxels voxels();
@@ -182,10 +176,8 @@ public interface Content {
 
 		public Iterator<WorldGeneratorDefinition> all();
 
-		/**
-		 * Contains the parameters stated in a 'generator' section of a .generators
-		 * config file
-		 */
+		/** Contains the parameters stated in a 'generator' section of a .generators
+		 * config file */
 		public interface WorldGeneratorDefinition extends Definition {
 			public String getName();
 

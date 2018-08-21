@@ -20,13 +20,11 @@ public class BlankWorldGenerator extends WorldGenerator {
 		worldEnv = new DefaultWorldEnvironment(world);
 	}
 
-	/*
-	 * @Override public Chunk generateChunk(Chunk c) { return c; }
+	/* @Override public Chunk generateChunk(Chunk c) { return c; }
 	 * 
 	 * @Override public int getTopDataAt(int x, int y) { return 0; }
 	 * 
-	 * @Override public int getHeightAt(int x, int z) { return 0; }
-	 */
+	 * @Override public int getHeightAt(int x, int z) { return 0; } */
 
 	@Override
 	public WorldEnvironment getEnvironment() {

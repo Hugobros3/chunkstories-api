@@ -8,11 +8,9 @@ package io.xol.chunkstories.api.voxel.textures;
 
 import org.joml.Vector4fc;
 
-/**
- * A VoxelTexture is a part of a Texture atlas contaning all the voxel textures
+/** A VoxelTexture is a part of a Texture atlas contaning all the voxel textures
  * stitched together. The coordinates are common in all voxel texture atlases
- * (albedo, normal, ... )
- */
+ * (albedo, normal, ... ) */
 public interface VoxelTexture {
 	public String getName();
 
@@ -31,9 +29,7 @@ public interface VoxelTexture {
 	/** How many blocks does this texture span */
 	public int getTextureScale();
 
-	/**
-	 * How many animation frames is there for this ? ( ration of height/width in the
-	 * texture )
-	 */
+	/** How many animation frames is there for this ? ( ration of height/width in
+	 * the texture ) */
 	public int getAnimationFrames();
 }

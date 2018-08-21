@@ -24,10 +24,8 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
 @Generalized
 public abstract class TraitSerializable extends Trait {
-	/**
-	 * Reflects the name declared in the @SerializedName annotation, or the the top
-	 * level class name if none is declared
-	 */
+	/** Reflects the name declared in the @SerializedName annotation, or the the top
+	 * level class name if none is declared */
 	public final String name;
 
 	public TraitSerializable(Entity entity) {
@@ -40,10 +38,8 @@ public abstract class TraitSerializable extends Trait {
 			name = this.getClass().getName();
 	}
 
-	/**
-	 * Push will tell all subscribers of the entity about a change of this component
-	 * only
-	 */
+	/** Push will tell all subscribers of the entity about a change of this
+	 * component only */
 	public void pushComponentEveryone() {
 		entity.subscribers.all().forEach(s -> this.pushComponent(s));
 	}
@@ -56,9 +52,7 @@ public abstract class TraitSerializable extends Trait {
 		});
 	}
 
-	/**
-	 * Push the component to everyone but the controller, if such one exists
-	 */
+	/** Push the component to everyone but the controller, if such one exists */
 	public void pushComponentEveryoneButController() {
 		Iterator<Subscriber> iterator = entity.subscribers.all().iterator();
 

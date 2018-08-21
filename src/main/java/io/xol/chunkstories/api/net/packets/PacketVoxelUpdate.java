@@ -25,9 +25,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Map.Entry;
 
-/**
- * Describes a voxel change, including to the VoxelComponents
- */
+/** Describes a voxel change, including to the VoxelComponents */
 public class PacketVoxelUpdate extends PacketWorld {
 	public PacketVoxelUpdate(World world) {
 		super(world);
@@ -51,8 +49,7 @@ public class PacketVoxelUpdate extends PacketWorld {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext sendingContext)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext sendingContext) throws IOException {
 		out.writeInt(context.getX());
 		out.writeInt(context.getY());
 		out.writeInt(context.getZ());
@@ -88,8 +85,8 @@ public class PacketVoxelUpdate extends PacketWorld {
 			byte nextComponent = in.readByte();
 
 			try {
-				ChunkCell context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, voxel,
-						VoxelFormat.sunlight(data), VoxelFormat.blocklight(data), VoxelFormat.meta(data), null);
+				ChunkCell context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, voxel, VoxelFormat.sunlight(data),
+						VoxelFormat.blocklight(data), VoxelFormat.meta(data), null);
 
 				while (nextComponent != 0) {
 					String componentName = in.readUTF();

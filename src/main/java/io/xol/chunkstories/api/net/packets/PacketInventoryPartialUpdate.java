@@ -36,8 +36,7 @@ public class PacketInventoryPartialUpdate extends PacketWorld {
 		super(world);
 	}
 
-	public PacketInventoryPartialUpdate(World world, @Nullable Inventory inventory, int slotx, int sloty,
-			@Nullable ItemPile newItemPile) {
+	public PacketInventoryPartialUpdate(World world, @Nullable Inventory inventory, int slotx, int sloty, @Nullable ItemPile newItemPile) {
 		super(world);
 		this.inventory = inventory;
 		this.slotx = slotx;
@@ -46,8 +45,7 @@ public class PacketInventoryPartialUpdate extends PacketWorld {
 	}
 
 	@Override
-	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context)
-			throws IOException {
+	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
 		InventoryTranslator.writeInventoryHandle(out, inventory);
 
 		out.writeInt(slotx);
@@ -61,8 +59,7 @@ public class PacketInventoryPartialUpdate extends PacketWorld {
 	}
 
 	@Override
-	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor)
-			throws IOException, PacketProcessingException {
+	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException {
 		inventory = InventoryTranslator.obtainInventoryHandle(in, processor);
 
 		int slotx = in.readInt();

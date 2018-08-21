@@ -11,14 +11,11 @@ import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 
-/* This file is part of the ChunkStories WIP API.
- * Licensing is yet to be decided, please check out the github page for
- * up-to date information. */
+/* This file is part of the ChunkStories WIP API. Licensing is yet to be
+ * decided, please check out the github page for up-to date information. */
 
-/**
- * Hopefully hi-performance matrix class, replacing and using bits from LWJGL2
- * utility library
- */
+/** Hopefully hi-performance matrix class, replacing and using bits from LWJGL2
+ * utility library */
 public class Quaternion4d {
 	public double s;
 	public Vector3d v;

@@ -16,10 +16,8 @@ import io.xol.chunkstories.api.util.Generalized;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
 
-/**
- * Generic class for not duplacting boring code everywhere Remember: you still
- * have to declare the actual components classes in .components files !
- */
+/** Generic class for not duplacting boring code everywhere Remember: you still
+ * have to declare the actual components classes in .components files ! */
 @Generalized
 public abstract class TraitSerializableInt extends TraitSerializable {
 	protected int value;
