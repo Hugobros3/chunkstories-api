@@ -59,6 +59,12 @@ interface PassesDeclarationCtx {
             val imageInput = ImageInput().apply(imageInputConfiguration)
             this@inputs.imageInputs.add(imageInput)
         }
+
+        override fun uniformInput(uniformInputConfiguration: UniformInput.() -> Unit) {
+            val uniformInput = UniformInput().apply(uniformInputConfiguration)
+            this@inputs.uniformInputs.add(uniformInput)
+
+        }
     }.apply(inputsDeclarations)
 
     /** DSL-style syntactic sugar, configures the depth testing for the pass */
@@ -78,6 +84,8 @@ interface PassesDeclarationCtx {
 
 interface PassInputsDeclarationsCtx {
     fun imageInput(imageInputConfiguration: ImageInput.() -> Unit)
+
+    fun uniformInput(uniformInputConfiguration : UniformInput.() -> Unit)
 }
 
 interface PassOutputsDeclarationCtx {

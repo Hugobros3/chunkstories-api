@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.graphics.rendergraph
 
-import io.xol.chunkstories.api.graphics.InterfaceBlock
+import io.xol.chunkstories.api.graphics.structs.InterfaceBlock
 import io.xol.chunkstories.api.rendering.shader.Shader
 
 class Pass {
@@ -25,7 +25,7 @@ class Pass {
     val dependencies = mutableSetOf<String>()
 
     val imageInputs = mutableListOf<ImageInput>()
-    val uboInputs = mutableListOf<UboInput>()
+    val uniformInputs = mutableListOf<UniformInput>()
 
     var depth = noDepthTest
     val outputs = mutableListOf<PassOutput>()
@@ -79,7 +79,10 @@ class PassOutput {
     }
 }
 
-data class UboInput(val name: String, val data: InterfaceBlock)
+class UniformInput {
+    lateinit var name: String
+    lateinit var data: InterfaceBlock
+}
 
 class ImageInput {
     /** Name of the input this will bind to */

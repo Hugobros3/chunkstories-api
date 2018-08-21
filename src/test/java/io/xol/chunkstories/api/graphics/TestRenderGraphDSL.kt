@@ -7,7 +7,10 @@ import io.xol.chunkstories.api.graphics.rendergraph.ImageInput.SamplingMode.*
 
 
 import io.xol.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
+import io.xol.chunkstories.api.graphics.structs.InterfaceBlock
 import org.junit.Test
+
+data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : InterfaceBlock
 
 class TestRenderGraphDSL {
     @Test
@@ -25,6 +28,7 @@ class TestRenderGraphDSL {
                     name = "myDepthBuffer"
 
                     format = DEPTH_32
+                    size = viewportSize
                 }
             }
 
@@ -41,6 +45,7 @@ class TestRenderGraphDSL {
                     name = "mainPass"
 
                     default = true
+                    dependsOn("sky")
 
                     inputs {
                         imageInput {
@@ -49,6 +54,11 @@ class TestRenderGraphDSL {
                             source = "./textures/effects/tonemap.png"
                             samplingMode = LINEAR
                             wrapping = false
+                        }
+
+                        uniformInput {
+                            name = "myUniform"
+                            data = MyTestInterfaceBlock(5.0F, 42 + 69)
                         }
                     }
 
