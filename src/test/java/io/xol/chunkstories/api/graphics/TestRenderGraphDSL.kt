@@ -36,6 +36,12 @@ class TestRenderGraphDSL {
                 pass {
                     name = "sky"
 
+                    draws {
+                        fullscreenQuad()
+                        decals()
+                        defferedLights()
+                    }
+
                     depth {
                         enabled = false
                     }

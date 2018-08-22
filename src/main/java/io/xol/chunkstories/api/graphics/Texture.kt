@@ -1,17 +1,20 @@
 package io.xol.chunkstories.api.graphics
 
-abstract class Texture(val format: TextureFormat) {
-
+interface Texture {
+    val format: TextureFormat
 }
 
-abstract class Texture1D(format: TextureFormat, var width: Int) : Texture(format) {
-
+interface Texture1D : Texture {
+    val width: Int
 }
 
-abstract class Texture2D(format: TextureFormat, var width : Int, var height : Int) : Texture(format) {
-
+interface Texture2D : Texture {
+    val width: Int
+    val height: Int
 }
 
-abstract class Texture3D(format: TextureFormat, var width : Int, var height : Int, var depth : Int) : Texture(format) {
-
+interface Texture3D : Texture {
+    val width: Int
+    val height: Int
+    val depth: Int
 }

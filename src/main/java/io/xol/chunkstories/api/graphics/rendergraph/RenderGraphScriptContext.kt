@@ -25,6 +25,9 @@ class RenderGraphDeclarationsCtx(val renderGraph: RenderGraph) {
 
     /** Enter the context to declare a bunch of Passes */
     fun passes(function: PassesDeclarationCtx.() -> Unit) = object : PassesDeclarationCtx {
+        override fun Pass.draws(drawsDeclarations: DrawsDeclarationCtx.() -> Unit) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
 
         /** Declare a pass and add it to the graph */
         override fun pass(function: Pass.() -> Unit) {
@@ -80,6 +83,8 @@ interface PassesDeclarationCtx {
         }
 
     }
+
+    fun Pass.draws(drawsDeclarations : DrawsDeclarationCtx.() -> Unit)
 }
 
 interface PassInputsDeclarationsCtx {
@@ -90,4 +95,12 @@ interface PassInputsDeclarationsCtx {
 
 interface PassOutputsDeclarationCtx {
     fun output(outputConfiguration: PassOutput.() -> Unit)
+}
+
+interface DrawsDeclarationCtx {
+    fun fullscreenQuad()
+
+    fun decals()
+
+    fun defferedLights()
 }
