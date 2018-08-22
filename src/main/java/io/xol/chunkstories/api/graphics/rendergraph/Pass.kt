@@ -1,6 +1,7 @@
 package io.xol.chunkstories.api.graphics.rendergraph
 
-import io.xol.chunkstories.api.graphics.structs.InterfaceBlock
+import io.xol.chunkstories.api.graphics.ImageInput
+import io.xol.chunkstories.api.graphics.UniformInput
 import io.xol.chunkstories.api.rendering.shader.Shader
 
 class Pass {
@@ -48,18 +49,20 @@ class DepthTestingConfiguration {
     lateinit var depthBuffer: String
 
     var mode: DepthTestMode = DepthTestMode.LESS_OR_EQUAL
+
     enum class DepthTestMode {
         GREATER, GREATER_OR_EQUAL, EQUAL, LESS_OR_EQUAL, LESS, ALWAYS
     }
 }
+
 val noDepthTest = DepthTestingConfiguration().apply { enabled = false }
 
 /** Represents one output to a pass, includes some configuration */
 class PassOutput {
-    lateinit var name : String
+    lateinit var name: String
 
     /** If the output buffer has a different name than the shader output, supply it here */
-    lateinit var outputBuffer : String
+    lateinit var outputBuffer: String
 
     /** Should we use blending while outputing to this ? */
     var blending: BlendMode = BlendMode.ALPHA_TEST
@@ -76,29 +79,5 @@ class PassOutput {
         MIX,
         ADD,
         PREMULTIPLIED_ALPHA
-    }
-}
-
-class UniformInput {
-    lateinit var name: String
-    lateinit var data: InterfaceBlock
-}
-
-class ImageInput {
-    /** Name of the input this will bind to */
-    lateinit var name: String
-
-    /** Name of the source RenderBuffer or a path to an asset.
-     * For binding dynamically created resources, please use a PassHook. */
-    lateinit var source: String
-
-    // General state fluff
-    var samplingMode = SamplingMode.NEAREST
-    var mipmapping = false
-    var wrapping = false
-
-    enum class SamplingMode {
-        LINEAR,
-        NEAREST
     }
 }

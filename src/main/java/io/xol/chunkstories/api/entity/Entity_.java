@@ -67,7 +67,7 @@ import javax.annotation.Nullable;
  * so their Components can directly notify them.
  * </p>
  */
-public abstract class Entity {
+public abstract class Entity_ {
 	/* Warning: this class is kind of complicated! It does a bunch of internal stuff
 	 * you don't need to understand as a modder, and should definitely not touch
 	 * unless you're an engine dev with a good reason. For more information on how
@@ -94,7 +94,7 @@ public abstract class Entity {
 
 	private long uuid = -2;
 
-	protected Entity(EntityDefinition definition, Location location) {
+	protected Entity_(EntityDefinition definition, Location location) {
 		this.definition = definition;
 
 		if (location == null || location.getWorld() == null)
@@ -388,18 +388,18 @@ public abstract class Entity {
 		return ((Entity) o).getUUID() == uuid;
 	}
 
-	/** The bounding box is used for any entity, it is used to determine the "rough
-	 * size" of it, rendering, collisions, iterations etc purposes.<br/>
-	 * The bounding box should always be at least as big as the model and optional
-	 * collision boxes */
-	public CollisionBox getBoundingBox() {
-		return new CollisionBox(1.0, 1.0, 1.0).translate(-0.5, 0.0, -0.5);
-	}
-
-	public final CollisionBox getTranslatedBoundingBox() {
-		CollisionBox box = getBoundingBox();
-		box.translate(getLocation());
-		return box;
-	}
+//	/** The bounding box is used for any entity, it is used to determine the "rough
+//	 * size" of it, rendering, collisions, iterations etc purposes.<br/>
+//	 * The bounding box should always be at least as big as the model and optional
+//	 * collision boxes */
+//	public CollisionBox getBoundingBox() {
+//		return new CollisionBox(1.0, 1.0, 1.0).translate(-0.5, 0.0, -0.5);
+//	}
+//
+//	public final CollisionBox getTranslatedBoundingBox() {
+//		CollisionBox box = getBoundingBox();
+//		box.translate(getLocation());
+//		return box;
+//	}
 
 }

@@ -1,5 +1,7 @@
 package io.xol.chunkstories.api.graphics.rendergraph
 
+import io.xol.chunkstories.api.graphics.ImageInput
+import io.xol.chunkstories.api.graphics.UniformInput
 import org.joml.Vector2i
 import kotlin.math.roundToInt
 

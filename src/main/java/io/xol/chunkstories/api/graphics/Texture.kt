@@ -18,3 +18,8 @@ interface Texture3D : Texture {
     val height: Int
     val depth: Int
 }
+
+interface Cubemap : Texture {
+    val width: Int
+    val height: Int
+}
