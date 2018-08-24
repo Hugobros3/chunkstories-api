@@ -30,19 +30,20 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 import javax.annotation.Nullable;
 
 /** Any entity with this component is considered living, even if it's dead.
- * 
  * Handles health management and death */
 public class TraitHealth extends TraitSerializable {
+	public float maxHealth = 100;
 	private float value;
 
 	private long damageCooldown = 0;
+
 	@Nullable
 	private DamageCause lastDamageCause;
 	long deathDespawnTimer = 6000;
 
 	public TraitHealth(Entity entity) {
 		super(entity);
-		this.value = Float.parseFloat(entity.getDefinition().resolveProperty("startHealth", "100"));
+		this.value = maxHealth;
 	}
 
 	public float getHealth() {
@@ -190,8 +191,7 @@ public class TraitHealth extends TraitSerializable {
 		}
 	}
 
-	public float getMaxHealth() {
-		return Float.parseFloat(entity.getDefinition().resolveProperty("maxHealth", entity.getDefinition().resolveProperty("startHealth", "100")));
-	}
-
+	/*public float getMaxHealth() {
+		return maxHealth;
+	}*/
 }

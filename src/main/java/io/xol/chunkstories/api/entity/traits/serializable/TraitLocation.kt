@@ -26,7 +26,7 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget
  * unspawned  */
 class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializable(entity) {
 
-    private val world: World
+    private val world: World = pos.getWorld()
 
     private val lock = ReentrantLock()
 
@@ -35,10 +35,6 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
 
     private var spawned = false
     private var removed = false
-
-    init {
-        this.world = pos.getWorld()
-    }
 
     fun set(location: Location) {
         if (location.world !== this.world)
@@ -76,14 +72,14 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
         this.pushComponentEveryone()
     }
 
-    fun move(mx: Double, my: Double, mz: Double) {
+    fun move(dx: Double, dy: Double, dz: Double) {
         try {
             lock.lock()
-            pos.x = pos.x() + mx
-            pos.y = pos.y() + my
-            pos.z = pos.z() + mz
+            pos.x = pos.x() + dx
+            pos.y = pos.y() + dy
+            pos.z = pos.z() + dz
 
-            sanitize()
+            sanitize()/**/
         } finally {
             lock.unlock()
         }
@@ -136,7 +132,7 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
 
     /** Prevents entities from going outside the world area and updates the
      * parentHolder reference  */
-    protected fun sanitize(): Boolean {
+    private fun sanitize(): Boolean {
         val worldSize = world.worldSize
 
         pos.x = pos.x() % worldSize
@@ -225,3 +221,6 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
         return spawned
     }
 }
+
+fun Entity.move(delta: Vector3dc) = this.traits[TraitLocation::class]?.move(delta)
+fun Entity.move(dx: Double, dy: Double, dz: Double) = this.traits[TraitLocation::class]?.move(dx, dy, dz)

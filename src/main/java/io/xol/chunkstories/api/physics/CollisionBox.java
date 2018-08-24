@@ -11,6 +11,7 @@ import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public final class CollisionBox implements Collidable {
@@ -45,6 +46,7 @@ public final class CollisionBox implements Collidable {
 		this(origin.x(), origin.y(), origin.z(), size.x(), size.y(), size.z());
 	}
 
+	@Nonnull
 	public CollisionBox translate(double x, double y, double z) {
 		xpos += x;
 		ypos += y;
@@ -52,6 +54,7 @@ public final class CollisionBox implements Collidable {
 		return this;
 	}
 
+	@Nonnull
 	public CollisionBox translate(Vector3dc vec3) {
 		xpos += vec3.x();
 		ypos += vec3.y();

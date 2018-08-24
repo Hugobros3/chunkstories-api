@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 
 public class TraitCollidable extends Trait {
 
+	private boolean collidesWithEntities = true;
 	public TraitCollidable(Entity entity) {
 		super(entity);
 	}
@@ -85,7 +86,7 @@ public class TraitCollidable extends Trait {
 			if (e != entity) {
 				TraitCollidable tc = e.getTraits().get(TraitCollidable.class);
 				if (tc != null) {
-					if (e.getDefinition().collidesWithEntities()) {
+					if (collidesWithEntities) {
 
 						if (tc.getBoundingBox().collidesWith(this.getBoundingBox()))
 							// Fine

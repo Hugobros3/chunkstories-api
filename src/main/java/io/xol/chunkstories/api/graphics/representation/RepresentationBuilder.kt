@@ -46,13 +46,12 @@ interface RepresentationBuildingCtx {
         representation.add(light)
     }
 
+    fun onEveryFrame(stuff : FrameContext.() -> Unit)
+
     /** DSL-helper: Registers a bunch of children nodes (those will have the current RepresentationElement as a parent */
     fun RepresentationElement.children(children : RepresentationBuildingInstructions)
 }
 
-/** DSL-helper: Allows for configuring */
-interface RepresentationDeclarationCtx {
-    fun defaultRepresentation(instructions : RepresentationBuildingInstructions)
-
-    fun onEveryFrame(stuff : Representation.() -> Unit)
+interface FrameContext {
+    val frameNumber: Int
 }
