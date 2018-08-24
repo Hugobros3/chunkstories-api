@@ -203,7 +203,7 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
         this.pushComponentEveryone()
 
         // Tell anyone still subscribed to this entity to sod off
-        entity.subscribers.all().forEach { subscriber -> subscriber.unsubscribe(entity) }
+        entity.subscribers.forEach { subscriber -> subscriber.unsubscribe(entity) }
     }
 
     fun wasRemoved(): Boolean {

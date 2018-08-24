@@ -3,11 +3,12 @@ package io.xol.chunkstories.api.graphics
 import io.xol.chunkstories.api.graphics.TextureFormat.*
 import io.xol.chunkstories.api.graphics.rendergraph.DepthTestingConfiguration.DepthTestMode.*
 import io.xol.chunkstories.api.graphics.rendergraph.PassOutput.BlendMode.*
-import io.xol.chunkstories.api.graphics.rendergraph.ImageInput.SamplingMode.*
+import io.xol.chunkstories.api.graphics.ImageInput.SamplingMode.*
 
 
 import io.xol.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
 import io.xol.chunkstories.api.graphics.structs.InterfaceBlock
+import io.xol.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test
 
 data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : InterfaceBlock
@@ -38,8 +39,10 @@ class TestRenderGraphDSL {
 
                     draws {
                         fullscreenQuad()
-                        decals()
-                        defferedLights()
+                        system(DefferedLightsDrawer::class) {
+                            maxBatchSize = 32
+                        }
+                        system(FarTerrainDrawer::class)
                     }
 
                     depth {

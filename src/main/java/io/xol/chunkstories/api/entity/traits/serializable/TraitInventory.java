@@ -21,6 +21,7 @@ import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.util.IterableIterator;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -58,7 +59,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 
 	@Override
 	public String getInventoryName() {
-		String name = entity.traits.tryWith(TraitName.class, en -> en.getName());
+		String name = entity.getTraits().tryWith(TraitName.class, TraitName::getName);
 		// if (holder instanceof EntityNameable)
 		// return ((EntityNameable) holder).getName();
 		return name != null ? "[entity has no name]" : holder.getClass().getSimpleName();
@@ -70,8 +71,8 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 	}
 
 	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
-		Packet packetItemUpdate = new PacketInventoryPartialUpdate(entity.world, this, x, y, pileChanged);
-		entity.traits.with(TraitController.class, ecc -> {
+		Packet packetItemUpdate = new PacketInventoryPartialUpdate(entity.getWorld(), this, x, y, pileChanged);
+		entity.getTraits().with(TraitController.class, ecc -> {
 			if (ecc.getController() != null)
 				ecc.getController().pushPacket(packetItemUpdate);
 		});
@@ -121,7 +122,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 			}
 		}
 		stream.writeByte(UpdateMode.TOTAL_REFRESH.ordinal());
-		actualInventory.pushInventory(destinator, stream, entity.world.getContentTranslator());
+		actualInventory.pushInventory(destinator, stream, entity.getWorld().getContentTranslator());
 	}
 
 	@Override
@@ -133,7 +134,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 		if (b == UpdateMode.NEVERMIND.ordinal())
 			return;
 
-		actualInventory.pullInventory(from, stream, entity.world.getContentTranslator());
+		actualInventory.pullInventory(from, stream, entity.getWorld().getContentTranslator());
 	}
 
 	@Override
@@ -172,6 +173,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 		return actualInventory.addItemPile(pile);
 	}
 
+	@NotNull
 	@Override
 	public IterableIterator<ItemPile> iterator() {
 		return actualInventory.iterator();

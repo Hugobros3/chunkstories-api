@@ -53,9 +53,9 @@ public class PacketEntity extends PacketWorld {
 		long entityUUID = entity.getUUID();
 		short entityTypeID = (short) entity.getWorld().getContentTranslator().getIdForEntity(entity);
 
-		boolean hideEntity = entity.entityLocation.wasRemoved();
+		boolean hideEntity = entity.getTraitLocation().wasRemoved();
 		if (destinator instanceof Subscriber)
-			hideEntity |= !entity.subscribers.isRegistered(destinator);
+			hideEntity |= !entity.getSubscribers().contains(destinator);
 
 		// System.out.println("telling "+destinator+" about "+entity +"
 		// (hide:"+hideEntity+", reg="+entity.subscribers.isRegistered(destinator)+")");
@@ -73,7 +73,7 @@ public class PacketEntity extends PacketWorld {
 				// can't use shorter method because of exceptions handling >:(
 				// entity.components.all().forEach(c -> c.pushComponentInStream(destinator,
 				// out));
-				for (Trait trait : entity.traits.all()) {
+				for (Trait trait : entity.getTraits().all()) {
 					if (trait instanceof TraitSerializable) {
 						((TraitSerializable) trait).pushComponentInStream(destinator, out);
 					}
@@ -123,7 +123,7 @@ public class PacketEntity extends PacketWorld {
 		int componentId = in.readInt();
 		// Loop throught all components
 		while (componentId >= 0) {
-			Trait trait = entity.traits.byId()[componentId];
+			Trait trait = entity.getTraits().byId()[componentId];
 			if (trait instanceof TraitSerializable) {
 				((TraitSerializable) trait).tryPull(sender, in);
 			}

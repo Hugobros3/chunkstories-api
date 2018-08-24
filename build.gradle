@@ -28,13 +28,14 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'java-library'
 apply plugin: 'maven'
+apply plugin: 'kotlin'
 
 ext {
-	useEclipseCompiler = true
+	useEclipseCompiler = false
 }
 
 //TODO Make version depend on Git ?
-version = '123'
+version = '200'
 
 group = 'io.xol.chunkstories'
 description = 'API for the game \'Chunk Stories\''
@@ -68,16 +69,6 @@ if(ext.useEclipseCompiler) {
 
 	println "Using ECJ compiler"
 }
-
-/*license {
-    header rootProject.file('codequality/header-include-notice.txt')
-    strictCheck true
-	ignoreFailures true
-	
-	mapping {
-        java='DOUBLESLASH_STYLE'
-    }
-}*/
 
 compileJava {
 	options.encoding = 'utf-8'

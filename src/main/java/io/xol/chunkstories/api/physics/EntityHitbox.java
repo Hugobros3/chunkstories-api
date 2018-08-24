@@ -30,7 +30,7 @@ public class EntityHitbox {
 
 	public EntityHitbox(Entity entity, CollisionBox box, String skeletonPart) {
 		this.entity = entity;
-		this.animationTrait = entity.traits.get(TraitAnimated.class);
+		this.animationTrait = entity.getTraits().get(TraitAnimated.class);
 
 		this.box = box;
 		this.skeletonPart = skeletonPart;
@@ -72,7 +72,7 @@ public class EntityHitbox {
 		Entity playerEntity = ((WorldClient) entity.getWorld()).getClient().getPlayer().getControlledEntity();
 		if (playerEntity != null) {
 			// Only entities with a rotation component may highlight stuff
-			playerEntity.traits.with(TraitRotation.class, er -> {
+			playerEntity.getTraits().with(TraitRotation.class, er -> {
 				if (lineIntersection(context.getCamera().getCameraPosition(), er.getDirectionLookingAt()) != null)
 					context.currentShader().setUniform4f("colorIn", 1.0, 0.0, 0.0, 1.0);
 			});

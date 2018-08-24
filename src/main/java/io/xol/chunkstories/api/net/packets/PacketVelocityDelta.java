@@ -57,7 +57,7 @@ public class PacketVelocityDelta extends PacketWorld {
 
 		// new style
 		if (entity != null) {
-			entity.traits.with(TraitVelocity.class, ev -> {
+			entity.getTraits().with(TraitVelocity.class, ev -> {
 				System.out.println("Debug: received velocity delta " + delta);
 				ev.addVelocity(delta);
 			});

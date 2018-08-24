@@ -2,6 +2,8 @@ package io.xol.chunkstories.api.graphics
 
 import io.xol.chunkstories.api.graphics.rendergraph.RenderGraph
 import io.xol.chunkstories.api.graphics.representation.Model
+import io.xol.chunkstories.api.graphics.systems.dispatching.DispatchingSystem
+import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
 
 interface GraphicsEngine {
     val renderGraph : RenderGraph
@@ -23,4 +25,15 @@ interface GraphicsEngine {
 
         val defaultModel: Model
     }
+
+    /** Dispatching systems: Register them here! */
+    val dispatchingSystems: Set<DispatchingSystem>
+
+    val backend: GraphicsBackend
+}
+
+/** When creating systems implementations you will need one of those.
+ * No specifics as we don't assume anything about graphical APIs or game implementations !*/
+interface GraphicsBackend {
+    fun createDrawingSystem(clazz: Class<DrawingSystem>) : DrawingSystem
 }

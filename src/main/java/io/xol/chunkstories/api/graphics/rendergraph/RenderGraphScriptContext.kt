@@ -2,8 +2,11 @@ package io.xol.chunkstories.api.graphics.rendergraph
 
 import io.xol.chunkstories.api.graphics.ImageInput
 import io.xol.chunkstories.api.graphics.UniformInput
+import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
+import io.xol.chunkstories.api.graphics.systems.drawing.FullscreenQuadDrawer
 import org.joml.Vector2i
 import kotlin.math.roundToInt
+import kotlin.reflect.KClass
 
 typealias RenderGraphDeclarationScript = RenderGraphDeclarationsCtx.() -> Unit
 
@@ -27,9 +30,13 @@ class RenderGraphDeclarationsCtx(val renderGraph: RenderGraph) {
 
     /** Enter the context to declare a bunch of Passes */
     fun passes(function: PassesDeclarationCtx.() -> Unit) = object : PassesDeclarationCtx {
-        override fun Pass.draws(drawsDeclarations: DrawsDeclarationCtx.() -> Unit) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
+        override fun Pass.draws(drawsDeclarations: DrawsDeclarationCtx.() -> Unit) { object : DrawsDeclarationCtx {
+
+            override fun <T : DrawingSystem> system(type: KClass<T>, config: T.() -> Unit) {
+                this@draws.declaredDrawingSystems.add(RegisteredDrawingSystem(type.java, config as DrawingSystem.() -> Unit))
+            }
+
+        }.apply(drawsDeclarations)}
 
         /** Declare a pass and add it to the graph */
         override fun pass(function: Pass.() -> Unit) {
@@ -100,9 +107,10 @@ interface PassOutputsDeclarationCtx {
 }
 
 interface DrawsDeclarationCtx {
-    fun fullscreenQuad()
+    fun fullscreenQuad() = system(FullscreenQuadDrawer::class)
 
-    fun decals()
+    fun <T: DrawingSystem> system(type: KClass<T>) = system(type) {}
+    fun <T: DrawingSystem> system(type: KClass<T>, config: (T.() -> Unit))
 
-    fun defferedLights()
+    //fun <T: DrawingSystem> system(type: Class<T>, config: T.() -> Unit)
 }

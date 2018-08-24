@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.graphics.rendergraph
 
 import io.xol.chunkstories.api.graphics.ImageInput
 import io.xol.chunkstories.api.graphics.UniformInput
+import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
 import io.xol.chunkstories.api.rendering.shader.Shader
 
 class Pass {
@@ -25,6 +26,8 @@ class Pass {
 
     val dependencies = mutableSetOf<String>()
 
+    val declaredDrawingSystems = mutableListOf<RegisteredDrawingSystem>()
+
     val imageInputs = mutableListOf<ImageInput>()
     val uniformInputs = mutableListOf<UniformInput>()
 
@@ -36,6 +39,8 @@ class Pass {
     /** Updated when the pass is actually initialized */
     lateinit var shader: Shader
 }
+
+data class RegisteredDrawingSystem(val clazz: Class<out DrawingSystem>, val init: DrawingSystem.() -> Unit)
 
 abstract class PassHook(internal val pass: Pass) : () -> Unit
 

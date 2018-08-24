@@ -39,7 +39,7 @@ public class TraitController extends TraitSerializable {
 
 	public void setController(@Nullable Controller controller) {
 		// Checks we are entitled to do this
-		if (!(entity.world instanceof WorldMaster))
+		if (!(entity.getWorld() instanceof WorldMaster))
 			throw new UnauthorizedClientActionException("setController()");
 
 		Controller formerController = this.controller;
@@ -69,14 +69,14 @@ public class TraitController extends TraitSerializable {
 
 		// Don't allow client players to set what entity they control
 		// TODO: this should be logged for banning/cheat reporting
-		if (!(entity.world instanceof WorldClientNetworkedRemote)) {
+		if (!(entity.getWorld() instanceof WorldClientNetworkedRemote)) {
 			// Terminate connections immediately
 			if (from instanceof Player)
 				((Player) from).disconnect("Illegal controller set attempt, terminating client connection for " + from);
 			return;
 		}
 
-		LocalPlayer player = ((ClientInterface) entity.world.getGameContext()).getPlayer();
+		LocalPlayer player = ((ClientInterface) entity.getWorld().getGameContext()).getPlayer();
 		assert player != null;
 
 		if (isControllerNotNull) {

@@ -20,12 +20,11 @@ class UniformInput {
 }
 
 class ImageInput {
-    /** Name of the input this will bind to */
+    /** Name of the sampler this will bind to */
     lateinit var name: String
 
-    /** Name of the source RenderBuffer or a path to an asset.
-     * For binding dynamically created resources, please use a PassHook. */
-    lateinit var source: String
+    /** Name of the source RenderBuffer or a path to an asset, or a Texture object. */
+    lateinit var source: Any
 
     // General state fluff
     var samplingMode = SamplingMode.NEAREST

@@ -41,12 +41,12 @@ public abstract class TraitSerializable extends Trait {
 	/** Push will tell all subscribers of the entity about a change of this
 	 * component only */
 	public void pushComponentEveryone() {
-		entity.subscribers.all().forEach(s -> this.pushComponent(s));
+		entity.getSubscribers().forEach(this::pushComponent);
 	}
 
 	/** Push the component to the controller, if such one exists */
 	public void pushComponentController() {
-		this.entity.traits.with(TraitController.class, e -> {
+		this.entity.getTraits().with(TraitController.class, e -> {
 			if (e.controller != null)
 				pushComponent(e.controller);
 		});
@@ -54,9 +54,9 @@ public abstract class TraitSerializable extends Trait {
 
 	/** Push the component to everyone but the controller, if such one exists */
 	public void pushComponentEveryoneButController() {
-		Iterator<Subscriber> iterator = entity.subscribers.all().iterator();
+		Iterator<Subscriber> iterator = entity.getSubscribers().iterator();
 
-		Controller controller = entity.traits.tryWith(TraitController.class, ecc -> ecc.getController());
+		Controller controller = entity.getTraits().tryWith(TraitController.class, TraitController::getController);
 
 		while (iterator.hasNext()) {
 			Subscriber subscriber = iterator.next();
