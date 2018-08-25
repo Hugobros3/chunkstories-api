@@ -9,16 +9,24 @@ package io.xol.chunkstories.api.entity
 import io.xol.chunkstories.api.Location
 import io.xol.chunkstories.api.content.Content.EntityDeclarations
 import io.xol.chunkstories.api.content.Declaration
-import io.xol.chunkstories.api.entity.traits.Trait
+import io.xol.chunkstories.api.dsl.EntityRepresentationBuildingContext
 
-interface EntityDeclaration : Declaration {
-    val abstract: Boolean
+interface EntityDeclaration<E : Entity> : Declaration {
+    /** Reference to the containing store */
+    fun store(): EntityDeclarations
 
-    val traits: Set<DeclaredTrait<*>>
+    /** The actual class used by this Entity. Cannot be Entity::class ! */
+    val clazz: Class<E>
 
-    fun store() : EntityDeclarations
+    /** How near the entity needs to be so clients can see it in multiplayer */
+    val onlineReplicationDistance: Double
 
-    fun create(location: Location) : Entity
+    /** Initialization code that is applied to the Entity at initialization (but after constructor)*/
+    val prototype: E.() -> Unit
+
+    /** Instructions for building a representation based on the item */
+    val representation: EntityRepresentationBuildingContext<E>.() -> Unit
+
+    /** Creates a new entity from this declaration */
+    fun newEntity(location: Location): Entity
 }
-
-data class DeclaredTrait<T : Trait>(val traitClass: Class<T>, var initCode : T.() -> Unit)

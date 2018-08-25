@@ -11,7 +11,7 @@ import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
 import io.xol.chunkstories.api.world.generator.environment.WorldEnvironment;
 
-/** The job of a WorldGenerator is to create (voxel) data and to populate the
+/** The job of a WorldGenerator is to newEntity (voxel) data and to populate the
  * world with content. It also has duties of providing some rendering hints on
  * the world */
 public abstract class WorldGenerator {

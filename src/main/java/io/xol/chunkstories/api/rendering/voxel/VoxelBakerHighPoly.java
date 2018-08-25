@@ -9,7 +9,7 @@ package io.xol.chunkstories.api.rendering.voxel;
 import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 
-/** Used to create intricate models, with floating point coordinates. Consumes
+/** Used to newEntity intricate models, with floating point coordinates. Consumes
  * more VRAM. */
 public interface VoxelBakerHighPoly extends VoxelBakerCommon {
 	/** Begins a vertex at that floating point coordinate */

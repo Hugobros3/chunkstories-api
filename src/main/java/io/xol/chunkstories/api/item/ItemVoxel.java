@@ -39,7 +39,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
     public Voxel voxel = null;
     public int voxelMeta = 0;
 
-    public ItemVoxel(ItemDefinition type) {
+    public ItemVoxel(ItemDeclaration type) {
         super(type);
         store = type.store().parent().voxels();
     }

@@ -112,7 +112,7 @@ public class PacketEntity extends PacketWorld {
 				((Player) sender).sendMessage("You are sending packets to the server about a removed entity. Ignoring those.");
 				return;
 			} else if (!hideEntity) {
-				entity = world.getContentTranslator().getEntityForId(entityTypeID).create(new Location(world, 0, 0, 0)); // This is technically
+				entity = world.getContentTranslator().getEntityForId(entityTypeID).newEntity(new Location(world, 0, 0, 0)); // This is technically
 
 				entity.setUUID(entityUUID);
 				addToWorld = true;

@@ -8,11 +8,13 @@ package io.xol.chunkstories.api.item
 
 import io.xol.chunkstories.api.content.Content
 import io.xol.chunkstories.api.content.Declaration
-import io.xol.chunkstories.api.content.Definition
-import io.xol.chunkstories.api.rendering.item.ItemRenderer
+import io.xol.chunkstories.api.dsl.ItemRepresentationBuildingContext
 
 /** Represents an Item declaration, can instantiate them */
-interface ItemDefinition<T: Item> : Declaration {
+interface ItemDeclaration<T: Item> : Declaration {
+    /** Reference to the containing store */
+    fun store(): Content.ItemsDefinitions
+
     /** The actual class used. If none is specified, this will be Item::class */
     val clazz: Class<T>
 
@@ -25,7 +27,7 @@ interface ItemDefinition<T: Item> : Declaration {
     /** Defines the maximal 'amount' an ItemPile can have of this item.  */
     val maxStackSize: Int
 
-    /** Initialization code that is applied to the Item at initialization */
+    /** Initialization code that is applied to the Item at initialization (but after constructor)*/
     val prototype: T.() -> Unit
 
     /** Instructions for building a representation based on the item */
@@ -33,6 +35,4 @@ interface ItemDefinition<T: Item> : Declaration {
 
     /** Instantiates the class 'clazz' and applies the prototype to it */
     fun newItem(): T
-
-    fun store(): Content.ItemsDefinitions
 }

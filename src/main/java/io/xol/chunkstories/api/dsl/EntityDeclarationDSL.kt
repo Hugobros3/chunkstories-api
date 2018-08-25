@@ -8,29 +8,26 @@ import io.xol.chunkstories.api.entity.traits.Trait
 import kotlin.reflect.KClass
 
 interface EntitiesDeclarationsContext {
-    /** DSL-style convinience method to write an entity declaration in brackers */
-    fun entity(f: EntityDeclarationContext.() -> Unit)
-}
-
-interface EntityDeclarationContext: DeclarationContext {
     val store : Content.EntityDeclarations
 
-    var abstract: Boolean
+    fun <E: Entity> entity(clazz: KClass<E>, f: EntityDeclarationContext<E>.() -> Unit) = entity(clazz.java, f)
 
-    fun extends(otherEntity: String)
+    /** DSL-style convinience method to write an entity declaration in brackers */
+    fun <E: Entity> entity(clazz: Class<E>, f: EntityDeclarationContext<E>.() -> Unit)
 
-    fun <T : Trait> trait(traitClass: KClass<out T>) = trait(traitClass.java)
-    fun <T : Trait> trait(traitClass: KClass<out T>, initCode: T.() -> Unit) = trait(traitClass.java, initCode)
-    fun <T : Trait> trait(traitClass: Class<out T>) = trait(traitClass) {Unit}
+}
 
-    /** Adds a trait to that entity prototype, along with extra initialisation code */
-    fun <T : Trait> trait(traitClass: Class<out T>, initCode: T.() -> Unit)// = traits.add(DeclaredTrait(traitClass, initCode))
+interface EntityDeclarationContext<E: Entity>: DeclarationContext {
+    var onlineReplicationDistance: Double
 
-    /** Appends code to the initialization lambda */
-    fun init(behavior: Entity.() -> Unit)
+    fun prototype(behavior: E.() -> Unit)
 
-    /** Appends code to the tick lambda */
-    fun tick(behavior: Entity.() -> Unit)
+    fun representation(representationDeclaration : EntityRepresentationBuildingContext<*>.() -> Unit)
+}
 
-    fun representation(representationDeclaration : EntityRepresentationBuildingInstructions)
+fun <T : Trait> Entity.trait(traitClass: KClass<out T>, initCode: T.() -> Unit) = this.traits[traitClass]?.apply(initCode)
+fun <T : Trait> Entity.trait(traitClass: Class<out T>, initCode: T.() -> Unit) = this.traits[traitClass]?.apply(initCode)
+
+interface EntityRepresentationBuildingContext<E : Entity> : DynamicRepresentationBuildingContext {
+    val entity : E
 }

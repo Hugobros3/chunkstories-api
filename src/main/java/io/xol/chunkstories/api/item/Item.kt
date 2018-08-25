@@ -16,7 +16,7 @@ import io.xol.chunkstories.api.input.Input
 import io.xol.chunkstories.api.item.inventory.ItemPile
 import io.xol.chunkstories.api.rendering.item.ItemRenderer
 
-open class Item(val definition: ItemDefinition) {
+open class Item(val definition: ItemDeclaration<*>) {
     var itemPile: ItemPile? = null
 
     open val name: String

@@ -1,8 +1,7 @@
 package io.xol.chunkstories.api.dsl
 
 import io.xol.chunkstories.api.item.Item
-import io.xol.chunkstories.api.item.ItemDefinition
-import io.xol.chunkstories.api.item.ItemVoxel
+import io.xol.chunkstories.api.item.ItemDeclaration
 import org.junit.Test
 
 class TestItemsDeclarationDSL {
@@ -36,7 +35,7 @@ class TestItemsDeclarationDSL {
         }
     }
 
-    class ItemCustomClass(definition: ItemDefinition) : Item(definition) {
+    class ItemCustomClass(definition: ItemDeclaration<*>) : Item(definition) {
         var customModel: String? = null
         var maxRounds = 50
     }

@@ -16,7 +16,7 @@ import io.xol.chunkstories.api.content.ContentTranslator;
 import io.xol.chunkstories.api.exceptions.NullItemException;
 import io.xol.chunkstories.api.exceptions.UndefinedItemTypeException;
 import io.xol.chunkstories.api.item.Item;
-import io.xol.chunkstories.api.item.ItemDefinition;
+import io.xol.chunkstories.api.item.ItemDeclaration;
 
 import javax.annotation.Nullable;
 
@@ -40,11 +40,11 @@ public class ItemPile {
 		this.amount = amount;
 	}
 
-	public ItemPile(ItemDefinition definition) {
+	public ItemPile(ItemDeclaration definition) {
 		this(definition.newItem());
 	}
 
-	public ItemPile(ItemDefinition definition, int amount) {
+	public ItemPile(ItemDeclaration definition, int amount) {
 		this(definition.newItem(), amount);
 	}
 
@@ -53,7 +53,7 @@ public class ItemPile {
 		if (itemId == 0)
 			throw new NullItemException(stream);
 
-		ItemDefinition itemType = translator.getItemForId(itemId);
+		ItemDeclaration itemType = translator.getItemForId(itemId);
 		if (itemType == null)
 			throw new UndefinedItemTypeException(itemId);
 
@@ -167,8 +167,8 @@ public class ItemPile {
 		return amount;
 	}
 
-	public boolean canMergeWith(ItemPile itemPile) {
-		return this.getItem().canMergeWith(itemPile.getItem());
+	public boolean canStackWith(ItemPile itemPile) {
+		return this.getItem().canStackWith(itemPile.getItem());
 	}
 
 	/** Returns an exact copy of this pile */

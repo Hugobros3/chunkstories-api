@@ -1,6 +1,9 @@
 package io.xol.chunkstories.api.dsl
 
+import io.xol.chunkstories.api.entity.Entity
+import io.xol.chunkstories.api.entity.EntityDeclaration
 import io.xol.chunkstories.api.entity.traits.serializable.TraitHealth
+import io.xol.chunkstories.api.world.World
 import org.joml.Vector3d
 import org.junit.Test
 
@@ -12,14 +15,16 @@ class TestEntitiesDeclarationDSL {
     @Test
     fun testBasicDeclarations() {
         ctx?.apply {
-            entity {
+            entity(LameEntity::class) {
                 name = "lama_samara"
 
-                extends("motor_vehicle")
+                onlineReplicationDistance = 64.0
 
-                trait(io.xol.chunkstories.api.entity.traits.serializable.TraitHealth::class) {
-                    maxHealth = 50.0f
-                    health = 5f
+                prototype {
+                    trait(io.xol.chunkstories.api.entity.traits.serializable.TraitHealth::class) {
+                        maxHealth = 50.0f
+                        health = 5f
+                    }
                 }
 
                 representation {
@@ -46,12 +51,21 @@ class TestEntitiesDeclarationDSL {
                 }
             }
 
-            entity {
+            entity(EntityThatUsesExtensionProperties::class) {
                 name = "I_still_require_ext_props"
-                abstract = true
 
                 ext["extensionProperty"] = "someValue idk"
             }
         }
     }
+}
+
+class LameEntity(declaration: EntityDeclaration<*>, world: World) : Entity(declaration, world) {
+    init {
+        TraitHealth(this)
+    }
+}
+
+class EntityThatUsesExtensionProperties(declaration: EntityDeclaration<*>, world: World) : Entity(declaration, world) {
+    val iNeed = declaration.ext["extensionProperty"]
 }

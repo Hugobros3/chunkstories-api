@@ -2,7 +2,6 @@ package io.xol.chunkstories.api.dsl
 
 import io.xol.chunkstories.api.content.DeclarationContext
 import io.xol.chunkstories.api.item.Item
-import io.xol.chunkstories.api.item.ItemRepresentationBuildingContext
 import kotlin.reflect.KClass
 
 interface ItemDeclarationsContext {
@@ -22,7 +21,9 @@ interface ItemDeclarationContext<T: Item> : DeclarationContext{
 
     fun prototype(wow: T.() -> Unit)
 
-    fun representation(representation: ItemRepresentationBuildingContext<T>.() -> Unit) {
+    fun representation(representation: ItemRepresentationBuildingContext<T>.() -> Unit)
+}
 
-    }
+interface ItemRepresentationBuildingContext<T : Item> : DynamicRepresentationBuildingContext {
+    val item: T
 }

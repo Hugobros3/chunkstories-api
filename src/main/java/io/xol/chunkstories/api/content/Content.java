@@ -17,7 +17,7 @@ import io.xol.chunkstories.api.animation.SkeletalAnimation;
 import io.xol.chunkstories.api.content.mods.ModsManager;
 import io.xol.chunkstories.api.entity.EntityDeclaration;
 import io.xol.chunkstories.api.exceptions.net.UnknowPacketException;
-import io.xol.chunkstories.api.item.ItemDefinition;
+import io.xol.chunkstories.api.item.ItemDeclaration;
 import io.xol.chunkstories.api.mesh.MeshLibrary;
 import io.xol.chunkstories.api.net.Packet;
 import io.xol.chunkstories.api.net.PacketDefinition;
@@ -102,9 +102,9 @@ public interface Content {
 	interface ItemsDefinitions {
 
 		@Nullable
-		ItemDefinition getItemDefinition(String itemName);
+		ItemDeclaration getItemDefinition(String itemName);
 
-		Iterator<ItemDefinition> all();
+		Iterator<ItemDeclaration> all();
 
 		Content parent();
 

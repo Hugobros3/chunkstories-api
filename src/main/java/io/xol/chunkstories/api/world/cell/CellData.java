@@ -52,12 +52,12 @@ public interface CellData {
 
 	@Nullable
 	public default Voxel getNeightborVoxel(int side) {
-		return getNeightbor(side).getVoxel(); // Optimisation hint: do not create the neightbor object if you just want
+		return getNeightbor(side).getVoxel(); // Optimisation hint: do not newEntity the neightbor object if you just want
 												// to peek the voxel
 	}
 
 	public default int getNeightborMetadata(int side) {
-		return getNeightbor(side).getMetaData(); // Optimisation hint: do not create the neightbor object if you just
+		return getNeightbor(side).getMetaData(); // Optimisation hint: do not newEntity the neightbor object if you just
 													// want to peek the metadata
 	}
 

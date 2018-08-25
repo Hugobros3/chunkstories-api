@@ -9,7 +9,7 @@ package io.xol.chunkstories.api.rendering.text;
 import org.joml.Vector4fc;
 
 public interface FontRenderer {
-	/** Will try to create the requested font in said size, if not found or fails
+	/** Will try to newEntity the requested font in said size, if not found or fails
 	 * will return defaultFont */
 	public Font getFont(String fontName, float sizeInPX);
 

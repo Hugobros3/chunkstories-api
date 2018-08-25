@@ -72,8 +72,6 @@ public interface World {
 
 	/* Entity management */
 
-	public Entity createEntity(String entityDeclarationName);
-
 	/** Adds an entity to the world, the entity location is supposed to be already
 	 * defined
 	 * 
@@ -137,7 +135,7 @@ public interface World {
 	 * Location object ) */
 	public WorldCell peekSafely(Vector3dc location);
 
-	/** Alternative to peek() that does not create any VoxelContext object<br/>
+	/** Alternative to peek() that does not newEntity any VoxelContext object<br/>
 	 * <b>Does not throw exceptions</b>, instead safely returns zero upon
 	 * failure. */
 	public Voxel peekSimple(int x, int y, int z);

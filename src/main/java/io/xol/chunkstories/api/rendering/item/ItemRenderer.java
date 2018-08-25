@@ -13,7 +13,7 @@ import io.xol.chunkstories.api.item.inventory.ItemPile;
 import io.xol.chunkstories.api.rendering.RenderingInterface;
 import io.xol.chunkstories.api.world.World;
 
-/** Instanced once per ItemDefinition, has the job of rendering all the Item
+/** Instanced once per ItemDeclaration, has the job of rendering all the Item
  * instances from that declaration. */
 public class ItemRenderer {
 	protected final ItemRenderer fallbackRenderer;

@@ -125,7 +125,7 @@ public class BasicInventory implements Inventory {
 			return null;
 		}
 		// If the two piles are similar we can try to merge them
-		if (currentPileAtLocation != null && currentPileAtLocation.canMergeWith(itemPile) && !currentPileAtLocation.equals(itemPile)) {
+		if (currentPileAtLocation != null && currentPileAtLocation.canStackWith(itemPile) && !currentPileAtLocation.equals(itemPile)) {
 			Item item = currentPileAtLocation.getItem();
 			int currentAmount = currentPileAtLocation.getAmount();
 			int wouldBeAddedAmount = itemPile.getAmount();

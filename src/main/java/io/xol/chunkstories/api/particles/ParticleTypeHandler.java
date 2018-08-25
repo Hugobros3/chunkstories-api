@@ -65,7 +65,7 @@ public abstract class ParticleTypeHandler {
 
 			if (peek.getVoxel().getSolid()) {
 				// Fast check if the voxel is just a solid block
-				// TODO isOpaque doesn't mean that exactly, create a new type variable that
+				// TODO isOpaque doesn't mean that exactly, newEntity a new type variable that
 				// represents that specific trait
 				if (peek.getVoxel().getOpaque())
 					return true;
