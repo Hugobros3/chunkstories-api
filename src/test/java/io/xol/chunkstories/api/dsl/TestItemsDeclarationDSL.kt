@@ -29,7 +29,7 @@ class TestItemsDeclarationDSL {
                 }
 
                 representation {
-                    modelInstance("./models/custom/${item.customModel ?: "cube"}.obj")
+                    model("./models/custom/${item.customModel ?: "cube"}.obj")
                 }
             }
         }

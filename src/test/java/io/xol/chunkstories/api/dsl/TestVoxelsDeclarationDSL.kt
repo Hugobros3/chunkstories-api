@@ -63,7 +63,7 @@ class TestVoxelsDeclarationDSL {
 
                 representation {
                     static {
-                        modelInstance("mdr")
+                        model("mdr")
                     }
                 }
             }
@@ -79,7 +79,7 @@ class TestVoxelsDeclarationDSL {
             voxel(CustomVoxelClass::class) {
                 representation {
                     dynamic {
-                        modelInstance("./models/shrek.obj") {
+                        model("./models/shrek.obj") {
                             animation = "./animations/dance.bvh"
                         }
                     }

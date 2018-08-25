@@ -11,7 +11,7 @@ class TestRepresentationDSL {
         val representation: DynamicRepresentationBuildingContext.() -> Unit = {
             var i = 0
 
-            modelInstance("./models/shrek.obj") {
+            model("./models/shrek.obj") {
                 animation = "./animations/dancing.bvh"
 
                 children {

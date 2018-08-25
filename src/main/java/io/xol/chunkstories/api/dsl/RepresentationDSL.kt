@@ -21,26 +21,19 @@ interface StaticRepresentationBuildingContext {
     val engine: GraphicsEngine
 
     /** DSL-helper: Registers a model instance */
-    fun modelInstance(modelName: String) = modelInstance(modelName) {}
+    fun model(modelName: String) = model(modelName) {}
 
     /** DSL-helper: Registers a model instance with additional custom code */
-    fun modelInstance(modelName: String, code: ModelInstance.() -> Unit) = modelInstance(modelName, null, code)
+    fun model(modelName: String, code: ModelInstance.() -> Unit) = model(modelName, null, code)
 
     /** DSL-helper: Registers a model instance in a certain pass with additional custom code */
-    fun modelInstance(modelName: String, passName: String?, code: ModelInstance.() -> Unit): Any?/* */
+    fun model(modelName: String, passName: String?, code: ModelInstance.() -> Unit): Any?/* */
 
     /** DSL-helper: Registers a light */
     fun light(color: Vector3d) = light(color) {}
 
     /** DSL-helper: Registers a light with additional custom code */
-    fun light(color: Vector3d, code: Light.() -> Unit) : Any?;/* {
-        val light = Light(color)
-
-        light.parentObject = parent
-        light.apply(code)
-
-        representation.add(light)
-    }*/
+    fun light(color: Vector3d, code: Light.() -> Unit) : Any?
 
     /** DSL-helper: Registers a bunch of children nodes (those will have the current RepresentationElement as a parent */
     fun RepresentationElement.children(children: RepresentationBuildingInstructions)
@@ -67,9 +60,9 @@ interface DynamicRepresentationBuildingContext : StaticRepresentationBuildingCon
         }
         get() = animator?.toString() ?: "No animation"
 
-    override fun modelInstance(modelName: String) = modelInstance(modelName) {}
-    override fun modelInstance(modelName: String, code: ModelInstance.() -> Unit) = modelInstance(modelName, null, code)
-    override fun modelInstance(modelName: String, passName: String?, code: ModelInstance.() -> Unit): ModelInstance {
+    override fun model(modelName: String) = model(modelName) {}
+    override fun model(modelName: String, code: ModelInstance.() -> Unit) = model(modelName, null, code)
+    override fun model(modelName: String, passName: String?, code: ModelInstance.() -> Unit): ModelInstance {
         val model = engine.models[modelName]
 
         val pass = (if(passName != null) engine.renderGraph.passes[passName] else null) ?: engine.renderGraph.defaultPass

@@ -26,29 +26,6 @@ class TestEntitiesDeclarationDSL {
                         health = 5f
                     }
                 }
-
-                representation {
-                    var x = 0.0
-
-                    light(Vector3d(1.0, .0, x))
-
-                    val basicModel = modelInstance("mdr")
-
-                    val model = modelInstance("./models/none.obj") {
-                        inheritParentTransformation = false
-                    }
-
-                    onEveryFrame {
-                        if (frameNumber % 60 == 0)
-                            x = 1.0 - x
-
-                        if (entity.traits.tryWithBoolean(TraitHealth::class) { this.isDead }) {
-                            representation.rebuildRepresentation {
-                                modelInstance("./models/dead.obj")
-                            }
-                        }
-                    }
-                }
             }
 
             entity(EntityThatUsesExtensionProperties::class) {

@@ -19,10 +19,7 @@ buildscript {
 }
 
 plugins {
-
-	//TODO
 	id "com.diffplug.gradle.spotless" version "3.14.0"
-    //id "com.github.hierynomus.license" version "0.14.0"
 }
 
 apply plugin: 'java'
@@ -46,8 +43,6 @@ targetCompatibility = '1.8'
 spotless {
 	java {
 		licenseHeaderFile 'codequality/header-include-notice.txt'
-		//importOrder 'java', 'javax', 'org', 'com', 'com.diffplug', ''
-		//removeUnusedImports()
 		eclipse().configFile 'codequality/style.xml'
 	}
 
@@ -65,8 +60,6 @@ repositories {
 
 if(ext.useEclipseCompiler) {
 	apply plugin: 'de.johni0702.ecj'
-	//apply plugin: "de.set.ecj"	
-
 	println "Using ECJ compiler"
 }
 
