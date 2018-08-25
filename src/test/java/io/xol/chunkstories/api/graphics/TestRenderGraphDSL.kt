@@ -6,7 +6,7 @@ import io.xol.chunkstories.api.graphics.rendergraph.PassOutput.BlendMode.*
 import io.xol.chunkstories.api.graphics.ImageInput.SamplingMode.*
 
 
-import io.xol.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
+import io.xol.chunkstories.api.dsl.RenderGraphDeclarationScript
 import io.xol.chunkstories.api.graphics.structs.InterfaceBlock
 import io.xol.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test

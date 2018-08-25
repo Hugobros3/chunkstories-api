@@ -106,7 +106,7 @@ public abstract class Entity_ {
 		this.world = location.getWorld();
 	}
 
-	public final EntityDefinition getDefinition() {
+	public final EntityDefinition getDeclaration() {
 		return definition;
 	}
 

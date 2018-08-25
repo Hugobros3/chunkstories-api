@@ -9,11 +9,13 @@ import io.xol.chunkstories.api.physics.CollisionBox
 import org.joml.Vector3d
 
 /** One instance of a particular mesh */
-data class ModelInstance(val model: Model, val pass: Pass) : RepresentationElement() {
+data class ModelInstance(val model: Model, val pass: Pass, override val parentObject: RepresentationElement?) : RepresentationElement(parentObject) {
+    constructor(model: Model, pass: Pass) : this(model, pass, null)
+
     /** Allows for overriding the default materials of that mesh */
     val materialsBindings = LinkedHashMap<String, Surface>()
 
-    var animation: SkeletonAnimator? = null
+    var animator: SkeletonAnimator? = null
     var instanceData: InterfaceBlock? = null
 }
 

@@ -6,18 +6,19 @@
 
 package io.xol.chunkstories.api.entity
 
-import io.xol.chunkstories.api.content.Content.EntityDefinitions
+import io.xol.chunkstories.api.Location
+import io.xol.chunkstories.api.content.Content.EntityDeclarations
+import io.xol.chunkstories.api.content.Declaration
 import io.xol.chunkstories.api.entity.traits.Trait
 
-interface EntityDefinition {
-    val name: String
-    val ext: Map<String, String>
-
+interface EntityDeclaration : Declaration {
     val abstract: Boolean
 
     val traits: Set<DeclaredTrait<*>>
 
-    fun store() : EntityDefinitions
+    fun store() : EntityDeclarations
+
+    fun create(location: Location) : Entity
 }
 
 data class DeclaredTrait<T : Trait>(val traitClass: Class<T>, var initCode : T.() -> Unit)

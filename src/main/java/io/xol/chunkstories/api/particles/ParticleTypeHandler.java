@@ -63,11 +63,11 @@ public abstract class ParticleTypeHandler {
 
 			CellData peek = world.peekSafely((int) x, (int) y, (int) z);
 
-			if (peek.getVoxel().getDefinition().isSolid()) {
+			if (peek.getVoxel().getSolid()) {
 				// Fast check if the voxel is just a solid block
 				// TODO isOpaque doesn't mean that exactly, create a new type variable that
 				// represents that specific trait
-				if (peek.getVoxel().getDefinition().isOpaque())
+				if (peek.getVoxel().getOpaque())
 					return true;
 
 				// Else iterate over each box that make up that block

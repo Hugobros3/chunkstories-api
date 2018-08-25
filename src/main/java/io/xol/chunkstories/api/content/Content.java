@@ -9,12 +9,13 @@ package io.xol.chunkstories.api.content;
 import java.util.Collection;
 import java.util.Iterator;
 
+import io.xol.chunkstories.api.voxel.materials.Material;
 import org.slf4j.Logger;
 
 import io.xol.chunkstories.api.GameContext;
 import io.xol.chunkstories.api.animation.SkeletalAnimation;
 import io.xol.chunkstories.api.content.mods.ModsManager;
-import io.xol.chunkstories.api.entity.EntityDefinition;
+import io.xol.chunkstories.api.entity.EntityDeclaration;
 import io.xol.chunkstories.api.exceptions.net.UnknowPacketException;
 import io.xol.chunkstories.api.item.ItemDefinition;
 import io.xol.chunkstories.api.mesh.MeshLibrary;
@@ -23,8 +24,6 @@ import io.xol.chunkstories.api.net.PacketDefinition;
 import io.xol.chunkstories.api.particles.ParticleTypeHandler;
 import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
-import io.xol.chunkstories.api.voxel.models.VoxelModel;
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.generator.WorldGenerator;
@@ -69,21 +68,9 @@ public interface Content {
 
 			public VoxelTexture getVoxelTexture(String voxelTextureName);
 
+			public VoxelTexture getDefaultVoxelTexture();
+
 			public Iterator<VoxelTexture> all();
-
-			public Voxels parent();
-
-			public Logger logger();
-		}
-
-		public VoxelModels models();
-
-		public interface VoxelModels {
-
-			@Nullable
-			public VoxelModel getVoxelModel(String voxelModelName);
-
-			public Iterator<VoxelModel> all();
 
 			public Voxels parent();
 
@@ -94,9 +81,11 @@ public interface Content {
 
 		public interface VoxelMaterials {
 
-			public VoxelMaterial getVoxelMaterial(String materialName);
+			public Material getVoxelMaterial(String materialName);
 
-			public Iterator<VoxelMaterial> all();
+			public Iterator<Material> all();
+
+			public Material getDefaultMaterial();
 
 			public Content parent();
 
@@ -122,14 +111,14 @@ public interface Content {
 		public Logger logger();
 	}
 
-	public EntityDefinitions entities();
+	public EntityDeclarations entities();
 
-	public interface EntityDefinitions {
+	public interface EntityDeclarations {
 
 		@Nullable
-		public EntityDefinition getEntityDefinition(String entityName);
+		public EntityDeclaration getEntityDefinition(String entityName);
 
-		public Iterator<EntityDefinition> all();
+		public Iterator<EntityDeclaration> all();
 
 		public Content parent();
 

@@ -9,7 +9,7 @@ package io.xol.chunkstories.api.content;
 import java.util.Collection;
 
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.EntityDefinition;
+import io.xol.chunkstories.api.entity.EntityDeclaration;
 import io.xol.chunkstories.api.item.Item;
 import io.xol.chunkstories.api.item.ItemDefinition;
 import io.xol.chunkstories.api.voxel.Voxel;
@@ -26,7 +26,7 @@ public interface ContentTranslator {
 	/** Get the content we are translating */
 	public Content getContent();
 
-	/** Return the assignated ID for this definition or -1 if it isn't a part of the
+	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
 	 * current content */
 	public int getIdForVoxel(Voxel voxel);
 
@@ -35,11 +35,11 @@ public interface ContentTranslator {
 	@Nullable
 	public Voxel getVoxelForId(int id);
 
-	/** Return the assignated ID for this definition or -1 if it isn't a part of the
+	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
 	 * current content */
 	public int getIdForItem(ItemDefinition definition);
 
-	/** Shortcut to getIdForItem(item.getDefinition()) */
+	/** Shortcut to getIdForItem(item.getDeclaration()) */
 	public int getIdForItem(Item item);
 
 	/** Return the ItemDefinition associated with that ID or null if the ID was
@@ -47,16 +47,15 @@ public interface ContentTranslator {
 	@Nullable
 	public ItemDefinition getItemForId(int id);
 
-	/** Return the assignated ID for this definition or -1 if it isn't a part of the
+	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
 	 * current content */
-	public int getIdForEntity(EntityDefinition definition);
+	public int getIdForEntity(EntityDeclaration definition);
 
-	/** Shortcut to getIdForItem(entity.getDefinition()) */
+	/** Shortcut to getIdForItem(entity.getDeclaration()) */
 	public int getIdForEntity(Entity entity);
 
-	/** Return the EntityDefinition associated with that ID or null if the ID was
+	/** Return the EntityDeclaration associated with that ID or null if the ID was
 	 * outside of bounds */
 	@Nullable
-	public EntityDefinition getEntityForId(int id);
-
+	public EntityDeclaration getEntityForId(int id);
 }

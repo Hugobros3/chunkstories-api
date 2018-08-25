@@ -2,7 +2,6 @@ package io.xol.chunkstories.api.entity
 
 import io.xol.chunkstories.api.Location
 import io.xol.chunkstories.api.entity.traits.Trait
-import io.xol.chunkstories.api.entity.traits.TraitRenderable
 import io.xol.chunkstories.api.entity.traits.serializable.TraitLocation
 import io.xol.chunkstories.api.util.BooleanAction
 import io.xol.chunkstories.api.util.ReturnsAction
@@ -11,7 +10,7 @@ import io.xol.chunkstories.api.world.World
 import kotlin.reflect.KClass
 
 interface Entity {
-    val definition: EntityDefinition
+    val declaration: EntityDeclaration
 
     val world : World
     var location : Location

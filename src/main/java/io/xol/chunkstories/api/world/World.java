@@ -72,6 +72,8 @@ public interface World {
 
 	/* Entity management */
 
+	public Entity createEntity(String entityDeclarationName);
+
 	/** Adds an entity to the world, the entity location is supposed to be already
 	 * defined
 	 * 

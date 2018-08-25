@@ -1,14 +1,13 @@
 package io.xol.chunkstories.api.dsl
 
-import io.xol.chunkstories.api.entity.dsl.EntitiesDefinitionsContext
+import io.xol.chunkstories.api.entity.traits.serializable.TraitHealth
 import org.joml.Vector3d
 import org.junit.Test
-import kotlin.math.abs
 
 class TestEntitiesDeclarationDSL {
 
     /** This code never actually runs, just a test for compilation */
-    var ctx: EntitiesDefinitionsContext? = null
+    var ctx: EntitiesDeclarationsContext? = null
 
     @Test
     fun testBasicDeclarations() {
@@ -28,13 +27,21 @@ class TestEntitiesDeclarationDSL {
 
                     light(Vector3d(1.0, .0, x))
 
-                    modelInstance("./models/none.obj") {
-                        parentObject = null
+                    val basicModel = modelInstance("mdr")
+
+                    val model = modelInstance("./models/none.obj") {
+                        inheritParentTransformation = false
                     }
 
                     onEveryFrame {
                         if (frameNumber % 60 == 0)
                             x = 1.0 - x
+
+                        if (entity.traits.tryWithBoolean(TraitHealth::class) { this.isDead }) {
+                            representation.rebuildRepresentation {
+                                modelInstance("./models/dead.obj")
+                            }
+                        }
                     }
                 }
             }

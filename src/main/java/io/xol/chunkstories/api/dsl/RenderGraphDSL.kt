@@ -1,7 +1,8 @@
-package io.xol.chunkstories.api.graphics.rendergraph
+package io.xol.chunkstories.api.dsl
 
 import io.xol.chunkstories.api.graphics.ImageInput
 import io.xol.chunkstories.api.graphics.UniformInput
+import io.xol.chunkstories.api.graphics.rendergraph.*
 import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
 import io.xol.chunkstories.api.graphics.systems.drawing.FullscreenQuadDrawer
 import org.joml.Vector2i

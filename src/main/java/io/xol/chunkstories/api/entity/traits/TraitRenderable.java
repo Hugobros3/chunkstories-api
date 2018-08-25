@@ -12,7 +12,7 @@ import io.xol.chunkstories.api.rendering.entity.EntityRenderer;
 /**
  * <p>
  * Marks this entity as renderable and provides a lambda expression to obtain
- * that renderer. Do note that renderers are cached per-entity definition; it's
+ * that renderer. Do note that renderers are cached per-entity declaration; it's
  * therefore impossible to have multiple renderers for the same entity type
  * </p>
  */

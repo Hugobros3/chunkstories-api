@@ -63,7 +63,7 @@ public interface CellData {
 
 	// Shortcuts
 
-	@Nullable
+	/*@Nullable
 	public default VoxelRenderer getVoxelRenderer() {
 		Voxel voxel = getVoxel();
 		return voxel != null ? voxel.getVoxelRenderer(this) : null;
@@ -73,7 +73,7 @@ public interface CellData {
 	public default VoxelTexture getTexture(VoxelSide side) {
 		Voxel voxel = getVoxel();
 		return voxel != null ? voxel.getVoxelTexture(side, this) : null;
-	}
+	}*/
 
 	/** Returns an array (possibly 0-sized) of collision boxes translated to the
 	 * actual position of the voxel */

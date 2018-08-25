@@ -9,6 +9,7 @@ package io.xol.chunkstories.api.content.mods;
 import io.xol.chunkstories.api.content.Asset;
 import io.xol.chunkstories.api.util.IterableIterator;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** A mod contains assets that add to or override the game's defaults. */
@@ -20,10 +21,13 @@ public interface Mod {
 	public Asset getAssetByName(String name);
 
 	/** Iterates over this mod's assets */
+	@Nonnull
 	public IterableIterator<Asset> assets();
 
+	@Nonnull
 	public ModInfo getModInfo();
 
+	@Nonnull
 	public String getMD5Hash();
 
 }

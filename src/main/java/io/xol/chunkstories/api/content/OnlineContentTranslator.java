@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 /** Additional bindings when connected to a server. */
 public interface OnlineContentTranslator extends ContentTranslator {
 
-	/** Return the assignated ID for this definition or -1 if it isn't a part of the
+	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
 	 * current content */
 	public int getIdForPacket(PacketDefinition definition);
 

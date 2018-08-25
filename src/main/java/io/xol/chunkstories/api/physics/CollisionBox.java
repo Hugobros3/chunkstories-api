@@ -64,21 +64,21 @@ public final class CollisionBox implements Collidable {
 
 	public boolean collidesWith(World world) {
 		// TODO actually iterate over the space rather than assuming a small volume
-		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getSolid())
 			return true;
-		if (world.peekSafely((int) (xpos + xw), (int) (ypos), (int) (zpos + zw)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos), (int) (zpos + zw)).getVoxel().getSolid())
 			return true;
-		if (world.peekSafely((int) (xpos), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos + h), (int) (zpos + zw)).getVoxel().getSolid())
 			return true;
-		if (world.peekSafely((int) (xpos), (int) (ypos), (int) (zpos + zw)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos), (int) (zpos + zw)).getVoxel().getSolid())
 			return true;
-		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos + h), (int) (zpos)).getVoxel().getSolid())
 			return true;
-		if (world.peekSafely((int) (xpos + xw), (int) (ypos), (int) (zpos)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos + xw), (int) (ypos), (int) (zpos)).getVoxel().getSolid())
 			return true;
-		if (world.peekSafely((int) (xpos), (int) (ypos + h), (int) (zpos)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos + h), (int) (zpos)).getVoxel().getSolid())
 			return true;
-		if (world.peekSafely((int) (xpos), (int) (ypos), (int) (zpos)).getVoxel().getDefinition().isSolid())
+		if (world.peekSafely((int) (xpos), (int) (ypos), (int) (zpos)).getVoxel().getSolid())
 			return true;
 		return false;
 	}
