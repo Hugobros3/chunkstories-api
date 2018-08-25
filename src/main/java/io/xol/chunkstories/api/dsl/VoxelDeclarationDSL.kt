@@ -5,7 +5,7 @@ import io.xol.chunkstories.api.voxel.VoxelSide
 import io.xol.chunkstories.api.world.cell.CellData
 import kotlin.reflect.KClass
 
-interface VoxelsDeclarationsCtx {
+interface VoxelsDeclarationsContext {
     fun voxel(declaration: Voxel.() -> Unit)
 
     fun <V : Voxel> voxel(clazz: Class<V>, declaration: V.() -> Unit)
@@ -18,7 +18,7 @@ interface VoxelsDeclarationsCtx {
                 this.voxelTextures[i] = store.textures().getVoxelTexture(value)
         }
 
-    fun Voxel.textures(texturesSetCtx: VoxelTexturesSetCtx.() -> Unit) = VoxelTexturesSetCtx(this)
+    fun Voxel.textures(texturesSetCtx: VoxelTexturesContext.() -> Unit) = VoxelTexturesContext(this)
 
     var Voxel.material: Any
         set(value) {
@@ -35,7 +35,7 @@ interface VoxelsDeclarationsCtx {
     fun Voxel.representation(config: VoxelRepresentationConfigurationContext.() -> Unit)
 }
 
-class VoxelTexturesSetCtx(val voxel: Voxel) {
+class VoxelTexturesContext(val voxel: Voxel) {
     var top: String
         get() = voxel.voxelTextures[VoxelSide.TOP.ordinal].name
         set(value) {

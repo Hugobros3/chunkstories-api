@@ -33,188 +33,188 @@ import javax.annotation.Nullable;
 /** Encapsulates all the user-definable content available */
 public interface Content {
 	/** Returns the game context that owns this */
-	public GameContext getContext();
+	GameContext getContext();
 
 	/** Returns the ModManager that was used to load this content */
-	public ModsManager modsManager();
+	ModsManager modsManager();
 
 	/** Obtains an Asset using it's name string More advanced options for obtaining
 	 * assets are avaible using the ModsManager class */
 	@Nullable
-	public Asset getAsset(String assetName);
+	Asset getAsset(String assetName);
 
 	/** Reloads everything. Warning: might not be appropriate as this will reload
 	 * classes you will most likely have instanced into objects, causing weird
 	 * errors if you do this while in a world. */
-	public void reload();
+	void reload();
 
-	public Voxels voxels();
+	Voxels voxels();
 
-	public interface Voxels {
+	interface Voxels {
 
 		/** Returns the 'air' voxel ( No voxel data ) */
-		public Voxel air();
+		Voxel air();
 
 		@Nullable
-		public Voxel getVoxel(String voxelName);
+		Voxel getVoxel(String voxelName);
 
-		public Iterator<Voxel> all();
+		Iterator<Voxel> all();
 
-		public Content parent();
+		Content parent();
 
-		public VoxelTextures textures();
+		VoxelTextures textures();
 
-		public interface VoxelTextures {
+		interface VoxelTextures {
 
-			public VoxelTexture getVoxelTexture(String voxelTextureName);
+			VoxelTexture getVoxelTexture(String voxelTextureName);
 
-			public VoxelTexture getDefaultVoxelTexture();
+			VoxelTexture getDefaultVoxelTexture();
 
-			public Iterator<VoxelTexture> all();
+			Iterator<VoxelTexture> all();
 
-			public Voxels parent();
+			Voxels parent();
 
-			public Logger logger();
+			Logger logger();
 		}
 
-		public VoxelMaterials materials();
+		VoxelMaterials materials();
 
-		public interface VoxelMaterials {
+		interface VoxelMaterials {
 
-			public Material getVoxelMaterial(String materialName);
+			Material getVoxelMaterial(String materialName);
 
-			public Iterator<Material> all();
+			Iterator<Material> all();
 
-			public Material getDefaultMaterial();
+			Material getDefaultMaterial();
 
-			public Content parent();
+			Content parent();
 
-			public Logger logger();
+			Logger logger();
 		}
 
-		public VoxelRenderer getDefaultVoxelRenderer();
+		VoxelRenderer getDefaultVoxelRenderer();
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public ItemsDefinitions items();
+	ItemsDefinitions items();
 
-	public interface ItemsDefinitions {
+	interface ItemsDefinitions {
 
 		@Nullable
-		public ItemDefinition getItemDefinition(String itemName);
+		ItemDefinition getItemDefinition(String itemName);
 
-		public Iterator<ItemDefinition> all();
+		Iterator<ItemDefinition> all();
 
-		public Content parent();
+		Content parent();
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public EntityDeclarations entities();
+	EntityDeclarations entities();
 
-	public interface EntityDeclarations {
+	interface EntityDeclarations {
 
 		@Nullable
-		public EntityDeclaration getEntityDefinition(String entityName);
+		EntityDeclaration getEntityDefinition(String entityName);
 
-		public Iterator<EntityDeclaration> all();
+		Iterator<EntityDeclaration> all();
 
-		public Content parent();
+		Content parent();
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public ParticlesTypes particles();
+	ParticlesTypes particles();
 
-	public interface ParticlesTypes {
+	interface ParticlesTypes {
 
 		@Nullable
-		public ParticleTypeHandler getParticleType(String string);
+		ParticleTypeHandler getParticleType(String string);
 
-		public Iterator<ParticleTypeHandler> all();
+		Iterator<ParticleTypeHandler> all();
 
-		public Content parent();
+		Content parent();
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public PacketDefinitions packets();
+	PacketDefinitions packets();
 
-	public interface PacketDefinitions {
+	interface PacketDefinitions {
 
 		@Nullable
-		public PacketDefinition getPacketByName(String name);
+		PacketDefinition getPacketByName(String name);
 
-		public PacketDefinition getPacketFromInstance(Packet packet) throws UnknowPacketException;
+		PacketDefinition getPacketFromInstance(Packet packet) throws UnknowPacketException;
 
-		public Iterator<PacketDefinition> all();
+		Iterator<PacketDefinition> all();
 
-		public Content parent();
+		Content parent();
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public WorldGenerators generators();
+	WorldGenerators generators();
 
-	public interface WorldGenerators {
+	interface WorldGenerators {
 
-		public WorldGeneratorDefinition getWorldGenerator(String name);
+		WorldGeneratorDefinition getWorldGenerator(String name);
 
-		public String getWorldGeneratorName(WorldGenerator generator);
+		String getWorldGeneratorName(WorldGenerator generator);
 
-		public Iterator<WorldGeneratorDefinition> all();
+		Iterator<WorldGeneratorDefinition> all();
 
 		/** Contains the parameters stated in a 'generator' section of a .generators
 		 * config file */
-		public interface WorldGeneratorDefinition extends Definition {
-			public String getName();
+		interface WorldGeneratorDefinition extends Definition {
+			String getName();
 
 			/** Calls the constructor of whatever WorldGenerator you asked for */
-			public WorldGenerator createForWorld(World world);
+			WorldGenerator createForWorld(World world);
 		}
 
-		public Content parent();
+		Content parent();
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public LocalizationManager localization();
+	LocalizationManager localization();
 
-	public interface LocalizationManager extends Translation {
+	interface LocalizationManager extends Translation {
 
-		public Collection<String> listTranslations();
+		Collection<String> listTranslations();
 
-		public Content parent();
+		Content parent();
 
-		public void reload();
+		void reload();
 
-		public void loadTranslation(String translationCode);
+		void loadTranslation(String translationCode);
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public interface Translation {
+	interface Translation {
 
-		public String getLocalizedString(String stringName);
+		String getLocalizedString(String stringName);
 
-		public String localize(String text);
+		String localize(String text);
 	}
 
-	public AnimationsLibrary getAnimationsLibrary();
+	AnimationsLibrary getAnimationsLibrary();
 
-	public interface AnimationsLibrary {
-		public SkeletalAnimation getAnimation(String name);
+	interface AnimationsLibrary {
+		SkeletalAnimation getAnimation(String name);
 
-		public Content parent();
+		Content parent();
 
-		public void reloadAll();
+		void reloadAll();
 
-		public Logger logger();
+		Logger logger();
 	}
 
-	public MeshLibrary meshes();
+	MeshLibrary meshes();
 
 	/** General logger about content */
-	public Logger logger();
+	Logger logger();
 }

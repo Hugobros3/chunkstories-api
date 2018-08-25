@@ -1,6 +1,7 @@
 package io.xol.chunkstories.api.dsl
 
 import io.xol.chunkstories.api.content.Content
+import io.xol.chunkstories.api.content.DeclarationContext
 import io.xol.chunkstories.api.entity.*
 import io.xol.chunkstories.api.entity.traits.Trait
 
@@ -11,11 +12,8 @@ interface EntitiesDeclarationsContext {
     fun entity(f: EntityDeclarationContext.() -> Unit)
 }
 
-interface EntityDeclarationContext {
+interface EntityDeclarationContext: DeclarationContext {
     val store : Content.EntityDeclarations
-
-    var name : String
-    var ext : MutableMap<String, String>
 
     var abstract: Boolean
 

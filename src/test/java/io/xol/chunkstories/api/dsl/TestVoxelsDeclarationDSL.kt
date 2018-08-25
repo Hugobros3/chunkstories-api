@@ -6,7 +6,7 @@ import org.junit.Test
 
 class TestVoxelsDeclarationDSL {
 
-    var ctx: VoxelsDeclarationsCtx? = null
+    var ctx: VoxelsDeclarationsContext? = null
 
     @Test
     fun testVoxelDeclarations() {

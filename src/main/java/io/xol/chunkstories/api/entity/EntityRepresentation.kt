@@ -9,7 +9,7 @@ interface EntityRepresentation : Representation {
 
 typealias EntityRepresentationBuildingInstructions = (EntityRepresentationBuildingContext.() -> Unit)
 interface EntityRepresentationBuildingContext : DynamicRepresentationBuildingContext {
-    override val representation: EntityRepresentation
+    //override val representation: EntityRepresentation
 
     val entity : Entity
 }

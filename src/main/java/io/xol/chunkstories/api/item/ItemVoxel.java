@@ -149,10 +149,10 @@ public class ItemVoxel extends Item implements WorldModificationCause {
     @Override
     /** Two ItemVoxel can merge if they represent the same voxel & they share the
      * same 8 bits of metadata */
-    public boolean canMergeWith(Item item) {
+    public boolean canStackWith(Item item) {
         if (item instanceof ItemVoxel) {
             ItemVoxel itemVoxel = (ItemVoxel) item;
-            return super.canMergeWith(itemVoxel) && itemVoxel.getVoxel().sameKind(getVoxel()) && itemVoxel.getVoxelMeta() == this.getVoxelMeta();
+            return super.canStackWith(itemVoxel) && itemVoxel.getVoxel().sameKind(getVoxel()) && itemVoxel.getVoxelMeta() == this.getVoxelMeta();
         }
         return false;
     }
