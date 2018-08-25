@@ -62,7 +62,7 @@ open class Voxel(val store: Content.Voxels) {
      * modification from happening altogether.
      */
     @Throws(WorldException::class)
-    fun onPlace(cell: FutureCell, cause: WorldModificationCause) {
+    open fun onPlace(cell: FutureCell, cause: WorldModificationCause) {
         // Do nothing
     }
 
@@ -71,7 +71,7 @@ open class Voxel(val store: Content.Voxels) {
      *
      * @param cell
      */
-    fun whenPlaced(cell: FreshChunkCell) {
+    open fun whenPlaced(cell: FreshChunkCell) {
 
     }
 
@@ -83,7 +83,7 @@ open class Voxel(val store: Content.Voxels) {
      * modification from happening.
      */
     @Throws(WorldException::class)
-    fun onRemove(cell: ChunkCell, cause: WorldModificationCause) {
+    open fun onRemove(cell: ChunkCell, cause: WorldModificationCause) {
         // Do nothing
     }
 
@@ -96,7 +96,7 @@ open class Voxel(val store: Content.Voxels) {
      * @throws IllegalBlockModificationException If we want to prevent it
      */
     @Throws(WorldException::class)
-    fun onModification(context: ChunkCell, newData: FutureCell, cause: WorldModificationCause) {
+    open fun onModification(context: ChunkCell, newData: FutureCell, cause: WorldModificationCause) {
         // Do nothing
     }
 
@@ -105,7 +105,7 @@ open class Voxel(val store: Content.Voxels) {
      * @return True if the interaction was 'handled', and won't be passed to the
      * next stage of the input pipeline
      */
-    fun handleInteraction(entity: Entity, voxelContext: ChunkCell, input: Input): Boolean {
+    open fun handleInteraction(entity: Entity, voxelContext: ChunkCell, input: Input): Boolean {
         return false
     }
 
@@ -113,7 +113,7 @@ open class Voxel(val store: Content.Voxels) {
      *
      * @return The aformentioned light level
      */
-    fun getEmittedLightLevel(info: CellData): Int {
+    open fun getEmittedLightLevel(info: CellData): Int {
         // By default the light output is the one defined in the type, you can change it
         // depending on the provided data
         return emittedLightLevel
@@ -124,7 +124,7 @@ open class Voxel(val store: Content.Voxels) {
      * @param side The side of the block we want the texture of ( see
      * [VoxelSides.class][VoxelSide] )
      */
-    fun getVoxelTexture(cell: CellData, side: VoxelSide): VoxelTexture {
+    open fun getVoxelTexture(cell: CellData, side: VoxelSide): VoxelTexture {
         // By default we don't care about context, we give the same texture to everyone
         return voxelTextures[side.ordinal]
     }
@@ -139,7 +139,7 @@ open class Voxel(val store: Content.Voxels) {
      * [VoxelSides.class][VoxelSide] )
      * @return The reduction to apply to the light level on exit
      */
-    fun getLightLevelModifier(cell: CellData, out: CellData, side: VoxelSide): Int {
+    open fun getLightLevelModifier(cell: CellData, out: CellData, side: VoxelSide): Int {
         return if (opaque) 15 else shadingLightLevel
     }
 
@@ -155,7 +155,7 @@ open class Voxel(val store: Content.Voxels) {
      * @return Whether or not that face occlude a whole face and thus we can discard
      * it
      */
-    fun isFaceOpaque(side: VoxelSide, metadata: Int): Boolean {
+    open fun isFaceOpaque(side: VoxelSide, metadata: Int): Boolean {
         return opaque
     }
 
@@ -180,14 +180,14 @@ open class Voxel(val store: Content.Voxels) {
      * @param The full 4-byte data related to this voxel ( see [VoxelFormat.class][VoxelFormat] )
      * @return An array of CollisionBox or null.
      */
-    fun getCollisionBoxes(info: CellData): Array<CollisionBox>? = collisionBoxes
+    open fun getCollisionBoxes(info: CellData): Array<CollisionBox>? = collisionBoxes
 
     /** Two voxels are of the same kind if they share the same declaration.  */
-    fun sameKind(that: Voxel): Boolean {
+    open fun sameKind(that: Voxel): Boolean {
         return this == that
     }
 
-    fun enumerateItemsForBuilding() : List<ItemPile> {
+    open fun enumerateItemsForBuilding() : List<ItemPile> {
         return listOf(ItemPile(store.parent().items().getItemDefinition("item_voxel")).apply {
             with(this as ItemVoxel) {
                 this.voxel = this@Voxel
@@ -196,7 +196,7 @@ open class Voxel(val store: Content.Voxels) {
     }
 
     /** Returns what's dropped when a cell using this voxel type is destroyed  */
-    fun getLoot(cell: CellData, cause: WorldModificationCause): List<ItemPile> {
+    open fun getLoot(cell: CellData, cause: WorldModificationCause): List<ItemPile> {
         val logic = lootLogic
         if(logic != null)
             return logic.spawn()
