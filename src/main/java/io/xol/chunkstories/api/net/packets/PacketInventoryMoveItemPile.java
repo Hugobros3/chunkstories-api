@@ -138,7 +138,7 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 				// player.sendMessage("Notice : dragging stuff from /dev/null to your inventory
 				// should be limited by permission.");
 
-				if (player.hasPermission("items.spawn") || playerEntity.getTraits().tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get())) {
+				if (player.hasPermission("items.spawn") || playerEntity.traits.tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get())) {
 					// Let it happen when in creative mode or owns items.spawn perm
 				} else {
 					player.sendMessage("#C00000You are neither in creative mode nor have the items.spawn permission.");

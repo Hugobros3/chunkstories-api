@@ -2,6 +2,7 @@ package io.xol.chunkstories.api.dsl
 
 import io.xol.chunkstories.api.item.Item
 import io.xol.chunkstories.api.item.ItemDeclaration
+import io.xol.chunkstories.api.item.ItemRepresentationBuilder
 import org.junit.Test
 
 class TestItemsDeclarationDSL {
@@ -38,5 +39,8 @@ class TestItemsDeclarationDSL {
     class ItemCustomClass(definition: ItemDeclaration<*>) : Item(definition) {
         var customModel: String? = null
         var maxRounds = 50
+
+        override val representation: ItemRepresentationBuilder<ItemCustomClass>
+            get() = null!!
     }
 }

@@ -74,9 +74,9 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 
                 WorldModificationCause modifierEntity = (WorldModificationCause) entity;
 
-                boolean isEntityCreativeMode = entity.getTraits().tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get());
+                boolean isEntityCreativeMode = entity.traits.tryWithBoolean(TraitCreativeMode.class, ecm -> ecm.get());
 
-                Location blockLocation = entity.getTraits().tryWith(TraitVoxelSelection.class, tvs -> tvs.getBlockLookingAt(false, true));
+                Location blockLocation = entity.traits.tryWith(TraitVoxelSelection.class, tvs -> tvs.getBlockLookingAt(false, true));
 
                 if (blockLocation != null) {
                     FutureCell fvc = new FutureCell(entity.getWorld().peekSafely(blockLocation));

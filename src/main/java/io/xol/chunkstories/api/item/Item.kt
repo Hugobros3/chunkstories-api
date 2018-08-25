@@ -6,17 +6,16 @@
 
 package io.xol.chunkstories.api.item
 
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.IOException
-
+import io.xol.chunkstories.api.dsl.DynamicRepresentationBuildingContext
 import io.xol.chunkstories.api.entity.Controller
 import io.xol.chunkstories.api.entity.Entity
 import io.xol.chunkstories.api.input.Input
 import io.xol.chunkstories.api.item.inventory.ItemPile
-import io.xol.chunkstories.api.rendering.item.ItemRenderer
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 
-open class Item(val definition: ItemDeclaration<*>) {
+open class Item(val definition: ItemDeclaration<out Item>) {
     var itemPile: ItemPile? = null
 
     open val name: String
@@ -25,18 +24,15 @@ open class Item(val definition: ItemDeclaration<*>) {
     val internalName: String
         get() = definition.name
 
-    /** Returns null by default, you can have custom Item renderers just by
-     * returning an Item renderer here.  */
-    fun getCustomItemRenderer(fallbackRenderer: ItemRenderer): ItemRenderer {
-        // return new MyFancyCustomRenderer(fallbackRenderer);
-        return fallbackRenderer
-    }
+
+    open val representation: ItemRepresentationBuilder<out Item>
+        get() = definition.representation
 
     /** Should be called when the owner has this item selected
      *
      * @param owner
      */
-    fun tickInHand(owner: Entity, itemPile: ItemPile) {
+    open fun tickInHand(owner: Entity, itemPile: ItemPile) {
 
     }
 
@@ -88,4 +84,14 @@ open class Item(val definition: ItemDeclaration<*>) {
     @Throws(IOException::class)
     open fun save(stream: DataOutputStream) {
     }
+}
+
+/** SAM for building representations */
+interface ItemRepresentationBuilder<T : Item> {
+    fun build(context: ItemRepresentationBuildingContext<T>)
+}
+
+/** Extended context to provide the represented item as well */
+interface ItemRepresentationBuildingContext<T : Item> : DynamicRepresentationBuildingContext {
+    val item: T
 }

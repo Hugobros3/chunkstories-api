@@ -87,7 +87,7 @@ public class TraitHealth extends TraitSerializable {
 			// Applies knockback
 			if (cause instanceof Entity) {
 				// Only runs if the entity do have a velocity
-				entity.getTraits().with(TraitVelocity.class, ev -> {
+				entity.traits.with(TraitVelocity.class, ev -> {
 
 					Entity attacker = (Entity) cause;
 					Vector3d attackKnockback = entity.getLocation().sub(attacker.getLocation().add(0d, 0d, 0d));
@@ -130,7 +130,7 @@ public class TraitHealth extends TraitSerializable {
 		entity.getWorld().getGameLogic().getPluginsManager().fireEvent(entityDeathEvent);
 
 		// Handles cases of controlled player death
-		entity.getTraits().with(TraitController.class, ec -> {
+		entity.traits.with(TraitController.class, ec -> {
 			Controller controller = ec.getController();
 			if (controller != null) {
 				controller.setControlledEntity(null);

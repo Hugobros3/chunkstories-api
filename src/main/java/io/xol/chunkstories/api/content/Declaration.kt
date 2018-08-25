@@ -7,5 +7,5 @@ interface Declaration {
 
 interface DeclarationContext {
     var name: String
-    var ext: MutableMap<String, String>
+    val ext: MutableMap<String, String>
 }

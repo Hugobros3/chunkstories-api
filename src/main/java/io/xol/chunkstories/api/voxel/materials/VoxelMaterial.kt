@@ -1,9 +1,10 @@
 package io.xol.chunkstories.api.voxel.materials
 
 import io.xol.chunkstories.api.content.Declaration
+import io.xol.chunkstories.api.content.Definition
 
-interface Material : Declaration {
-    val sounds : Sounds
+interface VoxelMaterial : Definition {
+    /*val sounds : Sounds
     class Sounds {
         var walkingSounds = "sounds/footsteps/generic[1-3].ogg"
         var runningSounds = "$walkingSounds"
@@ -15,5 +16,5 @@ interface Material : Declaration {
     class MiningProperties {
         var defaultResistance = 1.0
         var resistancePerToolType = mapOf<String, Double>()
-    }
+    }*/
 }

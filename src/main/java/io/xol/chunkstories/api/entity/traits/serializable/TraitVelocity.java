@@ -71,7 +71,7 @@ public class TraitVelocity extends TraitSerializable {
 
 		// Notify the controller in a special way so they don't experience lag
 		// due to being set back at a previous velocity
-		entity.getTraits().with(TraitController.class, ecc -> {
+		entity.traits.with(TraitController.class, ecc -> {
 			Controller controller = ecc.getController();
 			if (controller != null) {
 				PacketVelocityDelta packet = new PacketVelocityDelta(entity.getWorld(), delta);

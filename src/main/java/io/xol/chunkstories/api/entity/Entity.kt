@@ -26,9 +26,13 @@ abstract class Entity(val declaration: EntityDeclaration<*>, val world: World) {
     var initialized = false
         set(value) = if(!value) throw Exception("Can't de-initialize an entity!") else field = value
 
+    @JvmField
     val traitLocation = TraitLocation(this, location)
 
+    @JvmField
     val traits : Traits = Traits()
+
+    @JvmField
     val subscribers = Subscribers()
     interface Traits_ : Map<Class<Trait>, Trait> {
         fun registerTrait(trait : Trait) : Int

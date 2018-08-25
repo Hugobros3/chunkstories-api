@@ -65,7 +65,7 @@ public class TraitSelectedItem extends TraitSerializable {
 		// don't bother writing the item pile if we're not master or if we'd be telling
 		// the controller about his own item pile
 		if (pile == null || !(entity.getWorld() instanceof WorldMaster)
-				|| entity.getTraits().tryWithBoolean(TraitController.class, ec -> ec.getController() == destinator))
+				|| entity.traits.tryWithBoolean(TraitController.class, ec -> ec.getController() == destinator))
 			dos.writeBoolean(false);
 		else {
 			dos.writeBoolean(true);

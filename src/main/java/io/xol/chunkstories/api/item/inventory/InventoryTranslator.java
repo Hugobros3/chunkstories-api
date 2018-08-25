@@ -70,7 +70,7 @@ public class InventoryTranslator {
 
 			Entity entity = context.getWorld().getEntityByUUID(uuid);
 
-			Trait trait = entity.getTraits().byId()[traitId];
+			Trait trait = entity.traits.byId()[traitId];
 			if (trait != null && trait instanceof TraitInventory) {
 				return ((TraitInventory) trait);
 			}

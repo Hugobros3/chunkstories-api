@@ -14,7 +14,7 @@ public abstract class Trait {
 
 	public Trait(Entity entity) {
 		this.entity = entity;
-		id = entity.getTraits().registerTrait(this);
+		id = entity.traits.registerTrait(this);
 	}
 
 	public int id() {

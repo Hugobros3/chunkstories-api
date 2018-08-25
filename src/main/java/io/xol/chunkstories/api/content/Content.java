@@ -9,7 +9,7 @@ package io.xol.chunkstories.api.content;
 import java.util.Collection;
 import java.util.Iterator;
 
-import io.xol.chunkstories.api.voxel.materials.Material;
+import io.xol.chunkstories.api.voxel.materials.VoxelMaterial;
 import org.slf4j.Logger;
 
 import io.xol.chunkstories.api.GameContext;
@@ -81,11 +81,11 @@ public interface Content {
 
 		interface VoxelMaterials {
 
-			Material getVoxelMaterial(String materialName);
+			VoxelMaterial getVoxelMaterial(String materialName);
 
-			Iterator<Material> all();
+			Iterator<VoxelMaterial> all();
 
-			Material getDefaultMaterial();
+			VoxelMaterial getDefaultMaterial();
 
 			Content parent();
 

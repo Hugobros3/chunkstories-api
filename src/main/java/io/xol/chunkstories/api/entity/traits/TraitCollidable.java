@@ -25,7 +25,7 @@ public class TraitCollidable extends Trait {
 	public Vector3dc moveWithCollisionRestrain(Vector3dc delta) {
 		Vector3dc movementLeft = entity.getWorld().collisionsManager().runEntityAgainstWorldVoxels(entity, entity.getLocation(), delta);
 
-		entity.getTraitLocation().move(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(), delta.z() - movementLeft.z());
+		entity.traitLocation.move(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(), delta.z() - movementLeft.z());
 		return movementLeft;
 	}
 
@@ -84,7 +84,7 @@ public class TraitCollidable extends Trait {
 	public Entity isStuckInEntity() {
 		for (Entity e : entity.getWorld().getEntitiesInBox(entity.getLocation(), new Vector3d(1, 2, 1))) {
 			if (e != entity) {
-				TraitCollidable tc = e.getTraits().get(TraitCollidable.class);
+				TraitCollidable tc = e.traits.get(TraitCollidable.class);
 				if (tc != null) {
 					if (collidesWithEntities) {
 

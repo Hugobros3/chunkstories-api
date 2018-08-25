@@ -59,7 +59,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 
 	@Override
 	public String getInventoryName() {
-		String name = entity.getTraits().tryWith(TraitName.class, TraitName::getName);
+		String name = entity.traits.tryWith(TraitName.class, TraitName::getName);
 		// if (holder instanceof EntityNameable)
 		// return ((EntityNameable) holder).getName();
 		return name != null ? "[entity has no name]" : holder.getClass().getSimpleName();
@@ -72,7 +72,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 
 	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
 		Packet packetItemUpdate = new PacketInventoryPartialUpdate(entity.getWorld(), this, x, y, pileChanged);
-		entity.getTraits().with(TraitController.class, ecc -> {
+		entity.traits.with(TraitController.class, ecc -> {
 			if (ecc.getController() != null)
 				ecc.getController().pushPacket(packetItemUpdate);
 		});

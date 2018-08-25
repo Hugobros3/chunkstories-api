@@ -8,7 +8,6 @@ package io.xol.chunkstories.api.item
 
 import io.xol.chunkstories.api.content.Content
 import io.xol.chunkstories.api.content.Declaration
-import io.xol.chunkstories.api.dsl.ItemRepresentationBuildingContext
 
 /** Represents an Item declaration, can instantiate them */
 interface ItemDeclaration<T: Item> : Declaration {
@@ -31,7 +30,7 @@ interface ItemDeclaration<T: Item> : Declaration {
     val prototype: T.() -> Unit
 
     /** Instructions for building a representation based on the item */
-    val representation: ItemRepresentationBuildingContext<T>.() -> Unit
+    val representation: ItemRepresentationBuilder<T>
 
     /** Instantiates the class 'clazz' and applies the prototype to it */
     fun newItem(): T

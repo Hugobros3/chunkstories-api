@@ -47,7 +47,7 @@ public class PacketOpenInventory extends PacketWorld {
 			ClientInterface client = (ClientInterface) processor.getContext();
 			Entity currentControlledEntity = client.getPlayer().getControlledEntity();
 
-			Inventory inventory2 = currentControlledEntity != null ? currentControlledEntity.getTraits().tryWith(TraitInventory.class, ei -> ei) : null;
+			Inventory inventory2 = currentControlledEntity != null ? currentControlledEntity.traits.tryWith(TraitInventory.class, ei -> ei) : null;
 
 			if (inventory2 != null)
 				client.openInventories(inventory2, inventory);

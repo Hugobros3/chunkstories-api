@@ -17,7 +17,7 @@ import io.xol.chunkstories.api.item.inventory.ItemPile
 import io.xol.chunkstories.api.dsl.LootRules
 import io.xol.chunkstories.api.physics.CollisionBox
 import io.xol.chunkstories.api.util.kotlin.initOnce
-import io.xol.chunkstories.api.voxel.materials.Material
+import io.xol.chunkstories.api.voxel.materials.VoxelMaterial
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture
 import io.xol.chunkstories.api.world.cell.CellData
 import io.xol.chunkstories.api.world.cell.FutureCell
@@ -29,6 +29,8 @@ import org.joml.Vector3d
 open class Voxel(val store: Content.Voxels) {
     /** Returns the internal, non localized name of this voxel */
     var name: String by initOnce()
+
+    val ext = mutableMapOf<String, String>()
 
     /** Returns true only if this voxel is the 'void' air type  */
     val isAir: Boolean
@@ -47,8 +49,8 @@ open class Voxel(val store: Content.Voxels) {
 
     var collisionBoxes = arrayOf(CollisionBox(Vector3d(0.0), Vector3d(1.0)))
 
-    /** Returns the Material used by this Voxel  */
-    var voxelMaterial: Material = store.materials().defaultMaterial
+    /** Returns the VoxelMaterial used by this Voxel  */
+    var voxelMaterial: VoxelMaterial = store.materials().defaultMaterial
 
     var lootLogic: LootRules? = null
 
