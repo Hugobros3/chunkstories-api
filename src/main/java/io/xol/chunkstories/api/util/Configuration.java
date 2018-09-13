@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
  * rendering passes reconfiguration, etc */
 public interface Configuration {
 
-	public interface Option extends Definition {
+	public interface Option {
 		public String getName();
 
 		public String getValue();

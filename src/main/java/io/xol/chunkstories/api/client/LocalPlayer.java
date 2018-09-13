@@ -7,11 +7,11 @@
 package io.xol.chunkstories.api.client;
 
 import io.xol.chunkstories.api.player.Player;
-import io.xol.chunkstories.api.rendering.GameWindow;
+import io.xol.chunkstories.api.graphics.Window;
 
 public interface LocalPlayer extends Player {
 	/** Returns the client playing */
-	public ClientInterface getClient();
+	public Client getClient();
 
 	/** Gives access to the input subsystem */
 	public ClientInputsManager getInputsManager();
@@ -20,5 +20,5 @@ public interface LocalPlayer extends Player {
 	public boolean hasFocus();
 
 	/** Returns access to the game window */
-	public GameWindow getWindow();
+	public Window getWindow();
 }

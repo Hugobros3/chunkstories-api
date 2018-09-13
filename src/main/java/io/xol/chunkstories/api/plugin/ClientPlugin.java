@@ -6,18 +6,19 @@
 
 package io.xol.chunkstories.api.plugin;
 
-import io.xol.chunkstories.api.client.ClientInterface;
+import io.xol.chunkstories.api.client.Client;
+import io.xol.chunkstories.api.client.IngameClient;
 
 /** A type of plugin that exclusivly runs on the client */
 public abstract class ClientPlugin extends ChunkStoriesPlugin {
-	private final ClientInterface clientInterface;
+	private final IngameClient Client;
 
-	public ClientPlugin(PluginInformation pluginInformation, ClientInterface clientInterface) {
-		super(pluginInformation, clientInterface);
-		this.clientInterface = clientInterface;
+	public ClientPlugin(PluginInformation pluginInformation, IngameClient Client) {
+		super(pluginInformation, Client);
+		this.Client = Client;
 	}
 
-	public ClientInterface getClientInterface() {
-		return clientInterface;
+	public IngameClient getClient() {
+		return Client;
 	}
 }

@@ -6,7 +6,7 @@
 
 package io.xol.chunkstories.api.events.client;
 
-import io.xol.chunkstories.api.client.ClientInterface;
+import io.xol.chunkstories.api.client.Client;
 import io.xol.chunkstories.api.events.CancellableEvent;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.input.Input;
@@ -28,15 +28,15 @@ public class ClientInputPressedEvent extends CancellableEvent {
 
 	// Specific event code
 
-	public ClientInputPressedEvent(ClientInterface client, Input input) {
+	public ClientInputPressedEvent(Client client, Input input) {
 		this.client = client;
 		this.input = input;
 	}
 
-	private final ClientInterface client;
+	private final Client client;
 	private final Input input;
 
-	public ClientInterface getClient() {
+	public Client getClient() {
 		return client;
 	}
 

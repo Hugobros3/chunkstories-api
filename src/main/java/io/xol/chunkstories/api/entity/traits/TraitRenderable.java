@@ -6,8 +6,8 @@
 
 package io.xol.chunkstories.api.entity.traits;
 
+import io.xol.chunkstories.api.dsl.DynamicRepresentationBuildingContext;
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.rendering.entity.EntityRenderer;
 
 /**
  * <p>
@@ -18,18 +18,21 @@ import io.xol.chunkstories.api.rendering.entity.EntityRenderer;
  */
 public class TraitRenderable extends Trait {
 
-	public <T extends Entity> TraitRenderable(T entity, RendererFactory<T> factory) {
-		super(entity);
-		this.factory = factory;
-	}
+    /**
+     * This is a generic primary constructor, and Kotlin does *not* have that ! I did manage to find a missing feature :D
+     */
+    public <T extends Entity> TraitRenderable(T entity, RendererFactory<T> factory) {
+        super(entity);
+        this.factory = factory;
+    }
 
-	private final RendererFactory<?> factory;
+    private final RendererFactory<?> factory;
 
-	public interface RendererFactory<E extends Entity> {
-		public EntityRenderer<E> getRenderer();
-	}
+    public interface RendererFactory<E extends Entity> {
+        public void buildRepresentation(DynamicRepresentationBuildingContext ctx, E entity);
+    }
 
-	public RendererFactory<? extends Entity> getFactory() {
-		return factory;
-	}
+    public RendererFactory<? extends Entity> getFactory() {
+        return factory;
+    }
 }

@@ -8,7 +8,7 @@ package io.xol.chunkstories.api.net;
 
 import io.xol.chunkstories.api.content.Definition;
 
-public interface PacketDefinition extends Definition {
+public interface PacketDefinition {
 	public String getName();
 
 	public AllowedFrom allowedFrom();

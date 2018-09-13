@@ -6,6 +6,8 @@
 
 package io.xol.chunkstories.api.world;
 
+import io.xol.chunkstories.api.graphics.systems.dispatching.DecalsManager;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3dc;
 
 import io.xol.chunkstories.api.GameContext;
@@ -18,11 +20,9 @@ import io.xol.chunkstories.api.events.voxel.WorldModificationCause;
 import io.xol.chunkstories.api.exceptions.world.WorldException;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.particles.ParticlesManager;
-import io.xol.chunkstories.api.physics.CollisionBox;
-import io.xol.chunkstories.api.rendering.effects.DecalsManager;
+import io.xol.chunkstories.api.physics.Box;
 import io.xol.chunkstories.api.sound.SoundManager;
 import io.xol.chunkstories.api.util.IterableIterator;
-import io.xol.chunkstories.api.util.concurrency.Fence;
 import io.xol.chunkstories.api.voxel.Voxel;
 import io.xol.chunkstories.api.world.cell.CellData;
 import io.xol.chunkstories.api.world.cell.FutureCell;
@@ -138,7 +138,7 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public IterableIterator<CellData> getVoxelsWithin(CollisionBox boundingBox) {
+	public IterableIterator<CellData> getVoxelsWithin(Box boundingBox) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -246,24 +246,6 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public void redrawEverything() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Fence saveEverything() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public Location getDefaultSpawnLocation() {
 		// TODO Auto-generated method stub
 		return null;
@@ -300,12 +282,6 @@ public class DummyWorld implements World {
 	}
 
 	@Override
-	public void tick() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public long getTicksElapsed() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -315,12 +291,6 @@ public class DummyWorld implements World {
 	public boolean handleInteraction(Entity entity, Location blockLocation, Input input) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public WorldCollisionsManager collisionsManager() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -407,4 +377,24 @@ public class DummyWorld implements World {
 		return null;
 	}
 
+	@NotNull
+	@Override
+	public WorldCollisionsManager getCollisionsManager() {
+		return null;
+	}
+
+	@Override
+	public int getMaxHeight() {
+		return 0;
+	}
+
+	@Override
+	public int getSizeInChunks() {
+		return 0;
+	}
+
+	@Override
+	public double getWorldSize() {
+		return 0;
+	}
 }

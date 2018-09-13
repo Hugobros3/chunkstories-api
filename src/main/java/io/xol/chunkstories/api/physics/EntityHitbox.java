@@ -15,71 +15,20 @@ import org.joml.Vector4f;
 import io.xol.chunkstories.api.Location;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.entity.traits.TraitAnimated;
-import io.xol.chunkstories.api.entity.traits.serializable.TraitRotation;
-import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.vertex.Primitive;
-import io.xol.chunkstories.api.graphics.VertexFormat;
-import io.xol.chunkstories.api.world.WorldClient;
 
 public class EntityHitbox {
 	final Entity entity;
 	final TraitAnimated animationTrait;
 
-	final CollisionBox box;
+	final Box box;
 	final String skeletonPart;
 
-	public EntityHitbox(Entity entity, CollisionBox box, String skeletonPart) {
+	public EntityHitbox(Entity entity, Box box, String skeletonPart) {
 		this.entity = entity;
 		this.animationTrait = entity.traits.get(TraitAnimated.class);
 
 		this.box = box;
 		this.skeletonPart = skeletonPart;
-	}
-
-	/** Debug method to figure out if the hitbox match with the model */
-	public void draw(RenderingInterface context) {
-		if (!context.currentShader().getShaderName().equals("overlay")) {
-			context.useShader("overlay");
-			context.getCamera().setupShader(context.currentShader());
-		}
-
-		context.currentShader().setUniform1i("doTransform", 1);
-
-		Matrix4f boneTransormation = new Matrix4f();
-		if (this.animationTrait != null)
-			boneTransormation
-					.set(animationTrait.getAnimatedSkeleton().getBoneHierarchyTransformationMatrix(skeletonPart, System.currentTimeMillis() % 1000000));
-
-		Matrix4f worldPositionTransformation = new Matrix4f();
-
-		Location loc = entity.getLocation();
-		Vector3f pos = new Vector3f((float) loc.x, (float) loc.y, (float) loc.z);
-		worldPositionTransformation.translate(pos);
-
-		worldPositionTransformation.mul(boneTransormation, boneTransormation);
-
-		// Scales/moves the identity box to reflect collisionBox shape
-		boneTransormation.translate(new Vector3f((float) box.xpos, (float) box.ypos, (float) box.zpos));
-		boneTransormation.scale(new Vector3f((float) box.xw, (float) box.h, (float) box.zw));
-
-		context.currentShader().setUniformMatrix4f("transform", boneTransormation);
-		context.unbindAttributes();
-		context.bindAttribute("vertexIn", context.meshes().getIdentityCube().asAttributeSource(VertexFormat.FLOAT, 3));
-
-		context.currentShader().setUniform4f("colorIn", 0.0, 1.0, 0.0, 1.0);
-
-		// Check for intersection with player
-		Entity playerEntity = ((WorldClient) entity.getWorld()).getClient().getPlayer().getControlledEntity();
-		if (playerEntity != null) {
-			// Only entities with a rotation component may highlight stuff
-			playerEntity.traits.with(TraitRotation.class, er -> {
-				if (lineIntersection(context.getCamera().getCameraPosition(), er.getDirectionLookingAt()) != null)
-					context.currentShader().setUniform4f("colorIn", 1.0, 0.0, 0.0, 1.0);
-			});
-		}
-
-		context.draw(Primitive.LINE, 0, 24);
-		context.currentShader().setUniform1i("doTransform", 0);
 	}
 
 	/** Tricky maths; transforms the inbound ray so the hitbox would be at 0.0.0 and

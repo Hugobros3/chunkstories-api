@@ -6,9 +6,9 @@
 
 package io.xol.chunkstories.api.entity;
 
+import io.xol.chunkstories.api.graphics.systems.dispatching.DecalsManager;
 import io.xol.chunkstories.api.input.InputsManager;
 import io.xol.chunkstories.api.particles.ParticlesManager;
-import io.xol.chunkstories.api.rendering.effects.DecalsManager;
 import io.xol.chunkstories.api.sound.SoundManager;
 import io.xol.chunkstories.api.world.WorldUser;
 
@@ -24,9 +24,8 @@ public interface Controller extends Subscriber, WorldUser {
 
 	public boolean setControlledEntity(@Nullable Entity entity);
 
+	//TODO make those explicit shorthands...
 	public SoundManager getSoundManager();
-
 	public ParticlesManager getParticlesManager();
-
 	public DecalsManager getDecalsManager();
 }

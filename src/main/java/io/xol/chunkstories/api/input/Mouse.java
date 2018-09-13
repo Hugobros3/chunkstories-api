@@ -7,7 +7,6 @@
 package io.xol.chunkstories.api.input;
 
 public interface Mouse {
-
 	public MouseButton getMainButton();
 
 	/** Returns true if the secondary mouse button is pressed */

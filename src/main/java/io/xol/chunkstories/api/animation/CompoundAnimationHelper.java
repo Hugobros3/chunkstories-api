@@ -9,22 +9,22 @@ package io.xol.chunkstories.api.animation;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
-import io.xol.chunkstories.api.animation.SkeletalAnimation.SkeletonBone;
+import io.xol.chunkstories.api.animation.Animation.SkeletonBone;
 
 /** Helper class to build compound animations: use different animations for each
  * bone, depending on arbitrary parameters.
  * 
- * Works using actual SkeletalAnimation (not SkeletonAnimator! ) obtained
+ * Works using actual Animation (not Animator! ) obtained
  * through a Content.AnimationsLibrary
  * 
  * For this system to work two assertions need to be valid : all animations used
  * have the same tree structure, and the distances/position of the bones are the
  * same. Otherwrise unpredictable results may occur; */
-public abstract class CompoundAnimationHelper implements SkeletonAnimator {
-	/** Key of this class : returns whatever SkeletalAnimation to use with wich bone
+public abstract class CompoundAnimationHelper implements Animator {
+	/** Key of this class : returns whatever Animation to use with wich bone
 	 * at wich point, possibly depending of external factors of the implemting
 	 * subclass */
-	public abstract SkeletalAnimation getAnimationPlayingForBone(String boneName, double animationTime);
+	public abstract Animation getAnimationPlayingForBone(String boneName, double animationTime);
 
 	/** Returns the local matrix to use for a bone, by default grabs it for the
 	 * playing animation, but you can change that for some effects */
@@ -33,7 +33,7 @@ public abstract class CompoundAnimationHelper implements SkeletonAnimator {
 	}
 
 	private final Matrix4fc getBoneHierarchyTransformationMatrixInternal(String boneName, double animationTime) {
-		SkeletalAnimation animation = getAnimationPlayingForBone(boneName, animationTime);
+		Animation animation = getAnimationPlayingForBone(boneName, animationTime);
 		SkeletonBone bone = animation.getBone(boneName);
 		// Out if null
 		if (bone == null) {
@@ -59,7 +59,7 @@ public abstract class CompoundAnimationHelper implements SkeletonAnimator {
 
 	/** Returns a matrix to offset the rigged mesh */
 	public Matrix4fc getBoneHierarchyMeshOffsetMatrix(String boneName, double animationTime) {
-		SkeletalAnimation animation = getAnimationPlayingForBone(boneName, animationTime);
+		Animation animation = getAnimationPlayingForBone(boneName, animationTime);
 		return animation.getOffsetMatrix(boneName);
 	}
 

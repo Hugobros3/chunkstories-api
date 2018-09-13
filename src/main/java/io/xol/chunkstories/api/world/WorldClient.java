@@ -6,15 +6,14 @@
 
 package io.xol.chunkstories.api.world;
 
-import io.xol.chunkstories.api.client.ClientInterface;
-import io.xol.chunkstories.api.rendering.world.WorldRenderer;
+import io.xol.chunkstories.api.client.IngameClient;
 
-/** A 'Client' world is one responsible of graphical and input tasks A world can
- * be both client and master. */
+/**
+ * A 'Client' world is one responsible of graphical and input tasks A world can
+ * be both client and master.
+ */
 public interface WorldClient extends World {
-	public ClientInterface getClient();
+    public IngameClient getClient();
 
-	public ClientInterface getGameContext();
-
-	public WorldRenderer getWorldRenderer();
+    public IngameClient getGameContext();
 }

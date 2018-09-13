@@ -6,10 +6,8 @@
 
 package io.xol.chunkstories.api.world.generator;
 
-import io.xol.chunkstories.api.content.Content.WorldGenerators.WorldGeneratorDefinition;
 import io.xol.chunkstories.api.world.World;
 import io.xol.chunkstories.api.world.chunk.Chunk;
-import io.xol.chunkstories.api.world.generator.environment.WorldEnvironment;
 
 /** The job of a WorldGenerator is to newEntity (voxel) data and to populate the
  * world with content. It also has duties of providing some rendering hints on
@@ -35,6 +33,4 @@ public abstract class WorldGenerator {
 
 	/** Fills a chunk with content */
 	public abstract void generateChunk(Chunk chunk);
-
-	public abstract WorldEnvironment getEnvironment();
 }

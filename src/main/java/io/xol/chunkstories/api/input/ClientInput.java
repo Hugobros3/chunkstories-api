@@ -6,10 +6,10 @@
 
 package io.xol.chunkstories.api.input;
 
-import io.xol.chunkstories.api.client.ClientInterface;
+import io.xol.chunkstories.api.client.Client;
 
 /** Clientside input, presses are replicated on the server but they use
  * VirtualInputs instead of these */
 public interface ClientInput extends Input {
-	public ClientInterface getClient();
+	public Client getClient();
 }

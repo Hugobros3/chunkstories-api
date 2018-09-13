@@ -1,20 +1,12 @@
 package io.xol.chunkstories.api.voxel.materials
 
-import io.xol.chunkstories.api.content.Declaration
+import io.xol.chunkstories.api.content.Content
 import io.xol.chunkstories.api.content.Definition
 
-interface VoxelMaterial : Definition {
-    /*val sounds : Sounds
-    class Sounds {
-        var walkingSounds = "sounds/footsteps/generic[1-3].ogg"
-        var runningSounds = "$walkingSounds"
-        var jumpingSounds = "sounds/footsteps/jump.ogg"
-        var landingSounds = "sounds/footsteps/land.ogg"
-    }
+/** A Voxel Material contains more generic stats about a class of voxel, for example the sounds they make
+ * when interacted with, or how they react to being mined with certain tools. */
+class VoxelMaterial(val store: Content.Voxels.VoxelMaterials, name: String, properties: Map<String, String>) : Definition(name, properties) {
 
-    val miningProperties : MiningProperties
-    class MiningProperties {
-        var defaultResistance = 1.0
-        var resistancePerToolType = mapOf<String, Double>()
-    }*/
+    /** Shorthand for Java accesses */
+    fun store() = store
 }

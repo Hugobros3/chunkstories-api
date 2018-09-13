@@ -39,7 +39,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
     public Voxel voxel = null;
     public int voxelMeta = 0;
 
-    public ItemVoxel(ItemDeclaration type) {
+    public ItemVoxel(ItemDefinition type) {
         super(type);
         store = type.store().parent().voxels();
     }
@@ -83,7 +83,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
                     fvc.setVoxel(voxel);
 
                     // Opaque blocks overwrite the original light with zero.
-                    if (voxel.getOpaque()) {
+                    if (voxel.isOpaque()) {
                         fvc.setBlocklight(0);
                         fvc.setSunlight(0);
                     }

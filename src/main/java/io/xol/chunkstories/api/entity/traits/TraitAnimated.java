@@ -6,7 +6,7 @@
 
 package io.xol.chunkstories.api.entity.traits;
 
-import io.xol.chunkstories.api.animation.SkeletonAnimator;
+import io.xol.chunkstories.api.animation.Animator;
 import io.xol.chunkstories.api.entity.Entity;
 
 public abstract class TraitAnimated extends Trait {
@@ -14,5 +14,5 @@ public abstract class TraitAnimated extends Trait {
 		super(entity);
 	}
 
-	public abstract SkeletonAnimator getAnimatedSkeleton();
+	public abstract Animator getAnimatedSkeleton();
 }

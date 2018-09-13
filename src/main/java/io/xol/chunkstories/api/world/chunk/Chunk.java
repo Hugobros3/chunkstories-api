@@ -122,6 +122,26 @@ public interface Chunk {
 	 * chunk */
 	public ChunkLightUpdater lightBaker();
 
+	public ChunkMesh mesh();
+
+	public interface ChunkMesh {
+		/** Increments the needed updates counter but doesn't spawn a task */
+		public void incrementPendingUpdates();
+
+		// renderer should figure that on it's own
+
+		///** Increments the needed updates counter, spawns a task if none exists or is
+		// * pending execution */
+		//public Fence requestUpdate();
+
+		///** Spawns a if there are unbaked modifications and no task is pending
+		// * execution */
+		//public void spawnUpdateTaskIfNeeded();
+
+		/** Returns how many updates have yet to be done */
+		public int pendingUpdates();
+	}
+
 	public boolean isAirChunk();
 
 	/** Obtains the EntityVoxel saved at the given location */

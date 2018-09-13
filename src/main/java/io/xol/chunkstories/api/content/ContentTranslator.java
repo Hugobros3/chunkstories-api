@@ -9,9 +9,9 @@ package io.xol.chunkstories.api.content;
 import java.util.Collection;
 
 import io.xol.chunkstories.api.entity.Entity;
-import io.xol.chunkstories.api.entity.EntityDeclaration;
+import io.xol.chunkstories.api.entity.EntityDefinition;
 import io.xol.chunkstories.api.item.Item;
-import io.xol.chunkstories.api.item.ItemDeclaration;
+import io.xol.chunkstories.api.item.ItemDefinition;
 import io.xol.chunkstories.api.voxel.Voxel;
 
 import javax.annotation.Nullable;
@@ -37,25 +37,25 @@ public interface ContentTranslator {
 
 	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
 	 * current content */
-	public int getIdForItem(ItemDeclaration definition);
+	public int getIdForItem(ItemDefinition definition);
 
 	/** Shortcut to getIdForItem(item.getDeclaration()) */
 	public int getIdForItem(Item item);
 
-	/** Return the ItemDeclaration associated with that ID or null if the ID was
+	/** Return the ItemDefinition associated with that ID or null if the ID was
 	 * outside of bounds */
 	@Nullable
-	public ItemDeclaration getItemForId(int id);
+	public ItemDefinition getItemForId(int id);
 
 	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
 	 * current content */
-	public int getIdForEntity(EntityDeclaration definition);
+	public int getIdForEntity(EntityDefinition definition);
 
 	/** Shortcut to getIdForItem(entity.getDeclaration()) */
 	public int getIdForEntity(Entity entity);
 
-	/** Return the EntityDeclaration associated with that ID or null if the ID was
+	/** Return the EntityDefinition associated with that ID or null if the ID was
 	 * outside of bounds */
 	@Nullable
-	public EntityDeclaration getEntityForId(int id);
+	public EntityDefinition getEntityForId(int id);
 }

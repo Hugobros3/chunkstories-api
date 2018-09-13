@@ -75,7 +75,7 @@ public class PacketDecal extends PacketWorld {
 
 		if (processor instanceof ClientPacketsProcessor) {
 			ClientPacketsProcessor cpp = (ClientPacketsProcessor) processor;
-			cpp.getContext().getDecalsManager().drawDecal(position, orientation, size, decalName);
+			cpp.getContext().getDecalsManager().add(position, orientation, size, decalName);
 		}
 	}
 }

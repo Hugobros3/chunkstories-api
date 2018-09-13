@@ -6,7 +6,7 @@
 
 package io.xol.chunkstories.api.exceptions.rendering;
 
-import io.xol.chunkstories.api.rendering.textures.Texture;
+import io.xol.chunkstories.api.graphics.Texture;
 
 public class TextureBindException extends RenderingException {
 	/**

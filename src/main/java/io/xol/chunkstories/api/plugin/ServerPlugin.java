@@ -12,9 +12,9 @@ import io.xol.chunkstories.api.server.ServerInterface;
 public abstract class ServerPlugin extends ChunkStoriesPlugin {
 	private final ServerInterface serverInterface;
 
-	public ServerPlugin(PluginInformation pluginInformation, ServerInterface clientInterface) {
-		super(pluginInformation, clientInterface);
-		this.serverInterface = clientInterface;
+	public ServerPlugin(PluginInformation pluginInformation, ServerInterface Client) {
+		super(pluginInformation, Client);
+		this.serverInterface = Client;
 	}
 
 	public ServerInterface getServer() {

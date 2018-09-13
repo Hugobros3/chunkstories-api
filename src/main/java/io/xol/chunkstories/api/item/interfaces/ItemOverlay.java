@@ -6,11 +6,11 @@
 
 package io.xol.chunkstories.api.item.interfaces;
 
+import io.xol.chunkstories.api.gui.GuiDrawer;
 import io.xol.chunkstories.api.item.inventory.ItemPile;
-import io.xol.chunkstories.api.rendering.RenderingInterface;
 
 /** An interface for items that draw on top of the 2d screen of the user ( but
  * before actual GUI elements are) */
 public interface ItemOverlay {
-	public void drawItemOverlay(RenderingInterface renderingInterface, ItemPile itemPile);
+	public void drawItemOverlay(GuiDrawer drawer, ItemPile itemPile);
 }

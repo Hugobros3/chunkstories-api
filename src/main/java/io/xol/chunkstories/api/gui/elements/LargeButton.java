@@ -6,43 +6,40 @@
 
 package io.xol.chunkstories.api.gui.elements;
 
-import org.joml.Vector4f;
-
+import io.xol.chunkstories.api.gui.Font;
+import io.xol.chunkstories.api.gui.GuiDrawer;
 import io.xol.chunkstories.api.gui.Layer;
-import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.text.FontRenderer.Font;
-import io.xol.chunkstories.api.rendering.textures.Texture2D;
+import org.joml.Vector4f;
 
 public class LargeButton extends BaseButton {
 
-	public LargeButton(Layer layer, String text) {
-		super(layer, layer.getGameWindow().getFontRenderer().getFont("LiberationSansNarrow-Bold__aa", 18.666f), 0, 0, text);
-		this.width = 96;
-		this.height = 24;
+    public LargeButton(Layer layer, String text) {
+        super(layer, layer.getGui().getFonts().getFont("LiberationSansNarrow-Bold__aa", 18.666f), 0, 0, text);
+        this.setWidth(96);
+        this.setHeight(24);
 
-		this.text = "#{menu." + text + "}";
-	}
+        this.text = "#{menu." + text + "}";
+    }
 
-	@Override
-	public void render(RenderingInterface renderer) {
-		String localizedText = layer.getGameWindow().getClient().getContent().localization().localize(text);
+    @Override
+    public void render(GuiDrawer renderer) {
+        String localizedText = getLayer().getGui().localization().localize(text);
 
-		Texture2D buttonTexture = renderer.textures().getTexture("./textures/gui/mainMenu.png");
-		if (isFocused() || isMouseOver())
-			buttonTexture = renderer.textures().getTexture("./textures/gui/mainMenuOver.png");
+        String buttonTexture = ("./textures/gui/mainMenu.png");
+        if (isFocused() || isMouseOver())
+            buttonTexture = ("./textures/gui/mainMenuOver.png");
 
-		buttonTexture.setLinearFiltering(false);
-		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, getWidth(), getHeight(), 4 * scale(), buttonTexture, 32, scale());
+        renderer.drawCorneredBoxTiled(getPositionX(), getPositionY(), getWidth(), getHeight(), 4, buttonTexture, 32);
 
-		Font font = layer.getGameWindow().getRenderingInterface().getFontRenderer().getFont("LiberationSansNarrow-Bold__aa", 16f * scale());
-		float a = 1f / scale();
+        Font font = renderer.getFonts().getFont("LiberationSansNarrow-Bold__aa", 16f);
 
-		float yPositionText = yPosition + 2.5f * scale();
-		float centering = getWidth() / 2 - font.getWidth(localizedText) * a * scale() / 2;
-		renderer.getFontRenderer().drawString(font, xPosition + centering + scale(), yPositionText - scale(), localizedText, a * scale(),
-				new Vector4f(161 / 255f, 161 / 255f, 161 / 255f, 1));
-		renderer.getFontRenderer().drawString(font, xPosition + centering, yPositionText, localizedText, a * scale(),
-				new Vector4f(38 / 255f, 38 / 255f, 38 / 255f, 1));
-	}
+        int yPositionText = getPositionY() + 2;
+
+        int centering = getWidth() / 2 - font.getWidth(localizedText);
+        renderer.drawString(font, getPositionX() + centering + 1, yPositionText - 1, localizedText, -1,
+                new Vector4f(161 / 255f, 161 / 255f, 161 / 255f, 1));
+        renderer.drawString(font, getPositionX() + centering, yPositionText, localizedText, -1,
+                new Vector4f(38 / 255f, 38 / 255f, 38 / 255f, 1));
+    }
 
 }

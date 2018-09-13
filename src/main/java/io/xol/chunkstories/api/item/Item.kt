@@ -15,7 +15,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 
-open class Item(val definition: ItemDeclaration<out Item>) {
+open class Item(val definition: ItemDefinition) {
     var itemPile: ItemPile? = null
 
     open val name: String
@@ -23,10 +23,6 @@ open class Item(val definition: ItemDeclaration<out Item>) {
 
     val internalName: String
         get() = definition.name
-
-
-    open val representation: ItemRepresentationBuilder<out Item>
-        get() = definition.representation
 
     /** Should be called when the owner has this item selected
      *

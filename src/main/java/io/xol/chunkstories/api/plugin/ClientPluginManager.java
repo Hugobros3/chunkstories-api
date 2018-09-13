@@ -6,8 +6,8 @@
 
 package io.xol.chunkstories.api.plugin;
 
-import io.xol.chunkstories.api.client.ClientInterface;
+import io.xol.chunkstories.api.client.Client;
 
 public interface ClientPluginManager extends PluginManager {
-	public ClientInterface getClientInterface();
+	public Client getClient();
 }

@@ -4,6 +4,7 @@ import io.xol.chunkstories.api.Location
 import io.xol.chunkstories.api.entity.traits.Trait
 import io.xol.chunkstories.api.entity.traits.serializable.TraitLocation
 import io.xol.chunkstories.api.net.packets.PacketEntity
+import io.xol.chunkstories.api.physics.Box
 import io.xol.chunkstories.api.player.Player
 import io.xol.chunkstories.api.util.*
 import io.xol.chunkstories.api.world.World
@@ -12,8 +13,10 @@ import java.util.*
 import kotlin.reflect.KClass
 import java.util.HashSet
 
-abstract class Entity(val declaration: EntityDeclaration<*>, val world: World) {
+abstract class Entity(val definition: EntityDefinition, @JvmField val world: World) {
     var location : Location = Location(world, .0, .0, .0)
+
+    fun getWorld() = world
 
     var UUID : Long = -1L
         set(value) {
@@ -55,12 +58,11 @@ abstract class Entity(val declaration: EntityDeclaration<*>, val world: World) {
         fun byId() : Array<Trait>
     }
 
-    protected fun afterIntialization() {
+    fun afterIntialization() {
         if (initialized)
             throw RuntimeException("afterIntialization() is supposed to be called only once.")
 
         //Creates a static array and set for the traits
-
         val set = HashSet<Trait>()
         set.addAll(traits.map.values)
         traits.set = Collections.unmodifiableSet(set)
@@ -277,4 +279,10 @@ abstract class Entity(val declaration: EntityDeclaration<*>, val world: World) {
             return Collections.unmodifiableSet(this)
         }
     }
+
+    abstract fun tick() : Unit
+
+    open fun getBoundingBox() = Box(1.0, 1.0, 1.0)
+
+    fun getTranslatedBoundingBox() = Box(getBoundingBox()).translate(location)
 }

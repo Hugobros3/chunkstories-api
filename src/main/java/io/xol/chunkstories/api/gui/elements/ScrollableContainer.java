@@ -6,167 +6,145 @@
 
 package io.xol.chunkstories.api.gui.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.joml.Vector4f;
-
 import io.xol.chunkstories.api.gui.ClickableGuiElement;
 import io.xol.chunkstories.api.gui.FocusableGuiElement;
+import io.xol.chunkstories.api.gui.GuiDrawer;
 import io.xol.chunkstories.api.gui.Layer;
 import io.xol.chunkstories.api.input.Mouse;
 import io.xol.chunkstories.api.input.Mouse.MouseButton;
-import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.textures.Texture2D;
+import org.joml.Vector4f;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScrollableContainer extends FocusableGuiElement implements ClickableGuiElement {
-	protected ScrollableContainer(Layer layer) {
-		super(layer);
 
-		this.width = 480;
-		this.height = 1024;
-	}
+    protected ScrollableContainer(Layer layer) {
+        super(layer, 480, 1024);
+    }
 
-	public List<ContainerElement> elements = new ArrayList<ContainerElement>();
-	protected int scroll = 0;
+    public List<ContainerElement> elements = new ArrayList<ContainerElement>();
+    protected int scroll = 0;
 
-	public void setDimensions(float width, float height) {
-		this.width = width;
-		this.height = height;
-	}
+    public boolean isMouseOver(int mx, int my) {
+        return mx >= getPositionX() && mx <= getPositionX() + getWidth() && my >= getPositionY() && my <= getPositionY() + getHeight();
+    }
 
-	protected int scale() {
-		return layer.getGuiScale();
-	}
+    public void render(GuiDrawer renderer) {
+        int startY = this.getPositionY() + getHeight();
+        int i = scroll;
 
-	public boolean isMouseOver(int mx, int my) {
-		return mx >= xPosition && mx <= xPosition + width && my >= yPosition && my <= yPosition + height;
-	}
+        while (true) {
+            if (i >= elements.size())
+                break;
+            ContainerElement element = elements.get(i);
+            startY -= element.height;
+            if (startY < this.getPositionY())
+                break;
+            i++;
 
-	public void render(RenderingInterface renderer) {
-		float startY = this.yPosition + height;
-		int i = scroll;
+            element.setPosition(this.getPositionX(), startY);
+            element.render(renderer);
+            startY -= 4;
+        }
 
-		// renderer.getGuiRenderer().drawBoxWindowsSpace(xPosition, yPosition, xPosition
-		// + width, yPosition + height, 0, 0, 0, 0, null, true, false, new
-		// Vector4f(1.0f));
+        // return r;
+    }
 
-		while (true) {
-			if (i >= elements.size())
-				break;
-			ContainerElement element = elements.get(i);
-			startY -= element.height * scale();
-			if (startY < this.yPosition)
-				break;
-			i++;
+    public void scroll(boolean sign) {
+        if (sign) {
+            // Scroll up
+            scroll--;
+            if (scroll < 0)
+                scroll = 0;
+        } else {
+            // Scroll up
+            scroll++;
+            if (scroll >= elements.size())
+                scroll = elements.size() - 1;
+        }
+    }
 
-			element.setPosition(this.xPosition, startY);
-			element.render(renderer);
-			startY -= 4 * scale();
-		}
+    public abstract class ContainerElement {
 
-		// return r;
-	}
+        public ContainerElement(@Nullable String name, @Nullable String descriptionLines) {
+            this.name = name;
+            this.descriptionLines = descriptionLines;
+        }
 
-	public void scroll(boolean sign) {
-		if (sign) {
-			// Scroll up
-			scroll--;
-			if (scroll < 0)
-				scroll = 0;
-		} else {
-			// Scroll up
-			scroll++;
-			if (scroll >= elements.size())
-				scroll = elements.size() - 1;
-		}
-	}
+        @Nullable
+        public String name, topRightString = "";
+        @Nullable
+        public String descriptionLines;
 
-	public abstract class ContainerElement {
+        public String iconTextureLocation = "./textures/gui/info.png";
+        protected int positionX, positionY;
+        protected int width = 480, height = 72;
 
-		public ContainerElement(@Nullable String name, @Nullable String descriptionLines) {
-			this.name = name;
-			this.descriptionLines = descriptionLines;
-		}
+        public void setPosition(int positionX, int positionY) {
+            this.positionX = positionX;
+            this.positionY = positionY;
+        }
 
-		@Nullable
-		public String name, topRightString = "";
-		@Nullable
-		public String descriptionLines;
+        public void render(GuiDrawer drawer) {
+            // Setup textures
+            String bgTexture = isMouseOver(drawer.getGui().getMouse()) ? "./textures/gui/genericOver.png" : "./textures/gui/generic.png";
 
-		public String iconTextureLocation = "./textures/gui/info.png";
-		protected float positionX, positionY;
-		protected float width = 480, height = 72;
+            // Render graphical base
+            drawer.drawBoxWindowsSpaceWithSize(positionX, positionY, width, height, 0, 1, 1, 0, bgTexture, true, false,
+                    new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
+            // Render icon
+            drawer.drawBoxWindowsSpaceWithSize(positionX + 4, positionY + 4, 64, 64, 0, 1, 1, 0, iconTextureLocation, true, false, new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
+            // Text !
+            if (name != null)
+                drawer.drawString(drawer.getFonts().getFont("LiberationSans-Regular", 12), positionX + 70, positionY + 54,
+                        name, -1, new Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
 
-		public void setPosition(float positionX, float positionY) {
-			this.positionX = positionX;
-			this.positionY = positionY;
-		}
+            if (topRightString != null) {
+                int dekal = width - drawer.getFonts().getFont("LiberationSans-Regular", 12).getWidth(topRightString) - 4;
+                drawer.drawString(drawer.getFonts().getFont("LiberationSans-Regular", 12), positionX + dekal,
+                        positionY + 54, topRightString, 1, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
+            }
 
-		public void render(RenderingInterface renderer) {
-			int s = ScrollableContainer.this.scale();
-			// Setup textures
-			Texture2D bgTexture = renderer.textures().getTexture(
-					isMouseOver(renderer.getClient().getInputsManager().getMouse()) ? "./textures/gui/genericOver.png" : "./textures/gui/generic.png");
-			bgTexture.setLinearFiltering(false);
+            if (descriptionLines != null)
+                drawer.drawString(drawer.getFonts().getFont("LiberationSans-Regular", 12), positionX + 70, positionY + 38,
+                        descriptionLines, 1, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
 
-			// Render graphical base
-			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(positionX, positionY, width * s, height * s, 0, 1, 1, 0, bgTexture, true, false,
-					new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-			// Render icon
-			renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(positionX + 4 * s, positionY + 4 * s, 64 * s, 64 * s, 0, 1, 1, 0,
-					renderer.textures().getTexture(iconTextureLocation), true, false, new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-			// Text !
-			if (name != null)
-				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12), positionX + 70 * s, positionY + 54 * s,
-						name, s, new Vector4f(0.0f, 0.0f, 0.0f, 1.0f));
+        }
 
-			if (topRightString != null) {
-				float dekal = width - renderer.getFontRenderer().getFont("LiberationSans-Regular", 12).getWidth(topRightString) - 4;
-				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12), positionX + dekal * s,
-						positionY + 54 * s, topRightString, s, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
-			}
+        public abstract boolean handleClick(MouseButton mouseButton);
 
-			if (descriptionLines != null)
-				renderer.getFontRenderer().drawString(renderer.getFontRenderer().getFont("LiberationSans-Regular", 12), positionX + 70 * s, positionY + 38 * s,
-						descriptionLines, s, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
+        public boolean isMouseOver(Mouse mouse) {
+            int s = 1;
+            double mx = mouse.getCursorX();
+            double my = mouse.getCursorY();
+            return mx >= positionX && mx <= positionX + width * s && my >= positionY && my <= positionY + height * s;
+        }
+    }
 
-		}
+    @Override
+    public boolean handleClick(MouseButton mouseButton) {
 
-		public abstract boolean handleClick(MouseButton mouseButton);
+        float startY = this.getPositionY() + getHeight();
+        int i = scroll;
 
-		public boolean isMouseOver(Mouse mouse) {
-			int s = ScrollableContainer.this.scale();
-			double mx = mouse.getCursorX();
-			double my = mouse.getCursorY();
-			return mx >= positionX && mx <= positionX + width * s && my >= positionY && my <= positionY + height * s;
-		}
-	}
+        while (true) {
+            if (i >= elements.size())
+                break;
+            ContainerElement element = elements.get(i);
+            if (startY - element.height < this.getPositionY())
+                break;
+            startY -= element.height;
+            startY -= 4;
+            i++;
 
-	@Override
-	public boolean handleClick(MouseButton mouseButton) {
+            if (element.isMouseOver(mouseButton.getMouse())) {
+                element.handleClick(mouseButton);
+                return true;
+            }
+        }
 
-		float startY = this.yPosition + height;
-		int i = scroll;
-
-		while (true) {
-			if (i >= elements.size())
-				break;
-			ContainerElement element = elements.get(i);
-			if (startY - element.height * scale() < this.yPosition)
-				break;
-			startY -= element.height * scale();
-			startY -= 4 * scale();
-			i++;
-
-			if (element.isMouseOver(mouseButton.getMouse())) {
-				element.handleClick(mouseButton);
-				return true;
-			}
-		}
-
-		return false;
-	}
+        return false;
+    }
 }

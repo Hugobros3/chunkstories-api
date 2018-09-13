@@ -10,7 +10,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import io.xol.chunkstories.api.client.ClientInterface;
+import io.xol.chunkstories.api.client.Client;
+import io.xol.chunkstories.api.client.IngameClient;
 import io.xol.chunkstories.api.client.LocalPlayer;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
@@ -76,8 +77,7 @@ public class TraitController extends TraitSerializable {
 			return;
 		}
 
-		LocalPlayer player = ((ClientInterface) entity.getWorld().getGameContext()).getPlayer();
-		assert player != null;
+		LocalPlayer player = ((IngameClient) entity.getWorld().getGameContext()).getPlayer();
 
 		if (isControllerNotNull) {
 			long clientUUID = player.getUUID();
@@ -104,7 +104,6 @@ public class TraitController extends TraitSerializable {
 			}
 
 		} else {
-
 			// If we are a client.
 
 			// If we receive a different UUID than ours in a EntityComponent change, it

@@ -6,51 +6,46 @@
 
 package io.xol.chunkstories.api.gui.elements;
 
-import org.joml.Vector4f;
-
+import io.xol.chunkstories.api.gui.Font;
+import io.xol.chunkstories.api.gui.GuiDrawer;
 import io.xol.chunkstories.api.gui.Layer;
-import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.text.FontRenderer.Font;
-import io.xol.chunkstories.api.rendering.textures.Texture2D;
+import org.joml.Vector4f;
 
 public class LargeButtonIcon extends BaseButton {
 
-	String iconName;
+    String iconName;
 
-	public LargeButtonIcon(Layer layer, String text) {
-		super(layer, layer.getGameWindow().getRenderingInterface().getFontRenderer().getFont("LiberationSansNarrow-Bold__aa", 16f), 0, 0, text);
-		this.width = 96;
-		this.height = 48;
+    public LargeButtonIcon(Layer layer, String text) {
+        super(layer, layer.getGui().getFonts().getFont("LiberationSansNarrow-Bold__aa", 16f), 0, 0, text);
+        this.setWidth(96);
+        this.setHeight(48);
 
-		this.iconName = text;
-		this.text = "#{menu." + text + "}";
-	}
+        this.iconName = text;
+        this.text = "#{menu." + text + "}";
+    }
 
-	@Override
-	public void render(RenderingInterface renderer) {
-		String localizedText = layer.getGameWindow().getClient().getContent().localization().localize(text);
+    @Override
+    public void render(GuiDrawer renderer) {
+        String localizedText = getLayer().getGui().localization().localize(text);
 
-		Texture2D buttonTexture = renderer.textures().getTexture("./textures/gui/mainMenu.png");
-		if (isFocused() || isMouseOver())
-			buttonTexture = renderer.textures().getTexture("./textures/gui/mainMenuOver.png");
+        String buttonTexture = ("./textures/gui/mainMenu.png");
+        if (isFocused() || isMouseOver())
+            buttonTexture = ("./textures/gui/mainMenuOver.png");
 
-		buttonTexture.setLinearFiltering(false);
-		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, getWidth(), getHeight(), 4 * scale(), buttonTexture, 32, scale());
+        renderer.drawCorneredBoxTiled(getPositionX(), getPositionY(), getWidth(), getHeight(), 4, buttonTexture, 32);
 
-		Font font = layer.getGameWindow().getFontRenderer().getFont("LiberationSansNarrow-Bold__aa", 32f);
-		float a = 0.5f;
-		// a = 1;
+        Font font = getLayer().getGui().getFonts().getFont("LiberationSansNarrow-Bold__aa", 32f);
+        int a = 1;
 
-		float yPositionText = yPosition + 26 * scale();
-		float centering = getWidth() / 2 - font.getWidth(localizedText) * a * scale() / 2;
-		renderer.getFontRenderer().drawString(font, xPosition + centering + scale(), yPositionText - scale(), localizedText, a * scale(),
-				new Vector4f(161 / 255f, 161 / 255f, 161 / 255f, 1));
-		renderer.getFontRenderer().drawString(font, xPosition + centering, yPositionText, localizedText, a * scale(),
-				new Vector4f(38 / 255f, 38 / 255f, 38 / 255f, 1));
+        int yPositionText = getPositionY() + 26;
+        int centering = getWidth() / 2 - font.getWidth(localizedText) * a / 2;
+        renderer.drawString(font, getPositionX() + centering + 1, yPositionText - 1, localizedText, -1,
+                new Vector4f(161 / 255f, 161 / 255f, 161 / 255f, 1));
+        renderer.drawString(font, getPositionX() + centering, yPositionText, localizedText, -1,
+                new Vector4f(38 / 255f, 38 / 255f, 38 / 255f, 1));
 
-		renderer.textures().getTexture("./textures/gui/icons/" + iconName + ".png").setLinearFiltering(false);
-		renderer.getGuiRenderer().drawBoxWindowsSpaceWithSize(xPosition + getWidth() / 2 - 16 * scale(), yPosition + getHeight() / 2 - 26 * scale(),
-				32 * scale(), 32 * scale(), 0, 1, 1, 0, renderer.textures().getTexture("./textures/gui/icons/" + iconName + ".png"), false, true, null);
-	}
+        renderer.drawBoxWindowsSpaceWithSize(getPositionX() + getWidth() / 2 - 16, getPositionY() + getHeight() / 2 - 26,
+                32, 32, 0, 1, 1, 0, "./textures/gui/icons/" + iconName + ".png", false, true, null);
+    }
 
 }

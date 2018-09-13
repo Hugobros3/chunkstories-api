@@ -7,16 +7,14 @@
 package io.xol.chunkstories.api.voxel
 
 import io.xol.chunkstories.api.content.Content
+import io.xol.chunkstories.api.dsl.LootRules
 import io.xol.chunkstories.api.entity.Entity
 import io.xol.chunkstories.api.events.voxel.WorldModificationCause
 import io.xol.chunkstories.api.exceptions.world.WorldException
-import io.xol.chunkstories.api.dsl.RepresentationBuildingInstructions
 import io.xol.chunkstories.api.input.Input
 import io.xol.chunkstories.api.item.ItemVoxel
 import io.xol.chunkstories.api.item.inventory.ItemPile
-import io.xol.chunkstories.api.dsl.LootRules
-import io.xol.chunkstories.api.physics.CollisionBox
-import io.xol.chunkstories.api.util.kotlin.initOnce
+import io.xol.chunkstories.api.physics.Box
 import io.xol.chunkstories.api.voxel.materials.VoxelMaterial
 import io.xol.chunkstories.api.voxel.textures.VoxelTexture
 import io.xol.chunkstories.api.world.cell.CellData
@@ -26,33 +24,67 @@ import io.xol.chunkstories.api.world.chunk.Chunk.FreshChunkCell
 import org.joml.Vector3d
 
 /** Defines the behavior for associated with a voxel type declaration  */
-open class Voxel(val store: Content.Voxels) {
-    /** Returns the internal, non localized name of this voxel */
-    var name: String by initOnce()
-
-    val ext = mutableMapOf<String, String>()
+open class Voxel(val definition: VoxelDefinition) {
+    val name: String
+        get() = definition.name
 
     /** Returns true only if this voxel is the 'void' air type  */
-    val isAir: Boolean
-        get() = store().air().sameKind(this)
+    fun isAir() = store().air().sameKind(this)
 
-    var customRepresentation: RepresentationBuildingInstructions? = null
-    var voxelTextures = Array<VoxelTexture>(6) { store.textures().defaultVoxelTexture }
+    /** The textures used for rendering this block. Goes unused with custom models ! */
+    var voxelTextures = Array<VoxelTexture>(6) { store().textures().defaultVoxelTexture }
 
-    var opaque = true
-    var solid = true
+    /** The material this block uses */
+    var voxelMaterial: VoxelMaterial = store().materials().defaultMaterial
 
-    var selfOpaque = false
+    /** Can entities pass through this block ? */
+    var solid = definition.resolveProperty("solid", "false") == "true"
+        @JvmName("isSolid")
+        get
 
+    /** Does this block completely hides adjacent ones (and can we just skip rendering those hidden faces) ? */
+    var opaque = definition.resolveProperty("opaque", "false") == "true"
+        @JvmName("isOpaque")
+        get
+
+    /** Should adjacent copies of this block have the faces in between them rendered ? */
+    var selfOpaque = definition.resolveProperty("selfOpaque", "false") == "true"
+        @JvmName("isSelfOpaque")
+        get
+
+    /** The light level the block emmits */
     var emittedLightLevel = 0
+
+    /** How much, on top of the normal attenuation, does the light level of light passing through this block is reduced ? */
     var shadingLightLevel = 0
 
-    var collisionBoxes = arrayOf(CollisionBox(Vector3d(0.0), Vector3d(1.0)))
-
-    /** Returns the VoxelMaterial used by this Voxel  */
-    var voxelMaterial: VoxelMaterial = store.materials().defaultMaterial
+    var collisionBoxes = arrayOf(Box(Vector3d(0.0), Vector3d(1.0)))
 
     var lootLogic: LootRules? = null
+
+    init {
+        definition.resolveProperty("solid")?.let { solid = it.toBoolean() }
+        definition.resolveProperty("opaque")?.let { opaque = it.toBoolean() }
+        definition.resolveProperty("selfOpaque")?.let { selfOpaque = it.toBoolean() }
+
+        /** Sets all 6 sides of the voxel with one texture */
+        definition.resolveProperty("texture")?.let { voxelTextures.fill(store().textures().getVoxelTexture(it)) }
+        /** Sets all 4 horizontal sides of the voxel with the same texture */
+        definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store().textures().getVoxelTexture(it), 0, 4) }
+        /** Code for setting each side */
+        definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store().textures().getVoxelTexture(it) }
+        definition.resolveProperty("textures.left")?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store().textures().getVoxelTexture(it) }
+        definition.resolveProperty("textures.right")?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store().textures().getVoxelTexture(it) }
+        definition.resolveProperty("textures.front")?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store().textures().getVoxelTexture(it) }
+        definition.resolveProperty("textures.back")?.let { voxelTextures[VoxelSide.BACK.ordinal] = store().textures().getVoxelTexture(it) }
+        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store().textures().getVoxelTexture(it) }
+
+        /** Sets a custom voxel material */
+        definition.resolveProperty("material")?.let { voxelMaterial = store().materials().getVoxelMaterial(it) }
+
+        definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0 }
+        definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0}
+    }
 
     /** Called before setting a cell to this Voxel type. Previous state is assumed
      * to be air.
@@ -164,9 +196,9 @@ open class Voxel(val store: Content.Voxels) {
      *
      * @param data The full 4-byte data related to this voxel ( see
      * [VoxelFormat.class][VoxelFormat] )
-     * @return An array of CollisionBox or null.
+     * @return An array of Box or null.
      */
-    fun getTranslatedCollisionBoxes(cell: CellData): Array<CollisionBox>? {
+    fun getTranslatedCollisionBoxes(cell: CellData): Array<Box>? {
         val boxes = getCollisionBoxes(cell)
         if (boxes != null)
             for (b in boxes)
@@ -178,17 +210,17 @@ open class Voxel(val store: Content.Voxels) {
      * 0,0,0
      *
      * @param The full 4-byte data related to this voxel ( see [VoxelFormat.class][VoxelFormat] )
-     * @return An array of CollisionBox or null.
+     * @return An array of Box or null.
      */
-    open fun getCollisionBoxes(info: CellData): Array<CollisionBox>? = collisionBoxes
+    open fun getCollisionBoxes(info: CellData): Array<Box>? = collisionBoxes
 
     /** Two voxels are of the same kind if they share the same declaration.  */
     open fun sameKind(that: Voxel): Boolean {
         return this == that
     }
 
-    open fun enumerateItemsForBuilding() : List<ItemPile> {
-        return listOf(ItemPile(store.parent().items().getItemDefinition("item_voxel")).apply {
+    open fun enumerateItemsForBuilding(): List<ItemPile> {
+        return listOf(ItemPile(store().parent().items().getItemDefinition("item_voxel")).apply {
             with(this as ItemVoxel) {
                 this.voxel = this@Voxel
             }
@@ -197,11 +229,13 @@ open class Voxel(val store: Content.Voxels) {
 
     /** Returns what's dropped when a cell using this voxel type is destroyed  */
     open fun getLoot(cell: CellData, cause: WorldModificationCause): List<ItemPile> {
+        /** If this block has custom logic for loot spawning, use that ! */
         val logic = lootLogic
-        if(logic != null)
+        if (logic != null)
             return logic.spawn()
 
-        return enumerateItemsForBuilding()
+        /** Returns *one* of the variants for this block */
+        return enumerateItemsForBuilding().shuffled().subList(0, 1)
     }
 
     override fun toString(): String {
@@ -209,6 +243,6 @@ open class Voxel(val store: Content.Voxels) {
     }
 
     fun store(): Content.Voxels {
-        return store
+        return definition.store
     }
 }

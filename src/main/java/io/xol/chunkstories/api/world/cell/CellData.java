@@ -7,11 +7,8 @@
 package io.xol.chunkstories.api.world.cell;
 
 import io.xol.chunkstories.api.Location;
-import io.xol.chunkstories.api.physics.CollisionBox;
-import io.xol.chunkstories.api.rendering.voxel.VoxelRenderer;
+import io.xol.chunkstories.api.physics.Box;
 import io.xol.chunkstories.api.voxel.Voxel;
-import io.xol.chunkstories.api.voxel.VoxelSide;
-import io.xol.chunkstories.api.voxel.textures.VoxelTexture;
 import io.xol.chunkstories.api.world.World;
 
 import javax.annotation.Nullable;
@@ -78,8 +75,8 @@ public interface CellData {
 	/** Returns an array (possibly 0-sized) of collision boxes translated to the
 	 * actual position of the voxel */
 	@Nullable
-	public default CollisionBox[] getTranslatedCollisionBoxes() {
+	public default Box[] getTranslatedCollisionBoxes() {
 		Voxel voxel = getVoxel();
-		return voxel != null ? voxel.getTranslatedCollisionBoxes(this) : new CollisionBox[] {};
+		return voxel != null ? voxel.getTranslatedCollisionBoxes(this) : new Box[] {};
 	}
 }

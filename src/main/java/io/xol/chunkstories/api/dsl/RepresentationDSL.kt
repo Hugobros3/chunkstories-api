@@ -1,6 +1,6 @@
 package io.xol.chunkstories.api.dsl
 
-import io.xol.chunkstories.api.client.ClientContent
+import io.xol.chunkstories.api.content.Content
 import io.xol.chunkstories.api.graphics.GraphicsEngine
 import io.xol.chunkstories.api.graphics.representation.Light
 import io.xol.chunkstories.api.graphics.representation.ModelInstance
@@ -17,7 +17,7 @@ typealias RepresentationBuildingInstructions = (StaticRepresentationBuildingCont
  * This is used by the engine as an optimisation method, since your representation setup code is really just a lambda
  * calling functions, you can inline it and not actually generate any objects for the representation itself.*/
 interface StaticRepresentationBuildingContext {
-    val content: ClientContent
+    val content: Content
     val engine: GraphicsEngine
 
     /** DSL-helper: Registers a model instance */

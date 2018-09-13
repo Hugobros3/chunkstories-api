@@ -9,7 +9,7 @@ package io.xol.chunkstories.api.content.mods;
 import io.xol.chunkstories.api.content.Definition;
 
 /** Loads from mod.txt in the mod root directory */
-public interface ModInfo extends Definition {
+public interface ModInfo {
 	public Mod getMod();
 
 	/** Get unique mod name */

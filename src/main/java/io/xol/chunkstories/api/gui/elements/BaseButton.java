@@ -6,16 +6,11 @@
 
 package io.xol.chunkstories.api.gui.elements;
 
+import io.xol.chunkstories.api.gui.*;
 import org.joml.Vector4f;
 
-import io.xol.chunkstories.api.gui.ClickableGuiElement;
-import io.xol.chunkstories.api.gui.FocusableGuiElement;
-import io.xol.chunkstories.api.gui.Layer;
 import io.xol.chunkstories.api.input.Mouse;
 import io.xol.chunkstories.api.input.Mouse.MouseButton;
-import io.xol.chunkstories.api.rendering.RenderingInterface;
-import io.xol.chunkstories.api.rendering.text.FontRenderer.Font;
-import io.xol.chunkstories.api.rendering.textures.Texture2D;
 
 import javax.annotation.Nullable;
 
@@ -23,7 +18,6 @@ import javax.annotation.Nullable;
 public class BaseButton extends FocusableGuiElement implements ClickableGuiElement {
 	protected String text;
 	protected Font font;
-	protected float fontScaler = 1.0f;
 
 	@Nullable
 	protected Runnable action;
@@ -38,59 +32,44 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 	}
 
 	public BaseButton(Layer layer, int x, int y, String text, @Nullable Runnable action) {
-		this(layer, layer.getGameWindow().getFontRenderer().getFont("LiberationSans-Regular", 12), x, y, text);
+		this(layer, layer.getGui().getFonts().getFont("LiberationSans-Regular", 12), x, y, text);
 		this.action = action;
 	}
 
 	public BaseButton(Layer layer, Font font, int x, int y, String text) {
-		super(layer);
+		super(layer, 0, 22);
 		this.font = font;
 
-		this.xPosition = x;
-		this.yPosition = y;
+		this.setPositionX(x);
+		this.setPositionY(y);
 		this.text = text;
-		this.height = 22;
 	}
 
-	protected int scale() {
-		return layer.getGuiScale();
-	}
+	public int getWidth() {
+		String localizedText = getLayer().getGui().localization().localize(text);
+		int width = font.getWidth(localizedText) + 8;
 
-	public float getWidth() {
-		String localizedText = layer.getGameWindow().getClient().getContent().localization().localize(text);
-		float width = font.getWidth(localizedText) * fontScaler + 8;
+		if (this.getWidth() > width)
+			width = this.getWidth();
 
-		if (this.width > width)
-			width = this.width;
-
-		return (width) * scale();
-	}
-
-	public float getHeight() {
-		return height * scale();
+		return width;
 	}
 
 	public boolean isMouseOver(Mouse mouse) {
-		return (mouse.getCursorX() >= xPosition && mouse.getCursorX() < xPosition + getWidth() && mouse.getCursorY() >= yPosition
-				&& mouse.getCursorY() <= yPosition + getHeight());
+		return (mouse.getCursorX() >= getPositionX() && mouse.getCursorX() < getPositionX() + getWidth() && mouse.getCursorY() >= getPositionY()
+				&& mouse.getCursorY() <= getPositionY() + getHeight());
 	}
 
 	@Override
-	public void render(RenderingInterface renderer) {
-		float width = getWidth();
-		String localizedText = layer.getGameWindow().getClient().getContent().localization().localize(text);
+	public void render(GuiDrawer renderer) {
+		String localizedText = getLayer().getGui().localization().localize(text);
 
-		Texture2D buttonTexture = renderer.textures().getTexture("./textures/gui/scalableButton2.png");
+		String buttonTexture = "./textures/gui/scalableButton2.png";
 		if (isFocused() || isMouseOver())
-			buttonTexture = renderer.textures().getTexture("./textures/gui/scalableButtonOver2.png");
+			buttonTexture = "./textures/gui/scalableButtonOver2.png";
 
-		buttonTexture.setLinearFiltering(false);
-		renderer.getGuiRenderer().drawCorneredBoxTiled(xPosition, yPosition, width, getHeight(), 4 * scale(), buttonTexture, 32, scale());
-		renderer.getFontRenderer().drawString(font, xPosition + 4 * scale(), yPosition, localizedText, fontScaler * scale(), new Vector4f(0, 0, 0, 1));// new
-																																						// Vector4f(76/255f,
-																																						// 76/255f,
-																																						// 76/255f,
-																																						// 1));
+		renderer.drawCorneredBoxTiled(getPositionX(), getPositionY(), getWidth(), getHeight(), 4, buttonTexture, 32);
+		renderer.drawString(font, getPositionX() + 4, getPositionY(), localizedText, -1, new Vector4f(0, 0, 0, 1));
 	}
 
 	@Override
@@ -98,7 +77,7 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 		if (!mouseButton.equals("mouse.left"))
 			return false;
 
-		this.layer.getGameWindow().getClient().getSoundManager().playSoundEffect("./sounds/gui/gui_click2.ogg");
+		this.getLayer().getGui().getClient().getSoundManager().playSoundEffect("./sounds/gui/gui_click2.ogg");
 
 		if (this.action != null)
 			this.action.run();

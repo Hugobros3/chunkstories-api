@@ -6,9 +6,9 @@
 
 package io.xol.chunkstories.api.events.categories;
 
-import io.xol.chunkstories.api.client.ClientInterface;
+import io.xol.chunkstories.api.client.Client;
 
 /** Describes events occuring client-side */
 public interface ClientEvent {
-	public ClientInterface getClient();
+	public Client getClient();
 }

@@ -16,7 +16,7 @@ import io.xol.chunkstories.api.content.ContentTranslator;
 import io.xol.chunkstories.api.exceptions.NullItemException;
 import io.xol.chunkstories.api.exceptions.UndefinedItemTypeException;
 import io.xol.chunkstories.api.item.Item;
-import io.xol.chunkstories.api.item.ItemDeclaration;
+import io.xol.chunkstories.api.item.ItemDefinition;
 
 import javax.annotation.Nullable;
 
@@ -40,11 +40,11 @@ public class ItemPile {
 		this.amount = amount;
 	}
 
-	public ItemPile(ItemDeclaration definition) {
+	public ItemPile(ItemDefinition definition) {
 		this(definition.newItem());
 	}
 
-	public ItemPile(ItemDeclaration definition, int amount) {
+	public ItemPile(ItemDefinition definition, int amount) {
 		this(definition.newItem(), amount);
 	}
 
@@ -53,7 +53,7 @@ public class ItemPile {
 		if (itemId == 0)
 			throw new NullItemException(stream);
 
-		ItemDeclaration itemType = translator.getItemForId(itemId);
+		ItemDefinition itemType = translator.getItemForId(itemId);
 		if (itemType == null)
 			throw new UndefinedItemTypeException(itemId);
 

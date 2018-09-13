@@ -134,6 +134,11 @@ public class DummyChunk implements Chunk {
 	}
 
 	@Override
+	public ChunkMesh mesh() {
+		return null;
+	}
+
+	@Override
 	public int peekRaw(int x, int y, int z) {
 		// TODO Auto-generated method stub
 		return 0;
