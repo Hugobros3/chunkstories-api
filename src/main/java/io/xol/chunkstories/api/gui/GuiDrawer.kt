@@ -21,7 +21,7 @@ interface GuiDrawer {
     /** Draws a string with a dropdown shadow, 2 pixels to the lower-right, with the color.rgb *= 0.5 */
     fun drawStringWithShadow(font: Font = fonts.defaultFont(), xPosition: Int, yPosition: Int, text: String, cutoffLength: Int = -1, color: Vector4fc = white)
 
-    fun drawBoxWindowsSpaceWithSize(startX: Int, startY: Int, width: Int, height: Int, textureStartX: Float, textureStartY: Float, textureEndX: Float, textureEndY: Float, texture: String?, alpha: Boolean, textured: Boolean, color: Vector4fc?)
+    fun drawBoxWindowsSpaceWithSize(startX: Int, startY: Int, width: Int, height: Int, textureStartX: Float, textureStartY: Float, textureEndX: Float, textureEndY: Float, texture: String?, color: Vector4fc?)
 
     fun drawCorneredBoxTiled(posx: Int, posy: Int, width: Int, height: Int, cornerSize: Int, texture: String, textureSize: Int)
 }

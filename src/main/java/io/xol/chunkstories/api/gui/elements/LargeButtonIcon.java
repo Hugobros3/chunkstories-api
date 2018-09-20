@@ -45,7 +45,7 @@ public class LargeButtonIcon extends BaseButton {
                 new Vector4f(38 / 255f, 38 / 255f, 38 / 255f, 1));
 
         renderer.drawBoxWindowsSpaceWithSize(getPositionX() + getWidth() / 2 - 16, getPositionY() + getHeight() / 2 - 26,
-                32, 32, 0, 1, 1, 0, "./textures/gui/icons/" + iconName + ".png", false, true, null);
+                32, 32, 0, 1, 1, 0, "./textures/gui/icons/" + iconName + ".png", null);
     }
 
 }

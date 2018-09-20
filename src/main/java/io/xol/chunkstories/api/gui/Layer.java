@@ -10,6 +10,7 @@ import io.xol.chunkstories.api.gui.elements.InputText;
 import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.input.Mouse.MouseButton;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
@@ -142,6 +143,7 @@ public class Layer {
         this.focusedElement = focusedElement;
     }
 
+    @Nonnull
     public final Layer getRootLayer() {
         if (parentLayer == null)
             return this; // this is the root layer !

@@ -14,6 +14,7 @@ import io.xol.chunkstories.api.gui.Gui
 import io.xol.chunkstories.api.particles.ParticlesManager
 import io.xol.chunkstories.api.plugin.ClientPluginManager
 import io.xol.chunkstories.api.util.Configuration
+import io.xol.chunkstories.api.workers.Tasks
 import io.xol.chunkstories.api.world.WorldClient
 
 /** The game client abstracted from a generic runtime perspective (not necessarily in game) */
@@ -23,6 +24,9 @@ interface Client {
 
     val soundManager: ClientSoundManager
     val inputsManager: ClientInputsManager
+
+    /** If we are ingame this will be set ! */
+    val ingame: IngameClient?
 
     /** Clientside configuration */
     val configuration: Configuration
@@ -39,7 +43,7 @@ interface IngameClient : Client, GameContext {
     /** Returns the currently played world. */
     val world: WorldClient
 
-    val pluginManager: ClientPluginManager
+    override val pluginManager: ClientPluginManager
 
     val particlesManager: ParticlesManager // TODO move in world
     val decalsManager: DecalsManager // TODO move in world
