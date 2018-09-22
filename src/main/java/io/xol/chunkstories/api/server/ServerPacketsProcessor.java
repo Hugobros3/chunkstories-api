@@ -11,7 +11,7 @@ import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.world.WorldMaster;
 
 public interface ServerPacketsProcessor {
-	public ServerInterface getContext();
+	public Server getContext();
 
 	public WorldMaster getWorld();
 

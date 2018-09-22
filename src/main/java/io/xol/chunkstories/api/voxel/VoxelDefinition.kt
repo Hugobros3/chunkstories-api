@@ -3,7 +3,9 @@ package io.xol.chunkstories.api.voxel
 import io.xol.chunkstories.api.content.Content
 import io.xol.chunkstories.api.content.Definition
 import io.xol.chunkstories.api.item.Item
+import io.xol.chunkstories.api.item.ItemDefinition
 import io.xol.chunkstories.api.util.kotlin.initOnce
+import java.lang.reflect.Constructor
 
 /** A Voxel definition defines a voxel type, one that can be placed in game, and is assignated an ID. */
 class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<String, String>) : Definition(name, properties) {
@@ -15,6 +17,7 @@ class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<S
     fun store() = store
 
     val clazz: Class<Voxel>
+    private val constructor: Constructor<Voxel>
 
     init {
         clazz = this.resolveProperty("class")?.let {
@@ -25,6 +28,13 @@ class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<S
                     throw Exception("The custom class has to extend the Voxel class !")
             }
         }  ?: Voxel::class.java
+
+        constructor = try {
+            clazz.getConstructor(VoxelDefinition::class.java)
+        } catch (e: NoSuchMethodException) {
+            throw Exception("Your custom class, $clazz, lacks the correct Voxel(VoxelDefinition) constructor.")
+        }
     }
 
+    fun <V : Voxel> create() = constructor.newInstance(this) as V
 }

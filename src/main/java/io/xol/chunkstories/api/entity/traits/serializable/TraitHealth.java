@@ -22,7 +22,7 @@ import io.xol.chunkstories.api.events.entity.EntityDeathEvent;
 import io.xol.chunkstories.api.events.player.PlayerDeathEvent;
 import io.xol.chunkstories.api.physics.EntityHitbox;
 import io.xol.chunkstories.api.player.Player;
-import io.xol.chunkstories.api.server.ServerInterface;
+import io.xol.chunkstories.api.server.Server;
 import io.xol.chunkstories.api.world.WorldMaster;
 import io.xol.chunkstories.api.world.serialization.StreamSource;
 import io.xol.chunkstories.api.world.serialization.StreamTarget;
@@ -151,8 +151,8 @@ public class TraitHealth extends TraitSerializable {
 
 					if (event.getDeathMessage() != null) {
 						GameContext gc = player.getContext();
-						if (gc instanceof ServerInterface)
-							((ServerInterface) gc).broadcastMessage(event.getDeathMessage());
+						if (gc instanceof Server)
+							((Server) gc).broadcastMessage(event.getDeathMessage());
 					}
 				} else {
 					// Weird, undefined cases ( controller wasn't a player, maybe some weird mod

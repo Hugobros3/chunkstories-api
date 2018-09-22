@@ -6,18 +6,18 @@
 
 package io.xol.chunkstories.api.plugin;
 
-import io.xol.chunkstories.api.server.ServerInterface;
+import io.xol.chunkstories.api.server.Server;
 
 /** A type of plugin that exclusivly runs on the server/master */
 public abstract class ServerPlugin extends ChunkStoriesPlugin {
-	private final ServerInterface serverInterface;
+	private final Server serverInterface;
 
-	public ServerPlugin(PluginInformation pluginInformation, ServerInterface Client) {
+	public ServerPlugin(PluginInformation pluginInformation, Server Client) {
 		super(pluginInformation, Client);
 		this.serverInterface = Client;
 	}
 
-	public ServerInterface getServer() {
+	public Server getServer() {
 		return serverInterface;
 	}
 }

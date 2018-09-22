@@ -18,10 +18,10 @@ import java.util.List;
 public class Layer {
     protected final Gui gui;
     @Nullable
-    protected final Layer parentLayer;
+    protected Layer parentLayer;
 
-    protected float xPosition, yPosition;
-    protected float width, height;
+    protected int xPosition, yPosition;
+    protected int width, height;
 
     protected List<GuiElement> elements = new LinkedList<GuiElement>();
     @Nullable
@@ -51,6 +51,10 @@ public class Layer {
     @Nullable
     public Layer getParentLayer() {
         return parentLayer;
+    }
+
+    public void setParentLayer(Layer parentLayer) {
+        this.parentLayer = parentLayer;
     }
 
     /**
@@ -102,35 +106,35 @@ public class Layer {
 
     }
 
-    public float getxPosition() {
+    public int getxPosition() {
         return xPosition;
     }
 
-    public void setxPosition(float xPosition) {
+    public void setxPosition(int xPosition) {
         this.xPosition = xPosition;
     }
 
-    public float getyPosition() {
+    public int getyPosition() {
         return yPosition;
     }
 
-    public void setyPosition(float yPosition) {
+    public void setyPosition(int yPosition) {
         this.yPosition = yPosition;
     }
 
-    public float getWidth() {
+    public int getWidth() {
         return width;
     }
 
-    public void setWidth(float width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    public float getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 

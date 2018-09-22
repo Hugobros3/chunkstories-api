@@ -7,15 +7,15 @@
 package io.xol.chunkstories.api.client
 
 import io.xol.chunkstories.api.GameContext
-import io.xol.chunkstories.api.content.Content
 import io.xol.chunkstories.api.graphics.Window
 import io.xol.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import io.xol.chunkstories.api.gui.Gui
+import io.xol.chunkstories.api.net.AuthentificationMethod
 import io.xol.chunkstories.api.particles.ParticlesManager
 import io.xol.chunkstories.api.plugin.ClientPluginManager
 import io.xol.chunkstories.api.util.Configuration
-import io.xol.chunkstories.api.workers.Tasks
 import io.xol.chunkstories.api.world.WorldClient
+import java.util.*
 
 /** The game client abstracted from a generic runtime perspective (not necessarily in game) */
 interface Client {
@@ -31,8 +31,9 @@ interface Client {
     /** Clientside configuration */
     val configuration: Configuration
 
-    /** Changes the game to a new world  */
-    fun changeWorld(world: WorldClient)
+    val user: ClientIdentity
+    // /** Changes the game to a new world  */
+    // fun changeWorld(world: WorldClient)
 }
 
 /** The game cient abstracted from a content/mod perspective. */
@@ -53,4 +54,11 @@ interface IngameClient : Client, GameContext {
 
     /** Closes current world and exits to main menu with an error message  */
     fun exitToMainMenu(errorMessage: String)
+}
+
+interface ClientIdentity {
+    val name : String
+
+    val authentificationMethod : AuthentificationMethod
+    // val uuid: UUID //TODO: Move to real UUIDs
 }

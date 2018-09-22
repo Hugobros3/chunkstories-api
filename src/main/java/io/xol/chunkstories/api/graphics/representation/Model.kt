@@ -2,9 +2,9 @@ package io.xol.chunkstories.api.graphics.representation
 
 import io.xol.chunkstories.api.animation.Animation
 import io.xol.chunkstories.api.animation.Animator
+import io.xol.chunkstories.api.graphics.Mesh
 import io.xol.chunkstories.api.graphics.rendergraph.Pass
 import io.xol.chunkstories.api.graphics.structs.InterfaceBlock
-import io.xol.chunkstories.api.mesh.Mesh
 import io.xol.chunkstories.api.physics.Box
 import org.joml.Vector3d
 

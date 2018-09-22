@@ -48,5 +48,5 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
     }
 
     //fun newItem() = constructor.newInstance(this)!!
-    fun <I : Item> newItem() = (constructor.newInstance(this)!! as? I)!!
+    fun <I : Item> newItem() = (constructor.newInstance(this)!! as I)!!
 }

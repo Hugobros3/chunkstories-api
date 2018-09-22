@@ -13,5 +13,5 @@ interface Window {
 
     fun hasFocus(): Boolean
 
-    fun takeScreenshot(): String
+    fun takeScreenshot()
 }

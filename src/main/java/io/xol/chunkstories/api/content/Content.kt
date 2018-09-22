@@ -11,8 +11,8 @@ import io.xol.chunkstories.api.animation.Animation
 import io.xol.chunkstories.api.content.mods.ModsManager
 import io.xol.chunkstories.api.entity.EntityDefinition
 import io.xol.chunkstories.api.exceptions.net.UnknowPacketException
+import io.xol.chunkstories.api.graphics.Mesh
 import io.xol.chunkstories.api.item.ItemDefinition
-import io.xol.chunkstories.api.mesh.MeshLibrary
 import io.xol.chunkstories.api.net.Packet
 import io.xol.chunkstories.api.net.PacketDefinition
 import io.xol.chunkstories.api.particles.ParticleTypeHandler
@@ -146,7 +146,7 @@ interface Content {
     interface WorldGenerators {
         fun getWorldGenerator(name: String): WorldGeneratorDefinition
 
-        fun getWorldGeneratorName(generator: WorldGenerator): String
+        //fun getWorldGeneratorName(generator: WorldGenerator): String
 
         fun all(): Iterator<WorldGeneratorDefinition>
 
@@ -185,7 +185,13 @@ interface Content {
         fun logger(): Logger
     }
 
-    fun meshes(): MeshLibrary
+    interface Meshes {
+        fun getMesh(meshName: String) : Mesh
+
+        val defaultMesh: Mesh
+    }
+
+    fun meshes(): Meshes
 
     /** General logger about content  */
     fun logger(): Logger

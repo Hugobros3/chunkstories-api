@@ -6,8 +6,8 @@
 
 package io.xol.chunkstories.api.plugin.commands;
 
-import io.xol.chunkstories.api.server.ServerInterface;
+import io.xol.chunkstories.api.server.Server;
 
 public interface ServerConsole extends CommandEmitter {
-	public ServerInterface getServer();
+	public Server getServer();
 }

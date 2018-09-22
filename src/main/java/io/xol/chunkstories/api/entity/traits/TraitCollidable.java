@@ -19,6 +19,7 @@ public class TraitCollidable extends Trait {
 	private boolean collidesWithEntities = true;
 	public TraitCollidable(Entity entity) {
 		super(entity);
+		collidesWithEntities = entity.getDefinition().resolveProperty("collisions.withOtherEntities", "true").equals("true");
 	}
 
 	public Vector3dc moveWithCollisionRestrain(Vector3dc delta) {
@@ -119,5 +120,9 @@ public class TraitCollidable extends Trait {
 		for (Box box : boxes)
 			box.translate(entity.getLocation());
 		return boxes;
+	}
+
+	public boolean getCollidesWithEntities() {
+		return collidesWithEntities;
 	}
 }
