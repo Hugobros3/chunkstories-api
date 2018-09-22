@@ -7,6 +7,7 @@
 package io.xol.chunkstories.api.client
 
 import io.xol.chunkstories.api.GameContext
+import io.xol.chunkstories.api.content.Content
 import io.xol.chunkstories.api.graphics.Window
 import io.xol.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import io.xol.chunkstories.api.gui.Gui
@@ -21,6 +22,8 @@ import java.util.*
 interface Client {
     val gameWindow: Window
     val gui: Gui
+
+    val content: Content
 
     val soundManager: ClientSoundManager
     val inputsManager: ClientInputsManager

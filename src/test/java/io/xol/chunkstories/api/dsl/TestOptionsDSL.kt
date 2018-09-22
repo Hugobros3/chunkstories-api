@@ -4,12 +4,12 @@ import org.junit.Test
 
 class TestOptionsDSL {
 
-    var ctx: OptionsDeclarationContext? = null
+    var ctx: OptionsDeclarationCtx? = null
 
     @Test
     fun test() {
         ctx?.apply {
-            configuration("client") {
+            section("client") {
                 section("rendering") {
 
                     optionMultipleChoicesInt("viewDistance") {

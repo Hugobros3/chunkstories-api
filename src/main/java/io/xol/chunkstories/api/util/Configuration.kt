@@ -7,31 +7,42 @@
 package io.xol.chunkstories.api.util
 
 import io.xol.chunkstories.api.GameContext
+import io.xol.chunkstories.api.dsl.OptionsDeclarationCtx
 import io.xol.chunkstories.api.events.config.OptionSetEvent
 import io.xol.chunkstories.api.input.Input
-import io.xol.chunkstories.api.input.KeyboardKeyInput
 import io.xol.chunkstories.api.math.Math2
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
-import java.nio.charset.Charset
 import java.util.*
+
+fun configurationFromOptions(declarations: OptionsDeclarationCtx.() -> Unit, context: GameContext?): Configuration {
+    val configuration = Configuration(context)
+    configuration.addOptions(declarations)
+    return configuration
+}
 
 /** Chunk Stories offer a relatively fancy way of managing user-configurable options, by way of the
  * **Configurations** API. This API allows you to declare *Configurations*, that hold a bunch of *Options*
  * that can be modified accorded to the option's value type and range. */
-class Configuration(optionsSet: Set<Option<*>>, val context: GameContext?) {
+class Configuration(val context: GameContext?) {
 
     val optionsMap = mutableMapOf<String, Option<*>>()
     val options: Set<Option<*>>
         get() = optionsMap.values.toSet()
 
-    init {
-        for(option in optionsSet)
-            optionsMap[option.name] = option
+    fun addOptions(declarations: OptionsDeclarationCtx.() -> Unit) {
+        val ctx = OptionsDeclarationCtx(this, "")
+        ctx.apply(declarations)
     }
 
-    open inner class Option<T>(val name: String, val defaultValue: T) {
+    fun registerOption(option: Option<*>) = optionsMap.put(option.name, option)
+
+    operator fun plusAssign(option: Option<*>) {
+        registerOption(option)
+    }
+
+    abstract inner class Option<T>(val name: String, val defaultValue: T) {
         var value: T = defaultValue
 
         val hooks = mutableListOf<() -> Unit>()
@@ -49,30 +60,22 @@ class Configuration(optionsSet: Set<Option<*>>, val context: GameContext?) {
 
             return false
         }
-
-        fun trySettingRaw(value: Any) {
-            val casted = value as? T ?: return
-            trySetting(casted)
-        }
     }
 
-    /** Created when the 'type' property resolves to 'toggle' or 'bool' or
-     * 'boolean'  */
-    inner class OptionBoolean(name: String, defaultValue: Boolean) : Option<Boolean>(name, defaultValue) {
+    open inner class OptionString(name: String, defaultValue: String) : Option<String>(name, defaultValue)
+
+    open inner class OptionBoolean(name: String, defaultValue: Boolean) : Option<Boolean>(name, defaultValue) {
         fun toggqle() = trySetting(!value)
     }
 
-    /** Created when the 'type' property resolves to 'int'  */
-    inner class OptionInt(name: String, defaultValue: Int) : Option<Int>(name, defaultValue)
+    open inner class OptionInt(name: String, defaultValue: Int) : Option<Int>(name, defaultValue)
 
-    /** Created when the 'type' property resolves to 'double'  */
     open inner class OptionDouble(name: String, defaultValue: Double) : Option<Double>(name, defaultValue)
 
-    /** Created when the 'type' property resolves to 'scale'  */
     inner class OptionDoubleRange(name: String, defaultValue: Double, val minimumValue: Double, val maximumValue: Double, val granularity: Double) : OptionDouble(name, defaultValue) {
-        override fun trySetting(value: Double) : Boolean {
+        override fun trySetting(value: Double): Boolean {
             val clampedValue = Math2.clampd(value, minimumValue, maximumValue)
-            val actuallySettingThisValue = if(granularity != 0.0) {
+            val actuallySettingThisValue = if (granularity != 0.0) {
                 val inverted = 1.0 / granularity
                 val rounded = Math.round(clampedValue * inverted).toDouble()
                 rounded * inverted
@@ -82,38 +85,77 @@ class Configuration(optionsSet: Set<Option<*>>, val context: GameContext?) {
         }
     }
 
-    /** Created when the 'type' property resolves to 'choice'  */
-    inner class OptionMultiChoice(name: String, defaultValue: String, val possibleChoices: List<String>) : Option<String>(name, defaultValue) {
+    inner class OptionMultiChoice(name: String, defaultValue: String, val possibleChoices: List<String>) : OptionString(name, defaultValue) {
         override fun trySetting(value: String): Boolean {
-            if(!possibleChoices.contains(value))
+            if (!possibleChoices.contains(value))
                 return false
             return super.trySetting(value)
         }
     }
 
-    /** Created when an input is *not* declared using the 'hidden' flag in a .inputs
-     * file! */
+    inner class OptionMultiChoiceInt(name: String, defaultValue: Int, val possibleChoices: List<Int>) : OptionInt(name, defaultValue) {
+        override fun trySetting(value: Int): Boolean {
+            if (!possibleChoices.contains(value))
+                return false
+            return super.trySetting(value)
+        }
+    }
+
+    /** Created when an input is *not* declared using the 'hidden' flag in a .inputs file! */
     inner class OptionInput(name: String, defaultValue: Input) : Option<Input>(name, defaultValue)
 
     /** Looks for a certain option. */
     operator fun <T : Option<*>> get(optionName: String): T? {
         val option = optionsMap.get(optionName)
-        return if(option != null) option as T else null
+        return if (option != null) option as T else null
     }
 
-    fun registerOption(option: Option<*>) = optionsMap.put(option.name, option)
-
-    operator fun plusAssign(option: Option<*>) { registerOption(option) }
-
+    /** Stores the value of the options in a file */
     fun save(file: File) {
         val properties = Properties()
         optionsMap.values.forEach { properties[it.name] = it.value }
         properties.store(FileWriter(file), "File autogenerated on ${Date()}")
     }
 
+    /** Loads the actual values of the options from a file and casts them appropriately */
     fun load(file: File) {
         val properties = Properties()
         properties.load(FileReader(file))
-        properties.forEach { (k,v) -> optionsMap.get(k)?.trySettingRaw(v) }
+        properties.forEach { (k, value) -> optionsMap.get(k)?.let {
+            val value = value as String
+            when(it) {
+                is OptionString -> it.trySetting(value)
+                is OptionDouble -> it.trySetting(value.toDouble())
+                is OptionInt -> it.trySetting(value.toInt())
+                else -> throw Exception("No idea how to load $it")
+            }
+        } }
     }
+
+    val values = QuickConfigValueAccess()
+
+    inner class QuickConfigValueAccess {
+        inline operator fun <reified T : Any> get(configNode: String) : T {
+            return when {
+                0 is T -> getIntValue(configNode) as T
+
+                0.0 is T -> getDoubleValue(configNode) as T
+
+                false is T -> getBooleanValue(configNode) as T
+
+                "0.0" is T -> getValue(configNode) as T
+
+                else -> throw Exception("You can only quick-access Boolean, Int, Double and String properties !")
+            }
+        }
+    }
+
+    fun getIntValue(configNode: String) : Int = ((optionsMap[configNode] as? OptionInt)?.value ?: 0)
+
+    fun getDoubleValue(configNode: String) : Double = ((optionsMap[configNode] as? OptionDouble)?.value ?: 0.0)
+
+    fun getBooleanValue(configNode: String) : Boolean = ((optionsMap[configNode] as? OptionBoolean)?.value ?: false)
+
+    fun getValue(configNode: String) : String = ((optionsMap[configNode] as? OptionString)?.value ?: "")
+
 }

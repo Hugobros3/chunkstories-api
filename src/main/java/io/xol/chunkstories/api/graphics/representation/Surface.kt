@@ -1,11 +1,11 @@
 package io.xol.chunkstories.api.graphics.representation
 
-import io.xol.chunkstories.api.graphics.Texture2D
+open class Surface(val textures: Map<String, String>) {
+    val albedo : String
+        get() = textures.getOrDefault("albedo", "textures/notex.png")
 
-data class Surface(
-        val albedo: Texture2D,
-        val normal: Texture2D?,
-        val metallic: Texture2D?,
-        val roughness: Texture2D?,
-        val ao: Texture2D?
-)
+    val normal : String
+        get() = textures.getOrDefault("normal", "textures/normalnormal.png")
+
+    //TODO other fast accessors ?
+}

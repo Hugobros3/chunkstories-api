@@ -13,4 +13,4 @@ data class Mesh(val vertices: Int, val attributes: List<MeshAttributeSet>, val m
 /** Contains all the per-vertex data for a certain attribute slot (position, normal, color etc) */
 data class MeshAttributeSet(val name: String, val components: Int, val format: VertexFormat, val data: ByteBuffer)
 
-data class MeshMaterial(val name: String, var surface: Surface)
+data class MeshMaterial(val name: String, var surface: Surface, val verticesRange: IntRange)
