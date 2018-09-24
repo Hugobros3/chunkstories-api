@@ -37,4 +37,8 @@ class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<S
     }
 
     fun <V : Voxel> create() = constructor.newInstance(this) as V
+
+    override fun toString(): String {
+        return "VoxelDefinition($name, $allProperties)"
+    }
 }

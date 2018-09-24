@@ -9,4 +9,8 @@ class VoxelMaterial(val store: Content.Voxels.VoxelMaterials, name: String, prop
 
     /** Shorthand for Java accesses */
     fun store() = store
+
+    override fun toString(): String {
+        return "VoxelMaterial($name, $allProperties)"
+    }
 }
