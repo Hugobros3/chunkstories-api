@@ -56,12 +56,12 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 	@Override
 	public void push(StreamTarget destinator, DataOutputStream dos) throws IOException {
-		inventory.pushInventory(destinator, dos, holder().getWorld().getContentTranslator());
+		inventory.pushInventory(destinator, dos, getHolder().getWorld().getContentTranslator());
 	}
 
 	@Override
 	public void pull(StreamSource from, DataInputStream dis) throws IOException {
-		inventory.pullInventory(from, dis, holder().getWorld().getContentTranslator());
+		inventory.pullInventory(from, dis, getHolder().getWorld().getContentTranslator());
 	}
 
 	public BasicInventory getInventory() {

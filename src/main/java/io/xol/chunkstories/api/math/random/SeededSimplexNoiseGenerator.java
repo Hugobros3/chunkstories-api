@@ -143,14 +143,14 @@ public class SeededSimplexNoiseGenerator {
 	// 2D simplex noise
 	public float noise(float xin, float yin) {
 		float n0, n1, n2; // Noise contributions from the three corners
-		// Skew the input space to determine which simplex cell we're in
+		// Skew the input space to determine which simplex getCell we're in
 		float s = (xin + yin) * F2; // Hairy factor for 2D
 		int i = fastfloor(xin + s);
 		int j = fastfloor(yin + s);
 		float t = (i + j) * G2;
-		float X0 = i - t; // Unskew the cell origin back to (x,y) space
+		float X0 = i - t; // Unskew the getCell origin back to (x,y) space
 		float Y0 = j - t;
-		float x0 = xin - X0; // The x,y distances from the cell origin
+		float x0 = xin - X0; // The x,y distances from the getCell origin
 		float y0 = yin - Y0;
 		// For the 2D case, the simplex shape is an equilateral triangle.
 		// Determine which simplex we are in.
@@ -210,17 +210,17 @@ public class SeededSimplexNoiseGenerator {
 	// 3D simplex noise
 	public float noise(float xin, float yin, float zin) {
 		float n0, n1, n2, n3; // Noise contributions from the four corners
-		// Skew the input space to determine which simplex cell we're in
+		// Skew the input space to determine which simplex getCell we're in
 		float s = (xin + yin + zin) * F3; // Very nice and simple skew factor
 											// for 3D
 		int i = fastfloor(xin + s);
 		int j = fastfloor(yin + s);
 		int k = fastfloor(zin + s);
 		float t = (i + j + k) * G3;
-		float X0 = i - t; // Unskew the cell origin back to (x,y,z) space
+		float X0 = i - t; // Unskew the getCell origin back to (x,y,z) space
 		float Y0 = j - t;
 		float Z0 = k - t;
-		float x0 = xin - X0; // The x,y,z distances from the cell origin
+		float x0 = xin - X0; // The x,y,z distances from the getCell origin
 		float y0 = yin - Y0;
 		float z0 = zin - Z0;
 		// For the 3D case, the simplex shape is a slightly irregular
@@ -343,7 +343,7 @@ public class SeededSimplexNoiseGenerator {
 	public float noise(float x, float y, float z, float w) {
 
 		float n0, n1, n2, n3, n4; // Noise contributions from the five corners
-		// Skew the (x,y,z,w) space to determine which cell of 24 simplices
+		// Skew the (x,y,z,w) space to determine which getCell of 24 simplices
 		// we're in
 		float s = (x + y + z + w) * F4; // Factor for 4D skewing
 		int i = fastfloor(x + s);
@@ -351,11 +351,11 @@ public class SeededSimplexNoiseGenerator {
 		int k = fastfloor(z + s);
 		int l = fastfloor(w + s);
 		float t = (i + j + k + l) * G4; // Factor for 4D unskewing
-		float X0 = i - t; // Unskew the cell origin back to (x,y,z,w) space
+		float X0 = i - t; // Unskew the getCell origin back to (x,y,z,w) space
 		float Y0 = j - t;
 		float Z0 = k - t;
 		float W0 = l - t;
-		float x0 = x - X0; // The x,y,z,w distances from the cell origin
+		float x0 = x - X0; // The x,y,z,w distances from the getCell origin
 		float y0 = y - Y0;
 		float z0 = z - Z0;
 		float w0 = w - W0;

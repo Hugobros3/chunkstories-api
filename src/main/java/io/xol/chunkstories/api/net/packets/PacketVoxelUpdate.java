@@ -56,14 +56,14 @@ public class PacketVoxelUpdate extends PacketWorld {
 		out.writeInt(context.getData());
 
 		if (componentToUpdate == null) {
-			for (Entry<String, VoxelComponent> entry : context.components().all()) {
+			for (Entry<String, VoxelComponent> entry : context.components().getAllVoxelComponents()) {
 				out.writeByte((byte) 0x01);
 				out.writeUTF(entry.getKey());
 				entry.getValue().push(destinator, out);
 			}
 		} else {
 			out.writeByte((byte) 0x01);
-			out.writeUTF(componentToUpdate.name());
+			out.writeUTF(componentToUpdate.getName());
 			componentToUpdate.push(destinator, out);
 		}
 
@@ -90,7 +90,7 @@ public class PacketVoxelUpdate extends PacketWorld {
 
 				while (nextComponent != 0) {
 					String componentName = in.readUTF();
-					context.components().get(componentName).pull(sender, in);
+					context.components().getVoxelComponent(componentName).pull(sender, in);
 					nextComponent = in.readByte();
 				}
 

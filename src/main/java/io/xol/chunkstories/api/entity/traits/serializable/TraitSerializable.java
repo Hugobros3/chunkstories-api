@@ -46,7 +46,7 @@ public abstract class TraitSerializable extends Trait {
 
 	/** Push the component to the controller, if such one exists */
 	public void pushComponentController() {
-		this.entity.traits.with(TraitController.class, e -> {
+		this.entity.traits.with(TraitControllable.class, e -> {
 			if (e.controller != null)
 				pushComponent(e.controller);
 		});
@@ -56,7 +56,7 @@ public abstract class TraitSerializable extends Trait {
 	public void pushComponentEveryoneButController() {
 		Iterator<Subscriber> iterator = entity.subscribers.iterator();
 
-		Controller controller = entity.traits.tryWith(TraitController.class, TraitController::getController);
+		Controller controller = entity.traits.tryWith(TraitControllable.class, TraitControllable::getController);
 
 		while (iterator.hasNext()) {
 			Subscriber subscriber = iterator.next();

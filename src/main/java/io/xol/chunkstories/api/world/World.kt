@@ -126,7 +126,7 @@ interface World {
         override fun getWorld(): World
     }
 
-    /** Get the data contained in this cell as full 32-bit data format ( see
+    /** Get the data contained in this getCell as full 32-bit data format ( see
      * [VoxelFormat])
      *
      * @return the data contained in this chunk as full 32-bit data format ( see
@@ -158,7 +158,7 @@ interface World {
     /** Peek the raw data of the chunk  */
     fun peekRaw(x: Int, y: Int, z: Int): Int
 
-    /** Poke new information in a voxel cell.
+    /** Poke new information in a voxel getCell.
      *
      * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
      * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -177,7 +177,7 @@ interface World {
     @Throws(WorldException::class)
     fun poke(fvc: FutureCell, cause: WorldModificationCause?): CellData
 
-    /** Poke new information in a voxel cell.
+    /** Poke new information in a voxel getCell.
      *
      * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
      * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -189,7 +189,7 @@ interface World {
 
     fun pokeSimple(fvc: FutureCell)
 
-    /** Poke new information in a voxel cell.
+    /** Poke new information in a voxel getCell.
      *
      * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
      * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -201,11 +201,11 @@ interface World {
 
     fun pokeSimpleSilently(fvc: FutureCell)
 
-    /** Poke the raw data for a voxel cell Takes a full 32-bit data format ( see
+    /** Poke the raw data for a voxel getCell Takes a full 32-bit data format ( see
      * [VoxelFormat])  */
     fun pokeRaw(x: Int, y: Int, z: Int, newVoxelData: Int)
 
-    /** Poke the raw data for a voxel cell Takes a full 32-bit data format ( see
+    /** Poke the raw data for a voxel getCell Takes a full 32-bit data format ( see
      * [VoxelFormat]) Does not trigger any updates.  */
     fun pokeRawSilently(x: Int, y: Int, z: Int, newVoxelData: Int)
 

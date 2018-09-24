@@ -23,7 +23,7 @@ public enum VoxelSide {
 
 	private static VoxelSide[] oppsiteSide = new VoxelSide[] { RIGHT, BACK, LEFT, FRONT, BOTTOM, TOP };
 
-	/** Cell offsets when looking up a side cell */
+	/** Cell offsets when looking up a side getCell */
 	public final int dx, dy, dz;
 
 	VoxelSide(int dx, int dy, int dz) {

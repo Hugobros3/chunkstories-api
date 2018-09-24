@@ -27,8 +27,8 @@ public abstract class Cell implements CellData {
 		this.blocklight = blocklight;
 		this.sunlight = sunlight;
 
-		// if(!voxel.getName().equals("air"))
-		// System.out.println(voxel.getName());
+		// if(!voxel.getRegisteredComponentName().equals("air"))
+		// System.out.println(voxel.getRegisteredComponentName());
 	}
 
 	@Override

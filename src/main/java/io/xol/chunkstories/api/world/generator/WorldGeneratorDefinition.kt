@@ -20,12 +20,12 @@ class WorldGeneratorDefinition(val store: Content.WorldGenerators, name: String,
         } ?: WorldGenerator::class.java
 
         constructor = try {
-            clazz.getConstructor(World::class.java)
+            clazz.getConstructor(WorldGeneratorDefinition::class.java, World::class.java)
         } catch (e: NoSuchMethodException) {
-            throw Exception("Your custom class, $clazz, lacks the correct WorldGenerator(World) constructor.")
+            throw Exception("Your custom class, $clazz, lacks the correct WorldGenerator(WorldGeneratorDefinition, World) constructor.")
         }
 
     }
 
-    fun <WG : WorldGenerator> createForWorld(world: World): WG = constructor.newInstance(world) as WG
+    fun <WG : WorldGenerator> createForWorld(world: World): WG = constructor.newInstance(this, world) as WG
 }

@@ -85,8 +85,7 @@ public class InputText extends FocusableGuiElement {
         if (this.isTransparent)
             backgroundTexture = (isFocused() ? "./textures/gui/textboxnofocustransp.png" : "./textures/gui/textboxtransp.png");
 
-        renderer.drawCorneredBoxTiled(getPositionX(), getPositionY(), getWidth(), getHeight(), 4,
-                backgroundTexture, 32);
+        renderer.drawBoxWithCorners(getPositionX(), getPositionY(), getWidth(), getHeight(), 8, backgroundTexture);
         renderer.drawStringWithShadow(font, getPositionX() + 4, getPositionY() + 1,
                 text + ((isFocused() && System.currentTimeMillis() % 1000 > 500) ? "|" : ""), -1, new Vector4f(1.0f));
 

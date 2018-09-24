@@ -10,6 +10,7 @@ import io.xol.chunkstories.api.dsl.DynamicRepresentationBuildingContext
 import io.xol.chunkstories.api.entity.Controller
 import io.xol.chunkstories.api.entity.Entity
 import io.xol.chunkstories.api.input.Input
+import io.xol.chunkstories.api.item.inventory.InventoryHolder
 import io.xol.chunkstories.api.item.inventory.ItemPile
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -24,13 +25,14 @@ open class Item(val definition: ItemDefinition) {
     val internalName: String
         get() = definition.name
 
+    val holder: InventoryHolder?
+        get() = itemPile?.inventory?.holder
+
     /** Should be called when the owner has this item selected
      *
      * @param owner
      */
-    open fun tickInHand(owner: Entity, itemPile: ItemPile) {
-
-    }
+    open fun tickInHand(owner: Entity, itemPile: ItemPile) = Unit
 
     /** Handles some input from the user
      *
@@ -39,9 +41,7 @@ open class Item(val definition: ItemDefinition) {
      * @param input
      * @return false if the item doesn't handle the input, true if it does
      */
-    open fun onControllerInput(owner: Entity, pile: ItemPile, input: Input, controller: Controller): Boolean {
-        return false
-    }
+    open fun onControllerInput(owner: Entity, pile: ItemPile, input: Input, controller: Controller): Boolean = false
 
     /** Use : determine if two stacks can be merged together, should be overriden
      * when items have extra info.

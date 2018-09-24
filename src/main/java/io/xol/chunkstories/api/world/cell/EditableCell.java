@@ -8,7 +8,7 @@ package io.xol.chunkstories.api.world.cell;
 
 import io.xol.chunkstories.api.voxel.Voxel;
 
-/** A cell we have the right to edit. */
+/** A getCell we have the right to edit. */
 public interface EditableCell extends CellData {
 
 	public void setVoxel(Voxel voxel);

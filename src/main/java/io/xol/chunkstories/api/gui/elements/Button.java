@@ -15,28 +15,28 @@ import io.xol.chunkstories.api.input.Mouse.MouseButton;
 import javax.annotation.Nullable;
 
 /** Provides a scalable button */
-public class BaseButton extends FocusableGuiElement implements ClickableGuiElement {
+public class Button extends FocusableGuiElement implements ClickableGuiElement {
 	protected String text;
 	protected Font font;
 
 	@Nullable
 	protected Runnable action;
 
-	public BaseButton(Layer layer, int x, int y, String text) {
+	public Button(Layer layer, int x, int y, String text) {
 		this(layer, x, y, text, null);
 	}
 
-	public BaseButton(Layer layer, int x, int y, int width, String text) {
+	public Button(Layer layer, int x, int y, int width, String text) {
 		this(layer, x, y, text, null);
 		this.setWidth(width);
 	}
 
-	public BaseButton(Layer layer, int x, int y, String text, @Nullable Runnable action) {
+	public Button(Layer layer, int x, int y, String text, @Nullable Runnable action) {
 		this(layer, layer.getGui().getFonts().getFont("LiberationSans-Regular", 12), x, y, text);
 		this.action = action;
 	}
 
-	public BaseButton(Layer layer, Font font, int x, int y, String text) {
+	public Button(Layer layer, Font font, int x, int y, String text) {
 		super(layer, 0, 22);
 		this.font = font;
 
@@ -68,7 +68,7 @@ public class BaseButton extends FocusableGuiElement implements ClickableGuiEleme
 		if (isFocused() || isMouseOver())
 			buttonTexture = "./textures/gui/scalableButtonOver2.png";
 
-		renderer.drawCorneredBoxTiled(getPositionX(), getPositionY(), getWidth(), getHeight(), 4, buttonTexture, 32);
+		renderer.drawBoxWithCorners(getPositionX(), getPositionY(), getWidth(), getHeight(), 8, buttonTexture);
 		renderer.drawString(font, getPositionX() + 4, getPositionY(), localizedText, -1, new Vector4f(0, 0, 0, 1));
 	}
 

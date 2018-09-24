@@ -11,7 +11,7 @@ import io.xol.chunkstories.api.gui.GuiDrawer;
 import io.xol.chunkstories.api.gui.Layer;
 import org.joml.Vector4f;
 
-public class LargeButton extends BaseButton {
+public class LargeButton extends Button {
 
     public LargeButton(Layer layer, String text) {
         super(layer, layer.getGui().getFonts().getFont("LiberationSansNarrow-Bold__aa", 18.666f), 0, 0, text);
@@ -29,7 +29,7 @@ public class LargeButton extends BaseButton {
         if (isFocused() || isMouseOver())
             buttonTexture = ("./textures/gui/mainMenuOver.png");
 
-        renderer.drawCorneredBoxTiled(getPositionX(), getPositionY(), getWidth(), getHeight(), 4, buttonTexture, 32);
+        renderer.drawBoxWithCorners(getPositionX(), getPositionY(), getWidth(), getHeight(), 8, buttonTexture);
 
         Font font = renderer.getFonts().getFont("LiberationSansNarrow-Bold__aa", 16f);
 

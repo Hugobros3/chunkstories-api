@@ -59,7 +59,7 @@ public interface Chunk {
 	/** Peek the raw data of the chunk */
 	public int peekRaw(int x, int y, int z);
 
-	/** Poke new information in a voxel cell.
+	/** Poke new information in a voxel getCell.
 	 * 
 	 * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
 	 * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -72,7 +72,7 @@ public interface Chunk {
 	 *             location for some reason */
 	public ChunkCell poke(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata, @Nullable WorldModificationCause cause) throws WorldException;
 
-	/** Poke new information in a voxel cell.
+	/** Poke new information in a voxel getCell.
 	 * 
 	 * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
 	 * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -82,7 +82,7 @@ public interface Chunk {
 	 * It will also trigger lightning and such updates */
 	public void pokeSimple(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 
-	/** Poke new information in a voxel cell.
+	/** Poke new information in a voxel getCell.
 	 * 
 	 * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
 	 * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -161,9 +161,10 @@ public interface Chunk {
 		public CellComponents components();
 
 		@Deprecated
-		/** Accesses the raw data in that cell. Reserved for internal engine purposes
-		 * ! */
+		/** Accesses the raw data in that getCell. Reserved for internal engine purposes! */
 		public int getData();
+
+		public void refreshRepresentation();
 	}
 
 	public interface FreshChunkCell extends ChunkCell {

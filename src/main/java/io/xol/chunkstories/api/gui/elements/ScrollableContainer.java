@@ -92,10 +92,10 @@ public class ScrollableContainer extends FocusableGuiElement implements Clickabl
             String bgTexture = isMouseOver(drawer.getGui().getMouse()) ? "./textures/gui/genericOver.png" : "./textures/gui/generic.png";
 
             // Render graphical base
-            drawer.drawBoxWindowsSpaceWithSize(positionX, positionY, width, height, 0, 1, 1, 0, bgTexture,
+            drawer.drawBox(positionX, positionY, width, height, 0, 1, 1, 0, bgTexture,
                     new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
             // Render icon
-            drawer.drawBoxWindowsSpaceWithSize(positionX + 4, positionY + 4, 64, 64, 0, 1, 1, 0, iconTextureLocation, new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
+            drawer.drawBox(positionX + 4, positionY + 4, 64, 64, 0, 1, 1, 0, iconTextureLocation, new Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
             // Text !
             if (name != null)
                 drawer.drawString(drawer.getFonts().getFont("LiberationSans-Regular", 12), positionX + 70, positionY + 54,

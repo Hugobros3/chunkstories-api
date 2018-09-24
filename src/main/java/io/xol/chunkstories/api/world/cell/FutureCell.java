@@ -12,7 +12,7 @@ import io.xol.chunkstories.api.world.World;
 
 import javax.annotation.Nullable;
 
-/** A VoxelContext representing a possible future state for a voxel cell. */
+/** A VoxelContext representing a possible future state for a voxel getCell. */
 public class FutureCell extends Cell implements CellData, EditableCell {
 
 	World world;

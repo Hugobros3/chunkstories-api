@@ -98,6 +98,10 @@ public class DummyChunk implements Chunk {
 		public CellComponents components() {
 			throw new UnsupportedOperationException("components()");
 		}
+
+		@Override public void refreshRepresentation() {
+
+		}
 	}
 
 	@Override

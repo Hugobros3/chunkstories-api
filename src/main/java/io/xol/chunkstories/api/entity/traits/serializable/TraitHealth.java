@@ -130,7 +130,7 @@ public class TraitHealth extends TraitSerializable {
 		entity.getWorld().getGameLogic().getPluginsManager().fireEvent(entityDeathEvent);
 
 		// Handles cases of controlled player death
-		entity.traits.with(TraitController.class, ec -> {
+		entity.traits.with(TraitControllable.class, ec -> {
 			Controller controller = ec.getController();
 			if (controller != null) {
 				controller.setControlledEntity(null);

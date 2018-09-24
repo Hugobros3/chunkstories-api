@@ -86,7 +86,7 @@ open class Voxel(val definition: VoxelDefinition) {
         definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0}
     }
 
-    /** Called before setting a cell to this Voxel type. Previous state is assumed
+    /** Called before setting a getCell to this Voxel type. Previous state is assumed
      * to be air.
      *
      * @param newData The data we want to place here. You are welcome to modify it !
@@ -98,7 +98,7 @@ open class Voxel(val definition: VoxelDefinition) {
         // Do nothing
     }
 
-    /** Called *after* a cell was successfully placed. Unlike onPlace you can
+    /** Called *after* a getCell was successfully placed. Unlike onPlace you can
      * add your voxelComponents here.
      *
      * @param cell
@@ -107,9 +107,9 @@ open class Voxel(val definition: VoxelDefinition) {
 
     }
 
-    /** Called before replacing a cell contaning this voxel type with air.
+    /** Called before replacing a getCell contaning this voxel type with air.
      *
-     * @param context Current data in this cell.
+     * @param context Current data in this getCell.
      * @param cause The cause of this modification ( can be an Entity )
      * @throws Throw a IllegalBlockModificationException if you want to stop the
      * modification from happening.
@@ -119,10 +119,10 @@ open class Voxel(val definition: VoxelDefinition) {
         // Do nothing
     }
 
-    /** Called when either the metadata, block_light or sun_light values of a cell
+    /** Called when either the metadata, block_light or sun_light values of a getCell
      * of this Voxel type is touched.
      *
-     * @param context The current data in this cell.
+     * @param context The current data in this getCell.
      * @param newData The future data we want to put there
      * @param cause The cause of this modification ( can be an Entity )
      * @throws IllegalBlockModificationException If we want to prevent it
@@ -165,8 +165,8 @@ open class Voxel(val definition: VoxelDefinition) {
      * another, based on data from the two blocks and the side from wich it's
      * leaving the first block from.
      *
-     * @param `in` The cell the light is going into (==this one) ( see [            CellData.class][CellData] )
-     * @param out The cell the light is coming from ( see [            CellData.class][CellData] )
+     * @param `in` The getCell the light is going into (==this one) ( see [            CellData.class][CellData] )
+     * @param out The getCell the light is coming from ( see [            CellData.class][CellData] )
      * @param side The side of the block light would come out of ( see
      * [VoxelSides.class][VoxelSide] )
      * @return The reduction to apply to the light level on exit
@@ -227,7 +227,7 @@ open class Voxel(val definition: VoxelDefinition) {
         })
     }
 
-    /** Returns what's dropped when a cell using this voxel type is destroyed  */
+    /** Returns what's dropped when a getCell using this voxel type is destroyed  */
     open fun getLoot(cell: CellData, cause: WorldModificationCause): List<ItemPile> {
         /** If this block has custom logic for loot spawning, use that ! */
         val logic = lootLogic

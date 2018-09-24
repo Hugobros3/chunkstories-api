@@ -9,6 +9,7 @@ package io.xol.chunkstories.api.world
 /** A structure containing the essential information defining a world */
 data class WorldInfo(val internalName: String,
                      var name: String,
+                     val description: String,
                      val seed: String,
                      val size: WorldSize,
                      val generatorName: String)

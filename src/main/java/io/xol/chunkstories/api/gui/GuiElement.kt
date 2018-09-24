@@ -12,7 +12,6 @@ abstract class GuiElement protected constructor(protected val layer: Layer, open
     var positionX = 0
     var positionY = 0
 
-
     val isMouseOver: Boolean
         get() = isMouseOver(layer.getGui().mouse)
 
@@ -21,10 +20,14 @@ abstract class GuiElement protected constructor(protected val layer: Layer, open
         positionY = y
     }
 
+    fun setSize(width: Int, height: Int) {
+        this.width = width
+        this.height = height
+    }
+
     /** Is the mouse over this object  */
     open fun isMouseOver(mouse: Mouse): Boolean {
-        return (mouse.cursorX >= this.positionX && mouse.cursorY >= this.positionY
-                && mouse.cursorX <= this.positionX + this.width && mouse.cursorY <= this.positionY + this.height)
+        return mouse.cursorX >= this.positionX && mouse.cursorY >= this.positionY && mouse.cursorX <= this.positionX + this.width && mouse.cursorY <= this.positionY + this.height
     }
 
     abstract fun render(renderer: GuiDrawer)

@@ -51,10 +51,10 @@ public class InventoryTranslator {
 			VoxelInventoryComponent component = (VoxelInventoryComponent) inventory.getHolder();
 
 			out.writeByte(0x03);
-			out.writeInt(component.holder().getX());
-			out.writeInt(component.holder().getY());
-			out.writeInt(component.holder().getZ());
-			out.writeUTF(component.holder().name(component));
+			out.writeInt(component.getHolder().getX());
+			out.writeInt(component.getHolder().getY());
+			out.writeInt(component.getHolder().getZ());
+			out.writeUTF(component.getName());
 		} else
 			out.writeByte(0x00);
 		// throw new RuntimeException("Untranslatable and Unknown Inventory :
@@ -83,7 +83,7 @@ public class InventoryTranslator {
 
 			try {
 				ChunkCell voxelContext = context.getWorld().peek(x, y, z);
-				VoxelComponent com = voxelContext.components().get(traitName);
+				VoxelComponent com = voxelContext.components().getVoxelComponent(traitName);
 				if (com != null && com instanceof VoxelInventoryComponent) {
 					VoxelInventoryComponent comp = (VoxelInventoryComponent) com;
 					return comp.getInventory();

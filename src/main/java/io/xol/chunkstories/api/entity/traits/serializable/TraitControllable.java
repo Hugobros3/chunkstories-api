@@ -16,6 +16,7 @@ import io.xol.chunkstories.api.client.LocalPlayer;
 import io.xol.chunkstories.api.entity.Controller;
 import io.xol.chunkstories.api.entity.Entity;
 import io.xol.chunkstories.api.exceptions.UnauthorizedClientActionException;
+import io.xol.chunkstories.api.input.Input;
 import io.xol.chunkstories.api.player.Player;
 import io.xol.chunkstories.api.world.WorldClientNetworkedRemote;
 import io.xol.chunkstories.api.world.WorldMaster;
@@ -25,16 +26,16 @@ import io.xol.chunkstories.api.world.serialization.StreamTarget;
 import javax.annotation.Nullable;
 
 /** Holds information about who controls one entity */
-public class TraitController extends TraitSerializable {
+public abstract class TraitControllable extends TraitSerializable {
 	@Nullable
 	Controller controller = null;
 
-	public TraitController(Entity entity) {
+	public TraitControllable(Entity entity) {
 		super(entity);
 	}
 
 	@Nullable
-	public Controller getController() {
+	public final Controller getController() {
 		return controller;
 	}
 
@@ -52,6 +53,17 @@ public class TraitController extends TraitSerializable {
 		if (formerController != null && (controller == null || !controller.equals(formerController)))
 			pushComponent(formerController);
 	}
+
+	/** Called whenever an input is pressed by the controller of this entity */
+	public abstract boolean onControllerInput(Input input);
+
+	/** Called on every rendered frame ( You want your camera control there, probably ) */
+	public abstract boolean onEachFrame();
+
+	/*
+	Methods below are concerned with synchronizing the controller state across client/server, you can safely
+	ignore them if you're just interested in creating a custom entity type.
+	 */
 
 	@Override
 	public void push(StreamTarget to, DataOutputStream dos) throws IOException {

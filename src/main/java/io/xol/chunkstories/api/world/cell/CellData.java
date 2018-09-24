@@ -13,9 +13,9 @@ import io.xol.chunkstories.api.world.World;
 
 import javax.annotation.Nullable;
 
-/** A CellData is representing the content of a specific cell in the world.
+/** A CellData is representing the content of a specific getCell in the world.
  * 
- * A cell is the smallest editable bit of world data in chunk stories. A cell
+ * A getCell is the smallest editable bit of world data in chunk stories. A getCell
  * contains a Voxel type, 8 bits of free-form metadata and 2x 4-bits of voxel
  * lightning ( for sun/skylight and voxel-emitted light ) */
 public interface CellData {
@@ -28,12 +28,11 @@ public interface CellData {
 	public int getZ();
 
 	public default Location getLocation() {
-		// Just here so dummy classes are shorter, actual voxel contexts have a field
-		// for this
+		// Just here so dummy classes are shorter, actual voxel contexts have a field for this
 		return new Location(getWorld(), getX(), getY(), getZ());
 	}
 
-	/** Return the Voxel type used in this cell */
+	/** Return the Voxel type used in this getCell */
 	@Nullable
 	public Voxel getVoxel();
 

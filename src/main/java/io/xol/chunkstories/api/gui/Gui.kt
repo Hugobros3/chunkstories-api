@@ -18,6 +18,13 @@ interface Gui {
     /** The top layer of the GUI, if one exists. (Otherwise just the game output and maybe debug information is shown)*/
     var topLayer: Layer?
 
+    /** Pops the top layer : Assuming there is already a top layer, puts it's parent layer at the top */
+    fun popTopLayer() {
+        topLayer?.let {
+            topLayer = it.parentLayer
+        }
+    }
+
     val mouse: Mouse
     fun hasFocus() : Boolean
 

@@ -16,14 +16,29 @@ interface GuiDrawer {
     val fonts: Fonts
 
     /** Draws a string */
-    fun drawString(font: Font = fonts.defaultFont(), xPosition: Int, yPosition: Int, text: String, cutoffLength: Int = -1, color: Vector4fc = white)
+    fun drawString(font: Font = fonts.defaultFont(), xPosition: Int, yPosition: Int, text: String, cutoffLength: Int, color: Vector4fc = white)
+
+    fun drawString(font: Font = fonts.defaultFont(), xPosition: Int, yPosition: Int, text: String, color: Vector4fc = white)
+
+    fun drawString(xPosition: Int, yPosition: Int, text: String, color: Vector4fc = white)
+
+    fun drawString(xPosition: Int, yPosition: Int, text: String)
 
     /** Draws a string with a dropdown shadow, 2 pixels to the lower-right, with the color.rgb *= 0.5 */
     fun drawStringWithShadow(font: Font = fonts.defaultFont(), xPosition: Int, yPosition: Int, text: String, cutoffLength: Int = -1, color: Vector4fc = white)
 
-    fun drawBoxWindowsSpaceWithSize(startX: Int, startY: Int, width: Int, height: Int, textureStartX: Float, textureStartY: Float, textureEndX: Float, textureEndY: Float, texture: String?, color: Vector4fc?)
+    fun drawBox(startX: Int, startY: Int, width: Int, height: Int, textureStartX: Float, textureStartY: Float, textureEndX: Float, textureEndY: Float, texture: String?, color: Vector4fc?)
 
-    fun drawCorneredBoxTiled(posx: Int, posy: Int, width: Int, height: Int, cornerSize: Int, texture: String, textureSize: Int)
+    fun drawBox(startX: Int, startY: Int, width: Int, height: Int, texture: String?, color: Vector4fc?)
+
+    fun drawBox(startX: Int, startY: Int, width: Int, height: Int, texture: String?)
+
+    fun drawBox(startX: Int, startY: Int, width: Int, height: Int, color: Vector4fc?)
+
+    /** Draws a box of arbitrary size and tiles the texture and borders like a proper windowing system.
+     * @param cornerSizeDivider The ratio of the total texture size to the size of the corner section. Typically it's 1/8th so you'd input '8'
+     */
+    fun drawBoxWithCorners(posx: Int, posy: Int, width: Int, height: Int, cornerSizeDivider: Int = 8, texture: String)
 }
 
 interface Fonts {
@@ -32,6 +47,9 @@ interface Fonts {
 
     /** Returns a reasonnable default font, used in most of the interface */
     fun defaultFont(): Font
+
+    /** Returns the default font, but with it's size scaled by N */
+    fun defaultFont(sizeMultiplier: Int): Font
 }
 
 interface Font {
