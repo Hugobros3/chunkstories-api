@@ -1,6 +1,8 @@
 package io.xol.chunkstories.api.dsl
 
+import io.xol.chunkstories.api.graphics.GraphicsEngine
 import io.xol.chunkstories.api.graphics.ImageInput
+import io.xol.chunkstories.api.graphics.Texture
 import io.xol.chunkstories.api.graphics.UniformInput
 import io.xol.chunkstories.api.graphics.rendergraph.*
 import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
@@ -45,6 +47,8 @@ class RenderGraphDeclarationsCtx(val renderGraph: RenderGraph) {
             renderGraph.passes.add(pass)
         }
     }.apply(function)
+
+    fun ImageInput.texture(asset: String) : (GraphicsEngine) -> Texture = { it.textures.getOrLoadTexture2D(asset) }
 
     val viewportSize
         get() = renderGraph.viewportSize

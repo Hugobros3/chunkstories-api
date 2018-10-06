@@ -60,7 +60,7 @@ class TestRenderGraphDSL {
                         imageInput {
                             name = "colorMap"
 
-                            source = "./textures/effects/tonemap.png"
+                            source = texture("textures/effects/tonemap.png")
                             samplingMode = LINEAR
                             wrapping = false
                         }
