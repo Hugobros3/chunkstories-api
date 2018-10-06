@@ -11,7 +11,13 @@ interface Shader {
     })
     fun bindUniformBlock(uniformInput: UniformInput)
 
-    fun bindImage(imageInput: ImageInput)
+    //fun bindImage(imageInput: ImageInput)
+}
+
+enum class ShaderStage {
+    VERTEX,
+    GEOMETRY,
+    FRAGMENT
 }
 
 class UniformInput {
@@ -24,7 +30,7 @@ class ImageInput {
     lateinit var name: String
 
     /** Name of the source RenderBuffer or a path to an asset, or a Texture object. */
-    lateinit var source: Any
+    lateinit var source: (GraphicsEngine) -> Texture
 
     // General state fluff
     var samplingMode = SamplingMode.NEAREST
