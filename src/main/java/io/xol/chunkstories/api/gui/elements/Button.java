@@ -47,12 +47,12 @@ public class Button extends FocusableGuiElement implements ClickableGuiElement {
 
 	public int getWidth() {
 		String localizedText = getLayer().getGui().localization().localize(text);
-		int width = font.getWidth(localizedText) + 8;
+		int labelWidth = font.getWidth(localizedText) + 8;
 
-		if (this.getWidth() > width)
-			width = this.getWidth();
+		if (super.getWidth() > labelWidth)
+			return super.getWidth();
 
-		return width;
+		return labelWidth;
 	}
 
 	public boolean isMouseOver(Mouse mouse) {

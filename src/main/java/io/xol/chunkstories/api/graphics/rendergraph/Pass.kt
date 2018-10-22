@@ -5,7 +5,7 @@ import io.xol.chunkstories.api.graphics.Shader
 import io.xol.chunkstories.api.graphics.UniformInput
 import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
 
-class Pass {
+open class Pass {
     constructor()
     constructor(name: String) {
         this.name = name
@@ -23,6 +23,7 @@ class Pass {
 
     /** The default pass is the pass where meshes are rendered unless specified otherwise. */
     var default = false
+    var final = false
 
     val dependencies = mutableSetOf<String>()
 

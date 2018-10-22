@@ -11,42 +11,14 @@ import org.joml.Vector2i
 import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 
-typealias RenderGraphDeclarationScript = RenderGraphDeclarationsCtx.() -> Unit
+typealias RenderGraphDeclarationScript = RenderGraphDeclarationsContext.() -> Unit
 
-/** Fancy adapter for the rendergraph DSL (which is really just Kotlin with this syntactic sugar)*/
-class RenderGraphDeclarationsCtx(val renderGraph: RenderGraph) {
+interface RenderGraphDeclarationsContext {
+    val renderGraph: RenderGraph
 
-    /** Execute the script code from a render graph declaration script */
-    fun execute(script: RenderGraphDeclarationScript) {
-        this.apply(script)
-    }
+    fun renderBuffers(renderBufferDeclarations: RenderBuffersDeclarationCtx.() -> Unit) : RenderBuffersDeclarationCtx
 
-    /** Enter the context to declare a bunch of RenderBuffers */
-    fun renderBuffers(renderBufferDeclarations: RenderBuffersDeclarationCtx.() -> Unit) = object : RenderBuffersDeclarationCtx {
-
-        /** Declare a render buffer and add it to the graph */
-        override fun renderBuffer(renderBufferConfiguration: RenderBuffer.() -> Unit) {
-            val renderBuffer = RenderBuffer().apply(renderBufferConfiguration)
-            renderGraph.buffers.add(renderBuffer)
-        }
-    }.apply(renderBufferDeclarations)
-
-    /** Enter the context to declare a bunch of Passes */
-    fun passes(function: PassesDeclarationCtx.() -> Unit) = object : PassesDeclarationCtx {
-        override fun Pass.draws(drawsDeclarations: DrawsDeclarationCtx.() -> Unit) { object : DrawsDeclarationCtx {
-
-            override fun <T : DrawingSystem> system(type: KClass<T>, config: T.() -> Unit) {
-                this@draws.declaredDrawingSystems.add(RegisteredDrawingSystem(type.java, config as DrawingSystem.() -> Unit))
-            }
-
-        }.apply(drawsDeclarations)}
-
-        /** Declare a pass and add it to the graph */
-        override fun pass(function: Pass.() -> Unit) {
-            val pass = Pass().apply(function)
-            renderGraph.passes.add(pass)
-        }
-    }.apply(function)
+    fun passes(function: PassesDeclarationCtx.() -> Unit) : PassesDeclarationCtx
 
     fun ImageInput.texture(asset: String) : (GraphicsEngine) -> Texture = { it.textures.getOrLoadTexture2D(asset) }
 
@@ -95,7 +67,6 @@ interface PassesDeclarationCtx {
             val output = PassOutput().apply(outputConfiguration)
             this@outputs.outputs.add(output)
         }
-
     }
 
     fun Pass.draws(drawsDeclarations : DrawsDeclarationCtx.() -> Unit)

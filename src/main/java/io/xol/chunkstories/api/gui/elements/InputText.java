@@ -56,7 +56,7 @@ public class InputText extends FocusableGuiElement {
     }
 
     public int getWidth() {
-        int len = getWidth();
+        int len = super.getWidth();
         int txtlen = font.getWidth(text);
         if (txtlen > len)
             len = txtlen;
