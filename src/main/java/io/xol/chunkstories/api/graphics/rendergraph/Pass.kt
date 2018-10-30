@@ -68,7 +68,7 @@ class PassOutput {
     lateinit var name: String
 
     /** If the output buffer has a different name than the shader output, supply it here */
-    lateinit var outputBuffer: String
+    var outputBuffer: String? = null
 
     /** Should we use blending while outputing to this ? */
     var blending: BlendMode = BlendMode.ALPHA_TEST
