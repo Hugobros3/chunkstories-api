@@ -6,12 +6,13 @@
 
 package io.xol.chunkstories.api.gui
 
+import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
 import org.joml.Vector4f
 import org.joml.Vector4fc
 
 val white = Vector4f(1.0F)
 
-interface GuiDrawer {
+interface GuiDrawer : DrawingSystem {
     val gui: Gui
     val fonts: Fonts
 
