@@ -1,5 +1,7 @@
 package io.xol.chunkstories.api.graphics
 
+import io.xol.chunkstories.api.graphics.rendergraph.Pass
+import io.xol.chunkstories.api.graphics.rendergraph.RegisteredDrawingSystem
 import io.xol.chunkstories.api.graphics.rendergraph.RenderGraph
 import io.xol.chunkstories.api.graphics.representation.Model
 import io.xol.chunkstories.api.graphics.systems.dispatching.DispatchingSystem
@@ -35,5 +37,5 @@ interface GraphicsEngine {
 /** When creating systems implementations you will need one of those.
  * No specifics as we don't assume anything about graphical APIs or game implementations !*/
 interface GraphicsBackend {
-    fun createDrawingSystem(clazz: Class<DrawingSystem>) : DrawingSystem
+    fun createDrawingSystem(pass: Pass, registeredDrawingSystem: RegisteredDrawingSystem) : DrawingSystem
 }
