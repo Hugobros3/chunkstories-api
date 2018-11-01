@@ -20,7 +20,9 @@ interface RenderGraphDeclarationsContext {
 
     fun passes(function: PassesDeclarationCtx.() -> Unit) : PassesDeclarationCtx
 
-    fun ImageInput.texture(asset: String) : (GraphicsEngine) -> Texture = { it.textures.getOrLoadTexture2D(asset) }
+    fun ImageInput.texture(assetName: String) = ImageInput.ImageSource.AssetReference(assetName)
+
+    fun ImageInput.renderBuffer(bufferName: String) = ImageInput.ImageSource.RenderBufferReference(bufferName)
 
     val viewportSize
         get() = renderGraph.viewportSize

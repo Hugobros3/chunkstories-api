@@ -30,7 +30,13 @@ class ImageInput {
     lateinit var name: String
 
     /** Name of the source RenderBuffer or a path to an asset, or a Texture object. */
-    lateinit var source: (GraphicsEngine) -> Texture
+    lateinit var source: ImageSource
+
+    sealed class ImageSource {
+        class AssetReference(val assetName: String) : ImageSource()
+        class RenderBufferReference(val renderBufferName: String) : ImageSource()
+        class TextureReference(val texture: Texture) : ImageSource()
+    }
 
     // General state fluff
     var samplingMode = SamplingMode.NEAREST
