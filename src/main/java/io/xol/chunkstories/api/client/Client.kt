@@ -14,9 +14,8 @@ import io.xol.chunkstories.api.gui.Gui
 import io.xol.chunkstories.api.net.AuthentificationMethod
 import io.xol.chunkstories.api.particles.ParticlesManager
 import io.xol.chunkstories.api.plugin.ClientPluginManager
-import io.xol.chunkstories.api.util.Configuration
+import io.xol.chunkstories.api.util.configuration.Configuration
 import io.xol.chunkstories.api.world.WorldClient
-import java.util.*
 
 /** The game client abstracted from a generic runtime perspective (not necessarily in game) */
 interface Client {

@@ -11,8 +11,8 @@ class TestRepresentationDSL {
         val representation: DynamicRepresentationBuildingContext.() -> Unit = {
             var i = 0
 
-            model("./models/shrek.obj") {
-                animation = "./animations/dancing.bvh"
+            model("models/shrek.obj") {
+                animation = "animations/dancing.bvh"
 
                 children {
                     //Create a red light

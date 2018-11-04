@@ -66,7 +66,7 @@ open class Item(val definition: ItemDefinition) {
      * @return The full path to the image file.
      */
     open fun getTextureName(pile: ItemPile): String {
-        return "./items/icons/$internalName.png"
+        return "items/icons/$internalName.png"
     }
 
     /** Unsafe, called upon loading this item from a stream. If you do use it,

@@ -18,7 +18,7 @@ class ParticleTypeDefinition(val store: Content.ParticlesTypes, name: String, pr
     val shaderName: String = resolveProperty("shader", "particles")
 
     /** Returns null or a path to an asset.  */
-    val albedoTexture: String = resolveProperty("albedoTexture", "./res/textures/particle.png")
+    val albedoTexture: String = resolveProperty("albedoTexture", "res/textures/particle.png")
 
     /** Returns null or a path to an asset.  */
     val normalTexture: String? = resolveProperty("normalTexture")

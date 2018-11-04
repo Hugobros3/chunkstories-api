@@ -1,7 +1,6 @@
-package io.xol.chunkstories.api.dsl
+package io.xol.chunkstories.api.util.configuration
 
-import io.xol.chunkstories.api.util.Configuration
-
+//TODO add defensive error checking & logging
 /** Executes a snippet of Configuration DSL and adds a bunch of options to a Configuration */
 class OptionsDeclarationCtx(private val configuration: Configuration, private val prefix: String) {
     fun section(sectionName: String, declarations: OptionsDeclarationCtx.() -> Unit) {
@@ -11,23 +10,29 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
 
     open class OptionDeclarationCtx<T : Any> {
         var hidden: Boolean = false
-        lateinit var default: T
+        var transient: Boolean = false
+        var default: T? = null
     }
 
     class OptionStringDeclarationCtx : OptionDeclarationCtx<String>()
 
-    fun option(optionName: String, declaration: OptionStringDeclarationCtx.() -> Unit) {
+    fun option(optionName: String, declaration: OptionStringDeclarationCtx.() -> Unit): String {
         val declared = OptionStringDeclarationCtx().apply(declaration)
-        val option = configuration.OptionString(optionName, declared.default)
+        val option = configuration.OptionString("$prefix$optionName", declared.default ?: "undefined")
+        option.hidden = declared.hidden
+        option.transient = declared.transient
+
         configuration.registerOption(option)
+        return option.name
     }
 
     class OptionBooleanDeclarationCtx : OptionDeclarationCtx<Boolean>()
 
-    fun optionBoolean(optionName: String, declaration: OptionBooleanDeclarationCtx.() -> Unit) {
+    fun optionBoolean(optionName: String, declaration: OptionBooleanDeclarationCtx.() -> Unit): String {
         val declared = OptionBooleanDeclarationCtx().apply(declaration)
-        val option = configuration.OptionBoolean(optionName, declared.default)
+        val option = configuration.OptionBoolean("$prefix$optionName", declared.default ?: false)
         configuration.registerOption(option)
+        return option.name
     }
 
     open class OptionMultipleChoicesDeclarationCtx<T : Any> : OptionDeclarationCtx<T>() {
@@ -36,18 +41,20 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
 
     class OptionMultipleChoicesIntDeclarationCtx : OptionMultipleChoicesDeclarationCtx<Int>()
 
-    fun optionMultipleChoicesInt(optionName: String, declaration: OptionMultipleChoicesIntDeclarationCtx.() -> Unit ) {
+    fun optionMultipleChoicesInt(optionName: String, declaration: OptionMultipleChoicesIntDeclarationCtx.() -> Unit): String {
         val declared = OptionMultipleChoicesIntDeclarationCtx().apply(declaration)
-        val option = configuration.OptionMultiChoiceInt(optionName, declared.default, declared.possibleChoices)
+        val option = configuration.OptionMultiChoiceInt("$prefix$optionName", declared.default ?: declared.possibleChoices[0], declared.possibleChoices)
         configuration.registerOption(option)
+        return option.name
     }
 
     class OptionMultipleChoicesStringDeclarationCtx : OptionMultipleChoicesDeclarationCtx<String>()
 
-    fun optionMultipleChoices(optionName: String, declaration: OptionMultipleChoicesStringDeclarationCtx.() -> Unit) {
+    fun optionMultipleChoices(optionName: String, declaration: OptionMultipleChoicesStringDeclarationCtx.() -> Unit): String {
         val declared = OptionMultipleChoicesStringDeclarationCtx().apply(declaration)
-        val option = configuration.OptionMultiChoice(optionName, declared.default, declared.possibleChoices)
+        val option = configuration.OptionMultiChoice("$prefix$optionName", declared.default ?: declared.possibleChoices[0], declared.possibleChoices)
         configuration.registerOption(option)
+        return option.name
     }
 
     class OptionRangeDoubleDeclarationCtx : OptionDeclarationCtx<Double>() {
@@ -56,9 +63,10 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
         var granularity: Double = 0.0
     }
 
-    fun optionRangeDouble(optionName: String, declaration: OptionRangeDoubleDeclarationCtx.() -> Unit) {
+    fun optionRangeDouble(optionName: String, declaration: OptionRangeDoubleDeclarationCtx.() -> Unit): String {
         val declared = OptionRangeDoubleDeclarationCtx().apply(declaration)
-        val option = configuration.OptionDoubleRange(optionName, declared.default, declared.minimumValue, declared.maximumValue, declared.granularity)
+        val option = configuration.OptionDoubleRange("$prefix$optionName", declared.default ?: declared.minimumValue, declared.minimumValue, declared.maximumValue, declared.granularity)
         configuration.registerOption(option)
+        return option.name
     }
 }

@@ -9,7 +9,7 @@ package io.xol.chunkstories.api.events.config;
 import io.xol.chunkstories.api.events.CancellableEvent;
 import io.xol.chunkstories.api.events.EventListeners;
 import io.xol.chunkstories.api.events.world.WorldTickEvent;
-import io.xol.chunkstories.api.util.Configuration.Option;
+import io.xol.chunkstories.api.util.configuration.Configuration.Option;
 
 public class OptionSetEvent extends CancellableEvent {
 

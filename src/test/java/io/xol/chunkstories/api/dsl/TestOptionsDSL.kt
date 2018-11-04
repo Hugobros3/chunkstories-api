@@ -1,5 +1,6 @@
 package io.xol.chunkstories.api.dsl
 
+import io.xol.chunkstories.api.util.configuration.OptionsDeclarationCtx
 import org.junit.Test
 
 class TestOptionsDSL {

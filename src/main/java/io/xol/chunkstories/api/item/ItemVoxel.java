@@ -48,8 +48,8 @@ public class ItemVoxel extends Item implements WorldModificationCause {
     public String getTextureName(ItemPile pile) {
         // ItemDataVoxel idv = (ItemDataVoxel) pile.data;
         if (voxel != null)
-            return "./items/icons/" + voxel.getName() + ".png";
-        return "./items/icons/notex.png";
+            return "items/icons/" + voxel.getName() + ".png";
+        return "items/icons/notex.png";
     }
 
     @Nullable

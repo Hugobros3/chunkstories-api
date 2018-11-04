@@ -78,7 +78,7 @@ public class ScrollableContainer extends FocusableGuiElement implements Clickabl
         @Nullable
         public String descriptionLines;
 
-        public String iconTextureLocation = "./textures/gui/info.png";
+        public String iconTextureLocation = "textures/gui/info.png";
         protected int positionX, positionY;
         protected int width = 480, height = 72;
 
@@ -89,7 +89,7 @@ public class ScrollableContainer extends FocusableGuiElement implements Clickabl
 
         public void render(GuiDrawer drawer) {
             // Setup textures
-            String bgTexture = isMouseOver(drawer.getGui().getMouse()) ? "./textures/gui/genericOver.png" : "./textures/gui/generic.png";
+            String bgTexture = isMouseOver(drawer.getGui().getMouse()) ? "textures/gui/genericOver.png" : "textures/gui/generic.png";
 
             // Render graphical base
             drawer.drawBox(positionX, positionY, width, height, 0, 1, 1, 0, bgTexture,

@@ -61,7 +61,7 @@ open class Definition(val name: String, private val properties : Map<String, Str
         }
 
         // Replace material name
-        resolved = resolved.replace("<name>", name);
+        resolved = resolved!!.replace("<name>", name);
 
         // Alternative syntax
         resolved = resolved.replace("~", name);
