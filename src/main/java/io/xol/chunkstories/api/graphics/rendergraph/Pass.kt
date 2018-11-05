@@ -49,8 +49,12 @@ class DepthTestingConfiguration {
     /** Disables depth testing altogether */
     var enabled = true
 
+    /** Should we clear the buffer before proceeding ? */
+    var clear = false
+
     /** Disable to stop the zBuffer from updating */
     var write = true
+
     /** If enabled is set to true this has to be configured. */
     lateinit var depthBuffer: String
 
