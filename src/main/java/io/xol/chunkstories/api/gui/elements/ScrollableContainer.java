@@ -104,12 +104,12 @@ public class ScrollableContainer extends FocusableGuiElement implements Clickabl
             if (topRightString != null) {
                 int dekal = width - drawer.getFonts().getFont("LiberationSans-Regular", 12).getWidth(topRightString) - 4;
                 drawer.drawString(drawer.getFonts().getFont("LiberationSans-Regular", 12), positionX + dekal,
-                        positionY + 54, topRightString, 1, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
+                        positionY + 54, topRightString, -1, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
             }
 
             if (descriptionLines != null)
                 drawer.drawString(drawer.getFonts().getFont("LiberationSans-Regular", 12), positionX + 70, positionY + 38,
-                        descriptionLines, 1, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
+                        descriptionLines, -1, new Vector4f(0.25f, 0.25f, 0.25f, 1.0f));
 
         }
 
