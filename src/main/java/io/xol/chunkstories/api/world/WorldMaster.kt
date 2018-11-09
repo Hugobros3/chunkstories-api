@@ -13,7 +13,7 @@ import io.xol.chunkstories.api.util.concurrency.Fence
 /** A 'master' world is one hosting the game logic and who runs the 'serverside'
  * plugins. It can be either a dedicated server or a singleplayer world.  */
 interface WorldMaster : World {
-    val players: IterableIterator<Player>
+    val players: Set<Player>
 
     /** Returns the folder where the world files are on disk.  */
     val folderPath: String

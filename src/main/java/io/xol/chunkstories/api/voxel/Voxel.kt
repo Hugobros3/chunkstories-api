@@ -115,7 +115,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * modification from happening.
      */
     @Throws(WorldException::class)
-    open fun onRemove(cell: ChunkCell, cause: WorldModificationCause) {
+    open fun onRemove(cell: ChunkCell, cause: WorldModificationCause?) {
         // Do nothing
     }
 

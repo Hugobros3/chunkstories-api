@@ -30,10 +30,10 @@ abstract class Entity(val definition: EntityDefinition, @JvmField val world: Wor
         set(value) = if(!value) throw Exception("Can't de-initialize an entity!") else field = value
 
     @JvmField
-    val traitLocation = TraitLocation(this, location)
+    val traits : Traits = Traits()
 
     @JvmField
-    val traits : Traits = Traits()
+    val traitLocation = TraitLocation(this, location)
 
     @JvmField
     val subscribers = Subscribers()
@@ -178,7 +178,7 @@ abstract class Entity(val definition: EntityDefinition, @JvmField val world: Wor
         }
 
         operator fun <T : Trait> get(trait: Class<T>): T? {
-            return map[trait] as T
+            return map[trait] as? T?
         }
 
         operator fun <T : Trait> get(trait: KClass<T>) = this[trait.java]
@@ -186,7 +186,7 @@ abstract class Entity(val definition: EntityDefinition, @JvmField val world: Wor
         /** Tries to find a trait matching this type, executes some action on it and
          * returns the result. Returns null if no such trait was found.  */
         fun <T : Trait, R> tryWith(traitType: Class<T>, action: ReturnsAction<T, R>): R? {
-            val trait = map[traitType] as T
+            val trait = map[traitType] as? T?
             return if (trait != null) {
                 action.run(trait)
             } else null
@@ -201,7 +201,7 @@ abstract class Entity(val definition: EntityDefinition, @JvmField val world: Wor
          * on it and returns the result. Returns false if no such trait was
          * found.  */
         fun <T : Trait> tryWithBoolean(traitType: Class<T>, action: BooleanAction<T>): Boolean {
-            val trait = map[traitType] as T
+            val trait = map[traitType] as? T?
             return if (trait != null) {
                 action.run(trait)
             } else false
@@ -214,7 +214,7 @@ abstract class Entity(val definition: EntityDefinition, @JvmField val world: Wor
         /** Tries to find a trait matching this type, executes some action on it and
          * returns true. Returns false if no such trait was found.  */
         fun <T : Trait> with(traitType: Class<T>, action: VoidAction<T>): Boolean {
-            val trait = map[traitType] as T
+            val trait = map[traitType] as? T?
             if (trait != null) {
                 action.run(trait)
                 return true
@@ -232,7 +232,7 @@ abstract class Entity(val definition: EntityDefinition, @JvmField val world: Wor
 
         override fun toString(): String {
             var ok = ""
-            for (trait in all()!!)
+            for (trait in all())
                 ok += "(" + safename(trait.javaClass) + ", " + trait.id() + ")" + ", "
             return all()!!.size.toString() + "{" + ok + "}"
         }

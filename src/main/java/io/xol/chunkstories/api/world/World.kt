@@ -299,5 +299,5 @@ interface World {
      *
      * @return true if the interaction was handled
      */
-    fun handleInteraction(entity: Entity, blockLocation: Location, input: Input): Boolean
+    fun handleInteraction(entity: Entity, blockLocation: Location?, input: Input): Boolean
 }

@@ -24,7 +24,7 @@ interface Server : GameContext {
 
     /** @return The players that are **logged in**
      */
-    val connectedPlayers: IterableIterator<Player>
+    val connectedPlayers: Set<Player>
 
     val connectedPlayersCount: Int
 
