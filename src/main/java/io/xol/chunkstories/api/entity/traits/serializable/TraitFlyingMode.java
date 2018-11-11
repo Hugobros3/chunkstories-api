@@ -42,7 +42,7 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			camspeed *= 8f;
 
 		if (controller.getInputsManager().getInputByName("back").isPressed()) {
-			float a = (float) ((-entityRotation.getHorizontalRotation()) / 180f * Math.PI);
+			float a = (float) ((entityRotation.getHorizontalRotation()) / 180f * Math.PI);
 			float b = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (noclip)
 				entity.traitLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
@@ -50,22 +50,22 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
 		}
 		if (controller.getInputsManager().getInputByName("forward").isPressed()) {
-			float a = (float) ((180 - entityRotation.getHorizontalRotation()) / 180f * Math.PI);
-			float b = (float) ((-entityRotation.getVerticalRotation()) / 180f * Math.PI);
+			float a = (float) ((entityRotation.getHorizontalRotation()) / 180f * Math.PI);
+			float b = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (noclip)
 				entity.traitLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
 			else
 				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
 		}
 		if (controller.getInputsManager().getInputByName("right").isPressed()) {
-			float a = (float) ((-entityRotation.getHorizontalRotation() - 90) / 180f * Math.PI);
+			float a = (float) ((entityRotation.getHorizontalRotation() + 90) / 180f * Math.PI);
 			if (noclip)
 				entity.traitLocation.move(-Math.sin(a) * camspeed, 0, -Math.cos(a) * camspeed);
 			else
 				entityCollisions.moveWithCollisionRestrain(-Math.sin(a) * camspeed, 0, -Math.cos(a) * camspeed);
 		}
 		if (controller.getInputsManager().getInputByName("left").isPressed()) {
-			float a = (float) ((-entityRotation.getHorizontalRotation() + 90) / 180f * Math.PI);
+			float a = (float) ((entityRotation.getHorizontalRotation() - 90) / 180f * Math.PI);
 			if (noclip)
 				entity.traitLocation.move(-Math.sin(a) * camspeed, 0, -Math.cos(a) * camspeed);
 			else

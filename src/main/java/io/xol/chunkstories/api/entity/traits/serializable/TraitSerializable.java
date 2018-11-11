@@ -47,8 +47,9 @@ public abstract class TraitSerializable extends Trait {
 	/** Push the component to the controller, if such one exists */
 	public void pushComponentController() {
 		this.entity.traits.with(TraitControllable.class, e -> {
-			if (e.controller != null)
-				pushComponent(e.controller);
+			Controller controller = e.getController();
+			if (controller != null)
+				pushComponent(controller);
 		});
 	}
 

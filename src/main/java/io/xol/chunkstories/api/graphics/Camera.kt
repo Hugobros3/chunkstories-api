@@ -7,6 +7,4 @@ import org.joml.Vector3fc
 
 data class Camera(var viewMatrix: Matrix4f, var projectionMatrix: Matrix4f) : InterfaceBlock {
     constructor() : this(Matrix4f(), Matrix4f())
-
-    val up : Vector3fc = Vector3f(0f, 1f, 0f)
 }

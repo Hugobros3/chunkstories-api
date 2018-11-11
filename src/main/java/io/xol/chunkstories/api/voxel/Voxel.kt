@@ -32,18 +32,18 @@ open class Voxel(val definition: VoxelDefinition) {
     fun isAir() = store().air().sameKind(this)
 
     /** The textures used for rendering this block. Goes unused with custom models ! */
-    var voxelTextures = Array<VoxelTexture>(6) { store().textures().defaultVoxelTexture }
+    var voxelTextures = Array<VoxelTexture>(6) { store().textures().getVoxelTexture(name) }
 
     /** The material this block uses */
     var voxelMaterial: VoxelMaterial = store().materials().defaultMaterial
 
     /** Can entities pass through this block ? */
-    var solid = definition.resolveProperty("solid", "false") == "true"
+    var solid = definition.resolveProperty("solid", "true") == "true"
         @JvmName("isSolid")
         get
 
     /** Does this block completely hides adjacent ones (and can we just skip rendering those hidden faces) ? */
-    var opaque = definition.resolveProperty("opaque", "false") == "true"
+    var opaque = definition.resolveProperty("opaque", "true") == "true"
         @JvmName("isOpaque")
         get
 
@@ -59,6 +59,7 @@ open class Voxel(val definition: VoxelDefinition) {
     var shadingLightLevel = 0
 
     var collisionBoxes = arrayOf(Box(Vector3d(0.0), Vector3d(1.0)))
+        get() = Array(field.size) { i -> Box(field[i])}
 
     var lootLogic: LootRules? = null
 
@@ -94,7 +95,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * modification from happening altogether.
      */
     @Throws(WorldException::class)
-    open fun onPlace(cell: FutureCell, cause: WorldModificationCause) {
+    open fun onPlace(cell: FutureCell, cause: WorldModificationCause?) {
         // Do nothing
     }
 
@@ -128,7 +129,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * @throws IllegalBlockModificationException If we want to prevent it
      */
     @Throws(WorldException::class)
-    open fun onModification(context: ChunkCell, newData: FutureCell, cause: WorldModificationCause) {
+    open fun onModification(context: ChunkCell, newData: FutureCell, cause: WorldModificationCause?) {
         // Do nothing
     }
 

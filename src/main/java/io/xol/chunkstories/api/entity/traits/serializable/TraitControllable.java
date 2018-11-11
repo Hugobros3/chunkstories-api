@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 /** Holds information about who controls one entity */
 public abstract class TraitControllable extends TraitSerializable {
 	@Nullable
-	Controller controller = null;
+	private Controller controller = null;
 
 	public TraitControllable(Entity entity) {
 		super(entity);
@@ -64,7 +64,6 @@ public abstract class TraitControllable extends TraitSerializable {
 	Methods below are concerned with synchronizing the controller state across client/server, you can safely
 	ignore them if you're just interested in creating a custom entity type.
 	 */
-
 	@Override
 	public void push(StreamTarget to, DataOutputStream dos) throws IOException {
 		// We write if the controller exists and if so we tell the uuid

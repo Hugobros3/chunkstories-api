@@ -41,11 +41,23 @@ public class TraitRotation extends TraitSerializable {
 	public Vector3dc getDirectionLookingAt() {
 		Vector3d direction = new Vector3d();
 
-		double a = ((-getHorizontalRotation()) / 360f * 2 * Math.PI);
-		double b = ((getVerticalRotation()) / 360f * 2 * Math.PI);
-		direction.x = (-Math.sin(a) * Math.cos(b));
-		direction.y = (-Math.sin(b));
-		direction.z = (-Math.cos(a) * Math.cos(b));
+		double horizontalRotationRad = ((getHorizontalRotation()) / 360f * 2 * Math.PI);
+		double verticalRotationRad = ((getVerticalRotation()) / 360f * 2 * Math.PI);
+		direction.x = (Math.sin(horizontalRotationRad) * Math.cos(verticalRotationRad));
+		direction.y = (Math.sin(verticalRotationRad));
+		direction.z = (Math.cos(horizontalRotationRad) * Math.cos(verticalRotationRad));
+
+		return direction.normalize();
+	}
+
+	public Vector3dc getUpDirection() {
+		Vector3d direction = new Vector3d(0.0, 1.0, 0.0);
+
+		double horizontalRotationRad = ((getHorizontalRotation()) / 360f * 2 * Math.PI);
+		double verticalRotationRad = ((getVerticalRotation() + 90f) / 360f * 2 * Math.PI);
+		direction.x = (Math.sin(horizontalRotationRad) * Math.cos(verticalRotationRad));
+		direction.y = (Math.sin(verticalRotationRad));
+		direction.z = (Math.cos(horizontalRotationRad) * Math.cos(verticalRotationRad));
 
 		return direction.normalize();
 	}
