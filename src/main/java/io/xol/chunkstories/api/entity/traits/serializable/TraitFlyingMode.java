@@ -32,44 +32,43 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			return; // you must be able to rotate to fly
 
 		TraitCollidable entityCollisions = entity.traits.get(TraitCollidable.class);
-		boolean noclip = entityCollisions == null | this.noclip; // not having collision on an entity means it's always
-																	// in noclip mode
+		boolean ignoreCollisions = entityCollisions == null | this.noclip;
 
-		float camspeed = flySpeed;
+		float cameraSpeed = flySpeed;
 		if (controller.getInputsManager().getInputByName("flyReallyFast").isPressed())
-			camspeed *= 8 * 5f;
+			cameraSpeed *= 8 * 5f;
 		else if (controller.getInputsManager().getInputByName("flyFast").isPressed())
-			camspeed *= 8f;
+			cameraSpeed *= 8f;
 
 		if (controller.getInputsManager().getInputByName("back").isPressed()) {
-			float a = (float) ((entityRotation.getHorizontalRotation()) / 180f * Math.PI);
-			float b = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
-			if (noclip)
-				entity.traitLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+			float horizRotRad = (float) ((entityRotation.getHorizontalRotation() + 180f) / 180f * Math.PI);
+			float vertRotRad = (float) ((-entityRotation.getVerticalRotation()) / 180f * Math.PI);
+			if (ignoreCollisions)
+				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 		}
 		if (controller.getInputsManager().getInputByName("forward").isPressed()) {
-			float a = (float) ((entityRotation.getHorizontalRotation()) / 180f * Math.PI);
-			float b = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
-			if (noclip)
-				entity.traitLocation.move(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+			float horizRotRad = (float) ((entityRotation.getHorizontalRotation()) / 180f * Math.PI);
+			float vertRotRad = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
+			if (ignoreCollisions)
+				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(a) * camspeed * Math.cos(b), Math.sin(b) * camspeed, Math.cos(a) * camspeed * Math.cos(b));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 		}
 		if (controller.getInputsManager().getInputByName("right").isPressed()) {
-			float a = (float) ((entityRotation.getHorizontalRotation() + 90) / 180f * Math.PI);
-			if (noclip)
-				entity.traitLocation.move(-Math.sin(a) * camspeed, 0, -Math.cos(a) * camspeed);
+			float horizRot = (float) ((entityRotation.getHorizontalRotation() + 90) / 180f * Math.PI);
+			if (ignoreCollisions)
+				entity.traitLocation.move(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 			else
-				entityCollisions.moveWithCollisionRestrain(-Math.sin(a) * camspeed, 0, -Math.cos(a) * camspeed);
+				entityCollisions.moveWithCollisionRestrain(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 		}
 		if (controller.getInputsManager().getInputByName("left").isPressed()) {
-			float a = (float) ((entityRotation.getHorizontalRotation() - 90) / 180f * Math.PI);
-			if (noclip)
-				entity.traitLocation.move(-Math.sin(a) * camspeed, 0, -Math.cos(a) * camspeed);
+			float horizRot = (float) ((entityRotation.getHorizontalRotation() - 90) / 180f * Math.PI);
+			if (ignoreCollisions)
+				entity.traitLocation.move(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 			else
-				entityCollisions.moveWithCollisionRestrain(-Math.sin(a) * camspeed, 0, -Math.cos(a) * camspeed);
+				entityCollisions.moveWithCollisionRestrain(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 		}
 	}
 }

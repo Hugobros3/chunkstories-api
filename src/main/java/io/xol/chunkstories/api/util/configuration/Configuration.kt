@@ -107,8 +107,8 @@ class Configuration(val context: GameContext?, val file: File) {
         }
     }
 
-    /** Created when an input is *not* declared using the 'hidden' flag in a .inputs file! */
-    inner class OptionInput(name: String, defaultValue: Input) : Option<Input>(name, defaultValue)
+    ///** Created when an input is *not* declared using the 'hidden' flag in a .inputs file! */
+    inner class OptionKeyBind(name: String, defaultValue: Int) : Option<Int>(name, defaultValue)
 
     /** Looks for a certain option. */
     operator fun <T : Option<*>> get(optionName: String): T? {

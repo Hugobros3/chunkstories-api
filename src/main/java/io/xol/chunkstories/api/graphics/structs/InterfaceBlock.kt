@@ -17,3 +17,7 @@ enum class UniformUpdateFrequency {
     ONCE_PER_RENDERPASS,
     ONCE_PER_FRAME
 }
+
+@Target(AnnotationTarget.FIELD, AnnotationTarget.PROPERTY)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class IgnoreGLSL

@@ -4,6 +4,7 @@ import io.xol.chunkstories.api.graphics.ImageInput
 import io.xol.chunkstories.api.graphics.Shader
 import io.xol.chunkstories.api.graphics.UniformInput
 import io.xol.chunkstories.api.graphics.systems.drawing.DrawingSystem
+import org.joml.Vector4d
 
 open class Pass {
     constructor()
@@ -79,6 +80,7 @@ class PassOutput {
 
     /** Should we clear the buffer before proceeding ? */
     var clear = false
+    var clearColor = Vector4d(0.0)
 
     /** Should we copy another buffer to this one before proceeding ? */
     var copy: String? = null
