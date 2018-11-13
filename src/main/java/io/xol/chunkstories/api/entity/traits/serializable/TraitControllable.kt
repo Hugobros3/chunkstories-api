@@ -57,7 +57,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
 
             val fov = (90.0 / 360.0 * (Math.PI * 2)).toFloat()
             val aspect = client.gameWindow.width.toFloat() / client.gameWindow.height.toFloat()
-            val projectionMatrix = Matrix4f().perspective(fov, aspect, 0.1f, 1000f, true)
+            val projectionMatrix = Matrix4f().perspective(fov, aspect, 0.1f, 2000f, true)
 
             val location = entity.location
             val cameraPosition = location.toVec3f()
