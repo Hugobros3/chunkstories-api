@@ -39,7 +39,6 @@ class Frustrum(val camera: Camera, val window: Window) {
         val lookAt = Vector3f(camera.lookingAt).add(cameraPosition)
         //val up = Vector3f(0.0f, 1.0f, 0.0f)
         val up = camera.up
-        //println("lookAt $lookAt \n up $up \n camPos: $cameraPosition")
 
         // Create the 6 frustrum planes
         val Z = Vector3f(cameraPosition.x(), cameraPosition.y(), cameraPosition.z())

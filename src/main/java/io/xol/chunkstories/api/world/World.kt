@@ -247,7 +247,7 @@ interface World {
 
     /** Returns either null or a valid chunk if a corresponding ChunkHolder was
      * acquired by someone and the chunk had time to load.  */
-    val allLoadedChunks: Collection<Chunk>
+    val allLoadedChunks: Sequence<Chunk>
 
     /* Regions */
 

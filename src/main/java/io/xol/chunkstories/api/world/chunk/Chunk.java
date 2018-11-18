@@ -23,6 +23,7 @@ import io.xol.chunkstories.api.world.region.Region;
 
 import javax.annotation.Nullable;
 
+/** Contains 32x32x32 voxels worth of data */
 public interface Chunk {
 	public World getWorld();
 

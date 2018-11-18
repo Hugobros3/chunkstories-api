@@ -59,8 +59,8 @@ class DummyWorld : World {
         get() = throw NotImplementedError()
 
     override// TODO Auto-generated method stub
-    val allLoadedChunks: Set<Chunk>
-        get() = emptySet()
+    val allLoadedChunks: Sequence<Chunk>
+        get() = emptySequence()
 
     override// TODO Auto-generated method stub
     val regionsSummariesHolder: WorldHeightmaps
