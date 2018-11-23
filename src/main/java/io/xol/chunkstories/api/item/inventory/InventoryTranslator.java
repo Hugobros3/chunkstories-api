@@ -22,18 +22,19 @@ import io.xol.chunkstories.api.world.chunk.Chunk.ChunkCell;
 import javax.annotation.Nullable;
 
 /** Helper class to translate inventories accross hosts. The remote server has
- * no concept of an object reference from *your* heap, so you have to put a
+ * no concept of an object reference from <b>your</b> heap, so you have to put a
  * little more work to describe what inventory you are talking about in terms
  * the both of you can understand.
  * 
- * <p>
- * For null inventories, you send a magic byte <br/>
- * For Entity-relative inventories you send the entity UUID & the component
- * Id<br/>
- * For Voxel-relative inventories, you send the xyz position & the component id
- * <br/>
- * For other snowflake inventories made out of pixie dust, you go fuck yourself
- * </p>
+ * <ul>
+ * <li>For null inventories, you send a magic byte</li>
+ *
+ * <li>For Entity-relative inventories you send the entity UUID and the component</li>
+ *
+ * <li>For Voxel-relative inventories, you send the xyz position and the component id</li>
+ *
+ * <li>For other snowflake inventories made out of pixie dust, returns an error</li>
+ * </ul>
  */
 public class InventoryTranslator {
 	public static void writeInventoryHandle(DataOutputStream out, @Nullable Inventory inventory) throws IOException {

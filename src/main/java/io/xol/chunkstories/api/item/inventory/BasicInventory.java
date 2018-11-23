@@ -278,11 +278,7 @@ public class BasicInventory implements Inventory {
 			}
 	}
 
-	/** Loads the inventory content from a data stream
-	 * 
-	 * @param content Requires a reference to a Content instance so it can
-	 *            instanciate the items
-	 * @throws IOException */
+	/** Loads the inventory content from a data stream */
 	public void pullInventory(StreamSource from, DataInputStream stream, ContentTranslator translator) throws IOException {
 		this.width = stream.readInt();
 		this.height = stream.readInt();
@@ -318,9 +314,7 @@ public class BasicInventory implements Inventory {
 	@Override
 	public int size() {
 		int size = 0;
-		Iterator<ItemPile> i = this.iterator();
-		while (i.hasNext()) {
-			i.next();
+		for (ItemPile itemPile : this) {
 			size++;
 		}
 		return size;

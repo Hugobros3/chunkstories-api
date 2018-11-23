@@ -26,8 +26,8 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 	private BasicInventory inventory;
 
-	public VoxelInventoryComponent(CellComponents holder, int width, int height) {
-		super(holder);
+	public VoxelInventoryComponent(CellComponents cell, int width, int height) {
+		super(cell);
 		this.inventory = new BasicInventory(width, height) {
 
 			@Override
@@ -42,9 +42,9 @@ public class VoxelInventoryComponent extends VoxelComponent implements Inventory
 
 			@Override
 			public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
-				for (WorldUser user : holder.users()) {
+				for (WorldUser user : cell.getChunk().holder().getUsers()) {
 					if (user instanceof RemotePlayer) {
-						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(holder.getWorld(), this, x, y, pileChanged);
+						PacketInventoryPartialUpdate packet = new PacketInventoryPartialUpdate(cell.getWorld(), this, x, y, pileChanged);
 						RemotePlayer player = (RemotePlayer) user;
 						player.pushPacket(packet);
 					}

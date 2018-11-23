@@ -91,12 +91,12 @@ public interface Chunk {
 	 * updated. */
 	public void pokeSimpleSilently(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 
-	/** Does the same as {@link #poke(x,y,z,d)} but without creating any
+	/** Does the same as {@link #poke} but without creating any
 	 * VoxelContext object or triggering any updates<br/>
 	 * <b>Does not throw exceptions</b>, instead fails silently. */
 	public void pokeRaw(int x, int y, int z, int newVoxelData);
 
-	/** Does the same as {@link #poke(x,y,z,d)} but without creating any
+	/** Does the same as {@link #poke} but without creating any
 	 * VoxelContext object or triggering any updates<br/>
 	 * <b>Does not throw exceptions</b>, instead fails silently. */
 	public void pokeRawSilently(int x, int y, int z, int newVoxelData);
@@ -104,19 +104,16 @@ public interface Chunk {
 	public ChunkOcclusionManager occlusion();
 
 	public interface ChunkOcclusionManager {
-		/** Increments the needed updates counter but doesn't spawn a task */
-		public void incrementPendingUpdates();
+		/** Increments the needed updates counter, spawns a task if none exists or is
+		 * pending execution and gives you a fence to wait on. */
+		public Fence requestUpdateAndGetFence();
 
 		/** Increments the needed updates counter, spawns a task if none exists or is
 		 * pending execution */
-		public Fence requestUpdate();
+		public void requestUpdate();
 
-		/** Spawns a if there are unbaked modifications and no task is pending
-		 * execution */
-		public void spawnUpdateTaskIfNeeded();
-
-		/** Returns how many updates have yet to be done */
-		public int pendingUpdates();
+		///** Returns how many updates have yet to be done */
+		//public int getPendingUpdates();
 	}
 
 	/** Returns the interface responsible of updating the voxel light of this
@@ -126,21 +123,16 @@ public interface Chunk {
 	public ChunkMesh mesh();
 
 	public interface ChunkMesh {
-		/** Increments the needed updates counter but doesn't spawn a task */
-		public void incrementPendingUpdates();
+		/** Increments the needed updates counter, spawns a task if none exists or is
+		 * pending execution and gives you a fence to wait on. */
+		public Fence requestUpdateAndGetFence();
 
-		// renderer should figure that on it's own
+		/** Increments the needed updates counter, spawns a task if none exists or is
+		 * pending execution */
+		public void requestUpdate();
 
-		///** Increments the needed updates counter, spawns a task if none exists or is
-		// * pending execution */
-		//public Fence requestUpdate();
-
-		///** Spawns a if there are unbaked modifications and no task is pending
-		// * execution */
-		//public void spawnUpdateTaskIfNeeded();
-
-		/** Returns how many updates have yet to be done */
-		public int pendingUpdates();
+		///** Returns how many updates have yet to be done */
+		//public int getPendingUpdates();
 	}
 
 	public boolean isAirChunk();

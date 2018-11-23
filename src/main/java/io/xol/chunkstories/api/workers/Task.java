@@ -17,6 +17,10 @@ public abstract class Task implements Fence {
 	private ReentrantLock lock = new ReentrantLock();
 	private State state = State.SCHEDULED;
 
+	public final State getState() {
+		return state;
+	}
+
 	public final boolean run(TaskExecutor taskExecutor) {
 		try {
 			lock.lock();
@@ -45,6 +49,7 @@ public abstract class Task implements Fence {
 		return executionResult;
 	}
 
+	/** Tries to cancel the task, returns 'true' if it did so successfully before the task actually executed. */
 	public boolean tryCancel() {
 		try {
 			lock.lock();
@@ -60,7 +65,7 @@ public abstract class Task implements Fence {
 
 			// Cancel it even if we missed it because it might get rescheduled otherwise
 			state = State.CANCELLED;
-			return missed;
+			return !missed;
 		} finally {
 			lock.unlock();
 		}
@@ -83,7 +88,7 @@ public abstract class Task implements Fence {
 
 	protected abstract boolean task(TaskExecutor taskExecutor);
 
-	enum State {
+	public enum State {
 		SCHEDULED,
 		RUNNING,
 		CANCELLED,

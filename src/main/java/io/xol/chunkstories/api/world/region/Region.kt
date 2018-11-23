@@ -59,7 +59,7 @@ interface Region {
 
         /** Region has no users but it's currently doing save operations and will be kept in memory until those complete.
          * If an user registers to this region before the save operation is done, the region will transition back to the Available state. */
-        class Saving(fence: Fence) : Available()
+        class Saving(val fence: Fence) : Available()
 
         /** Region was unloaded because of lack of users and this object is to be discarded.
          * Regions objects can't go back from this state, you need to acquire them back from World. */

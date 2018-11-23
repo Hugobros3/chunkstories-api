@@ -35,12 +35,12 @@ interface Heightmap {
     //fun save(): Fence
 
     sealed class State {
-        open class Loading(fence: Fence) : State()
+        open class Loading(val fence: Fence) : State()
 
         class Generating(fence: Fence) : Loading(fence)
 
         open class Available : State()
-        class Saving(fence: Fence) : Available()
+        class Saving(val fence: Fence) : Available()
 
         object Zombie : State()
     }

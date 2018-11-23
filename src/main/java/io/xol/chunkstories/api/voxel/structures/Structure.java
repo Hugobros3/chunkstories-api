@@ -91,9 +91,9 @@ public abstract class Structure {
             }
         }
 
-        chunk.lightBaker().incrementPendingUpdates();
-        chunk.occlusion().incrementPendingUpdates();
-        chunk.mesh().incrementPendingUpdates();
+        chunk.lightBaker().requestUpdate();
+        chunk.occlusion().requestUpdate();
+        chunk.mesh().requestUpdate();
     }
 
     public class StructureCell extends Cell {

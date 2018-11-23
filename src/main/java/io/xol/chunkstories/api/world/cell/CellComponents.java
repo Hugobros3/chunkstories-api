@@ -35,8 +35,8 @@ public interface CellComponents {
 	/** Peeks the getCell containing those components */
 	public ChunkCell getCell();
 
-	/** Returns a list of users that can see this getCell */
-	public IterableIterator<WorldUser> users();
+	///** Returns a list of users that can see this getCell */
+	//public IterableIterator<WorldUser> users();
 
 	@Nullable
 	public VoxelComponent getVoxelComponent(String name);
