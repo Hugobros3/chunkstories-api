@@ -40,6 +40,7 @@ interface Heightmap {
         class Generating(fence: Fence) : Loading(fence)
 
         open class Available : State()
+
         class Saving(val fence: Fence) : Available()
 
         object Zombie : State()

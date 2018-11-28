@@ -13,3 +13,5 @@ gradle.properties
 *.iml
 *.ipr
 *.iws
+
+hs_err*
