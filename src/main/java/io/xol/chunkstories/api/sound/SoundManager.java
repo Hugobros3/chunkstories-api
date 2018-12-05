@@ -6,6 +6,7 @@
 
 package io.xol.chunkstories.api.sound;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.joml.Vector3dc;
@@ -43,10 +44,8 @@ public interface SoundManager {
 
 	@Nullable
 	public default SoundSource getSoundSourceByUUID(long UUID) {
-		Iterator<SoundSource> i = getAllPlayingSounds();
-		while (i.hasNext()) {
-			SoundSource s = i.next();
-			if (s.getUUID() == UUID)
+		for (SoundSource s : getAllPlayingSounds()) {
+			if (s.getUuid() == UUID)
 				return s;
 		}
 		return null;
@@ -57,12 +56,10 @@ public interface SoundManager {
 	 * @param soundEffect */
 	public void stopAnySound(String soundEffect);
 
-	/** Stops all currently playing sounds
-	 * 
-	 * @param effect */
+	/** Stops all currently playing sounds */
 	public void stopAnySound();
 
-	public Iterator<SoundSource> getAllPlayingSounds();
+	public Collection<SoundSource> getAllPlayingSounds();
 
-	public abstract void setListenerPosition(float x, float y, float z, Vector3fc lookAt, Vector3fc up);
+	public abstract void setListenerPosition(Vector3fc position, Vector3fc lookAt, Vector3fc up);
 }
