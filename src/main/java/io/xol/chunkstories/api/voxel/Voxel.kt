@@ -222,7 +222,7 @@ open class Voxel(val definition: VoxelDefinition) {
 
     open fun enumerateItemsForBuilding(): List<ItemPile> {
         return listOf(ItemPile(store().parent().items().getItemDefinition("item_voxel")).apply {
-            with(this as ItemVoxel) {
+            with(item as ItemVoxel) {
                 this.voxel = this@Voxel
             }
         })

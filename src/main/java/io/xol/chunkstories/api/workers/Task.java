@@ -14,7 +14,10 @@ import io.xol.chunkstories.api.exceptions.tasks.CancelledTaskException;
 import io.xol.chunkstories.api.util.concurrency.Fence;
 
 public abstract class Task implements Fence {
-	private ReentrantLock lock = new ReentrantLock();
+	private final ReentrantLock lock = new ReentrantLock();
+	private int peopleWaiting = 0;
+	private final Semaphore semaphore = new Semaphore(0);
+
 	private State state = State.SCHEDULED;
 
 	public final State getState() {
@@ -33,9 +36,6 @@ public abstract class Task implements Fence {
 		}
 
 		boolean executionResult = task(taskExecutor);
-		synchronized (this) {
-			this.notifyAll();
-		}
 
 		try {
 			lock.lock();
@@ -43,6 +43,11 @@ public abstract class Task implements Fence {
 				state = State.DONE;
 			else
 				state = State.SCHEDULED;
+
+			if(peopleWaiting > 0) {
+				semaphore.release(peopleWaiting);
+				peopleWaiting = 0;
+			}
 		} finally {
 			lock.unlock();
 		}
@@ -65,6 +70,11 @@ public abstract class Task implements Fence {
 
 			// Cancel it even if we missed it because it might get rescheduled otherwise
 			state = State.CANCELLED;
+
+			if(peopleWaiting > 0) {
+				semaphore.release(peopleWaiting);
+				peopleWaiting = 0;
+			}
 			return !missed;
 		} finally {
 			lock.unlock();
@@ -73,16 +83,18 @@ public abstract class Task implements Fence {
 
 	@Override
 	public final void traverse() {
-		// Avoid synchronizing if we can
-		while (state != State.DONE && state != State.CANCELLED) {
-
-			synchronized (this) {
-				try {
-					this.wait();
-				} catch (InterruptedException e) {
-					//e.printStackTrace();
-				}
+		while (true) {
+			try {
+				lock.lock();
+				if (state == State.DONE || state == State.CANCELLED)
+					break;
+				else
+					peopleWaiting++;
+			} finally {
+				lock.unlock();
 			}
+
+			semaphore.acquireUninterruptibly();
 		}
 	}
 
