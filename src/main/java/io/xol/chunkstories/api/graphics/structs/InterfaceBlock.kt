@@ -7,7 +7,7 @@ package io.xol.chunkstories.api.graphics.structs
  * This is useful for interfacing stuff like UBOs and even supplying per-instance model data.*/
 interface InterfaceBlock
 
-@Target(AnnotationTarget.ANNOTATION_CLASS)
+@Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class UpdateFrequency(val frequency: UniformUpdateFrequency)
 
