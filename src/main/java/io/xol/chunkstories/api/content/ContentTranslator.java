@@ -26,8 +26,8 @@ public interface ContentTranslator {
 	/** Get the content we are translating */
 	public Content getContent();
 
-	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
-	 * current content */
+	/** Return the assignated ID for this declaration or -1 if it isn't a part of
+	 * the current content */
 	public int getIdForVoxel(Voxel voxel);
 
 	/** Return the Voxel associated with that ID or null if the ID was outside of
@@ -35,8 +35,8 @@ public interface ContentTranslator {
 	@Nullable
 	public Voxel getVoxelForId(int id);
 
-	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
-	 * current content */
+	/** Return the assignated ID for this declaration or -1 if it isn't a part of
+	 * the current content */
 	public int getIdForItem(ItemDefinition definition);
 
 	/** Shortcut to getIdForItem(item.getDeclaration()) */
@@ -47,8 +47,8 @@ public interface ContentTranslator {
 	@Nullable
 	public ItemDefinition getItemForId(int id);
 
-	/** Return the assignated ID for this declaration or -1 if it isn't a part of the
-	 * current content */
+	/** Return the assignated ID for this declaration or -1 if it isn't a part of
+	 * the current content */
 	public int getIdForEntity(EntityDefinition definition);
 
 	/** Shortcut to getIdForItem(entity.getDeclaration()) */

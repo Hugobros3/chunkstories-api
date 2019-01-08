@@ -29,11 +29,14 @@ import javax.annotation.Nullable;
  * <ul>
  * <li>For null inventories, you send a magic byte</li>
  *
- * <li>For Entity-relative inventories you send the entity UUID and the component</li>
+ * <li>For Entity-relative inventories you send the entity UUID and the
+ * component</li>
  *
- * <li>For Voxel-relative inventories, you send the xyz position and the component id</li>
+ * <li>For Voxel-relative inventories, you send the xyz position and the
+ * component id</li>
  *
- * <li>For other snowflake inventories made out of pixie dust, returns an error</li>
+ * <li>For other snowflake inventories made out of pixie dust, returns an
+ * error</li>
  * </ul>
  */
 public class InventoryTranslator {

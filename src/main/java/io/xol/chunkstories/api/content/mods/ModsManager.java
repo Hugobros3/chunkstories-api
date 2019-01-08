@@ -18,15 +18,19 @@ import javax.annotation.Nullable;
  * filesystem of assets */
 public interface ModsManager {
 	public void setEnabledMods(String... modsEnabled);
+
 	public String[] getEnabledModsString();
 
 	public void loadEnabledMods() throws NotAllModsLoadedException;
+
 	public Collection<Mod> getCurrentlyLoadedMods();
 
 	public Collection<AssetHierarchy> getAllUniqueEntries();
+
 	public Collection<Asset> getAllAssets();
 
 	public Collection<Asset> getAllAssetsByExtension(String extension);
+
 	public Collection<Asset> getAllAssetsByPrefix(String prefix);
 
 	@Nullable

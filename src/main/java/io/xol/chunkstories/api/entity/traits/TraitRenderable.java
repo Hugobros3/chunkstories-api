@@ -18,21 +18,20 @@ import io.xol.chunkstories.api.entity.Entity;
  */
 public class TraitRenderable extends Trait {
 
-    /**
-     * This is a generic primary constructor, and Kotlin does *not* have that ! I did manage to find a missing feature :D
-     */
-    public <T extends Entity> TraitRenderable(T entity, RendererFactory<T> factory) {
-        super(entity);
-        this.factory = factory;
-    }
+	/** This is a generic primary constructor, and Kotlin does *not* have that ! I
+	 * did manage to find a missing feature :D */
+	public <T extends Entity> TraitRenderable(T entity, RendererFactory<T> factory) {
+		super(entity);
+		this.factory = factory;
+	}
 
-    private final RendererFactory<?> factory;
+	private final RendererFactory<?> factory;
 
-    public interface RendererFactory<E extends Entity> {
-        public void buildRepresentation(DynamicRepresentationBuildingContext ctx, E entity);
-    }
+	public interface RendererFactory<E extends Entity> {
+		public void buildRepresentation(DynamicRepresentationBuildingContext ctx, E entity);
+	}
 
-    public RendererFactory<? extends Entity> getFactory() {
-        return factory;
-    }
+	public RendererFactory<? extends Entity> getFactory() {
+		return factory;
+	}
 }

@@ -47,7 +47,7 @@ spotless {
 	}
 
 	kotlin {
-		indentWithTabs()
+		//indentWithTabs()
 		licenseHeaderFile 'codequality/header-include-notice.txt'
 	}
 }

@@ -24,8 +24,10 @@ public interface Controller extends Subscriber, WorldUser {
 
 	public boolean setControlledEntity(@Nullable Entity entity);
 
-	//TODO make those explicit shorthands...
+	// TODO make those explicit shorthands...
 	public SoundManager getSoundManager();
+
 	public ParticlesManager getParticlesManager();
+
 	public DecalsManager getDecalsManager();
 }

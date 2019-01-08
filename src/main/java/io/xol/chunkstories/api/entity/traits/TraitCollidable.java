@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 public class TraitCollidable extends Trait {
 
 	private boolean collidesWithEntities = true;
+
 	public TraitCollidable(Entity entity) {
 		super(entity);
 		collidesWithEntities = entity.getDefinition().resolveProperty("collisions.withOtherEntities", "true").equals("true");
@@ -64,7 +65,8 @@ public class TraitCollidable extends Trait {
 	public boolean isOnGround() {
 		// System.out.println(canMoveWithCollisionRestrain(onGroundTest_).length());
 		if (isStuckInEntity() == null)
-			return entity.getWorld().getCollisionsManager().runEntityAgainstWorldVoxelsAndEntities(entity, entity.getLocation(), onGroundTest_).length() != 0.0d;
+			return entity.getWorld().getCollisionsManager().runEntityAgainstWorldVoxelsAndEntities(entity, entity.getLocation(), onGroundTest_)
+					.length() != 0.0d;
 		else
 			return canMoveWithCollisionRestrain(onGroundTest_).length() != 0.0d;
 	}

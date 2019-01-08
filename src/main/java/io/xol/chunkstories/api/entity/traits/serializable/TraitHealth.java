@@ -191,7 +191,5 @@ public class TraitHealth extends TraitSerializable {
 		}
 	}
 
-	/*public float getMaxHealth() {
-		return maxHealth;
-	}*/
+	/* public float getMaxHealth() { return maxHealth; } */
 }

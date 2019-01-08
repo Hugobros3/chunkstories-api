@@ -27,7 +27,7 @@ public abstract class Task implements Fence {
 	public final boolean run(TaskExecutor taskExecutor) {
 		try {
 			lock.lock();
-			if(state == State.CANCELLED)
+			if (state == State.CANCELLED)
 				return true;
 
 			state = State.RUNNING;
@@ -39,12 +39,12 @@ public abstract class Task implements Fence {
 
 		try {
 			lock.lock();
-			if(executionResult)
+			if (executionResult)
 				state = State.DONE;
 			else
 				state = State.SCHEDULED;
 
-			if(peopleWaiting > 0) {
+			if (peopleWaiting > 0) {
 				semaphore.release(peopleWaiting);
 				peopleWaiting = 0;
 			}
@@ -54,24 +54,25 @@ public abstract class Task implements Fence {
 		return executionResult;
 	}
 
-	/** Tries to cancel the task, returns 'true' if it did so successfully before the task actually executed. */
+	/** Tries to cancel the task, returns 'true' if it did so successfully before
+	 * the task actually executed. */
 	public boolean tryCancel() {
 		try {
 			lock.lock();
 
 			// Missed it by a long shot
-			if(state == State.DONE)
+			if (state == State.DONE)
 				return false;
 
 			boolean missed = false;
 			// Missed it by not much
-			if(state == State.RUNNING)
+			if (state == State.RUNNING)
 				missed = true;
 
 			// Cancel it even if we missed it because it might get rescheduled otherwise
 			state = State.CANCELLED;
 
-			if(peopleWaiting > 0) {
+			if (peopleWaiting > 0) {
 				semaphore.release(peopleWaiting);
 				peopleWaiting = 0;
 			}
@@ -100,7 +101,8 @@ public abstract class Task implements Fence {
 
 	protected abstract boolean task(TaskExecutor taskExecutor);
 
-	public enum State {
+	public enum State
+	{
 		SCHEDULED,
 		RUNNING,
 		CANCELLED,

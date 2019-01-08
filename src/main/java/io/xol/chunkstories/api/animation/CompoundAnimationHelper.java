@@ -14,16 +14,15 @@ import io.xol.chunkstories.api.animation.Animation.SkeletonBone;
 /** Helper class to build compound animations: use different animations for each
  * bone, depending on arbitrary parameters.
  * 
- * Works using actual Animation (not Animator! ) obtained
- * through a Content.AnimationsLibrary
+ * Works using actual Animation (not Animator! ) obtained through a
+ * Content.AnimationsLibrary
  * 
  * For this system to work two assertions need to be valid : all animations used
  * have the same tree structure, and the distances/position of the bones are the
  * same. Otherwrise unpredictable results may occur; */
 public abstract class CompoundAnimationHelper implements Animator {
-	/** Key of this class : returns whatever Animation to use with wich bone
-	 * at wich point, possibly depending of external factors of the implemting
-	 * subclass */
+	/** Key of this class : returns whatever Animation to use with wich bone at wich
+	 * point, possibly depending of external factors of the implemting subclass */
 	public abstract Animation getAnimationPlayingForBone(String boneName, double animationTime);
 
 	/** Returns the local matrix to use for a bone, by default grabs it for the

@@ -91,13 +91,13 @@ public interface Chunk {
 	 * updated. */
 	public void pokeSimpleSilently(int x, int y, int z, @Nullable Voxel voxel, int sunlight, int blocklight, int metadata);
 
-	/** Does the same as {@link #poke} but without creating any
-	 * VoxelContext object or triggering any updates<br/>
+	/** Does the same as {@link #poke} but without creating any VoxelContext object
+	 * or triggering any updates<br/>
 	 * <b>Does not throw exceptions</b>, instead fails silently. */
 	public void pokeRaw(int x, int y, int z, int newVoxelData);
 
-	/** Does the same as {@link #poke} but without creating any
-	 * VoxelContext object or triggering any updates<br/>
+	/** Does the same as {@link #poke} but without creating any VoxelContext object
+	 * or triggering any updates<br/>
 	 * <b>Does not throw exceptions</b>, instead fails silently. */
 	public void pokeRawSilently(int x, int y, int z, int newVoxelData);
 
@@ -112,8 +112,8 @@ public interface Chunk {
 		 * pending execution */
 		public void requestUpdate();
 
-		///** Returns how many updates have yet to be done */
-		//public int getPendingUpdates();
+		/// ** Returns how many updates have yet to be done */
+		// public int getPendingUpdates();
 	}
 
 	/** Returns the interface responsible of updating the voxel light of this
@@ -131,8 +131,8 @@ public interface Chunk {
 		 * pending execution */
 		public void requestUpdate();
 
-		///** Returns how many updates have yet to be done */
-		//public int getPendingUpdates();
+		/// ** Returns how many updates have yet to be done */
+		// public int getPendingUpdates();
 	}
 
 	public boolean isAirChunk();
@@ -154,7 +154,8 @@ public interface Chunk {
 		public CellComponents components();
 
 		@Deprecated
-		/** Accesses the raw data in that getCell. Reserved for internal engine purposes! */
+		/** Accesses the raw data in that getCell. Reserved for internal engine
+		 * purposes! */
 		public int getData();
 
 		public void refreshRepresentation();

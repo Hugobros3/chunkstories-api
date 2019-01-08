@@ -44,17 +44,21 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			float horizRotRad = (float) ((entityRotation.getHorizontalRotation() + 180f) / 180f * Math.PI);
 			float vertRotRad = (float) ((-entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (ignoreCollisions)
-				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
+				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
+						Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
+						Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 		}
 		if (controller.getInputsManager().getInputByName("forward").isPressed()) {
 			float horizRotRad = (float) ((entityRotation.getHorizontalRotation()) / 180f * Math.PI);
 			float vertRotRad = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (ignoreCollisions)
-				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
+				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
+						Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 			else
-				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed, Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
+				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
+						Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 		}
 		if (controller.getInputsManager().getInputByName("right").isPressed()) {
 			float horizRot = (float) ((entityRotation.getHorizontalRotation() + 90) / 180f * Math.PI);

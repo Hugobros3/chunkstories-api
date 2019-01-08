@@ -174,7 +174,8 @@ public final class Box {
 	}
 
 	public boolean collidesWith(Box b) {
-		if (yPosition + yHeight <= b.yPosition || yPosition >= b.yPosition + b.yHeight || xPosition + xWidth <= b.xPosition || xPosition >= b.xPosition + b.xWidth || zPosition + zWidth <= b.zPosition || zPosition >= b.zPosition + b.zWidth) {
+		if (yPosition + yHeight <= b.yPosition || yPosition >= b.yPosition + b.yHeight || xPosition + xWidth <= b.xPosition
+				|| xPosition >= b.xPosition + b.xWidth || zPosition + zWidth <= b.zPosition || zPosition >= b.zPosition + b.zWidth) {
 			return false;
 		}
 		return true;

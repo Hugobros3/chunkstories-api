@@ -17,6 +17,6 @@ public interface ChunkLightUpdater {
 	 * pending execution */
 	public void requestUpdate();
 
-	///** Returns how many updates have yet to be done */
-	//public int getPendingUpdates();
+	/// ** Returns how many updates have yet to be done */
+	// public int getPendingUpdates();
 }

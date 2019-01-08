@@ -22,7 +22,8 @@ public interface Input {
 	public long getHash();
 
 	/** Returns false if null Returns true if o is an input and
-	 * o.getRegisteredComponentName().equals(getRegisteredComponentName()) Returns true if o is a String and
-	 * o.equals(getRegisteredComponentName()) Returns false otherwise. */
+	 * o.getRegisteredComponentName().equals(getRegisteredComponentName()) Returns
+	 * true if o is a String and o.equals(getRegisteredComponentName()) Returns
+	 * false otherwise. */
 	public boolean equals(@Nullable Object o);
 }

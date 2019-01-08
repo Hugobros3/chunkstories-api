@@ -99,7 +99,8 @@ public class DummyChunk implements Chunk {
 			throw new UnsupportedOperationException("components()");
 		}
 
-		@Override public void refreshRepresentation() {
+		@Override
+		public void refreshRepresentation() {
 
 		}
 	}

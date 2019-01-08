@@ -11,10 +11,10 @@ import io.xol.chunkstories.api.gui.GuiDrawer;
 
 public abstract class TraitHasOverlay extends Trait {
 
-    public TraitHasOverlay(Entity entity) {
-        super(entity);
-    }
+	public TraitHasOverlay(Entity entity) {
+		super(entity);
+	}
 
-    public abstract void drawEntityOverlay(GuiDrawer drawer);
+	public abstract void drawEntityOverlay(GuiDrawer drawer);
 
 }

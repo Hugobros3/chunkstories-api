@@ -8,19 +8,13 @@ package io.xol.chunkstories.api.animation;
 
 import org.joml.Matrix4fc;
 
-/**
- * Used for renderable meshes with a skeletal structure, only provides details
+/** Used for renderable meshes with a skeletal structure, only provides details
  * relevant to displaying the model, rather than intrinsic details on the
- * animation structure.
- */
+ * animation structure. */
 public interface Animator {
-    /**
-     * Used to draw the debug bone armature
-     */
-    public Matrix4fc getBoneHierarchyTransformationMatrix(String nameOfEndBone, double animationTime);
+	/** Used to draw the debug bone armature */
+	public Matrix4fc getBoneHierarchyTransformationMatrix(String nameOfEndBone, double animationTime);
 
-    /**
-     * Used to draw deformed mesh parts
-     */
-    public Matrix4fc getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, double animationTime);
+	/** Used to draw deformed mesh parts */
+	public Matrix4fc getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, double animationTime);
 }
