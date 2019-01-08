@@ -1,9 +1,8 @@
 package io.xol.chunkstories.api.graphics.structs
 
-import org.joml.Matrix4f
-import org.joml.Matrix4fc
-import org.joml.Vector3f
-import org.joml.Vector3fc
+import io.xol.chunkstories.api.util.kotlin.getNormalMatrix
+import io.xol.chunkstories.api.util.kotlin.inverse
+import org.joml.*
 
 //TODO use double-precision and cast them when sending those to the GPU
 data class Camera @JvmOverloads constructor(
@@ -12,7 +11,11 @@ data class Camera @JvmOverloads constructor(
         val up: Vector3fc = Vector3f(0.0f, 1.0f, 0.0f),
         val fov: Float = 90f,
         val viewMatrix: Matrix4fc = Matrix4f(),
-        val projectionMatrix: Matrix4fc = Matrix4f()
+        val projectionMatrix: Matrix4fc = Matrix4f(),
+        val normalMatrix: Matrix3fc = viewMatrix.getNormalMatrix(),
+        val viewMatrixInverted: Matrix4fc = viewMatrix.inverse(),
+        val projectionMatrixInverted: Matrix4fc = projectionMatrix.inverse(),
+        val normalMatrixInverted: Matrix3fc = normalMatrix.inverse()
 ) : InterfaceBlock {
     //@IgnoreGLSL
     //val frustrm = Frustrum(this)
