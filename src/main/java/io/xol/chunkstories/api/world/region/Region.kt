@@ -38,7 +38,7 @@ interface Region {
      * In a remote world, unregistering the last user will directly transition to the Zombie state. */
     fun unregisterUser(user: WorldUser): Boolean
 
-    val loadedChunks: Sequence<Chunk>
+    val loadedChunks: Collection<Chunk>
     fun getChunkHolder(chunkX: Int, chunkY: Int, chunkZ: Int): ChunkHolder
     fun getChunk(chunkX: Int, chunkY: Int, chunkZ: Int): Chunk?
     //fun isChunkLoaded(chunkX: Int, chunkY: Int, chunkZ: Int): Boolean

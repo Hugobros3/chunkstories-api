@@ -37,6 +37,8 @@ import io.xol.chunkstories.api.world.region.Region
  * can't prove the existence of the DummyWorld, but neither can you disprove it.
  * Don't mess with the forces at play here. You have been warned.  */
 class DummyWorld : World {
+    override val allLoadedRegions: Collection<Region>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
     override// TODO Auto-generated method stub
     val worldInfo: WorldInfo
