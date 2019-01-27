@@ -10,6 +10,7 @@ import xyz.chunkstories.api.util.kotlin.getNormalMatrix
 import xyz.chunkstories.api.util.kotlin.inverse
 import org.joml.*
 
+//TODO PerspectiveCamera & OrthogonalCamera
 //TODO use double-precision and cast them when sending those to the GPU
 data class Camera @JvmOverloads constructor(
         val position: Vector3fc = Vector3f(),
@@ -22,7 +23,4 @@ data class Camera @JvmOverloads constructor(
         val viewMatrixInverted: Matrix4fc = viewMatrix.inverse(),
         val projectionMatrixInverted: Matrix4fc = projectionMatrix.inverse(),
         val normalMatrixInverted: Matrix3fc = normalMatrix.inverse()
-) : InterfaceBlock {
-    //@IgnoreGLSL
-    //val frustrm = Frustrum(this)
-}
+) : InterfaceBlock

@@ -8,14 +8,14 @@ package xyz.chunkstories.api.graphics.representation
 
 import org.joml.Vector3d
 
-data class Light(var color: Vector3d, override val parentObject: RepresentationElement?) : RepresentationElement(parentObject) {
+data class PointLight(var color: Vector3d) : Representation {
     var enabled = true
 }
 
-data class SpotLight(var color: Vector3d, var direction: Vector3d, override val parentObject: RepresentationElement?) : RepresentationElement(parentObject) {
+data class SpotLight(var color: Vector3d, var direction: Vector3d) : Representation {
     var enabled = true
 }
 
-data class DirectionalLight(var color: Vector3d, var direction: Vector3d, override val parentObject: RepresentationElement?) : RepresentationElement(parentObject) {
+data class DirectionalLight(var color: Vector3d, var direction: Vector3d) : Representation {
     var enabled = true
 }

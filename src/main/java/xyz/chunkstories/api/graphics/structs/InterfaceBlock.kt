@@ -20,7 +20,7 @@ annotation class UpdateFrequency(val frequency: UniformUpdateFrequency)
 enum class UniformUpdateFrequency {
     ONCE_PER_BATCH,
     ONCE_PER_SYSTEM,
-    ONCE_PER_RENDERPASS,
+    ONCE_PER_RENDER_TASK,
     ONCE_PER_FRAME
 }
 

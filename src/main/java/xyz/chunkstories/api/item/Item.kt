@@ -6,7 +6,6 @@
 
 package xyz.chunkstories.api.item
 
-import xyz.chunkstories.api.dsl.DynamicRepresentationBuildingContext
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.input.Input
@@ -80,14 +79,4 @@ open class Item(val definition: ItemDefinition) {
     @Throws(IOException::class)
     open fun save(stream: DataOutputStream) {
     }
-}
-
-/** SAM for building representations */
-interface ItemRepresentationBuilder<T : Item> {
-    fun build(context: ItemRepresentationBuildingContext<T>)
-}
-
-/** Extended context to provide the represented item as well */
-interface ItemRepresentationBuildingContext<T : Item> : DynamicRepresentationBuildingContext {
-    val item: T
 }

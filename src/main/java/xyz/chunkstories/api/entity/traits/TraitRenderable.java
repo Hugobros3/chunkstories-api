@@ -6,7 +6,6 @@
 
 package xyz.chunkstories.api.entity.traits;
 
-import xyz.chunkstories.api.dsl.DynamicRepresentationBuildingContext;
 import xyz.chunkstories.api.entity.Entity;
 
 /**
@@ -20,18 +19,7 @@ public class TraitRenderable extends Trait {
 
 	/** This is a generic primary constructor, and Kotlin does *not* have that ! I
 	 * did manage to find a missing feature :D */
-	public <T extends Entity> TraitRenderable(T entity, RendererFactory<T> factory) {
+	public <T extends Entity> TraitRenderable(T entity) {
 		super(entity);
-		this.factory = factory;
-	}
-
-	private final RendererFactory<?> factory;
-
-	public interface RendererFactory<E extends Entity> {
-		public void buildRepresentation(DynamicRepresentationBuildingContext ctx, E entity);
-	}
-
-	public RendererFactory<? extends Entity> getFactory() {
-		return factory;
 	}
 }
