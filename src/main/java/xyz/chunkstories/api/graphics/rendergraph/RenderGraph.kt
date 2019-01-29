@@ -8,15 +8,14 @@ package xyz.chunkstories.api.graphics.rendergraph
 
 import org.joml.Vector2i
 
-/** Interface to the (abstract) render graph of the renderer */
-interface RenderGraph {
-    val buffers : Map<String, RenderBuffer>
-    val passes : Map<String, Pass>
+class RenderGraphDeclaration {
+    val renderTasks = mutableMapOf<String, RenderTaskDeclaration>()
 
-    /** Returns the pass declared with `default = true` */
-    val defaultPass: Pass
+    fun renderTask(dslCode: RenderTaskDeclaration.() -> Unit) {
+        val task = RenderTaskDeclaration().apply(dslCode)
+        renderTasks.put(task.name, task)
+    }
 
-    val finalPass: Pass
-
-    val viewportSize: Vector2i
+    val viewportSize : RenderBufferSize.ViewportRelativeSize
+        get() = RenderBufferSize.ViewportRelativeSize(1f, 1f)
 }

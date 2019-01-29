@@ -12,6 +12,7 @@ import org.joml.*
 
 //TODO PerspectiveCamera & OrthogonalCamera
 //TODO use double-precision and cast them when sending those to the GPU
+@UpdateFrequency(frequency = UniformUpdateFrequency.ONCE_PER_RENDER_TASK)
 data class Camera @JvmOverloads constructor(
         val position: Vector3fc = Vector3f(),
         val lookingAt: Vector3fc = Vector3f(0.0f, 0.0f, -1.0f),

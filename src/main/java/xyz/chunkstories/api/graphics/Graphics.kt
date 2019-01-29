@@ -6,15 +6,12 @@
 
 package xyz.chunkstories.api.graphics
 
-import xyz.chunkstories.api.graphics.rendergraph.Pass
-import xyz.chunkstories.api.graphics.rendergraph.RegisteredDrawingSystem
-import xyz.chunkstories.api.graphics.rendergraph.RenderGraph
+import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclaration
 import xyz.chunkstories.api.graphics.representation.Model
 import xyz.chunkstories.api.graphics.systems.dispatching.DispatchingSystem
-import xyz.chunkstories.api.graphics.systems.drawing.DrawingSystem
 
 interface GraphicsEngine {
-    val renderGraph : RenderGraph
+    fun loadRenderGraph(declaration: RenderGraphDeclaration)
 
     val textures : Textures
     interface Textures {
@@ -43,5 +40,5 @@ interface GraphicsEngine {
 /** When creating systems implementations you will need one of those.
  * No specifics as we don't assume anything about graphical APIs or game implementations !*/
 interface GraphicsBackend {
-    fun createDrawingSystem(pass: Pass, registeredDrawingSystem: RegisteredDrawingSystem) : DrawingSystem
+    //fun createDrawingSystem(pass: Pass, registeredDrawingSystem: RegisteredDrawingSystem) : DrawingSystem
 }

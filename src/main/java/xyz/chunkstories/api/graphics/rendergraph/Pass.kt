@@ -6,51 +6,60 @@
 
 package xyz.chunkstories.api.graphics.rendergraph
 
-import xyz.chunkstories.api.graphics.ImageInput
-import xyz.chunkstories.api.graphics.Shader
-import xyz.chunkstories.api.graphics.UniformInput
-import xyz.chunkstories.api.graphics.systems.drawing.DrawingSystem
 import org.joml.Vector4d
 
-open class Pass {
-    constructor()
-    constructor(name: String) {
-        this.name = name
+class PassDeclaration {
+    lateinit var name: String
+
+    val passDependencies = mutableListOf<String>()
+    fun dependsOn(vararg pass: String) = passDependencies.addAll(pass)
+
+    lateinit var depthTestingConfiguration : DepthTestingConfiguration
+    fun depth(dslCode: DepthTestingConfiguration.() -> Unit) {
+        depthTestingConfiguration = DepthTestingConfiguration().apply(dslCode)
     }
 
-    var name: String = "undefined"
-        set(value) {
-            if (field == "undefined") {
-                field = value
-                shaderName = value
-            } else throw Exception("You can't rename a pass !")
-        }
+    lateinit var outputs: PassOutputsDeclaration
+    fun outputs(dslCode: PassOutputsDeclaration.() -> Unit) {
+        outputs = PassOutputsDeclaration().also(dslCode)
+    }
 
-    var shaderName = "invalid"
-
-    /** The default pass is the pass where meshes are rendered unless specified otherwise. */
-    var default = false
-    var final = false
-
-    val dependencies = mutableSetOf<String>()
-
-    val declaredDrawingSystems = mutableListOf<RegisteredDrawingSystem>()
-
-    val imageInputs = mutableListOf<ImageInput>()
-    val uniformInputs = mutableListOf<UniformInput>()
-
-    var depth = noDepthTest
-    val outputs = mutableListOf<PassOutput>()
-
-    val hooks = mutableListOf<PassHook>()
-
-    /** Updated when the pass is actually initialized */
-    lateinit var shader: Shader
+    lateinit var draws: DrawsDeclarations
+    fun draws(dslCode : DrawsDeclarations.() -> Unit) {
+        draws = DrawsDeclarations().apply(dslCode)
+    }
 }
 
-data class RegisteredDrawingSystem(val clazz: Class<out DrawingSystem>, val init: DrawingSystem.() -> Unit)
+class PassOutputsDeclaration {
+    val outputs = mutableListOf<PassOutput>()
+    fun output(dslCode: PassOutput.() -> Unit) = outputs.add(PassOutput().apply(dslCode))
+}
 
-abstract class PassHook(internal val pass: Pass) : () -> Unit
+/** Represents one output to a pass, includes some configuration */
+class PassOutput {
+    lateinit var name: String
+
+    /** If the output buffer has a different name than the shader output, supply it here */
+    var outputBuffer: String? = null
+
+    /** Should we use blending while outputing to this ? */
+    var blending: BlendMode = BlendMode.ALPHA_TEST
+
+    /** Should we clear the buffer before proceeding ? */
+    var clear = false
+    var clearColor = Vector4d(0.0)
+
+    ///** Should we copy another buffer to this one before proceeding ? */
+    //var copy: String? = null
+
+    enum class BlendMode {
+        OVERWRITE,
+        ALPHA_TEST,
+        MIX,
+        ADD,
+        PREMULTIPLIED_ALPHA
+    }
+}
 
 class DepthTestingConfiguration {
     /** Disables depth testing altogether */
@@ -74,28 +83,3 @@ class DepthTestingConfiguration {
 
 val noDepthTest = DepthTestingConfiguration().apply { enabled = false }
 
-/** Represents one output to a pass, includes some configuration */
-class PassOutput {
-    lateinit var name: String
-
-    /** If the output buffer has a different name than the shader output, supply it here */
-    var outputBuffer: String? = null
-
-    /** Should we use blending while outputing to this ? */
-    var blending: BlendMode = BlendMode.ALPHA_TEST
-
-    /** Should we clear the buffer before proceeding ? */
-    var clear = false
-    var clearColor = Vector4d(0.0)
-
-    /** Should we copy another buffer to this one before proceeding ? */
-    var copy: String? = null
-
-    enum class BlendMode {
-        OVERWRITE,
-        ALPHA_TEST,
-        MIX,
-        ADD,
-        PREMULTIPLIED_ALPHA
-    }
-}

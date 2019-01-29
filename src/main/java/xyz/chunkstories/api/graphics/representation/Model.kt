@@ -7,15 +7,10 @@
 package xyz.chunkstories.api.graphics.representation
 
 import org.joml.Matrix4f
-import xyz.chunkstories.api.animation.Animation
-import xyz.chunkstories.api.animation.Animator
-import xyz.chunkstories.api.graphics.Mesh
-import xyz.chunkstories.api.graphics.rendergraph.Pass
-import xyz.chunkstories.api.graphics.structs.InterfaceBlock
-import xyz.chunkstories.api.physics.Box
-import org.joml.Vector3d
 import org.joml.Vector3dc
 import org.joml.Vector3fc
+import xyz.chunkstories.api.animation.Animation
+import xyz.chunkstories.api.graphics.Mesh
 
 /** One instance of a particular mesh */
 data class ModelInstance(val mesh: Mesh, val transformation: ObjectTransformation = ObjectTransformation()) : Representation {
