@@ -9,6 +9,7 @@ package xyz.chunkstories.api.graphics.structs
 import xyz.chunkstories.api.util.kotlin.getNormalMatrix
 import xyz.chunkstories.api.util.kotlin.inverse
 import org.joml.*
+import xyz.chunkstories.api.physics.Frustrum
 
 //TODO PerspectiveCamera & OrthogonalCamera
 //TODO use double-precision and cast them when sending those to the GPU
@@ -24,4 +25,7 @@ data class Camera @JvmOverloads constructor(
         val viewMatrixInverted: Matrix4fc = viewMatrix.inverse(),
         val projectionMatrixInverted: Matrix4fc = projectionMatrix.inverse(),
         val normalMatrixInverted: Matrix3fc = normalMatrix.inverse()
-) : InterfaceBlock
+) : InterfaceBlock {
+    @IgnoreGLSL
+    val frustrum = Frustrum(this)
+}

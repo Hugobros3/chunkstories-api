@@ -10,9 +10,11 @@ import xyz.chunkstories.api.graphics.Window
 import xyz.chunkstories.api.graphics.structs.Camera
 import org.joml.Vector3f
 import org.joml.Vector3fc
+import org.joml.Vector4f
+import org.joml.Vector4fc
 
 /** Leftover from the old renderin code, bound for some massive improvements in the not too distant future */
-class Frustrum(val camera: Camera, val window: Window) {
+class Frustrum(val camera: Camera) {
     var corners : Array<Vector3f>
     var cameraPlanes : Array<Plane>
 
@@ -24,13 +26,11 @@ class Frustrum(val camera: Camera, val window: Window) {
     }
 
     private fun computeFrustrumPlanes() {
-        var temp: Vector3f
+        /*var temp: Vector3f
 
         val cameraPosition = camera.position
         //val cameraPosition = Vector3f(0f)
 
-        //TODO make this correctly
-        //Hint: take cardinal points in projected space and unproject them
         val fov = camera.fov
         val viewportWidth = window.width
         val viewportHeight = window.height
@@ -39,7 +39,7 @@ class Frustrum(val camera: Camera, val window: Window) {
         val ratio = viewportWidth.toFloat() / viewportHeight.toFloat()
         val nh = 0.1f * tang
         val nw = nh * ratio
-        val fh = 3000f * tang
+        val fh = 2000f * tang
         val fw = fh * ratio
 
         val lookAt = Vector3f(camera.lookingAt).add(cameraPosition)
@@ -68,12 +68,11 @@ class Frustrum(val camera: Camera, val window: Window) {
 
         val farCenterPoint = Vector3f(cameraPosition.x() as Float, cameraPosition.y() as Float, cameraPosition.z() as Float)
         temp = Vector3f(Z)
-        temp.mul(3000f)
+        temp.mul(2000f)
 
-        farCenterPoint.sub(temp)
+        farCenterPoint.sub(temp)*/
 
-        // Eventually the fucking points
-        val nearTopLeft = nearCenterPoint.plus(Y.times(nh).minus(X.times(nw)))
+        /*val nearTopLeft = nearCenterPoint.plus(Y.times(nh).minus(X.times(nw)))
         val nearTopRight = nearCenterPoint.plus(Y.times(nh).plus(X.times(nw)))
         val nearBottomLeft = nearCenterPoint.minus(Y.times(nh).plus(X.times(nw)))
         val nearBottomRight = nearCenterPoint.minus(Y.times(nh).minus(X.times(nw)))
@@ -81,7 +80,50 @@ class Frustrum(val camera: Camera, val window: Window) {
         val farTopLeft = farCenterPoint.plus(Y.times(fh).minus(X.times(fw)))
         val farTopRight = farCenterPoint.plus(Y.times(fh).plus(X.times(fw)))
         val farBottomLeft = farCenterPoint.minus((Y * fh).plus(X.times(fw)))
-        val farBottomRight = farCenterPoint - ((Y * fh) - (X * fw))
+        val farBottomRight = farCenterPoint - ((Y * fh) - (X * fw))*/
+
+        val ntl = Vector4f(-1.0f, 1.0f, 0.0f ,1.0f)
+        val ntr = Vector4f(1.0f, 1.0f, 0.0f ,1.0f)
+        val nbl = Vector4f(-1.0f, -1.0f, 0.0f ,1.0f)
+        val nbr = Vector4f(1.0f, -1.0f, 0.0f ,1.0f)
+
+        val ftl = Vector4f(-1.0f, 1.0f, 1.0f ,1.0f)
+        val ftr = Vector4f(1.0f, 1.0f, 1.0f ,1.0f)
+        val fbl = Vector4f(-1.0f, -1.0f, 1.0f ,1.0f)
+        val fbr = Vector4f(1.0f, -1.0f, 1.0f ,1.0f)
+
+        fun transform(a: Vector4fc) : Vector3f {
+            val t = Vector4f(a)
+            camera.projectionMatrixInverted.transform(t, t)
+            camera.viewMatrixInverted.transform(t, t)
+            t.mul(1f / t.w)
+            return Vector3f(t.x, t.y, t.z)
+        }
+
+        val nearTopLeft = transform(ntl)
+        val nearTopRight = transform(ntr)
+        val nearBottomLeft = transform(nbl)
+        val nearBottomRight = transform(nbr)
+
+        val farTopLeft = transform(ftl)
+        val farTopRight = transform(ftr)
+        val farBottomLeft = transform(fbl)
+        val farBottomRight = transform(fbr)
+
+        /*println("fbr: ${farTopLeft.x()} ${farTopLeft.y()} ${farTopLeft.z()}")
+        val a = ftl
+        camera.projectionMatrixInverted.transform(a, a)
+        camera.viewMatrixInverted.transform(a, a)
+        a.mul(1f / a.w)
+        println("a: ${a.x()} ${a.y()} ${a.z()}")
+
+        val c = farTopLeft
+        val d = Vector4f(c.x, c.y, c.z, 1f)
+
+        camera.viewMatrix.transform(d, d)
+        camera.projectionMatrix.transform(d, d)
+        d.mul(1f / d.w)
+        println("dd: ${d.x()} ${d.y()} ${d.z()}")*/
 
         cameraPlanes[0] = Plane(nearTopRight, nearTopLeft, farTopLeft)
         cameraPlanes[1] = Plane(nearBottomLeft, nearBottomRight, farBottomRight)
