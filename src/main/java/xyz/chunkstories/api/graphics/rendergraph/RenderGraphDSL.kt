@@ -15,23 +15,17 @@ import kotlin.reflect.KClass
 
 typealias RenderGraphDeclarationScript = RenderGraphDeclaration.() -> Unit
 
-/*interface PassInputsDeclarationsCtx {
-    fun imageInput(imageInputConfiguration: ImageInput.() -> Unit)
-
-    fun uniformInput(uniformInputConfiguration : UniformInput.() -> Unit)
-}*/
-
 class DrawsDeclarations {
     val registeredSystems = mutableListOf<RegisteredGraphicSystem<*>>()
-    fun <T: GraphicSystem> system(type: KClass<T>, dslCode: (RegisteredGraphicSystem<T>.() -> Unit)) = registeredSystems.add(RegisteredGraphicSystem(type.java).apply(dslCode))
+    fun <T: GraphicSystem> system(type: KClass<T>, dslCode: (T.() -> Unit)) = registeredSystems.add(RegisteredGraphicSystem(type.java, dslCode))
 
-    fun <T: GraphicSystem> RegisteredGraphicSystem<T>.init(initCode: T.() -> Unit) {
+    /*fun <T: GraphicSystem> RegisteredGraphicSystem<T>.init(initCode: T.() -> Unit) {
         this.init = initCode
     }
 
     fun <T: GraphicSystem> RegisteredGraphicSystem<T>.inputs(inputsCode: ShaderBindingInterface.() -> Unit) {
         this.input = inputsCode
-    }
+    }*/
 
     fun <T: GraphicSystem> system(type: KClass<T>) = system(type) {}
     fun fullscreenQuad() = system(FullscreenQuadDrawer::class)

@@ -7,6 +7,7 @@
 package xyz.chunkstories.api.graphics.rendergraph
 
 import org.joml.Vector4d
+import xyz.chunkstories.api.graphics.ImageInput
 
 class PassDeclaration {
     lateinit var name: String
@@ -14,7 +15,7 @@ class PassDeclaration {
     val passDependencies = mutableListOf<String>()
     fun dependsOn(vararg pass: String) = passDependencies.addAll(pass)
 
-    lateinit var depthTestingConfiguration : DepthTestingConfiguration
+    var depthTestingConfiguration : DepthTestingConfiguration = noDepthTest
     fun depth(dslCode: DepthTestingConfiguration.() -> Unit) {
         depthTestingConfiguration = DepthTestingConfiguration().apply(dslCode)
     }
@@ -24,10 +25,24 @@ class PassDeclaration {
         outputs = PassOutputsDeclaration().also(dslCode)
     }
 
-    lateinit var draws: DrawsDeclarations
+    var draws: DrawsDeclarations? = null
     fun draws(dslCode : DrawsDeclarations.() -> Unit) {
         draws = DrawsDeclarations().apply(dslCode)
     }
+
+    var inputs: PassInputsDeclarations? = null
+    fun inputs(dslCode: PassInputsDeclarations.() -> Unit) {
+        inputs = PassInputsDeclarations().also(dslCode)
+    }
+}
+
+class PassInputsDeclarations {
+    val imageInputs = mutableListOf<ImageInput>()
+    fun imageInput(imageInputConfiguration: ImageInput.() -> Unit) = imageInputs.add(ImageInput().apply(imageInputConfiguration))
+
+    fun ImageInput.texture(assetName: String) = ImageInput.ImageSource.AssetReference(assetName)
+
+    fun ImageInput.renderBuffer(bufferName: String) = ImageInput.ImageSource.RenderBufferReference(bufferName)
 }
 
 class PassOutputsDeclaration {

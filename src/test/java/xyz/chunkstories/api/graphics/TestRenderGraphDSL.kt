@@ -15,6 +15,7 @@ import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
 import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 import xyz.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test
+import xyz.chunkstories.api.graphics.ImageInput.SamplingMode.LINEAR
 
 data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : InterfaceBlock
 
@@ -48,9 +49,7 @@ class TestRenderGraphDSL {
                         draws {
                             fullscreenQuad()
                             system(DefferedLightsDrawer::class) {
-                                init {
-                                    maxBatchSize = 32
-                                }
+                                maxBatchSize = 32
                             }
                             system(FarTerrainDrawer::class)
                         }
@@ -69,30 +68,23 @@ class TestRenderGraphDSL {
 
                         draws {
                             system(FullscreenQuadDrawer::class) {
-                                init {
 
-                                }
-
-                                /*inputs {
-                                    imageInput {
-                                        name = "colorMap"
-
-                                        source = texture("textures/effects/tonemap.png")
-                                        samplingMode = LINEAR
-                                        wrapping = false
-                                    }
-
-                                    uniformInput {
-                                        name = "myUniform"
-                                        data = MyTestInterfaceBlock(5.0F, 42 + 69)
-                                    }
-                                }*/
                             }
                         }
 
                         depth {
                             depthBuffer = "myDepthBuffer"
                             mode = LESS_OR_EQUAL
+                        }
+
+                        inputs {
+                            imageInput {
+                                name = "colorMap"
+
+                                source = texture("textures/effects/tonemap.png")
+                                samplingMode = LINEAR
+                                wrapping = false
+                            }
                         }
 
                         outputs {
