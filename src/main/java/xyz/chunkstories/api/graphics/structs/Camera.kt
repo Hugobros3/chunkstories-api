@@ -25,7 +25,7 @@ data class Camera @JvmOverloads constructor(
         val viewMatrixInverted: Matrix4fc = viewMatrix.inverse(),
         val projectionMatrixInverted: Matrix4fc = projectionMatrix.inverse(),
         val normalMatrixInverted: Matrix3fc = normalMatrix.inverse()
-) : InterfaceBlock {
+    ) : InterfaceBlock {
     @IgnoreGLSL
     val frustrum = Frustrum(this)
 }

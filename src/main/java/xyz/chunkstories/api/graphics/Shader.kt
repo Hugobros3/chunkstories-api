@@ -6,9 +6,11 @@
 
 package xyz.chunkstories.api.graphics
 
+import xyz.chunkstories.api.graphics.rendergraph.PassOutput
+import xyz.chunkstories.api.graphics.rendergraph.RenderingContext
 import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 
-interface Shader {
+/*interface Shader {
     val name : String
 
     fun bindUniformBlock(uniformBlockName : String, data : InterfaceBlock) = bindUniformBlock(UniformInput().apply {
@@ -18,7 +20,7 @@ interface Shader {
     fun bindUniformBlock(uniformInput: UniformInput)
 
     //fun bindImage(imageInput: ImageInput)
-}
+}*/
 
 enum class ShaderStage {
     VERTEX,
@@ -31,26 +33,3 @@ class UniformInput {
     lateinit var data: InterfaceBlock
 }
 
-class ImageInput {
-    /** Name of the sampler this will bind to */
-    lateinit var name: String
-
-    /** Name of the source RenderBuffer or a path to an asset, or a Texture object. */
-    lateinit var source: ImageSource
-
-    sealed class ImageSource {
-        class AssetReference(val assetName: String) : ImageSource()
-        class RenderBufferReference(val renderBufferName: String) : ImageSource()
-        class TextureReference(val texture: Texture) : ImageSource()
-    }
-
-    // General state fluff
-    var samplingMode = SamplingMode.NEAREST
-    var mipmapping = false
-    var wrapping = false
-
-    enum class SamplingMode {
-        LINEAR,
-        NEAREST
-    }
-}

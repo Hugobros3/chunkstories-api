@@ -7,7 +7,7 @@
 package xyz.chunkstories.api.graphics.rendergraph
 
 import org.joml.Vector4d
-import xyz.chunkstories.api.graphics.ImageInput
+import xyz.chunkstories.api.graphics.Texture
 
 class PassDeclaration {
     lateinit var name: String
@@ -40,14 +40,43 @@ class PassInputsDeclarations {
     val imageInputs = mutableListOf<ImageInput>()
     fun imageInput(imageInputConfiguration: ImageInput.() -> Unit) = imageInputs.add(ImageInput().apply(imageInputConfiguration))
 
-    fun ImageInput.texture(assetName: String) = ImageInput.ImageSource.AssetReference(assetName)
+    fun ImageInput.texture(assetName: String) = ImageSource.AssetReference(assetName)
 
-    fun ImageInput.renderBuffer(bufferName: String) = ImageInput.ImageSource.RenderBufferReference(bufferName)
+    fun ImageInput.renderBuffer(bufferName: String) = ImageSource.RenderBufferReference(bufferName)
+}
+
+class ImageInput {
+    /** Name of the sampler this will bind to */
+    lateinit var name: String
+
+    /** Name of the source RenderBuffer or a path to an asset, or a Texture object. */
+    lateinit var source: ImageSource
+
+    // General state fluff
+    var samplingMode = SamplingMode.NEAREST
+    var mipmapping = false
+    var wrapping = false
+
+    enum class SamplingMode {
+        LINEAR,
+        NEAREST
+    }
+}
+
+sealed class ImageSource {
+    class AssetReference(val assetName: String) : ImageSource()
+    class RenderBufferReference(val renderBufferName: String) : ImageSource()
+    class TextureReference(val texture: Texture) : ImageSource()
+    class TaskOutput(val context: RenderingContext, val output: PassOutput) : ImageSource()
+    class TaskOutputDepth(val context: RenderingContext) : ImageSource()
 }
 
 class PassOutputsDeclaration {
     val outputs = mutableListOf<PassOutput>()
     fun output(dslCode: PassOutput.() -> Unit) = outputs.add(PassOutput().apply(dslCode))
+
+    fun PassOutput.renderBuffer(bufferName: String) = RenderTarget.RenderBufferReference(bufferName)
+    fun PassOutput.taskInput(bufferName: String) = RenderTarget.TaskInput(bufferName)
 }
 
 /** Represents one output to a pass, includes some configuration */
@@ -55,7 +84,8 @@ class PassOutput {
     lateinit var name: String
 
     /** If the output buffer has a different name than the shader output, supply it here */
-    var outputBuffer: String? = null
+    //var outputBuffer: String? = null
+    var target: RenderTarget? = null
 
     /** Should we use blending while outputing to this ? */
     var blending: BlendMode = BlendMode.ALPHA_TEST
@@ -76,6 +106,12 @@ class PassOutput {
     }
 }
 
+sealed class RenderTarget {
+    object BackBuffer : RenderTarget()
+    class RenderBufferReference(val renderBufferName: String) : RenderTarget()
+    class TaskInput(val name: String) : RenderTarget()
+}
+
 class DepthTestingConfiguration {
     /** Disables depth testing altogether */
     var enabled = true
@@ -87,7 +123,10 @@ class DepthTestingConfiguration {
     var write = true
 
     /** If enabled is set to true this has to be configured. */
-    lateinit var depthBuffer: String
+    var depthBuffer: RenderTarget? = null
+
+    fun renderBuffer(bufferName: String) = RenderTarget.RenderBufferReference(bufferName)
+    fun taskInput(bufferName: String) = RenderTarget.TaskInput(bufferName)
 
     var mode: DepthTestMode = DepthTestMode.LESS_OR_EQUAL
 

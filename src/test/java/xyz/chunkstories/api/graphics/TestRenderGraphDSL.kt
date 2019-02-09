@@ -15,7 +15,7 @@ import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
 import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 import xyz.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test
-import xyz.chunkstories.api.graphics.ImageInput.SamplingMode.LINEAR
+import xyz.chunkstories.api.graphics.rendergraph.ImageInput
 
 data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : InterfaceBlock
 
@@ -64,8 +64,6 @@ class TestRenderGraphDSL {
 
                         dependsOn("sky")
 
-                        /**/
-
                         draws {
                             system(FullscreenQuadDrawer::class) {
 
@@ -73,7 +71,7 @@ class TestRenderGraphDSL {
                         }
 
                         depth {
-                            depthBuffer = "myDepthBuffer"
+                            depthBuffer = renderBuffer("myDepthBuffer")
                             mode = LESS_OR_EQUAL
                         }
 
@@ -82,7 +80,7 @@ class TestRenderGraphDSL {
                                 name = "colorMap"
 
                                 source = texture("textures/effects/tonemap.png")
-                                samplingMode = LINEAR
+                                samplingMode = ImageInput.SamplingMode.LINEAR
                                 wrapping = false
                             }
                         }
@@ -90,7 +88,8 @@ class TestRenderGraphDSL {
                         outputs {
                             output {
                                 name = "outColor"
-                                outputBuffer = "myFancyBuffer"
+                                //outputBuffer = "myFancyBuffer"
+                                target = renderBuffer("myFancyBuffer")
 
                                 clear = true
                                 blending = MIX
