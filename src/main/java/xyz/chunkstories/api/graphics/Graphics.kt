@@ -31,8 +31,8 @@ interface GraphicsEngine {
         val defaultModel: Model
     }
 
-    /** Dispatching systems: Register them here! */
-    val dispatchingSystems: Set<DispatchingSystem>
+    ///** Dispatching systems: Register them here! */
+    //val dispatchingSystems: Set<DispatchingSystem>
 
     val backend: GraphicsBackend
 }

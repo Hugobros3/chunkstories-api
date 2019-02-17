@@ -6,4 +6,4 @@
 
 package xyz.chunkstories.api.graphics.systems.dispatching
 
-interface ChunksRenderer : DispatchingSystem
+//interface ChunksRenderer : DispatchingSystem

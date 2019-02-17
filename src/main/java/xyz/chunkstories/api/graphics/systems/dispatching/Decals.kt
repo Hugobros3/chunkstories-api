@@ -12,5 +12,5 @@ interface DecalsManager {
     fun add(position: Vector3dc, orientation: Vector3dc, size: Vector3dc, decalName: String)
 }
 
-interface DecalsRenderer : DecalsManager, DispatchingSystem {
-}
+/*interface DecalsRenderer : DecalsManager, DispatchingSystem {
+}*/

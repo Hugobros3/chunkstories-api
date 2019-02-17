@@ -6,4 +6,4 @@
 
 package xyz.chunkstories.api.graphics.systems.dispatching
 
-interface EntitiesRenderer : DispatchingSystem
+//interface EntitiesRenderer : DispatchingSystem
