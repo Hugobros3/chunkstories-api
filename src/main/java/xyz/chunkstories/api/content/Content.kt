@@ -77,7 +77,7 @@ interface Content {
 
             val defaultMaterial: VoxelMaterial
 
-            fun getVoxelMaterial(materialName: String): VoxelMaterial
+            fun getVoxelMaterial(materialName: String): VoxelMaterial?
 
             fun all(): Iterator<VoxelMaterial>
 
