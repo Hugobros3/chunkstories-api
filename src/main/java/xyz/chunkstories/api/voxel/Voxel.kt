@@ -81,7 +81,7 @@ open class Voxel(val definition: VoxelDefinition) {
         definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store().textures().getVoxelTexture(it) }
 
         /** Sets a custom voxel material */
-        definition.resolveProperty("material")?.let { voxelMaterial = store().materials().getVoxelMaterial(it) }
+        (definition.resolveProperty("material") ?: name).let { voxelMaterial = store().materials().getVoxelMaterial(it) ?: store().materials().defaultMaterial }
 
         definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0 }
         definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0}
