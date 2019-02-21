@@ -8,6 +8,7 @@ package xyz.chunkstories.api.client
 
 import xyz.chunkstories.api.GameContext
 import xyz.chunkstories.api.content.Content
+import xyz.chunkstories.api.graphics.GraphicsEngine
 import xyz.chunkstories.api.graphics.Window
 import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import xyz.chunkstories.api.gui.Gui
@@ -20,6 +21,7 @@ import xyz.chunkstories.api.world.WorldClient
 /** The game client abstracted from a generic runtime perspective (not necessarily in game) */
 interface Client {
     val gameWindow: Window
+    val graphics: GraphicsEngine
     val gui: Gui
 
     val content: Content
