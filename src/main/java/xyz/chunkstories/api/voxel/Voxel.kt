@@ -32,7 +32,7 @@ open class Voxel(val definition: VoxelDefinition) {
     fun isAir() = store().air().sameKind(this)
 
     /** The textures used for rendering this block. Goes unused with custom models ! */
-    var voxelTextures = Array<VoxelTexture>(6) { store().textures().getVoxelTexture(name) }
+    var voxelTextures = Array<VoxelTexture>(6) { store().textures().get(name) }
 
     /** The material this block uses */
     var voxelMaterial: VoxelMaterial = store().materials().defaultMaterial
@@ -69,16 +69,16 @@ open class Voxel(val definition: VoxelDefinition) {
         definition.resolveProperty("selfOpaque")?.let { selfOpaque = it.toBoolean() }
 
         /** Sets all 6 sides of the voxel with one texture */
-        definition.resolveProperty("texture")?.let { voxelTextures.fill(store().textures().getVoxelTexture(it)) }
+        definition.resolveProperty("texture")?.let { voxelTextures.fill(store().textures().get(it)) }
         /** Sets all 4 horizontal sides of the voxel with the same texture */
-        definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store().textures().getVoxelTexture(it), 0, 4) }
+        definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store().textures().get(it), 0, 4) }
         /** Code for setting each side */
-        definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store().textures().getVoxelTexture(it) }
-        definition.resolveProperty("textures.left")?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store().textures().getVoxelTexture(it) }
-        definition.resolveProperty("textures.right")?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store().textures().getVoxelTexture(it) }
-        definition.resolveProperty("textures.front")?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store().textures().getVoxelTexture(it) }
-        definition.resolveProperty("textures.back")?.let { voxelTextures[VoxelSide.BACK.ordinal] = store().textures().getVoxelTexture(it) }
-        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store().textures().getVoxelTexture(it) }
+        definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store().textures().get(it) }
+        definition.resolveProperty("textures.left")?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store().textures().get(it) }
+        definition.resolveProperty("textures.right")?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store().textures().get(it) }
+        definition.resolveProperty("textures.front")?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store().textures().get(it) }
+        definition.resolveProperty("textures.back")?.let { voxelTextures[VoxelSide.BACK.ordinal] = store().textures().get(it) }
+        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store().textures().get(it) }
 
         /** Sets a custom voxel material */
         (definition.resolveProperty("material") ?: name).let { voxelMaterial = store().materials().getVoxelMaterial(it) ?: store().materials().defaultMaterial }

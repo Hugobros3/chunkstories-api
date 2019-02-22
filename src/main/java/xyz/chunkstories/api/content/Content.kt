@@ -58,13 +58,12 @@ interface Content {
         fun textures(): VoxelTextures
 
         interface VoxelTextures {
-
             val defaultVoxelTexture: VoxelTexture
 
-            /** Looks for a voxel texture, if it fails it returns the default texture  */
-            fun getVoxelTexture(voxelTextureName: String): VoxelTexture
+            val all: Collection<VoxelTexture>
 
-            fun all(): Iterator<VoxelTexture>
+            /** Looks for a voxel texture, if it fails it returns the default texture  */
+            fun get(voxelTextureName: String): VoxelTexture
 
             fun parent(): Voxels
 
