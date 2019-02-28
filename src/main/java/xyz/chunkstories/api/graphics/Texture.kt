@@ -29,3 +29,8 @@ interface Cubemap : Texture {
     val width: Int
     val height: Int
 }
+
+enum class TextureTilingMode {
+    CLAMP_TO_EDGE,
+    REPEAT
+}
