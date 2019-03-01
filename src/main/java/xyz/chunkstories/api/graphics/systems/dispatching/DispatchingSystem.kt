@@ -28,6 +28,4 @@ interface RepresentationsGobbler {
 
 interface RepresentationsProvider {
     fun gatherRepresentations(representationsGobbler: RepresentationsGobbler)
-
-    val representationName: String
 }

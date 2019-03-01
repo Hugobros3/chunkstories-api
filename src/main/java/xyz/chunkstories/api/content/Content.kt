@@ -22,6 +22,7 @@ import xyz.chunkstories.api.voxel.textures.VoxelTexture
 import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.generator.WorldGeneratorDefinition
 import org.slf4j.Logger
+import xyz.chunkstories.api.graphics.representation.Model
 
 /** Encapsulates all the user-definable content available  */
 interface Content {
@@ -184,13 +185,14 @@ interface Content {
         fun logger(): Logger
     }
 
-    interface Meshes {
-        fun getMesh(meshName: String) : Mesh
+    val models : Models
+    interface Models {
+        operator fun get(assetName: String) = getOrLoadModel(assetName)
 
-        val defaultMesh: Mesh
+        fun getOrLoadModel(assetName: String): Model
+
+        val defaultModel: Model
     }
-
-    fun meshes(): Meshes
 
     /** General logger about content  */
     fun logger(): Logger

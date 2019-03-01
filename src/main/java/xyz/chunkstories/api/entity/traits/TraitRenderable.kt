@@ -7,13 +7,11 @@
 package xyz.chunkstories.api.entity.traits
 
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 
 /**
- *
- *
- * Marks this entity as renderable and provides a lambda expression to obtain
- * that renderer. Do note that renderers are cached per-entity declaration; it's
- * therefore impossible to have multiple renderers for the same entity type
- *
+
  */
-class TraitRenderable<T : Entity>(entity: T) : Trait(entity)
+abstract class TraitRenderable<T : Entity>(entity: T) : Trait(entity) {
+    abstract fun buildRepresentation(representationsGobbler: RepresentationsGobbler)
+}

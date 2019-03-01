@@ -11,24 +11,14 @@ import org.joml.Vector3dc
 import org.joml.Vector3fc
 import xyz.chunkstories.api.animation.Animation
 import xyz.chunkstories.api.graphics.Mesh
+import xyz.chunkstories.api.graphics.structs.IgnoreGLSL
+import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 
-/** One instance of a particular mesh */
-data class ModelInstance(val mesh: Mesh, val transformation: ObjectTransformation = ObjectTransformation()) : Representation {
+data class Model(val meshes: List<Mesh>)
+
+/** One instance of a particular model */
+
+data class ModelInstance(val model: Model, val position: ModelPosition) : Representation {
 }
 
-data class ObjectTransformation(var matrix: Matrix4f = Matrix4f()) {
-    constructor(position: Vector3dc) : this() {
-        matrix.translate(position.x().toFloat(), position.y().toFloat(), position.z().toFloat())
-    }
-
-    constructor(position: Vector3fc) : this() {
-        matrix.translate(position.x(), position.y(), position.z())
-    }
-}
-
-/** Completes a Mesh with a bunch of metadata */
-data class Model(val mesh: Mesh, val skeleton: Animation?) {
-
-    ///** Used for frustrum culling, might be modified to solve popping issues */
-    //var boundingBox: Box = Box(Vector3d(), Vector3d(5.0, 5.0, 5.0))
-}
+data class ModelPosition(val matrix: Matrix4f = Matrix4f()): InterfaceBlock

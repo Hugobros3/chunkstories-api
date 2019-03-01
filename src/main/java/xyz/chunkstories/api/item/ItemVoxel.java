@@ -95,7 +95,7 @@ public class ItemVoxel extends Item implements WorldModificationCause {
 						Player player = (Player) controller;
 						CellData ctx = entity.getWorld().peek(blockLocation);
 						PlayerVoxelModificationEvent event = new PlayerVoxelModificationEvent(ctx, fvc,
-								isEntityCreativeMode ? TraitCreativeMode.CREATIVE_MODE : this, player);
+								isEntityCreativeMode ? TraitCreativeMode.Companion.getCREATIVE_MODE() : this, player);
 
 						// Anyone has objections ?
 						entity.getWorld().getGameContext().getPluginManager().fireEvent(event);

@@ -8,7 +8,6 @@ package xyz.chunkstories.api.graphics
 
 import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclaration
 import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
-import xyz.chunkstories.api.graphics.representation.Model
 import xyz.chunkstories.api.graphics.systems.dispatching.DispatchingSystem
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsProvider
 
@@ -29,15 +28,6 @@ interface GraphicsEngine {
         fun getOrLoadTexture2D(assetName: String) : Texture2D
 
         val defaultTexture2D: Texture2D
-    }
-
-    val models : Models
-    interface Models {
-        operator fun get(assetName: String) = getOrLoadModel(assetName)
-
-        fun getOrLoadModel(assetName: String): Model
-
-        val defaultModel: Model
     }
 
     ///** Dispatching systems: Register them here! */
