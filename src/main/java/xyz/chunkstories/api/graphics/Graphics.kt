@@ -17,9 +17,9 @@ interface GraphicsEngine {
 
     val representationsProviders: RepresentationsProviders
     interface RepresentationsProviders {
-        fun registerProvider(representationsProvider: RepresentationsProvider<*>)
+        fun registerProvider(representationsProvider: RepresentationsProvider)
 
-        fun unregisterProvider(representationsProvider: RepresentationsProvider<*>)
+        fun unregisterProvider(representationsProvider: RepresentationsProvider)
     }
 
     val textures : Textures

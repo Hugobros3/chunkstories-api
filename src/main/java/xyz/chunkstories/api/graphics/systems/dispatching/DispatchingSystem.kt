@@ -11,22 +11,23 @@ import xyz.chunkstories.api.graphics.representation.Representation
 import xyz.chunkstories.api.graphics.structs.Camera
 import xyz.chunkstories.api.graphics.systems.GraphicSystem
 
-/** A Dispatching system is a system that has the ability to dispatch draw commands in potentially multiple passes.
- * The passes do not get to choose whether or not they receive the input vertex data. */
+/** A Dispatching system receives representations and draws them. It might schedule draws in multiple passes. */
 interface DispatchingSystem<T : Representation> : GraphicSystem {
     val representationName: String
 }
 
-interface RepresentationsGobbler<T : Representation> {
+/** The interface responsible for enumerating every representation that will be used to draw frame N */
+interface RepresentationsGobbler {
     //TODO val frame: Frame
-    //supply some
+    //TODO val framgeGraph: FrameGraph
     val passInstances: Array<PassInstance>
 
-    fun acceptRepresentation(representation: T, cameraVisibility: Int = -1)
+    /** Register a representation to be drawn for this frame. Each bit of visibilityMask correspond to one entry in the passInstances array. */
+    fun <T : Representation> acceptRepresentation(representation: T, visibilityMask: Int = -1)
 }
 
-interface RepresentationsProvider<T: Representation> {
-    fun gatherRepresentations(representationsGobbler: RepresentationsGobbler<T>)
+interface RepresentationsProvider {
+    fun gatherRepresentations(representationsGobbler: RepresentationsGobbler)
 
     val representationName: String
 }
