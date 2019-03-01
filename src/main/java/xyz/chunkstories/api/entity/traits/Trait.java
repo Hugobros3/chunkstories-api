@@ -9,8 +9,8 @@ package xyz.chunkstories.api.entity.traits;
 import xyz.chunkstories.api.entity.Entity;
 
 public abstract class Trait {
-	public final int id;
-	public final Entity entity;
+	private final int id;
+	private final Entity entity;
 
 	public Trait(Entity entity) {
 		this.entity = entity;
@@ -18,6 +18,14 @@ public abstract class Trait {
 	}
 
 	public int id() {
+		return getId();
+	}
+
+	public int getId() {
 		return id;
+	}
+
+	public Entity getEntity() {
+		return entity;
 	}
 }

@@ -64,12 +64,12 @@ public class TraitSelectedItem extends TraitSerializable {
 		// System.out.println("Sending slot"+pile);
 		// don't bother writing the item pile if we're not master or if we'd be telling
 		// the controller about his own item pile
-		if (pile == null || !(entity.getWorld() instanceof WorldMaster)
-				|| entity.traits.tryWithBoolean(TraitControllable.class, ec -> ec.getController() == destinator))
+		if (pile == null || !(getEntity().getWorld() instanceof WorldMaster)
+				|| getEntity().traits.tryWithBoolean(TraitControllable.class, ec -> ec.getController() == destinator))
 			dos.writeBoolean(false);
 		else {
 			dos.writeBoolean(true);
-			pile.saveIntoStream(entity.getWorld().getContentTranslator(), dos);
+			pile.saveIntoStream(getEntity().getWorld().getContentTranslator(), dos);
 		}
 	}
 
@@ -84,17 +84,17 @@ public class TraitSelectedItem extends TraitSerializable {
 
 			ItemPile itemPile = null;
 			try {
-				itemPile = ItemPile.obtainItemPileFromStream(entity.getWorld().getContentTranslator(), dis);
+				itemPile = ItemPile.obtainItemPileFromStream(getEntity().getWorld().getContentTranslator(), dis);
 			} catch (NullItemException e) {
 				// Don't do anything about it, no big deal
 
 			} catch (UndefinedItemTypeException e) {
 				// This is slightly more problematic
-				this.entity.getWorld().getGameContext().logger().info(e.getMessage());
+				this.getEntity().getWorld().getGameContext().logger().info(e.getMessage());
 			}
 
 			// Ensures only client worlds accepts such pushes
-			if (!(entity.getWorld() instanceof WorldMaster))
+			if (!(getEntity().getWorld() instanceof WorldMaster))
 				inventory.setItemPileAt(selectedSlot, 0, itemPile);
 		}
 

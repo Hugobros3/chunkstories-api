@@ -24,9 +24,9 @@ public class TraitCollidable extends Trait {
 	}
 
 	public Vector3dc moveWithCollisionRestrain(Vector3dc delta) {
-		Vector3dc movementLeft = entity.getWorld().getCollisionsManager().runEntityAgainstWorldVoxels(entity, entity.getLocation(), delta);
+		Vector3dc movementLeft = getEntity().getWorld().getCollisionsManager().runEntityAgainstWorldVoxels(getEntity(), getEntity().getLocation(), delta);
 
-		entity.traitLocation.move(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(), delta.z() - movementLeft.z());
+		getEntity().traitLocation.move(delta.x() - movementLeft.x(), delta.y() - movementLeft.y(), delta.z() - movementLeft.z());
 		return movementLeft;
 	}
 
@@ -41,7 +41,7 @@ public class TraitCollidable extends Trait {
 	 *         vec3(0.0, 0.0, 0.0) meaning it can move without colliding with
 	 *         anything ) */
 	public Vector3dc canMoveWithCollisionRestrain(Vector3dc delta) {
-		return entity.getWorld().getCollisionsManager().runEntityAgainstWorldVoxels(entity, entity.getLocation(), delta);
+		return getEntity().getWorld().getCollisionsManager().runEntityAgainstWorldVoxels(getEntity(), getEntity().getLocation(), delta);
 	}
 
 	public Vector3dc canMoveWithCollisionRestrain(double dx, double dy, double dz) {
@@ -57,7 +57,7 @@ public class TraitCollidable extends Trait {
 	 *         vec3(0.0, 0.0, 0.0) meaning it can move without colliding with
 	 *         anything ) */
 	public Vector3dc canMoveWithCollisionRestrain(Vector3dc from, Vector3dc delta) {
-		return entity.getWorld().getCollisionsManager().runEntityAgainstWorldVoxels(entity, from, delta);
+		return getEntity().getWorld().getCollisionsManager().runEntityAgainstWorldVoxels(getEntity(), from, delta);
 	}
 
 	private static final Vector3dc onGroundTest_ = new Vector3d(0.0, -0.01, 0.0);
@@ -65,7 +65,7 @@ public class TraitCollidable extends Trait {
 	public boolean isOnGround() {
 		// System.out.println(canMoveWithCollisionRestrain(onGroundTest_).length());
 		if (isStuckInEntity() == null)
-			return entity.getWorld().getCollisionsManager().runEntityAgainstWorldVoxelsAndEntities(entity, entity.getLocation(), onGroundTest_)
+			return getEntity().getWorld().getCollisionsManager().runEntityAgainstWorldVoxelsAndEntities(getEntity(), getEntity().getLocation(), onGroundTest_)
 					.length() != 0.0d;
 		else
 			return canMoveWithCollisionRestrain(onGroundTest_).length() != 0.0d;
@@ -74,7 +74,7 @@ public class TraitCollidable extends Trait {
 	public void unstuck() {
 		Entity stuckIn = this.isStuckInEntity();
 		if (stuckIn != null) {
-			Vector3d delta = entity.getLocation();
+			Vector3d delta = getEntity().getLocation();
 			delta.sub(stuckIn.getLocation());
 			delta.add(0.01, 0.01, 0.01);
 
@@ -84,8 +84,8 @@ public class TraitCollidable extends Trait {
 
 	@Nullable
 	public Entity isStuckInEntity() {
-		for (Entity e : entity.getWorld().getEntitiesInBox(entity.getLocation(), new Vector3d(1, 2, 1))) {
-			if (e != entity) {
+		for (Entity e : getEntity().getWorld().getEntitiesInBox(getEntity().getLocation(), new Vector3d(1, 2, 1))) {
+			if (e != getEntity()) {
 				TraitCollidable tc = e.traits.get(TraitCollidable.class);
 				if (tc != null) {
 					if (collidesWithEntities) {
@@ -105,7 +105,7 @@ public class TraitCollidable extends Trait {
 
 	public Box getTranslatedBoundingBox() {
 		Box box = getBoundingBox();
-		box.translate(entity.getLocation());
+		box.translate(getEntity().getLocation());
 		return box;
 	}
 
@@ -120,7 +120,7 @@ public class TraitCollidable extends Trait {
 	public Box[] getTranslatedCollisionBoxes() {
 		Box[] boxes = getCollisionBoxes();
 		for (Box box : boxes)
-			box.translate(entity.getLocation());
+			box.translate(getEntity().getLocation());
 		return boxes;
 	}
 

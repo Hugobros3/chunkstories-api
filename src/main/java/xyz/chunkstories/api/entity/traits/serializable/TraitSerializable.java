@@ -24,29 +24,27 @@ import xyz.chunkstories.api.world.serialization.StreamTarget;
 
 @Generalized
 public abstract class TraitSerializable extends Trait {
-	/** Reflects the name declared in the @SerializedName annotation, or the the top
-	 * level class name if none is declared */
-	public final String name;
+	private final String traitName;
 
 	public TraitSerializable(Entity entity) {
 		super(entity);
 
 		SerializedName[] a = this.getClass().getAnnotationsByType(SerializedName.class);
 		if (a.length > 0)
-			name = a[0].name();
+			traitName = a[0].name();
 		else
-			name = this.getClass().getName();
+			traitName = this.getClass().getName();
 	}
 
 	/** Push will tell all subscribers of the entity about a change of this
 	 * component only */
 	public void pushComponentEveryone() {
-		entity.subscribers.forEach(this::pushComponent);
+		getEntity().subscribers.forEach(this::pushComponent);
 	}
 
 	/** Push the component to the controller, if such one exists */
 	public void pushComponentController() {
-		this.entity.traits.with(TraitControllable.class, e -> {
+		this.getEntity().traits.with(TraitControllable.class, e -> {
 			Controller controller = e.getController();
 			if (controller != null)
 				pushComponent(controller);
@@ -55,9 +53,9 @@ public abstract class TraitSerializable extends Trait {
 
 	/** Push the component to everyone but the controller, if such one exists */
 	public void pushComponentEveryoneButController() {
-		Iterator<Subscriber> iterator = entity.subscribers.iterator();
+		Iterator<Subscriber> iterator = getEntity().subscribers.iterator();
 
-		Controller controller = entity.traits.tryWith(TraitControllable.class, TraitControllable::getController);
+		Controller controller = getEntity().traits.tryWith(TraitControllable.class, TraitControllable::getController);
 
 		while (iterator.hasNext()) {
 			Subscriber subscriber = iterator.next();
@@ -78,7 +76,7 @@ public abstract class TraitSerializable extends Trait {
 
 		// TODO rework that assumption now
 
-		PacketEntity packet = new PacketEntity(entity, this);
+		PacketEntity packet = new PacketEntity(getEntity(), this);
 		// this.pushComponentInStream(subscriber, packet.getSynchPacketOutputStream());
 		subscriber.pushPacket(packet);
 	}
@@ -88,9 +86,9 @@ public abstract class TraitSerializable extends Trait {
 		// instead
 		if (to instanceof OfflineSerializedData) {
 			dos.writeInt(-1);
-			dos.writeUTF(this.name);
+			dos.writeUTF(this.getTraitName());
 		} else {
-			dos.writeInt(this.id);
+			dos.writeInt(this.getId());
 		}
 
 		// Push actual component data
@@ -104,4 +102,10 @@ public abstract class TraitSerializable extends Trait {
 	protected abstract void push(StreamTarget destinator, DataOutputStream dos) throws IOException;
 
 	protected abstract void pull(StreamSource from, DataInputStream dis) throws IOException;
+
+	/** Reflects the name declared in the @SerializedName annotation, or the the top
+	 * level class name if none is declared */
+	public String getTraitName() {
+		return traitName;
+	}
 }

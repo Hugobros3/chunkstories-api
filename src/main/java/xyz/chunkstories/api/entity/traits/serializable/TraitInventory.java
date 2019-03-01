@@ -59,7 +59,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 
 	@Override
 	public String getInventoryName() {
-		String name = entity.traits.tryWith(TraitName.class, TraitName::getName);
+		String name = getEntity().traits.tryWith(TraitName.class, TraitName::getName);
 		// if (holder instanceof EntityNameable)
 		// return ((EntityNameable) holder).getRegisteredComponentName();
 		return name != null ? "[entity has no name]" : holder.getClass().getSimpleName();
@@ -71,8 +71,8 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 	}
 
 	public void refreshItemSlot(int x, int y, @Nullable ItemPile pileChanged) {
-		Packet packetItemUpdate = new PacketInventoryPartialUpdate(entity.getWorld(), this, x, y, pileChanged);
-		entity.traits.with(TraitControllable.class, ecc -> {
+		Packet packetItemUpdate = new PacketInventoryPartialUpdate(getEntity().getWorld(), this, x, y, pileChanged);
+		getEntity().traits.with(TraitControllable.class, ecc -> {
 			if (ecc.getController() != null)
 				ecc.getController().pushPacket(packetItemUpdate);
 		});
@@ -88,7 +88,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 			return true;
 
 		// You always have access to yourself
-		if (entity == TraitInventory.this.entity)
+		if (entity == TraitInventory.this.getEntity())
 			return true;
 
 		// Dead entities ain't got no rights
@@ -122,7 +122,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 			}
 		}
 		stream.writeByte(UpdateMode.TOTAL_REFRESH.ordinal());
-		actualInventory.pushInventory(destinator, stream, entity.getWorld().getContentTranslator());
+		actualInventory.pushInventory(destinator, stream, getEntity().getWorld().getContentTranslator());
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class TraitInventory extends TraitSerializable implements Inventory {
 		if (b == UpdateMode.NEVERMIND.ordinal())
 			return;
 
-		actualInventory.pullInventory(from, stream, entity.getWorld().getContentTranslator());
+		actualInventory.pullInventory(from, stream, getEntity().getWorld().getContentTranslator());
 	}
 
 	@Override

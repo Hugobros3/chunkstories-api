@@ -91,7 +91,7 @@ public class TraitRotation extends TraitSerializable {
 
 		// Position updates received by the server should be told to everyone but the
 		// controller
-		if (entity.getWorld() instanceof WorldMaster)
+		if (getEntity().getWorld() instanceof WorldMaster)
 			this.pushComponentEveryoneButController();
 	}
 

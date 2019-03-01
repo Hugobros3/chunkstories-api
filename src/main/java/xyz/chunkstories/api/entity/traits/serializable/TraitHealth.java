@@ -57,7 +57,7 @@ public class TraitHealth extends TraitSerializable {
 		if (health <= 0.0 && wasntDead)
 			handleDeath();
 
-		if (entity.getWorld() instanceof WorldMaster) {
+		if (getEntity().getWorld() instanceof WorldMaster) {
 			if (health > 0.0)
 				this.pushComponentController();
 			else
@@ -73,8 +73,8 @@ public class TraitHealth extends TraitSerializable {
 		if (damageCooldown > System.currentTimeMillis())
 			return 0f;
 
-		EntityDamageEvent event = new EntityDamageEvent(entity, cause, damage);
-		entity.getWorld().getGameLogic().getPluginsManager().fireEvent(event);
+		EntityDamageEvent event = new EntityDamageEvent(getEntity(), cause, damage);
+		getEntity().getWorld().getGameLogic().getPluginsManager().fireEvent(event);
 
 		if (!event.isCancelled()) {
 			applyDamage(event.getDamageDealt());
@@ -87,10 +87,10 @@ public class TraitHealth extends TraitSerializable {
 			// Applies knockback
 			if (cause instanceof Entity) {
 				// Only runs if the entity do have a velocity
-				entity.traits.with(TraitVelocity.class, ev -> {
+				getEntity().traits.with(TraitVelocity.class, ev -> {
 
 					Entity attacker = (Entity) cause;
-					Vector3d attackKnockback = entity.getLocation().sub(attacker.getLocation().add(0d, 0d, 0d));
+					Vector3d attackKnockback = getEntity().getLocation().sub(attacker.getLocation().add(0d, 0d, 0d));
 					attackKnockback.y = (0d);
 					attackKnockback.normalize();
 
@@ -117,7 +117,7 @@ public class TraitHealth extends TraitSerializable {
 		if (value <= 0.0 && wasntDead)
 			handleDeath();
 
-		if (entity.getWorld() instanceof WorldMaster) {
+		if (getEntity().getWorld() instanceof WorldMaster) {
 			if (value > 0.0)
 				this.pushComponentController();
 			else
@@ -126,24 +126,24 @@ public class TraitHealth extends TraitSerializable {
 	}
 
 	private void handleDeath() {
-		EntityDeathEvent entityDeathEvent = new EntityDeathEvent(entity);
-		entity.getWorld().getGameLogic().getPluginsManager().fireEvent(entityDeathEvent);
+		EntityDeathEvent entityDeathEvent = new EntityDeathEvent(getEntity());
+		getEntity().getWorld().getGameLogic().getPluginsManager().fireEvent(entityDeathEvent);
 
 		// Handles cases of controlled player death
-		entity.traits.with(TraitControllable.class, ec -> {
+		getEntity().traits.with(TraitControllable.class, ec -> {
 			Controller controller = ec.getController();
 			if (controller != null) {
 				controller.setControlledEntity(null);
 
 				// Serverside stuff
-				if (controller instanceof Player && entity.getWorld() instanceof WorldMaster) {
+				if (controller instanceof Player && getEntity().getWorld() instanceof WorldMaster) {
 					Player player = (Player) controller;
 
 					PlayerDeathEvent event = new PlayerDeathEvent(player);
-					entity.getWorld().getGameLogic().getPluginsManager().fireEvent(event);
+					getEntity().getWorld().getGameLogic().getPluginsManager().fireEvent(event);
 
 					// When a player dies, delete his save as well
-					File playerSavefile = new File(((WorldMaster) entity.getWorld()).getFolderPath() + "/players/" + player.getName().toLowerCase() + ".csf");
+					File playerSavefile = new File(((WorldMaster) getEntity().getWorld()).getFolderPath() + "/players/" + player.getName().toLowerCase() + ".csf");
 					if (playerSavefile.exists()) {
 						// Player save file is deleted upon death
 						playerSavefile.delete();
@@ -185,7 +185,7 @@ public class TraitHealth extends TraitSerializable {
 		if (isDead()) {
 			deathDespawnTimer--;
 			if (deathDespawnTimer < 0) {
-				entity.getWorld().removeEntity(entity);
+				getEntity().getWorld().removeEntity(getEntity());
 				return;
 			}
 		}

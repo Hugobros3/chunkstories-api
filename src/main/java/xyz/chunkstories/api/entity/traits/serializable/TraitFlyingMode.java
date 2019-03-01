@@ -25,13 +25,13 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			return;
 
 		// Flying resets the entity velocity, if it has one
-		entity.traits.with(TraitVelocity.class, ev -> ev.setVelocity(0, 0, 0));
+		getEntity().traits.with(TraitVelocity.class, ev -> ev.setVelocity(0, 0, 0));
 
-		TraitRotation entityRotation = entity.traits.get(TraitRotation.class);
+		TraitRotation entityRotation = getEntity().traits.get(TraitRotation.class);
 		if (entityRotation == null)
 			return; // you must be able to rotate to fly
 
-		TraitCollidable entityCollisions = entity.traits.get(TraitCollidable.class);
+		TraitCollidable entityCollisions = getEntity().traits.get(TraitCollidable.class);
 		boolean ignoreCollisions = entityCollisions == null | this.noclip;
 
 		float cameraSpeed = flySpeed;
@@ -44,7 +44,7 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			float horizRotRad = (float) ((entityRotation.getHorizontalRotation() + 180f) / 180f * Math.PI);
 			float vertRotRad = (float) ((-entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (ignoreCollisions)
-				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
+				getEntity().traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
 						Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 			else
 				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
@@ -54,7 +54,7 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 			float horizRotRad = (float) ((entityRotation.getHorizontalRotation()) / 180f * Math.PI);
 			float vertRotRad = (float) ((entityRotation.getVerticalRotation()) / 180f * Math.PI);
 			if (ignoreCollisions)
-				entity.traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
+				getEntity().traitLocation.move(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
 						Math.cos(horizRotRad) * cameraSpeed * Math.cos(vertRotRad));
 			else
 				entityCollisions.moveWithCollisionRestrain(Math.sin(horizRotRad) * cameraSpeed * Math.cos(vertRotRad), Math.sin(vertRotRad) * cameraSpeed,
@@ -63,14 +63,14 @@ public class TraitFlyingMode extends TraitSerializableBoolean {
 		if (controller.getInputsManager().getInputByName("right").isPressed()) {
 			float horizRot = (float) ((entityRotation.getHorizontalRotation() + 90) / 180f * Math.PI);
 			if (ignoreCollisions)
-				entity.traitLocation.move(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
+				getEntity().traitLocation.move(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 			else
 				entityCollisions.moveWithCollisionRestrain(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 		}
 		if (controller.getInputsManager().getInputByName("left").isPressed()) {
 			float horizRot = (float) ((entityRotation.getHorizontalRotation() - 90) / 180f * Math.PI);
 			if (ignoreCollisions)
-				entity.traitLocation.move(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
+				getEntity().traitLocation.move(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 			else
 				entityCollisions.moveWithCollisionRestrain(-Math.sin(horizRot) * cameraSpeed, 0, -Math.cos(horizRot) * cameraSpeed);
 		}
