@@ -24,9 +24,9 @@ import xyz.chunkstories.api.world.serialization.StreamTarget
 
 /** Holds the information about an entity whereabouts and a flag to mark it as
  * unspawned  */
-class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializable(entity) {
+class TraitLocation(entity: Entity, private val actualLocation: Location) : TraitSerializable(entity) {
 
-    private val world: World = pos.getWorld()
+    private val world: World = actualLocation.getWorld()
 
     private val lock = ReentrantLock()
 
@@ -53,9 +53,9 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
 
         try {
             lock.lock()
-            this.pos.x = x
-            this.pos.y = y
-            this.pos.z = z
+            this.actualLocation.x = x
+            this.actualLocation.y = y
+            this.actualLocation.z = z
 
             sanitize()
         } finally {
@@ -75,9 +75,9 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
     fun move(dx: Double, dy: Double, dz: Double) {
         try {
             lock.lock()
-            pos.x = pos.x() + dx
-            pos.y = pos.y() + dy
-            pos.z = pos.z() + dz
+            actualLocation.x = actualLocation.x() + dx
+            actualLocation.y = actualLocation.y() + dy
+            actualLocation.z = actualLocation.z() + dz
 
             sanitize()/**/
         } finally {
@@ -94,15 +94,15 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
     /** Copies the location and returns it. The actual location is never mutated
      * outside of set().  */
     fun get(): Location {
-        val pos = this.pos
+        val pos = this.actualLocation
         return Location(pos.getWorld(), pos)
     }
 
     @Throws(IOException::class)
     public override fun push(to: StreamTarget, dos: DataOutputStream) {
-        dos.writeDouble(pos.x())
-        dos.writeDouble(pos.y())
-        dos.writeDouble(pos.z())
+        dos.writeDouble(actualLocation.x())
+        dos.writeDouble(actualLocation.y())
+        dos.writeDouble(actualLocation.z())
     }
 
     @Throws(IOException::class)
@@ -115,9 +115,9 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
 
         try {
             lock.lock()
-            this.pos.x = x
-            this.pos.y = y
-            this.pos.z = z
+            this.actualLocation.x = x
+            this.actualLocation.y = y
+            this.actualLocation.z = z
 
             sanitize()
         } finally {
@@ -135,30 +135,30 @@ class TraitLocation(entity: Entity, private val pos: Location) : TraitSerializab
     private fun sanitize(): Boolean {
         val worldSize = world.worldSize
 
-        pos.x = pos.x() % worldSize
-        pos.z = pos.z() % worldSize
+        actualLocation.x = actualLocation.x() % worldSize
+        actualLocation.z = actualLocation.z() % worldSize
 
         // Loop arround the world
-        if (pos.x() < 0)
-            pos.x = pos.x() + worldSize
-        else if (pos.x() > worldSize)
-            pos.x = pos.x() % worldSize
+        if (actualLocation.x() < 0)
+            actualLocation.x = actualLocation.x() + worldSize
+        else if (actualLocation.x() > worldSize)
+            actualLocation.x = actualLocation.x() % worldSize
 
-        if (pos.z() < 0)
-            pos.z = pos.z() + worldSize
-        else if (pos.z() > worldSize)
-            pos.z = pos.z() % worldSize
+        if (actualLocation.z() < 0)
+            actualLocation.z = actualLocation.z() + worldSize
+        else if (actualLocation.z() > worldSize)
+            actualLocation.z = actualLocation.z() % worldSize
 
-        if (pos.y < 0)
-            pos.y = 0.0
+        if (actualLocation.y < 0)
+            actualLocation.y = 0.0
 
-        if (pos.y > world.maxHeight)
-            pos.y = world.maxHeight.toDouble()
+        if (actualLocation.y > world.maxHeight)
+            actualLocation.y = world.maxHeight.toDouble()
 
         // Get local chunk co-ordinate
-        val chunkX = pos.x().toInt() shr 5
-        val chunkY = pos.y().toInt() shr 5
-        val chunkZ = pos.z().toInt() shr 5
+        val chunkX = actualLocation.x().toInt() shr 5
+        val chunkY = actualLocation.y().toInt() shr 5
+        val chunkZ = actualLocation.z().toInt() shr 5
 
         // Don't touch updates once the entity was removed
         if (removed /* !entity.exists() */)

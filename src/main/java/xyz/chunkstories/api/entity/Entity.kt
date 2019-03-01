@@ -20,7 +20,9 @@ import kotlin.reflect.KClass
 import java.util.HashSet
 
 abstract class Entity(val definition: EntityDefinition, @JvmField val world: World) {
-    var location : Location = Location(world, .0, .0, .0)
+    //var location : Location = Location(world, .0, .0, .0)
+    val location: Location
+        get() = traitLocation.get()
 
     fun getWorld() = world
 
@@ -39,7 +41,7 @@ abstract class Entity(val definition: EntityDefinition, @JvmField val world: Wor
     val traits : Traits = Traits()
 
     @JvmField
-    val traitLocation = TraitLocation(this, location)
+    val traitLocation = TraitLocation(this, Location(world, .0, .0, .0))
 
     @JvmField
     val subscribers = Subscribers()
