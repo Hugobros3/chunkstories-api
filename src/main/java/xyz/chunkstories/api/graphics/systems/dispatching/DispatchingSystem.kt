@@ -7,12 +7,13 @@
 package xyz.chunkstories.api.graphics.systems.dispatching
 
 import xyz.chunkstories.api.graphics.rendergraph.PassInstance
+import xyz.chunkstories.api.graphics.rendergraph.RenderingContext
 import xyz.chunkstories.api.graphics.representation.Representation
 import xyz.chunkstories.api.graphics.structs.Camera
 import xyz.chunkstories.api.graphics.systems.GraphicSystem
 
 /** A Dispatching system receives representations and draws them. It might schedule draws in multiple passes. */
-interface DispatchingSystem<T : Representation> : GraphicSystem {
+interface DispatchingSystem : GraphicSystem {
     val representationName: String
 }
 
@@ -20,10 +21,12 @@ interface DispatchingSystem<T : Representation> : GraphicSystem {
 interface RepresentationsGobbler {
     //TODO val frame: Frame
     //TODO val framgeGraph: FrameGraph
-    val passInstances: Array<PassInstance>
+    //val passInstances: Array<PassInstance>
+    //val cameras: Array<Camera>
+    val renderingContexts: Array<RenderingContext>
 
     /** Register a representation to be drawn for this frame. Each bit of visibilityMask correspond to one entry in the passInstances array. */
-    fun <T : Representation> acceptRepresentation(representation: T, visibilityMask: Int = -1)
+    fun <T : Representation> acceptRepresentation(representation: T, mask: Int = -1)
 }
 
 interface RepresentationsProvider {

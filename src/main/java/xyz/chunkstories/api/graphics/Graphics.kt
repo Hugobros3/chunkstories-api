@@ -6,9 +6,7 @@
 
 package xyz.chunkstories.api.graphics
 
-import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclaration
 import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
-import xyz.chunkstories.api.graphics.systems.dispatching.DispatchingSystem
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsProvider
 
 interface GraphicsEngine {
