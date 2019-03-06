@@ -37,7 +37,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
         set(value) {
             // Client code isn't allowed to change the controller when running on a remote server,
             // the only method that change it in that scenario is the pull method below
-            if (entity.getWorld() !is WorldMaster)
+            if (entity.world !is WorldMaster)
                 throw UnauthorizedClientActionException("setController()")
 
             val formerController = this.controller
@@ -101,7 +101,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
             controllerUUID = dis.readLong()
 
         // Only purely client worlds will accept these requests
-        if (entity.getWorld() !is WorldClientNetworkedRemote) {
+        if (entity.world !is WorldClientNetworkedRemote) {
             // Terminate connections immediately
             if (from is Player) {
                 from.disconnect("Illegal controller set attempt, terminating client connection for $from")
@@ -110,7 +110,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
             return
         }
 
-        val player = (entity.getWorld().gameContext as IngameClient).player
+        val player = (entity.world.gameContext as IngameClient).player
         if (isControllerNotNull) {
             val clientUUID = player.uuid
             println("Entity $entity is now under control of $controllerUUID me=$clientUUID")

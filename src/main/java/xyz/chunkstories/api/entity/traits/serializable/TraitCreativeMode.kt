@@ -12,6 +12,9 @@ import xyz.chunkstories.api.events.voxel.WorldModificationCause
 
 class TraitCreativeMode(entity: Entity) : TraitSerializableBoolean(entity) {
     companion object {
-        val CREATIVE_MODE: WorldModificationCause = WorldModificationCause { "Creative Mode" }
+        val CREATIVE_MODE: WorldModificationCause = object : WorldModificationCause {
+            override val name: String
+                get() = "Creative Mode"
+        }
     }
 }

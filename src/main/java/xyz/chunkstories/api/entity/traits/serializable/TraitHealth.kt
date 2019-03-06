@@ -57,7 +57,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         if (health <= 0.0 && wasntDead)
             handleDeath()
 
-        if (entity.getWorld() is WorldMaster) {
+        if (entity.world is WorldMaster) {
             if (health > 0.0)
                 this.pushComponentController()
             else
@@ -74,7 +74,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
             return 0f
 
         val event = EntityDamageEvent(entity, cause, damage)
-        entity.getWorld().gameLogic.pluginsManager.fireEvent(event)
+        entity.world.gameLogic.pluginsManager.fireEvent(event)
 
         if (!event.isCancelled) {
             applyDamage(event.damageDealt)
@@ -117,7 +117,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         if (health <= 0.0 && wasntDead)
             handleDeath()
 
-        if (entity.getWorld() is WorldMaster) {
+        if (entity.world is WorldMaster) {
             if (health > 0.0)
                 this.pushComponentController()
             else
@@ -127,7 +127,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
 
     private fun handleDeath() {
         val entityDeathEvent = EntityDeathEvent(entity)
-        entity.getWorld().gameLogic.pluginsManager.fireEvent(entityDeathEvent)
+        entity.world.gameLogic.pluginsManager.fireEvent(entityDeathEvent)
 
         // Handles cases of controlled player death
         entity.traits[TraitControllable::class]?.let { ec ->
@@ -136,14 +136,14 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
                 controller.controlledEntity = null
 
                 // Serverside stuff
-                if (controller is Player && entity.getWorld() is WorldMaster) {
+                if (controller is Player && entity.world is WorldMaster) {
                     val player = controller as Player
 
                     val event = PlayerDeathEvent(player)
-                    entity.getWorld().gameLogic.pluginsManager.fireEvent(event)
+                    entity.world.gameLogic.pluginsManager.fireEvent(event)
 
                     // When a player dies, delete his save as well
-                    val playerSavefile = File((entity.getWorld() as WorldMaster).folderPath + "/players/" + player.name.toLowerCase() + ".csf")
+                    val playerSavefile = File((entity.world as WorldMaster).folderPath + "/players/" + player.name.toLowerCase() + ".csf")
                     if (playerSavefile.exists()) {
                         // Player save file is deleted upon death
                         playerSavefile.delete()
@@ -176,7 +176,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         if (isDead) {
             deathDespawnTimer--
             if (deathDespawnTimer < 0) {
-                entity.getWorld().removeEntity(entity)
+                entity.world.removeEntity(entity)
                 return
             }
         }

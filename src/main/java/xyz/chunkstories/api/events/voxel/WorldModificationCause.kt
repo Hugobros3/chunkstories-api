@@ -4,8 +4,8 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.events.voxel;
+package xyz.chunkstories.api.events.voxel
 
-public interface WorldModificationCause {
-	public String getName();
+interface WorldModificationCause {
+    val name: String
 }

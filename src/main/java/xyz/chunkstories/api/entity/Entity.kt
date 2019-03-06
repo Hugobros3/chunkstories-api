@@ -19,12 +19,12 @@ import java.util.*
 import kotlin.reflect.KClass
 import java.util.HashSet
 
-abstract class Entity(val definition: EntityDefinition, @JvmField val world: World) {
+abstract class Entity(val definition: EntityDefinition, val world: World) {
     //var location : Location = Location(world, .0, .0, .0)
     val location: Location
         get() = traitLocation.get()
 
-    fun getWorld() = world
+    //fun getWorld() = world
 
     var UUID : Long = -1L
         set(value) {
