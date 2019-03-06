@@ -42,6 +42,11 @@ open class Voxel(val definition: VoxelDefinition) {
         @JvmName("isSolid")
         get
 
+    /** Can entities swim through this block ? */
+    var liquid = definition.resolveProperty("liquid", "true") == "true"
+        @JvmName("isLiquid")
+        get
+
     /** Does this block completely hides adjacent ones (and can we just skip rendering those hidden faces) ? */
     var opaque = definition.resolveProperty("opaque", "true") == "true"
         @JvmName("isOpaque")

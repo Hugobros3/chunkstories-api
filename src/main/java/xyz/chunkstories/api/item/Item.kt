@@ -6,8 +6,13 @@
 
 package xyz.chunkstories.api.item
 
+import org.joml.Matrix4f
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.graphics.MeshMaterial
+import xyz.chunkstories.api.graphics.representation.Representation
+import xyz.chunkstories.api.graphics.representation.Sprite
+import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.item.inventory.InventoryHolder
 import xyz.chunkstories.api.item.inventory.ItemPile
@@ -66,6 +71,10 @@ open class Item(val definition: ItemDefinition) {
      */
     open fun getTextureName(pile: ItemPile): String {
         return "items/icons/$internalName.png"
+    }
+
+    open fun buildRepresentation(pile: ItemPile, worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
+        representationsGobbler.acceptRepresentation(Sprite(worldPosition, 1f, MeshMaterial("item_$name", mapOf("albedo" to getTextureName(pile)), "opaque")))
     }
 
     /** Unsafe, called upon loading this item from a stream. If you do use it,
