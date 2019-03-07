@@ -4,12 +4,12 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.input;
+package xyz.chunkstories.api.input
 
-import xyz.chunkstories.api.client.Client;
+import xyz.chunkstories.api.client.Client
 
 /** Clientside input, presses are replicated on the server but they use
- * VirtualInputs instead of these */
-public interface ClientInput extends Input {
-	public Client getClient();
+ * VirtualInputs instead of these  */
+interface ClientInput : Input {
+    val client: Client
 }
