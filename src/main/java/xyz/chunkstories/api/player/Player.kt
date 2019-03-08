@@ -22,29 +22,21 @@ interface Player : CommandEmitter, Controller, Subscriber, Interlocutor {
      */
     override val name: String
 
-    /** @return the displayable name of the player (including things like tags,
-     * color etc)
-     */
+    /** The displayable name of the player (including things like tags,
+     * color etc)*/
     val displayName: String
-
-    /** @return The [World] the entity belongs to.
-     */
-    val world: World
-
-    /** @return The [context][GameContext] the world, and thus the entity
-     * belongs to.
-     */
-    val context: GameContext
-
-    /** @return The [Location] of this player in his world
-     */
-    /** Sets the [Location] of the user. Warning, can't change the world he's
-     * in with this method !  */
-    var location: Location
 
     /** @return True once the player connection was interrupted
      */
+    //TODO asses usage and remove/clean
+    @Deprecated("unused?")
     val isConnected: Boolean
+
+    /** @return True once the player has been spawned inside it's [World].
+     */
+    //TODO asses usage and remove/clean
+    @Deprecated("unused?")
+    fun hasSpawned(): Boolean
 
     /** @return the entity this player is controlling
      */
@@ -53,11 +45,6 @@ interface Player : CommandEmitter, Controller, Subscriber, Interlocutor {
     /** Sends a text message to this player chat  */
     override fun sendMessage(msg: String)
 
-    /** @return True once the player has been spawned inside it's [World].
-     */
-    fun hasSpawned(): Boolean
-
-    /** Helper method: Tries to open the specified inventory for the following
-     * player  */
+    /** Helper method: Tries to open the specified inventory for the following player  */
     fun openInventory(inventory: Inventory)
 }

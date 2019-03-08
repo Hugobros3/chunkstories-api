@@ -11,10 +11,6 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
 
-import org.joml.Vector3d
-
-import xyz.chunkstories.api.GameContext
-import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.DamageCause
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.events.entity.EntityDamageEvent
@@ -150,9 +146,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
                     }
 
                     if (event.deathMessage != null) {
-                        val gc = player.context
-                        if (gc is Server)
-                            gc.broadcastMessage(event.deathMessage)
+                        (player.controlledEntity?.world?.gameContext as? Server)?.broadcastMessage(event.deathMessage!!)
                     }
                 } else {
                     // Weird, undefined cases ( controller wasn't a player, maybe some weird mod

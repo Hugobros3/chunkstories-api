@@ -85,6 +85,13 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 		Player player = sppc.getPlayer();
 		Entity playerEntity = player.getControlledEntity();
 
+		if(playerEntity == null) {
+			processor.logger().error("Received a move item packet from a player without a controlled entity, ignoring.");
+			return;
+		}
+
+		World world = playerEntity.getWorld();
+
 		sourceX = in.readInt();
 		sourceY = in.readInt();
 		destX = in.readInt();
@@ -99,7 +106,7 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 		if (sourceInventory == null)// || from == InventoryTranslator.INVENTORY_CREATIVE_TRASH)
 		{
 			try {
-				itemPile = ItemPile.obtainItemPileFromStream(player.getWorld().getContentTranslator(), in);
+				itemPile = ItemPile.obtainItemPileFromStream(world.getContentTranslator(), in);
 			} catch (NullItemException e) {
 				// This ... isn't supposed to happen
 				processor.logger().info("User " + sender + " is trying to spawn a null ItemPile for some reason.");
@@ -128,9 +135,8 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 		}
 
 		// Check using event
-		PlayerMoveItemEvent moveItemEvent = new PlayerMoveItemEvent(player, itemPile, sourceInventory, destinationInventory, sourceX, sourceY, destX, destY,
-				amount);
-		player.getContext().getPluginManager().fireEvent(moveItemEvent);
+		PlayerMoveItemEvent moveItemEvent = new PlayerMoveItemEvent(player, itemPile, sourceInventory, destinationInventory, sourceX, sourceY, destX, destY, amount);
+		world.getGameContext().getPluginManager().fireEvent(moveItemEvent);
 
 		if (!moveItemEvent.isCancelled()) {
 			// Restrict item spawning
@@ -151,18 +157,13 @@ public class PacketInventoryMoveItemPile extends PacketWorld {
 				// TODO this really needs some kind of permissions system
 				// TODO or not ? Maybe the cancellable event deal can prevent this
 
-				if (playerEntity == null) {
-					System.out.println("Dropping items isn't possible if the player doesn't control any entity.");
-					return;
-				}
-
 				// If we're pulling this out of an inventory ( and not /dev/null ), we need to
 				// remove it from that
 				Inventory sourceInventory = itemPile.getInventory();
 
 				Location loc = playerEntity.getLocation();
 				EventItemDroppedToWorld dropItemEvent = new EventItemDroppedToWorld(loc, sourceInventory, itemPile);
-				player.getContext().getPluginManager().fireEvent(dropItemEvent);
+				world.getGameContext().getPluginManager().fireEvent(dropItemEvent);
 
 				if (!dropItemEvent.isCancelled()) {
 

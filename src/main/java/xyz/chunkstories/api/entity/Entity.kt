@@ -21,8 +21,9 @@ import java.util.HashSet
 
 abstract class Entity(val definition: EntityDefinition, val world: World) {
     //var location : Location = Location(world, .0, .0, .0)
-    val location: Location
+    var location: Location
         get() = traitLocation.get()
+        set(value) = traitLocation.set(value)
 
     //fun getWorld() = world
 

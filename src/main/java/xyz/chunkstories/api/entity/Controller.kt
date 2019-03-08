@@ -20,7 +20,7 @@ interface Controller : Subscriber, WorldUser {
     var controlledEntity: Entity?
 
     // TODO make those explicit shorthands...
-    val soundManager: SoundManager
-    val particlesManager: ParticlesManager
-    val decalsManager: DecalsManager
+    // val soundManager: SoundManager
+    // val particlesManager: ParticlesManager
+    // val decalsManager: DecalsManager
 }
