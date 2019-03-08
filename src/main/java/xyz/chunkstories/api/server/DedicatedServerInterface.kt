@@ -4,10 +4,10 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.server;
+package xyz.chunkstories.api.server
 
-public interface DedicatedServerInterface extends Server {
+interface DedicatedServerInterface : Server {
 
-	/** Stops the server. */
-	public void stop();
+    /** Stops the server.  */
+    fun stop()
 }
