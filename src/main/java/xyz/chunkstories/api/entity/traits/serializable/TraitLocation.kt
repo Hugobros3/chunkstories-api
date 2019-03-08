@@ -26,7 +26,7 @@ import xyz.chunkstories.api.world.serialization.StreamTarget
  * unspawned  */
 class TraitLocation(entity: Entity, private val actualLocation: Location) : TraitSerializable(entity) {
 
-    private val world: World = actualLocation.getWorld()
+    private val world: World = actualLocation.world
 
     private val lock = ReentrantLock()
 
@@ -95,7 +95,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
      * outside of set().  */
     fun get(): Location {
         val pos = this.actualLocation
-        return Location(pos.getWorld(), pos)
+        return Location(pos.world, pos)
     }
 
     @Throws(IOException::class)

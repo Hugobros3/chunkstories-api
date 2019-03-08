@@ -4,10 +4,10 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.plugin;
+package xyz.chunkstories.api.plugin
 
 /** Quick and dirty interface to reproduce Bukkit scheduler functionality for
- * the time being */
-public interface Scheduler {
-	public void scheduleSyncRepeatingTask(ChunkStoriesPlugin p, Runnable runnable, long l, long m);
+ * the time being  */
+interface Scheduler {
+    fun scheduleSyncRepeatingTask(p: ChunkStoriesPlugin, runnable: Runnable, l: Long, m: Long)
 }

@@ -8,9 +8,6 @@ package xyz.chunkstories.api.server
 
 import xyz.chunkstories.api.GameContext
 import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.plugin.PluginManager
-import xyz.chunkstories.api.plugin.ServerPluginManager
-import xyz.chunkstories.api.util.IterableIterator
 import xyz.chunkstories.api.world.WorldMaster
 
 interface Server : GameContext {
@@ -27,8 +24,6 @@ interface Server : GameContext {
     val connectedPlayers: Set<Player>
 
     val connectedPlayersCount: Int
-
-    override val pluginManager: ServerPluginManager
 
     /** Obtains the current permissions manager  */
     /** Installs a custom permissions manager  */

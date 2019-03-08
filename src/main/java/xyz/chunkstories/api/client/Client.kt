@@ -14,7 +14,7 @@ import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import xyz.chunkstories.api.gui.Gui
 import xyz.chunkstories.api.net.AuthenticationMethod
 import xyz.chunkstories.api.particles.ParticlesManager
-import xyz.chunkstories.api.plugin.ClientPluginManager
+import xyz.chunkstories.api.plugin.PluginManager
 import xyz.chunkstories.api.util.configuration.Configuration
 import xyz.chunkstories.api.world.WorldClient
 
@@ -48,7 +48,7 @@ interface IngameClient : Client, GameContext {
     /** Returns the currently played world. */
     val world: WorldClient
 
-    override val pluginManager: ClientPluginManager
+    override val pluginManager: PluginManager
 
     val particlesManager: ParticlesManager // TODO move in world
     val decalsManager: DecalsManager // TODO move in world
