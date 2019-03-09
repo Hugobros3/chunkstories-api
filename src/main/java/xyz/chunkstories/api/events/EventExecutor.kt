@@ -4,8 +4,9 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.events;
+package xyz.chunkstories.api.events
 
-public interface Listener {
-
+interface EventExecutor {
+    @Throws(Exception::class)
+    fun fireEvent(event: Event)
 }

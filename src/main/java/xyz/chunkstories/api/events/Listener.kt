@@ -4,8 +4,6 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.events;
+package xyz.chunkstories.api.events
 
-public interface EventExecutor {
-	public void fireEvent(Event event) throws Exception;
-}
+interface Listener
