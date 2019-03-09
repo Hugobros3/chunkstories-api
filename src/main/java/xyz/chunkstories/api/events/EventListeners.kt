@@ -9,6 +9,10 @@ package xyz.chunkstories.api.events
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.util.HashSet
+import kotlin.reflect.KProperty1
+import kotlin.reflect.full.companionObject
+import kotlin.reflect.full.companionObjectInstance
+import kotlin.reflect.full.memberProperties
 
 class EventListeners {
     lateinit var listeners: Array<RegisteredListener>
@@ -43,26 +47,29 @@ class EventListeners {
 
                     //println("Found superclass $dad")
 
-                    try {
+                    val daddyEars =  try {
                         val m = dad.getMethod("getListenersStatic")
 
                         val o = m.invoke(null)
-                        val daddyEars = o as EventListeners
-
-                        // Notice me daddy
-                        daddyEars.declareChildren(this)
-
-                        // Oedipe time
-                        son = dad as Class<out Event>
+                        o as EventListeners
                     } catch (npe: NullPointerException) {
                         //println("Stopping inheritance lookup; stepped on NPE")
                         npe.printStackTrace()
                         break
                     } catch (nsme: NoSuchMethodException) {
-                        //println("Stopping inheritance lookup; stepped on NSME")
-                        nsme.printStackTrace()
-                        break
+                        val kotlinClass = (dad as Class<out Event>).kotlin
+                        val companion = kotlinClass.companionObject
+                        val instance = kotlinClass.companionObjectInstance
+                        val property = companion!!.memberProperties.find { it.name == "listenersStatic" }!! as KProperty1<Any, Any>
+                        val listeners = property.get(instance!!) as EventListeners
+                        listeners
                     }
+
+                    // Notice me daddy
+                    daddyEars.declareChildren(this)
+
+                    // Oedipe time
+                    son = dad as Class<out Event>
 
                 } else {
                     break
