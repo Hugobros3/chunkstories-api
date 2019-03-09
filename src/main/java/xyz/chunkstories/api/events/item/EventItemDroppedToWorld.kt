@@ -14,10 +14,7 @@ import xyz.chunkstories.api.events.entity.EntityDeathEvent
 import xyz.chunkstories.api.item.inventory.Inventory
 import xyz.chunkstories.api.item.inventory.ItemPile
 
-class EventItemDroppedToWorld(
-        // Specific event code
-
-        var location: Location?, var inventoryFrom: Inventory?, var itemPile: ItemPile?) : CancellableEvent() {
+class EventItemDroppedToWorld(var location: Location?, var inventoryFrom: Inventory?, var itemPile: ItemPile?) : CancellableEvent() {
 
     override val listeners: EventListeners
         get() = listenersStatic
@@ -27,7 +24,6 @@ class EventItemDroppedToWorld(
 
     companion object {
         // Every event class has to have this
-
         var listenersStatic = EventListeners(EntityDeathEvent::class.java)
             internal set
     }

@@ -13,7 +13,7 @@ abstract class GuiElement protected constructor(protected val layer: Layer, open
     var positionY = 0
 
     val isMouseOver: Boolean
-        get() = isMouseOver(layer.getGui().mouse)
+        get() = isMouseOver(layer.gui.mouse)
 
     fun setPosition(x: Int, y: Int) {
         positionX = x

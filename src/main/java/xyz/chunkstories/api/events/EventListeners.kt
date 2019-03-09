@@ -85,13 +85,6 @@ class EventListeners {
 
     internal fun declareChildren(heyDad: EventListeners) {
         children.add(heyDad)
-
-        // Debug thingie
-        //print("EventListener for $owningEventName, childrens = ")
-        for (l in children) {
-            print(l.owningEventName + ", ")
-        }
-
         bakeChildren()
     }
 
