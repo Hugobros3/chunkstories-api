@@ -80,6 +80,7 @@ class ItemVoxel(type: ItemDefinition) : Item(type), WorldModificationCause {
                 if (blockLocation != null) {
                     val futureCell = FutureCell(owner.world.peekSafely(blockLocation))
                     futureCell.voxel = voxel
+                    futureCell.metaData = voxelMeta
 
                     // Opaque blocks overwrite the original light with zero.
                     if (voxel.opaque) {
