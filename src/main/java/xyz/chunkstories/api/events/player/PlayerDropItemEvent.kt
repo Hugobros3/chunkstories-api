@@ -1,19 +1,13 @@
-//
-// This file is a part of the Chunk Stories API codebase
-// Check out README.md for more information
-// Website: http://chunkstories.xyz
-//
-
 package xyz.chunkstories.api.events.player
 
+import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.events.CancellableEvent
 import xyz.chunkstories.api.events.EventListeners
-import xyz.chunkstories.api.item.inventory.Inventory
 import xyz.chunkstories.api.item.inventory.ItemPile
 import xyz.chunkstories.api.player.Player
 
-/** Describe a player moving item action on Master  */
-class PlayerMoveItemEvent(val player: Player, val sourcePile: ItemPile, val targetInventory: Inventory, val targetX: Int, val targetY: Int, val amount: Int) : CancellableEvent() {
+/** When a player tries to drop an item on the ground */
+class PlayerDropItemEvent(val player: Player, val source: ItemPile, val amount: Int, val location: Location) : CancellableEvent() {
     override val listeners: EventListeners
         get() = listenersStatic
 
@@ -22,5 +16,4 @@ class PlayerMoveItemEvent(val player: Player, val sourcePile: ItemPile, val targ
         var listenersStatic = EventListeners(PlayerMoveItemEvent::class.java)
             internal set
     }
-
 }

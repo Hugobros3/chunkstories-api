@@ -47,7 +47,6 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
         maxStackSize = this.resolveProperty("maxStackSize")?.toIntOrNull() ?: 64
     }
 
-    //fun newItem() = constructor.newInstance(this)!!
     fun <I : Item> newItem() = (constructor.newInstance(this)!! as I)!!
 
     override fun toString(): String {

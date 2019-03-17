@@ -4,9 +4,8 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.item.inventory;
+package xyz.chunkstories.api.entity
 
-/** Returnable by Inventory.getHolder() */
-public interface InventoryHolder {
-
+interface EntityDamageCause : DamageCause {
+    val responsibleEntity: Entity
 }

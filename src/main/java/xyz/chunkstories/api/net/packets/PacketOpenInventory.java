@@ -12,7 +12,7 @@ import xyz.chunkstories.api.entity.Entity;
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory;
 import xyz.chunkstories.api.exceptions.PacketProcessingException;
 import xyz.chunkstories.api.item.inventory.Inventory;
-import xyz.chunkstories.api.item.inventory.InventoryTranslator;
+import xyz.chunkstories.api.item.inventory.InventoryTranslatorKt;
 import xyz.chunkstories.api.net.*;
 import xyz.chunkstories.api.world.World;
 
@@ -34,18 +34,19 @@ public class PacketOpenInventory extends PacketWorld {
 
 	@Override
 	public void send(PacketDestinator destinator, DataOutputStream out, PacketSendingContext context) throws IOException {
-		InventoryTranslator.writeInventoryHandle(out, inventory);
+		InventoryTranslatorKt.writeInventoryHandle(out, inventory);
 	}
 
 	@Override
 	public void process(PacketSender sender, DataInputStream in, PacketReceptionContext processor) throws IOException, PacketProcessingException {
-		inventory = InventoryTranslator.obtainInventoryHandle(in, processor);
+		inventory = InventoryTranslatorKt.obtainInventoryByHandle(in, processor);
 
 		if (processor instanceof ClientPacketsProcessor) {
 			IngameClient client = ((ClientPacketsProcessor) processor).getContext();
 			Entity currentControlledEntity = client.getPlayer().getControlledEntity();
 
-			Inventory ownInventory = currentControlledEntity != null ? currentControlledEntity.traits.tryWith(TraitInventory.class, ei -> ei) : null;
+			Inventory ownInventory = currentControlledEntity != null ? currentControlledEntity.traits.tryWith(TraitInventory.class,
+					TraitInventory::getInventory) : null;
 
 			if (ownInventory != null)
 				client.getGui().openInventories(ownInventory, inventory);

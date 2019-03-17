@@ -6,6 +6,7 @@
 
 package xyz.chunkstories.api.dsl
 
+import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.ItemPile
 import xyz.chunkstories.api.util.kotlin.random
 import java.lang.Math.random
@@ -48,7 +49,7 @@ class LootTableBuilder(val table: CompoundLootTableEntry, instructions: LootTabl
 }
 
 class ORLootTable : CompoundLootTableEntry() {
-    override fun spawn(): List<ItemPile> {
+    override fun spawn(): List<Pair<Item, Int>> {
         val pTotal = entries.sumByDouble { it.probability }
         val r = min(1.0, random() * pTotal)
 
@@ -66,11 +67,11 @@ class ORLootTable : CompoundLootTableEntry() {
 
 class ANDLootTable : CompoundLootTableEntry() {
 
-    override fun spawn(): List<ItemPile> {
+    override fun spawn(): List<Pair<Item, Int>> {
         if (random() < probability)
             return noItems
 
-        val items = mutableListOf<ItemPile>()
+        val items = mutableListOf<Pair<Item, Int>>()
         for (entry in entries) {
             items += entry.spawn()
         }
@@ -83,27 +84,25 @@ abstract class CompoundLootTableEntry : LootTable() {
 }
 
 class LootTableEntry : LootTable() {
-    lateinit var items: List<ItemPile>
+    lateinit var items: List<Pair<Item, Int>>
     var amount: IntRange = 1..1
 
-    override fun spawn(): List<ItemPile> {
+    override fun spawn(): List<Pair<Item, Int>> {
         if (random() < probability)
             return noItems
 
         val multiplier = amount.random()
 
-        val spawned = items.map { it.duplicate() }
-        for (pile in spawned)
-            pile.amount *= multiplier
+        val spawned = items.map { Pair(it.first.duplicate(), it.second * multiplier) }
 
         return spawned
     }
 }
 
-val noItems = emptyList<ItemPile>()
+val noItems = emptyList<Pair<Item, Int>>()
 
 abstract class LootTable {
     var probability: Double = 1.0
 
-    abstract fun spawn(): List<ItemPile>
+    abstract fun spawn(): List<Pair<Item, Int>>
 }

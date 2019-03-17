@@ -10,27 +10,15 @@ import org.joml.Matrix4f
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.graphics.MeshMaterial
-import xyz.chunkstories.api.graphics.representation.Representation
 import xyz.chunkstories.api.graphics.representation.Sprite
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.input.Input
-import xyz.chunkstories.api.item.inventory.InventoryHolder
 import xyz.chunkstories.api.item.inventory.ItemPile
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.IOException
+import java.io.*
 
 open class Item(val definition: ItemDefinition) {
-    var itemPile: ItemPile? = null
-
     open val name: String
-        get() = internalName
-
-    val internalName: String
         get() = definition.name
-
-    val holder: InventoryHolder?
-        get() = itemPile?.inventory?.holder
 
     /** Should be called when the owner has this item selected
      *
@@ -57,11 +45,22 @@ open class Item(val definition: ItemDefinition) {
         return definition == item.definition
     }
 
-    open fun stack(other: Item) = Unit
-    open fun unstack() = this.duplicate()
-
     open fun duplicate(): Item {
-        return definition.newItem()
+        val new: Item = definition.newItem()
+
+        val data = ByteArrayOutputStream()
+        try {
+            this.save(DataOutputStream(data))
+
+            val stream = ByteArrayInputStream(data.toByteArray())
+            val dis = DataInputStream(stream)
+
+            new.load(dis)
+            dis.close()
+        } catch (e: IOException) {
+        }
+
+        return new
     }
 
     /** For Items not implementing a custom renderer, it just shows a dull icon and
@@ -70,7 +69,7 @@ open class Item(val definition: ItemDefinition) {
      * @return The full path to the image file.
      */
     open fun getTextureName(pile: ItemPile): String {
-        return "items/icons/$internalName.png"
+        return "items/icons/${definition.name}.png"
     }
 
     open fun buildRepresentation(pile: ItemPile, worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {

@@ -22,6 +22,7 @@ import xyz.chunkstories.api.world.cell.FutureCell
 import xyz.chunkstories.api.world.chunk.Chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.Chunk.FreshChunkCell
 import org.joml.Vector3d
+import xyz.chunkstories.api.item.Item
 
 /** Defines the behavior for associated with a voxel type declaration  */
 open class Voxel(val definition: VoxelDefinition) {
@@ -43,7 +44,7 @@ open class Voxel(val definition: VoxelDefinition) {
         get
 
     /** Can entities swim through this block ? */
-    var liquid = definition.resolveProperty("liquid", "true") == "true"
+    var liquid = definition.resolveProperty("liquid", "false") == "true"
         @JvmName("isLiquid")
         get
 
@@ -225,23 +226,22 @@ open class Voxel(val definition: VoxelDefinition) {
         return this == that
     }
 
-    open fun enumerateItemsForBuilding(): List<ItemPile> {
-        return listOf(ItemPile(store().parent().items().getItemDefinition("item_voxel")).apply {
-            with(item as ItemVoxel) {
+    open fun enumerateItemsForBuilding(): List<ItemVoxel> {
+        return listOf(store().parent().items().getItemDefinition("item_voxel")!!.newItem<ItemVoxel>().apply {
                 this.voxel = this@Voxel
-            }
+
         })
     }
 
     /** Returns what's dropped when a getCell using this voxel type is destroyed  */
-    open fun getLoot(cell: CellData, cause: WorldModificationCause): List<ItemPile> {
+    open fun getLoot(cell: CellData, cause: WorldModificationCause): List<Pair<Item, Int>> {
         /** If this block has custom logic for loot spawning, use that ! */
         val logic = lootLogic
         if (logic != null)
             return logic.spawn()
 
         /** Returns *one* of the variants for this block */
-        return enumerateItemsForBuilding().shuffled().subList(0, 1)
+        return enumerateItemsForBuilding().shuffled().subList(0, 1).map { Pair(it, 1) }
     }
 
     override fun toString(): String {

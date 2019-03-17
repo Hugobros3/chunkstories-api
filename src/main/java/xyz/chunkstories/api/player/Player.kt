@@ -6,8 +6,6 @@
 
 package xyz.chunkstories.api.player
 
-import xyz.chunkstories.api.GameContext
-import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
@@ -29,14 +27,14 @@ interface Player : CommandEmitter, Controller, Subscriber, Interlocutor {
     /** @return True once the player connection was interrupted
      */
     //TODO asses usage and remove/clean
-    @Deprecated("unused?")
-    val isConnected: Boolean
+    //@Deprecated("unused?")
+    //val isConnected: Boolean
 
     /** @return True once the player has been spawned inside it's [World].
      */
     //TODO asses usage and remove/clean
-    @Deprecated("unused?")
-    fun hasSpawned(): Boolean
+    //@Deprecated("unused?")
+    //fun hasSpawned(): Boolean
 
     /** @return the entity this player is controlling
      */
