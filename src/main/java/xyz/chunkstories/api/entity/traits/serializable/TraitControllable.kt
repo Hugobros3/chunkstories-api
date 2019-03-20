@@ -62,7 +62,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
             val location = entity.location
             val cameraPosition = location.toVec3f()
 
-            cameraPosition.y += 1.8f
+            //cameraPosition.y += 1.8f
 
             val entityDirection = (entity.traits[TraitRotation::class]?.directionLookingAt ?: Vector3d(0.0, 0.0, 1.0)).toVec3f()
             val entityLookAt = Vector3f(cameraPosition).add(entityDirection)
