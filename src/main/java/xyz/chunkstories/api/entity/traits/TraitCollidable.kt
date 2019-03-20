@@ -12,7 +12,7 @@ import org.joml.Vector3dc
 
 import xyz.chunkstories.api.entity.Entity
 
-class TraitCollidable(entity: Entity) : Trait(entity) {
+open class TraitCollidable(entity: Entity) : Trait(entity) {
 
     var collidesWithEntities = true
 
@@ -52,10 +52,10 @@ class TraitCollidable(entity: Entity) : Trait(entity) {
             return box
         }
 
-    val boundingBox: Box
+    open val boundingBox: Box
         get() = Box(1.0, 1.0, 1.0).translate(-0.5, 0.0, -0.5)
 
-    val collisionBoxes: Array<Box>
+    open val collisionBoxes: Array<Box>
         get() = arrayOf(boundingBox)
 
     val translatedCollisionBoxes: Array<Box>
