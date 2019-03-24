@@ -25,7 +25,7 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
     val entityVelocity = TraitVelocity(this)
     val collisions = TraitCollidable(this)
 
-    private var spawnTime: Long = 0
+    var spawnTime: Long = 0
 
     val inventory = TraitInventory(this, 1, 1)
 
