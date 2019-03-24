@@ -6,11 +6,10 @@
 
 package xyz.chunkstories.api.entity.traits
 
-import xyz.chunkstories.api.physics.Box
 import org.joml.Vector3d
 import org.joml.Vector3dc
-
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.physics.Box
 
 open class TraitCollidable(entity: Entity) : Trait(entity) {
 
@@ -27,19 +26,18 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
     // Fine
     val isStuckInEntity: Entity?
         get() {
-            for (e in entity.world.getEntitiesInBox(entity.location, Vector3d(1.0, 2.0, 1.0))) {
-                if (e !== entity) {
-                    val tc = e.traits[TraitCollidable::class.java]
-                    if (tc != null) {
-                        if (collidesWithEntities) {
+            for (adverseEntity in entity.world.getEntitiesInBox(entity.location, Vector3d(1.0, 2.0, 1.0))) {
+                if (adverseEntity !== entity) {
+                    val traitCollidable = adverseEntity.traits[TraitCollidable::class.java] ?: continue
+                    if (traitCollidable.collidesWithEntities) {
 
-                            if (tc.boundingBox.collidesWith(this.boundingBox))
-                                for (b in tc.translatedCollisionBoxes)
-                                    for (c in this.translatedCollisionBoxes)
-                                        if (b.collidesWith(c))
-                                            return e
-                        }
+                        if (traitCollidable.boundingBox.collidesWith(this.boundingBox))
+                            for (b in traitCollidable.translatedCollisionBoxes)
+                                for (c in this.translatedCollisionBoxes)
+                                    if (b.collidesWith(c))
+                                        return adverseEntity
                     }
+
                 }
             }
             return null
