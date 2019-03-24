@@ -20,11 +20,9 @@ interface PassInstance {
     fun dispatchRenderTask(taskInstanceName: String, camera: Camera, renderTaskName: String, parameters: Map<String, Any>, callback: (RenderingContext) -> Unit)
 }
 
-/*interface ShaderBindingInterface {
-    val context: RenderingContext
-
+interface ShaderBindingInterface {
     fun supplyUniformBlock(name : String? = null, interfaceBlock: InterfaceBlock)
 
     fun supplyTexture2DAsset(name: String, assetPath: String)
-    fun supplyTexture2DRenderBuffer(name: String, assetPath: String)
-}*/
+    fun supplyTexture2DRenderBuffer(name: String, renderBufferName: String)
+}

@@ -27,9 +27,3 @@ enum class ShaderStage {
     GEOMETRY,
     FRAGMENT
 }
-
-class UniformInput {
-    lateinit var name: String
-    lateinit var data: InterfaceBlock
-}
-

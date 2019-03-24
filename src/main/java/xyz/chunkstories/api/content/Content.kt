@@ -11,18 +11,16 @@ import xyz.chunkstories.api.animation.Animation
 import xyz.chunkstories.api.content.mods.ModsManager
 import xyz.chunkstories.api.entity.EntityDefinition
 import xyz.chunkstories.api.exceptions.net.UnknowPacketException
-import xyz.chunkstories.api.graphics.Mesh
 import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.net.Packet
 import xyz.chunkstories.api.net.PacketDefinition
-import xyz.chunkstories.api.particles.ParticleTypeHandler
 import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
 import xyz.chunkstories.api.voxel.textures.VoxelTexture
-import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.generator.WorldGeneratorDefinition
 import org.slf4j.Logger
 import xyz.chunkstories.api.graphics.representation.Model
+import xyz.chunkstories.api.particles.ParticleType
 
 /** Encapsulates all the user-definable content available  */
 interface Content {
@@ -117,13 +115,12 @@ interface Content {
     fun particles(): ParticlesTypes
 
     interface ParticlesTypes {
-        fun getParticleType(string: String): ParticleTypeHandler?
+        fun <T: ParticleType.Particle> getParticleType(string: String): ParticleType<T>?
 
-        fun all(): Iterator<ParticleTypeHandler>
+        val all: Collection<ParticleType<*>>
+        val parent: Content
 
-        fun parent(): Content
-
-        fun logger(): Logger
+        val logger: Logger
     }
 
     fun packets(): PacketDefinitions
