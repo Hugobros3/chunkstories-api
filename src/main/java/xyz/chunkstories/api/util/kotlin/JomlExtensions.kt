@@ -29,3 +29,26 @@ fun Vector3fc.toVec3i() = Vector3i(x().toInt()   , y().toInt()   , z().toInt())
 
 fun Vector3ic.toVec3f() = Vector3f(x().toFloat() , y().toFloat() , z().toFloat())
 fun Vector3ic.toVec3d() = Vector3d(x().toDouble(), y().toDouble(), z().toDouble())
+
+// 2D Vector casts
+fun Vector2dc.toVec2f() = Vector2f(x().toFloat(), y().toFloat())
+fun Vector2dc.toVec2i() = Vector2i(x().toInt(), y().toInt())
+
+fun Vector2fc.toVec2d() = Vector2d(x().toDouble(), y().toDouble())
+fun Vector2fc.toVec2i() = Vector2i(x().toInt()   , y().toInt())
+
+fun Vector2ic.toVec2f() = Vector2f(x().toFloat() , y().toFloat())
+fun Vector2ic.toVec2d() = Vector2d(x().toDouble(), y().toDouble())
+
+// Downcasts
+fun Vector4fc.toVec3f() = Vector3f(x(), y(), z())
+fun Vector4fc.toVec2f() = Vector2f(x(), y())
+fun Vector3fc.toVec2f() = Vector2f(x(), y())
+
+fun Vector4dc.toVec3d() = Vector3d(x(), y(), z())
+fun Vector4dc.toVec2d() = Vector2d(x(), y())
+fun Vector3dc.toVec2d() = Vector2d(x(), y())
+
+fun Vector4ic.toVec3i() = Vector3i(x(), y(), z())
+fun Vector4ic.toVec2i() = Vector2i(x(), y())
+fun Vector3ic.toVec2i() = Vector2i(x(), y())

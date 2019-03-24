@@ -7,6 +7,7 @@
 package xyz.chunkstories.api.item
 
 import org.joml.Matrix4f
+import org.joml.Vector4f
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.graphics.MeshMaterial
@@ -14,6 +15,9 @@ import xyz.chunkstories.api.graphics.representation.Sprite
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.item.inventory.ItemPile
+import xyz.chunkstories.api.util.kotlin.toVec3d
+import xyz.chunkstories.api.util.kotlin.toVec3f
+import xyz.chunkstories.api.util.kotlin.toVec4d
 import java.io.*
 
 open class Item(val definition: ItemDefinition) {
@@ -73,7 +77,7 @@ open class Item(val definition: ItemDefinition) {
     }
 
     open fun buildRepresentation(pile: ItemPile, worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
-        representationsGobbler.acceptRepresentation(Sprite(worldPosition, 1f, MeshMaterial("item_$name", mapOf("albedo" to getTextureName(pile)), "opaque")))
+        representationsGobbler.acceptRepresentation(Sprite(worldPosition.transform(Vector4f(0.0f, 0f, 0f, 1f)).toVec4d().toVec3d(), 1f, MeshMaterial("item_$name", mapOf("albedoTexture" to getTextureName(pile)), "opaque")))
     }
 
     /** Unsafe, called upon loading this item from a stream. If you do use it,

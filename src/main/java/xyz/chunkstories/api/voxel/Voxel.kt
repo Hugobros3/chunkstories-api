@@ -23,6 +23,7 @@ import xyz.chunkstories.api.world.chunk.Chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.Chunk.FreshChunkCell
 import org.joml.Vector3d
 import xyz.chunkstories.api.item.Item
+import xyz.chunkstories.api.world.cell.EditableCell
 
 /** Defines the behavior for associated with a voxel type declaration  */
 open class Voxel(val definition: VoxelDefinition) {
@@ -91,6 +92,12 @@ open class Voxel(val definition: VoxelDefinition) {
 
         definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0 }
         definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0}
+
+        /*definition.resolveProperty("drops")?.let { lootLogic = LootRules {
+            entry {
+                items = listOf(Pair())
+            }
+        } }*/
     }
 
     /** Called before setting a getCell to this Voxel type. Previous state is assumed
@@ -234,7 +241,7 @@ open class Voxel(val definition: VoxelDefinition) {
     }
 
     /** Returns what's dropped when a getCell using this voxel type is destroyed  */
-    open fun getLoot(cell: CellData, cause: WorldModificationCause): List<Pair<Item, Int>> {
+    open fun getLoot(cell: CellData, tool: MiningTool): List<Pair<Item, Int>> {
         /** If this block has custom logic for loot spawning, use that ! */
         val logic = lootLogic
         if (logic != null)
@@ -242,6 +249,10 @@ open class Voxel(val definition: VoxelDefinition) {
 
         /** Returns *one* of the variants for this block */
         return enumerateItemsForBuilding().shuffled().subList(0, 1).map { Pair(it, 1) }
+    }
+
+    open fun tick(cell: EditableCell) {
+
     }
 
     override fun toString(): String {
