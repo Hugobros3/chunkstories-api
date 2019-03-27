@@ -89,8 +89,8 @@ open class Voxel(val definition: VoxelDefinition) {
         /** Sets a custom voxel material */
         (definition.resolveProperty("material") ?: name).let { voxelMaterial = store().materials().getVoxelMaterial(it) ?: store().materials().defaultMaterial }
 
-        definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0 }
-        definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toIntOrNull()?.coerceIn(0..15) ?: 0}
+        definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
+        definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0}
 
         /*definition.resolveProperty("drops")?.let { lootLogic = LootRules {
             entry {
