@@ -13,5 +13,5 @@ data class ModInfo(
         /** Get human-readable mod name  */
         val name: String,
         val version: String = "1.0",
-        val description: String = "No desciption"
+        val description: String = "No description provided"
 )

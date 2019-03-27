@@ -20,6 +20,6 @@ interface Mod {
     fun getAssetByName(name: String): Asset?
 
     /** Iterates over this mod's assets  */
-    fun assets(): IterableIterator<Asset>
+    val assets: Collection<Asset>
 
 }
