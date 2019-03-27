@@ -22,6 +22,10 @@ class TestOptionsDSL {
                     optionMultipleChoicesInt("viewDistance") {
                         possibleChoices = listOf(64, 96, 128, 144, 160, 192, 256, 320, 384, 512, 768)
                         default = 192
+
+                        hook {
+                            //reload shit
+                        }
                     }
 
                     optionBoolean("realtimeReflections") {

@@ -18,6 +18,11 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
         var hidden: Boolean = false
         var transient: Boolean = false
         var default: T? = null
+
+        internal val hooks = mutableListOf<Configuration.Option<T>.() -> Unit>()
+        fun hook(hook: Configuration.Option<T>.() -> Unit) {
+            hooks.add(hook)
+        }
     }
 
     class OptionStringDeclarationCtx : OptionDeclarationCtx<String>()
@@ -27,6 +32,7 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
         val option = configuration.OptionString("$prefix$optionName", declared.default ?: "undefined")
         option.hidden = declared.hidden
         option.transient = declared.transient
+        declared.hooks.forEach { option.addHook(it) }
 
         configuration.registerOption(option)
         return option.name
@@ -37,6 +43,7 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
     fun optionBoolean(optionName: String, declaration: OptionBooleanDeclarationCtx.() -> Unit): String {
         val declared = OptionBooleanDeclarationCtx().apply(declaration)
         val option = configuration.OptionBoolean("$prefix$optionName", declared.default ?: false)
+        declared.hooks.forEach { option.addHook(it) }
         configuration.registerOption(option)
         return option.name
     }
@@ -50,6 +57,7 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
     fun optionMultipleChoicesInt(optionName: String, declaration: OptionMultipleChoicesIntDeclarationCtx.() -> Unit): String {
         val declared = OptionMultipleChoicesIntDeclarationCtx().apply(declaration)
         val option = configuration.OptionMultiChoiceInt("$prefix$optionName", declared.default ?: declared.possibleChoices[0], declared.possibleChoices)
+        declared.hooks.forEach { option.addHook(it) }
         configuration.registerOption(option)
         return option.name
     }
@@ -59,6 +67,7 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
     fun optionMultipleChoices(optionName: String, declaration: OptionMultipleChoicesStringDeclarationCtx.() -> Unit): String {
         val declared = OptionMultipleChoicesStringDeclarationCtx().apply(declaration)
         val option = configuration.OptionMultiChoice("$prefix$optionName", declared.default ?: declared.possibleChoices[0], declared.possibleChoices)
+        declared.hooks.forEach { option.addHook(it) }
         configuration.registerOption(option)
         return option.name
     }
@@ -72,6 +81,7 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
     fun optionRangeDouble(optionName: String, declaration: OptionRangeDoubleDeclarationCtx.() -> Unit): String {
         val declared = OptionRangeDoubleDeclarationCtx().apply(declaration)
         val option = configuration.OptionDoubleRange("$prefix$optionName", declared.default ?: declared.minimumValue, declared.minimumValue, declared.maximumValue, declared.granularity)
+        declared.hooks.forEach { option.addHook(it) }
         configuration.registerOption(option)
         return option.name
     }
