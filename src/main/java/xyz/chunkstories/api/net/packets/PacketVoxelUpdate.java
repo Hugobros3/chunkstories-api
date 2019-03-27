@@ -14,7 +14,7 @@ import xyz.chunkstories.api.voxel.Voxel;
 import xyz.chunkstories.api.voxel.VoxelFormat;
 import xyz.chunkstories.api.voxel.components.VoxelComponent;
 import xyz.chunkstories.api.world.World;
-import xyz.chunkstories.api.world.chunk.Chunk.ChunkCell;
+import xyz.chunkstories.api.world.chunk.ChunkCell;
 import xyz.chunkstories.api.net.PacketSender;
 import xyz.chunkstories.api.net.PacketSendingContext;
 import xyz.chunkstories.api.net.PacketWorld;
@@ -56,7 +56,7 @@ public class PacketVoxelUpdate extends PacketWorld {
 		out.writeInt(context.getData());
 
 		if (componentToUpdate == null) {
-			for (Entry<String, VoxelComponent> entry : context.components().getAllVoxelComponents()) {
+			for (Entry<String, VoxelComponent> entry : context.getComponents().getAllVoxelComponents()) {
 				out.writeByte((byte) 0x01);
 				out.writeUTF(entry.getKey());
 				entry.getValue().push(destinator, out);
@@ -90,7 +90,7 @@ public class PacketVoxelUpdate extends PacketWorld {
 
 				while (nextComponent != 0) {
 					String componentName = in.readUTF();
-					context.components().getVoxelComponent(componentName).pull(sender, in);
+					context.getComponents().getVoxelComponent(componentName).pull(sender, in);
 					nextComponent = in.readByte();
 				}
 

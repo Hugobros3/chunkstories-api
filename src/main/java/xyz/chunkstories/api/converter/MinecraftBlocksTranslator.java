@@ -27,12 +27,19 @@ public class MinecraftBlocksTranslator {
 
 	private Mapper[] mappers = new Mapper[MINECRAFT_IDS_CAP * MINECRAFT_METADATA_SIZE];
 
+	public GameContext getContext() {
+		return context;
+	}
+
 	enum Section
 	{
 		NONE, MAPPERS, MAPPINGS,
 	}
 
+	private GameContext context;
+
 	public MinecraftBlocksTranslator(GameContext context, File file) throws IOException {
+		this.context = context;
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 
 		Section currentSection = Section.MAPPINGS;

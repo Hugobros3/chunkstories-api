@@ -23,12 +23,10 @@ import xyz.chunkstories.api.util.IterableIterator
 import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.VoxelFormat
 import xyz.chunkstories.api.world.cell.CellData
-import xyz.chunkstories.api.world.cell.EditableCell
 import xyz.chunkstories.api.world.cell.FutureCell
 import xyz.chunkstories.api.world.chunk.Chunk
-import xyz.chunkstories.api.world.chunk.Chunk.ChunkCell
+import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.ChunkHolder
-import xyz.chunkstories.api.world.chunk.ChunksIterator
 import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.heightmap.WorldHeightmaps
 import xyz.chunkstories.api.world.region.Region
@@ -121,10 +119,6 @@ interface World {
     }
 
     /* Direct voxel data accessors */
-
-    interface WorldCell : EditableCell {
-        override fun getWorld(): World
-    }
 
     /** Get the data contained in this getCell as full 32-bit data format ( see
      * [VoxelFormat])

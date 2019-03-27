@@ -13,14 +13,13 @@ import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.item.ItemVoxel
-import xyz.chunkstories.api.item.inventory.ItemPile
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
 import xyz.chunkstories.api.voxel.textures.VoxelTexture
 import xyz.chunkstories.api.world.cell.CellData
 import xyz.chunkstories.api.world.cell.FutureCell
-import xyz.chunkstories.api.world.chunk.Chunk.ChunkCell
-import xyz.chunkstories.api.world.chunk.Chunk.FreshChunkCell
+import xyz.chunkstories.api.world.chunk.ChunkCell
+import xyz.chunkstories.api.world.chunk.FreshChunkCell
 import org.joml.Vector3d
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.world.cell.EditableCell

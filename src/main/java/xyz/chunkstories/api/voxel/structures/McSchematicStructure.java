@@ -12,6 +12,7 @@ import java.util.zip.GZIPInputStream;
 
 import xyz.chunkstories.api.content.Asset;
 import xyz.chunkstories.api.converter.MinecraftBlocksTranslator;
+import xyz.chunkstories.api.voxel.Voxel;
 import xyz.chunkstories.api.world.DummyWorld;
 import xyz.chunkstories.api.world.cell.Cell;
 import xyz.chunkstories.api.world.cell.FutureCell;
@@ -73,8 +74,10 @@ public class McSchematicStructure extends Structure {
 		NBTByteArray blocks = (NBTByteArray) root.getTag("Blocks");
 		NBTByteArray blocksdata = (NBTByteArray) root.getTag("Data");
 
+		Voxel air = translator.getContext().getContent().voxels().air();
+
 		data = new Cell[width * height * length];
-		FutureCell future = new FutureCell(new DummyWorld(), 0, 0, 0, null, 0, 0, 0);
+		FutureCell future = new FutureCell(new DummyWorld(), 0, 0, 0, air, 0, 0, 0);
 
 		for (int z = 0; z < length; z++) {
 			for (int y = 0; y < height; y++) {
@@ -82,7 +85,7 @@ public class McSchematicStructure extends Structure {
 					int mcindex = (y * length + z) * width + x;
 					translator.getMapper(blocks.data[mcindex], blocksdata.data[mcindex]).output(blocks.data[mcindex], blocksdata.data[mcindex], future);
 
-					StructureCell cell = new StructureCell(x, y, z, null, 0, 0, 0);
+					StructureCell cell = new StructureCell(x, y, z, air, 0, 0, 0);
 					cell.setVoxel(future.getVoxel());
 					cell.setMetaData(future.getMetaData());
 

@@ -27,7 +27,7 @@ abstract class VoxelComponent(val holder: CellComponents) {
 
     /** Pushes the component to every client subscribed to the chunk owning this voxel  */
     fun pushComponentEveryone() {
-        for (user in holder.chunk.holder().users) {
+        for (user in holder.chunk.holder.users) {
             if (user is RemotePlayer) {
                 pushComponent(user)
             }

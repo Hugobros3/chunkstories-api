@@ -26,9 +26,8 @@ import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.world.cell.CellData
 import xyz.chunkstories.api.world.cell.FutureCell
 import xyz.chunkstories.api.world.chunk.Chunk
-import xyz.chunkstories.api.world.chunk.Chunk.ChunkCell
+import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.ChunkHolder
-import xyz.chunkstories.api.world.chunk.ChunksIterator
 import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.heightmap.WorldHeightmaps
 import xyz.chunkstories.api.world.region.Region
@@ -165,12 +164,12 @@ class DummyWorld : World {
         return throw NotImplementedError()
     }
 
-    override fun peekSafely(x: Int, y: Int, z: Int): World.WorldCell {
+    override fun peekSafely(x: Int, y: Int, z: Int): WorldCell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }
 
-    override fun peekSafely(location: Vector3dc): World.WorldCell {
+    override fun peekSafely(location: Vector3dc): WorldCell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }
@@ -271,7 +270,7 @@ class DummyWorld : World {
     }
 
     @Throws(WorldException::class)
-    override fun poke(x: Int, y: Int, z: Int, voxel: Voxel?, sunlight: Int, blocklight: Int, metadata: Int, cause: WorldModificationCause?): World.WorldCell {
+    override fun poke(x: Int, y: Int, z: Int, voxel: Voxel?, sunlight: Int, blocklight: Int, metadata: Int, cause: WorldModificationCause?): WorldCell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }
