@@ -28,4 +28,7 @@ data class Camera @JvmOverloads constructor(
     ) : InterfaceBlock {
     @IgnoreGLSL
     val frustrum = Frustrum(this)
+
+    val combinedViewProjectionMatrix: Matrix4f
+        get() { return Matrix4f().mul(projectionMatrix).mul(viewMatrix) }
 }
