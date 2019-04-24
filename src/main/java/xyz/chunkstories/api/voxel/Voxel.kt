@@ -170,7 +170,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * [VoxelSides.class][VoxelSide] )
      */
     open fun getVoxelTexture(cell: CellData, side: VoxelSide): VoxelTexture {
-        // By default we don't care about context, we give the same texture to everyone
+        // By default we don't care about taskInstance, we give the same texture to everyone
         return voxelTextures[side.ordinal]
     }
 

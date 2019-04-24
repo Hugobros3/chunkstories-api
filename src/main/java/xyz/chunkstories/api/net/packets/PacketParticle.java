@@ -74,7 +74,7 @@ public class PacketParticle extends PacketWorld {
 
 		/*if (processor instanceof ClientPacketsProcessor) {
 			ClientPacketsProcessor cpp = (ClientPacketsProcessor) processor;
-			cpp.getContext().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position, velocity);
+			cpp.getTaskInstance().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position, velocity);
 		}*/
 	}
 }

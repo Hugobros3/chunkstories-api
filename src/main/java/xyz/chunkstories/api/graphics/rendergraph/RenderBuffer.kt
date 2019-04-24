@@ -15,10 +15,6 @@ class RenderBufferDeclaration {
     lateinit var format: TextureFormat
     lateinit var size: RenderBufferSize
 
-    /** Double-buffered render buffers have two images, swapped each frame.
-     * When bound to a sampler as an input, the other image (the one you're not rendering to) is used. */
-    var doubleBuffered = false
-
     /** Syntactic sugar to not have to write Vector2i(width, height) in scripts */
     infix fun Int.by(b: Int) = RenderBufferSize.FixedSize(this, b)
 

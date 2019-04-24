@@ -4,11 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.graphics
-
-import xyz.chunkstories.api.graphics.rendergraph.PassOutput
-import xyz.chunkstories.api.graphics.rendergraph.RenderingContext
-import xyz.chunkstories.api.graphics.structs.InterfaceBlock
+package xyz.chunkstories.api.graphics.shader
 
 /*interface Shader {
     val name : String

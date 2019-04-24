@@ -53,7 +53,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
     /** Returns the camera that this entity would see the world through  */
     open val camera: Camera
         get() {
-            val client = entity.world.gameContext as? IngameClient ?: throw Exception("calling getCamera() on a non-client context is undefined behavior")
+            val client = entity.world.gameContext as? IngameClient ?: throw Exception("calling getCamera() on a non-client taskInstance is undefined behavior")
 
             val fov = (90.0 / 360.0 * (Math.PI * 2)).toFloat()
             val aspect = client.gameWindow.width.toFloat() / client.gameWindow.height.toFloat()

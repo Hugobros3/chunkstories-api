@@ -8,7 +8,7 @@ package xyz.chunkstories.api.graphics.systems.drawing
 
 import xyz.chunkstories.api.graphics.systems.GraphicSystem
 
-/** A Drawing system is a system that supplies vertex data and submits draw calls in the context
+/** A Drawing system is a system that supplies vertex data and submits draw calls in the taskInstance
  * of whatever passes invoke it. */
 interface DrawingSystem : GraphicSystem {
 

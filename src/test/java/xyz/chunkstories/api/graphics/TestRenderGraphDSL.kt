@@ -16,6 +16,7 @@ import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 import xyz.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test
 import xyz.chunkstories.api.graphics.rendergraph.ImageInput
+import xyz.chunkstories.api.graphics.rendergraph.texture
 
 data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : InterfaceBlock
 
@@ -70,19 +71,17 @@ class TestRenderGraphDSL {
                             }
                         }
 
+                        setup {
+                            shaderResources.supplyImage("colorMap") {
+                                source = texture("textures/effects/tonemap.png")
+                                scalingMode = ImageInput.ScalingMode.LINEAR
+                                tilingMode = TextureTilingMode.CLAMP_TO_EDGE
+                            }
+                        }
+
                         depth {
                             depthBuffer = renderBuffer("myDepthBuffer")
                             mode = LESS_OR_EQUAL
-                        }
-
-                        inputs {
-                            imageInput {
-                                name = "colorMap"
-
-                                source = texture("textures/effects/tonemap.png")
-                                samplingMode = ImageInput.SamplingMode.LINEAR
-                                wrapping = false
-                            }
                         }
 
                         outputs {

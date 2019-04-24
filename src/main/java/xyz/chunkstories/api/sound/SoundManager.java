@@ -17,7 +17,7 @@ import xyz.chunkstories.api.sound.SoundSource.Mode;
 import javax.annotation.Nullable;
 
 public interface SoundManager {
-	/** Plays a soundEffect with no context in the world, for gui or other sounds
+	/** Plays a soundEffect with no taskInstance in the world, for gui or other sounds
 	 * that need no attenuation or position. */
 	public default SoundSource playSoundEffect(String soundEffect) {
 		return this.playSoundEffect(soundEffect, Mode.NORMAL, null, 1.0f, 1.0f, 1.0f, 100.0f);

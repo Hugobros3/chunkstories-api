@@ -13,7 +13,7 @@ import xyz.chunkstories.api.world.cell.CellData
 abstract class VoxelEvent(
         // Specific event code
 
-        /** Returns the context before the voxel destruction  */
+        /** Returns the taskInstance before the voxel destruction  */
         val context: CellData) : CancellableEvent() {
 
     override val listeners: EventListeners

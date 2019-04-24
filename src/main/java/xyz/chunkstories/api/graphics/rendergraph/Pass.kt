@@ -8,6 +8,7 @@ package xyz.chunkstories.api.graphics.rendergraph
 
 import org.joml.Vector4d
 import xyz.chunkstories.api.graphics.Texture
+import xyz.chunkstories.api.graphics.TextureTilingMode
 
 class PassDeclaration {
     lateinit var name: String
@@ -30,45 +31,56 @@ class PassDeclaration {
         draws = DrawsDeclarations().apply(dslCode)
     }
 
-    var inputs: PassInputsDeclarations? = null
+    val setupLambdas = mutableListOf<PassInstance.() -> Unit>()
+    fun setup(dslCode: PassInstance.() -> Unit) {
+        setupLambdas.add(dslCode)
+    }
+    /*var inputs: PassInputsDeclarations? = null
     fun inputs(dslCode: PassInputsDeclarations.() -> Unit) {
         inputs = PassInputsDeclarations().also(dslCode)
-    }
+    }*/
 }
 
-class PassInputsDeclarations {
+/*class PassInputsDeclarations {
     val imageInputs = mutableListOf<ImageInput>()
     fun imageInput(imageInputConfiguration: ImageInput.() -> Unit) = imageInputs.add(ImageInput().apply(imageInputConfiguration))
-
-    fun ImageInput.texture(assetName: String) = ImageSource.AssetReference(assetName)
-
-    fun ImageInput.renderBuffer(bufferName: String) = ImageSource.RenderBufferReference(bufferName)
-}
+}*/
 
 class ImageInput {
-    /** Name of the sampler this will bind to */
-    lateinit var name: String
+    ///** Name of the sampler this will bind to */
+    //lateinit var name: String
 
     /** Name of the source RenderBuffer or a path to an asset, or a Texture object. */
     lateinit var source: ImageSource
 
     // General state fluff
-    var samplingMode = SamplingMode.NEAREST
-    var mipmapping = false
-    var wrapping = false
+    var scalingMode = ScalingMode.NEAREST
+    var tilingMode = TextureTilingMode.CLAMP_TO_EDGE
+    var depthCompareMode = DepthCompareMode.DISABLED
 
-    enum class SamplingMode {
+    var mipmapping = false
+
+
+    enum class ScalingMode {
         LINEAR,
         NEAREST
     }
+
+    enum class DepthCompareMode {
+        DISABLED,
+        SHADOWMAP
+    }
 }
+
+fun texture(assetName: String) = ImageSource.AssetReference(assetName)
+fun renderBuffer(bufferName: String) = ImageSource.RenderBufferReference(bufferName)
 
 sealed class ImageSource {
     class AssetReference(val assetName: String) : ImageSource()
     class RenderBufferReference(val renderBufferName: String) : ImageSource()
     class TextureReference(val texture: Texture) : ImageSource()
-    class TaskOutput(val context: RenderingContext, val output: PassOutput) : ImageSource()
-    class TaskOutputDepth(val context: RenderingContext) : ImageSource()
+    class TaskOutput(val context: RenderTaskInstance, val output: PassOutput) : ImageSource()
+    class TaskOutputDepth(val context: RenderTaskInstance) : ImageSource()
 }
 
 class PassOutputsDeclaration {

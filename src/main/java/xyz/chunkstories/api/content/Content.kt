@@ -24,7 +24,7 @@ import xyz.chunkstories.api.particles.ParticleType
 
 /** Encapsulates all the user-definable content available  */
 interface Content {
-    /** Returns the game context that owns this  */
+    /** Returns the game taskInstance that owns this  */
     val context: GameContext
 
     val animationsLibrary: AnimationsLibrary
