@@ -56,7 +56,7 @@ class ItemVoxel(type: ItemDefinition) : Item(type), WorldModificationCause {
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)
         }.toMap()
-        val representation = ModelInstance(store.parent().models["voxels/blockmodels/cube.dae"], ModelPosition(worldPosition).apply {
+        val representation = ModelInstance(store.parent().models["voxels/blockmodels/cube/cube.dae"], ModelPosition(worldPosition).apply {
             matrix.scale(0.5f)
             matrix.translate(-0.5f, -0.5f, 0.5f)
         }, customMaterials)

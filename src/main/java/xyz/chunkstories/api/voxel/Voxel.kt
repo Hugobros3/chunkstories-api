@@ -23,6 +23,7 @@ import xyz.chunkstories.api.world.chunk.FreshChunkCell
 import org.joml.Vector3d
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.world.cell.EditableCell
+import xyz.chunkstories.api.world.chunk.Chunk
 
 /** Defines the behavior for associated with a voxel type declaration  */
 open class Voxel(val definition: VoxelDefinition) {
@@ -69,6 +70,8 @@ open class Voxel(val definition: VoxelDefinition) {
 
     var lootLogic: LootRules? = null
 
+    var customRenderingRoutine: (ChunkMeshRenderingInterface.(CellData) -> Unit)? = null
+
     init {
         definition.resolveProperty("solid")?.let { solid = it.toBoolean() }
         definition.resolveProperty("opaque")?.let { opaque = it.toBoolean() }
@@ -91,6 +94,14 @@ open class Voxel(val definition: VoxelDefinition) {
 
         definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
         definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0}
+
+        definition.resolveProperty("model")?.let {
+            val model = definition.store.parent().models[it]
+
+            customRenderingRoutine = { _ ->
+                this.addModel(model)
+            }
+        }
 
         /*definition.resolveProperty("drops")?.let { lootLogic = LootRules {
             entry {
