@@ -25,7 +25,7 @@ public interface PacketDefinition {
 	{
 		/** Internal packets the engine uses to negociate connections and do it's job */
 		SYSTEM,
-		/** For miscalineous uses, both the engine & mods may use those */
+		/** For miscalineous uses, both the engine and mods may use those */
 		GENERAL_PURPOSE,
 		/**
 		 * Tied to the world ticks; contains a reference to the particular world;
