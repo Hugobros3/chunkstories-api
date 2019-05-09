@@ -27,7 +27,7 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
 
     var spawnTime: Long = 0
 
-    val inventory = TraitInventory(this, 1, 1)
+    val inventory = TraitInventory(this, 1, 1, true)
 
     init {
         //traitContents = ItemOnGroundContents(this)

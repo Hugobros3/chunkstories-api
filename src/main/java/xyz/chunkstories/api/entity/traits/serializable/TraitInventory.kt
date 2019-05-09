@@ -17,7 +17,7 @@ import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.serialization.StreamSource
 import xyz.chunkstories.api.world.serialization.StreamTarget
 
-open class TraitInventory(entity: Entity, width: Int, height: Int) : TraitSerializable(entity), InventoryCallbacks {
+open class TraitInventory(entity: Entity, width: Int, height: Int, val publicContents: Boolean = false) : TraitSerializable(entity), InventoryCallbacks {
     val inventory: Inventory //private set
 
     init {
@@ -54,7 +54,7 @@ open class TraitInventory(entity: Entity, width: Int, height: Int) : TraitSerial
             val entity = destinator.controlledEntity ?: return
 
             // Abort if the entity don't have access
-            if (!inventory.isAccessibleTo(entity)) {
+            if (!publicContents && !inventory.isAccessibleTo(entity)) {
                 // System.out.println(player + "'s " + entity + " don't have access to "+this);
                 stream.writeByte(UpdateMode.NEVERMIND.ordinal)
                 return

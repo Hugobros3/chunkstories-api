@@ -10,10 +10,7 @@ import xyz.chunkstories.api.events.CancellableEvent
 import xyz.chunkstories.api.events.EventListeners
 import xyz.chunkstories.api.player.Player
 
-class PlayerChatEvent(
-        // Specific event code
-
-        val player: Player, val message: String) : CancellableEvent() {
+class PlayerChatEvent(val player: Player, val message: String) : CancellableEvent() {
 
     override val listeners: EventListeners
         get() = listenersStatic
