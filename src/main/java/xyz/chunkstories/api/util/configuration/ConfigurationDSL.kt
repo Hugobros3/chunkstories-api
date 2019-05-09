@@ -85,4 +85,14 @@ class OptionsDeclarationCtx(private val configuration: Configuration, private va
         configuration.registerOption(option)
         return option.name
     }
+
+    class OptionIntDeclarationCtx : OptionDeclarationCtx<Int>()
+
+    fun optionInt(optionName: String, declaration: OptionIntDeclarationCtx.() -> Unit): String {
+        val declared = OptionIntDeclarationCtx().apply(declaration)
+        val option = configuration.OptionInt(optionName, declared.default ?: 0)
+        declared.hooks.forEach { option.addHook(it) }
+        configuration.registerOption(option)
+        return option.name
+    }
 }

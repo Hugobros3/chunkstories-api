@@ -40,15 +40,21 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
             if (entity.world !is WorldMaster)
                 throw UnauthorizedClientActionException("setController()")
 
-            val formerController = this.controller
-            this.actualController = value
-            // Tell the new controller the news
-            if (controller != null)
-                pushComponent(controller)
-            // Tell the former one he's no longer
-            if (formerController != null && (controller == null || controller != formerController))
-                pushComponent(formerController)
+            setControllerInternal(value)
         }
+
+    private fun setControllerInternal(newController: Controller?) {
+        val formerController = this.controller
+        this.actualController = newController
+        // Tell the new controller the news
+        if (controller != null) {
+            pushComponent(controller)
+        }
+        // Tell the former one he's no longer
+        if (formerController != null && (controller == null || controller != formerController)) {
+            pushComponent(formerController)
+        }
+    }
 
     /** Returns the camera that this entity would see the world through  */
     open val camera: Camera
@@ -118,7 +124,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
             if (clientUUID == controllerUUID) {
                 // TODO sort out local hosted worlds properly ?
                 // Client.getInstance().getServerConnection().subscribe(entity);
-                controller = player
+                setControllerInternal(player)
 
                 player.controlledEntity = entity
                 logger.debug("The client is now in control of entity $entity")
@@ -129,7 +135,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
                     player.controlledEntity = null
 
                     // Client.getInstance().getServerConnection().unsubscribe(entity);
-                    controller = null
+                    setControllerInternal(null)
                     logger.debug("Lost control of entity $entity to $controllerUUID")
                 }
             }
@@ -139,7 +145,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
                 player.controlledEntity = null
 
                 // Client.getInstance().getServerConnection().unsubscribe(entity);
-                controller = null
+                setControllerInternal(null)
                 logger.debug("Lost control of entity $entity")
             }
 
