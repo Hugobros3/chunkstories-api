@@ -46,6 +46,9 @@ interface ChunkHolder {
         /** Special case of loading */
         class Generating(fence: Fence) : Loading(fence)
 
+        /** Other special case */
+        class LoadingFromServer(fence: Fence) : Loading(fence)
+
         /** Chunk is in use and loaded */
         class Available(val chunk: Chunk) : State()
     }
