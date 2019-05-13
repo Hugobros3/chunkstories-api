@@ -60,7 +60,6 @@ class ImageInput {
 
     var mipmapping = false
 
-
     enum class ScalingMode {
         LINEAR,
         NEAREST
@@ -72,7 +71,7 @@ class ImageInput {
     }
 }
 
-fun texture(assetName: String) = ImageSource.AssetReference(assetName)
+fun asset(assetName: String) = ImageSource.AssetReference(assetName)
 fun renderBuffer(bufferName: String) = ImageSource.RenderBufferReference(bufferName)
 
 sealed class ImageSource {

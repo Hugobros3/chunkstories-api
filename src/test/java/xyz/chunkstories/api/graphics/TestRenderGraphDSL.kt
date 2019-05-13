@@ -16,7 +16,7 @@ import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 import xyz.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test
 import xyz.chunkstories.api.graphics.rendergraph.ImageInput
-import xyz.chunkstories.api.graphics.rendergraph.texture
+import xyz.chunkstories.api.graphics.rendergraph.asset
 
 data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : InterfaceBlock
 
@@ -73,7 +73,7 @@ class TestRenderGraphDSL {
 
                         setup {
                             shaderResources.supplyImage("colorMap") {
-                                source = texture("textures/effects/tonemap.png")
+                                source = asset("textures/effects/tonemap.png")
                                 scalingMode = ImageInput.ScalingMode.LINEAR
                                 tilingMode = TextureTilingMode.CLAMP_TO_EDGE
                             }
