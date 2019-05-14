@@ -23,9 +23,9 @@ class LargeButton(layer: Layer, text: String) : Button(layer, layer.gui.fonts.ge
     override fun render(renderer: GuiDrawer) {
         val localizedText = layer.gui.localization().localize(text)
 
-        var buttonTexture = "textures/gui/mainMenu.png"
+        var buttonTexture = "textures/gui/scalableButton.png"
         if (isFocused || isMouseOver)
-            buttonTexture = "textures/gui/mainMenuOver.png"
+            buttonTexture = "textures/gui/scalableButtonOver.png"
 
         renderer.drawBoxWithCorners(positionX, positionY, width, height, 8, buttonTexture)
 
