@@ -13,7 +13,7 @@ import xyz.chunkstories.api.input.Mouse
 import xyz.chunkstories.api.input.Mouse.MouseButton
 
 /** Provides a scalable button  */
-open class Button(layer: Layer, var font: Font, x: Int, y: Int, var text: String) : FocusableGuiElement(layer, 0, 22), ClickableGuiElement {
+open class Button(layer: Layer, val font: Font, x: Int, y: Int, var text: String) : FocusableGuiElement(layer, 0, 22), ClickableGuiElement {
 
     var action: Runnable? = null
 
@@ -55,7 +55,7 @@ open class Button(layer: Layer, var font: Font, x: Int, y: Int, var text: String
             buttonTexture = "textures/gui/scalableButtonOver.png"
 
         renderer.drawBoxWithCorners(positionX, positionY, width, height, 8, buttonTexture)
-        renderer.drawString(font, positionX + 4, positionY, localizedText, -1, Vector4f(0f, 0f, 0f, 1f))
+        renderer.drawString(font, positionX + 4, positionY + (height / 2) - (font.lineHeight / 2) - 2 , localizedText, -1, Vector4f(0f, 0f, 0f, 1f))
     }
 
     override fun handleClick(mouseButton: MouseButton): Boolean {
