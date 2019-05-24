@@ -9,4 +9,6 @@ package xyz.chunkstories.api.server
 import xyz.chunkstories.api.player.Player
 
 /** Represents some remote player on a server  */
-interface RemotePlayer : Player
+interface RemotePlayer : Player {
+    fun disconnect(disconnectionReason: String)
+}

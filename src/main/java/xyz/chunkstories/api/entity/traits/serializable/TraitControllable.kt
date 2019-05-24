@@ -110,7 +110,7 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
         if (entity.world !is WorldClientNetworkedRemote) {
             // Terminate connections immediately
             if (from is Player) {
-                from.disconnect("Illegal controller set attempt, terminating client connection for $from")
+                //from.disconnect("Illegal controller set attempt, terminating client connection for $from")
                 logger.info("Security alert: player $from tried to do an illegal action (push controller on master)")
             }
             return
