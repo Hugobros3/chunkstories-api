@@ -111,9 +111,10 @@ class ItemVoxel(type: ItemDefinition) : Item(type), WorldModificationCause {
 
                     // Decrease stack size
                     if (!isEntityCreativeMode) {
-                        var currentAmount = pile.amount
-                        currentAmount--
-                        pile.amount = currentAmount
+                        pile.amount--
+                        //var currentAmount = pile.amount
+                        //currentAmount--
+                        //pile.amount = currentAmount
                     }
                 } else {
                     // No space found :/

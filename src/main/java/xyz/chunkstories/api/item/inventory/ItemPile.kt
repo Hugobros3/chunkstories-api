@@ -7,7 +7,6 @@
 package xyz.chunkstories.api.item.inventory
 
 import xyz.chunkstories.api.item.Item
-import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.write
 
 /** A tangible pile of items in an inventory  */
@@ -18,10 +17,12 @@ class ItemPile(val inventory: Inventory, val x: Int, val y: Int, val item: Item,
                 field = value
 
                 // ItemPiles are smart enough to self-delete when they become == 0 !
-                if (value == 0)
+                if (value <= 0) {
                     inventory.grid[x][y] = null
-                else
+                    inventory.refreshItemSlot(x, y, null)
+                } else {
                     inventory.refreshItemSlot(x, y, this)
+                }
             }
         }
 

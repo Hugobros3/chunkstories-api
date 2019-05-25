@@ -99,7 +99,9 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
                             source.amount -= amount
                         }
 
-                        grid[x][y] = ItemPile(this, x, y, item.duplicate(), amount)
+                        val newPile = ItemPile(this, x, y, item.duplicate(), amount)
+                        grid[x][y] = newPile
+                        refreshItemSlot(x, y, newPile)
                     }
                     return 0
                 } else {
@@ -208,7 +210,7 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
         if (!inBounds(x, y))
             throw Exception("Out of bounds exception: ($x,$y) isn't in range [0..$width[,[0..$height[")
 
-        if(amount < 1)
+        if(item != null && amount < 1)
             throw Exception("Illegal amount")
 
         lock.write {
