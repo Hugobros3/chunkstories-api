@@ -33,24 +33,20 @@ import xyz.chunkstories.api.world.cell.FutureCell
 open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModificationCause {
     private val store: Content.Voxels = definition.store().parent().voxels()
 
-    //lateinit var voxel: Voxel
-   // var voxelMeta = 0
-
     val voxel: Voxel
-    open val voxelMeta = 0
 
     init {
         voxel = store.getVoxel(definition["voxel"]!!)!!
     }
 
     override fun getTextureName(pile: ItemPile): String {
-        return "voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), VoxelSide.FRONT).name + ".png"
+        return "voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, 0, 0, 15), VoxelSide.FRONT).name + ".png"
     }
 
     override fun buildRepresentation(pile: ItemPile, worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         //val customMaterial = MeshMaterial("cubeMaterial", mapOf("albedoTexture" to getTextureName(pile)))
         val customMaterials = VoxelSide.values().map { side ->
-            val textureName = "voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), side).name + ".png"
+            val textureName = getTextureName(pile)//"voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), side).name + ".png"
             //println("$side -> $textureName")
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)

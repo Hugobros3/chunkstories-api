@@ -40,6 +40,8 @@ interface GuiDrawer : DrawingSystem {
      * @param cornerSizeDivider The ratio of the total texture size to the size of the corner section. Typically it's 1/8th so you'd input '8'
      */
     fun drawBoxWithCorners(posx: Int, posy: Int, width: Int, height: Int, cornerSizeDivider: Int = 8, texture: String)
+
+    fun withScissor(startX: Int, startY: Int, width: Int, height: Int, code: () -> Unit)
 }
 
 interface Fonts {
