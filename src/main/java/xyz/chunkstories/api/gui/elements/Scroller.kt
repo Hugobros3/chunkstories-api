@@ -10,8 +10,8 @@ import java.lang.Integer.min
 
 open class Scroller<T : GuiElement>(layer: Layer, width: Int, height: Int, initialContents: Collection<T>) : GuiElement(layer, width, height), ClickableGuiElement {
 
-    val elementsSpacing = 8
-    val scrollIncrements = 8
+    var elementsSpacing = 8
+    var scrollIncrements = 8
 
     var scroll = 0
     val elements = initialContents.toMutableList()

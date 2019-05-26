@@ -52,7 +52,7 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
             Pair(side.ordinal, material)
         }.toMap()
         val representation = ModelInstance(store.parent().models["voxels/blockmodels/cube/cube.dae"], ModelPosition(worldPosition).apply {
-            matrix.scale(0.5f)
+            matrix.scale(0.35f)
             matrix.translate(-0.5f, -0.0f, -0.5f)
         }, customMaterials)
         representationsGobbler.acceptRepresentation(representation, -1)
