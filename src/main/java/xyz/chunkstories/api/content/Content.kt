@@ -50,7 +50,7 @@ interface Content {
 
         fun getVoxel(voxelName: String): Voxel?
 
-        fun all(): Iterator<Voxel>
+        fun all(): Collection<Voxel>
 
         fun parent(): Content
 
@@ -77,7 +77,7 @@ interface Content {
 
             fun getVoxelMaterial(materialName: String): VoxelMaterial?
 
-            fun all(): Iterator<VoxelMaterial>
+            fun all(): Collection<VoxelMaterial>
 
             fun parent(): Content
 
@@ -93,7 +93,7 @@ interface Content {
 
         fun getItemDefinition(itemName: String): ItemDefinition?
 
-        fun all(): Iterator<ItemDefinition>
+        fun all(): Collection<ItemDefinition>
 
         fun parent(): Content
 
@@ -105,7 +105,7 @@ interface Content {
     interface EntityDefinitions {
         fun getEntityDefinition(entityName: String): EntityDefinition?
 
-        fun all(): Iterator<EntityDefinition>
+        fun all(): Collection<EntityDefinition>
 
         fun parent(): Content
 
@@ -131,7 +131,7 @@ interface Content {
         @Throws(UnknowPacketException::class)
         fun getPacketFromInstance(packet: Packet): PacketDefinition
 
-        fun all(): Iterator<PacketDefinition>
+        fun all(): Collection<PacketDefinition>
 
         fun parent(): Content
 
@@ -145,7 +145,7 @@ interface Content {
 
         //fun getWorldGeneratorName(generator: WorldGenerator): String
 
-        fun all(): Iterator<WorldGeneratorDefinition>
+        fun all(): Collection<WorldGeneratorDefinition>
 
         fun parent(): Content
 
