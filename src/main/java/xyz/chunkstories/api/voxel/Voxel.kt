@@ -6,24 +6,24 @@
 
 package xyz.chunkstories.api.voxel
 
+import org.joml.Vector3d
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.dsl.LootRules
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.input.Input
+import xyz.chunkstories.api.item.Item
+import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.item.ItemVoxel
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
 import xyz.chunkstories.api.voxel.textures.VoxelTexture
 import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.EditableCell
 import xyz.chunkstories.api.world.cell.FutureCell
 import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.FreshChunkCell
-import org.joml.Vector3d
-import xyz.chunkstories.api.item.Item
-import xyz.chunkstories.api.world.cell.EditableCell
-import xyz.chunkstories.api.world.chunk.Chunk
 
 /** Defines the behavior for associated with a voxel type declaration  */
 open class Voxel(val definition: VoxelDefinition) {
@@ -66,11 +66,13 @@ open class Voxel(val definition: VoxelDefinition) {
     var shadingLightLevel = 0
 
     var collisionBoxes = arrayOf(Box(Vector3d(0.0), Vector3d(1.0)))
-        get() = Array(field.size) { i -> Box(field[i])}
+        get() = Array(field.size) { i -> Box(field[i]) }
 
     var lootLogic: LootRules? = null
 
     var customRenderingRoutine: (ChunkMeshRenderingInterface.(CellData) -> Unit)? = null
+
+    val variants: List<ItemDefinition>
 
     init {
         definition.resolveProperty("solid")?.let { solid = it.toBoolean() }
@@ -93,7 +95,7 @@ open class Voxel(val definition: VoxelDefinition) {
         (definition.resolveProperty("material") ?: name).let { voxelMaterial = store().materials().getVoxelMaterial(it) ?: store().materials().defaultMaterial }
 
         definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
-        definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0}
+        definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
 
         definition.resolveProperty("model")?.let {
             val model = definition.store.parent().models[it]
@@ -103,6 +105,7 @@ open class Voxel(val definition: VoxelDefinition) {
             }
         }
 
+        variants = enumerateVariants(store().parent().items())
         /*definition.resolveProperty("drops")?.let { lootLogic = LootRules {
             entry {
                 items = listOf(Pair())
@@ -243,11 +246,24 @@ open class Voxel(val definition: VoxelDefinition) {
         return this == that
     }
 
-    open fun enumerateItemsForBuilding(): List<ItemVoxel> {
-        return listOf(store().parent().items().getItemDefinition("item_voxel")!!.newItem<ItemVoxel>().apply {
-                this.voxel = this@Voxel
+    protected open fun enumerateVariants(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
+        val definition = ItemDefinition(itemStore, name, mapOf(
+                "voxel" to name,
+                "class" to ItemVoxel::class.java.canonicalName!!
+        ))
 
-        })
+        return listOf(definition)
+    }
+
+    open fun getVariant(cell: CellData): ItemDefinition {
+        return variants[0]
+    }
+
+    fun enumerateItemsForBuilding(): List<ItemVoxel> {
+        /*return listOf(store().parent().items().getItemDefinition("item_voxel")!!.newItem<ItemVoxel>().apply {
+                this.voxel = this@Voxel
+        })*/
+        return variants.map { it.newItem<Item>() }.filterIsInstance<ItemVoxel>()
     }
 
     /** Returns what's dropped when a getCell using this voxel type is destroyed  */

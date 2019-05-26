@@ -28,24 +28,23 @@ import xyz.chunkstories.api.voxel.VoxelSide
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.cell.DummyCell
 import xyz.chunkstories.api.world.cell.FutureCell
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.IOException
 
 /** An item that contains voxels  */
-class ItemVoxel(type: ItemDefinition) : Item(type), WorldModificationCause {
-    private val store: Content.Voxels = type.store().parent().voxels()
+open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModificationCause {
+    private val store: Content.Voxels = definition.store().parent().voxels()
 
-    lateinit var voxel: Voxel
-    var voxelMeta = 0
+    //lateinit var voxel: Voxel
+   // var voxelMeta = 0
 
-    override val name: String
-        get() = voxel.name
+    val voxel: Voxel
+    open val voxelMeta = 0
+
+    init {
+        voxel = store.getVoxel(definition["voxel"]!!)!!
+    }
 
     override fun getTextureName(pile: ItemPile): String {
         return "voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), VoxelSide.FRONT).name + ".png"
-        //return voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), VoxelSide.FRONT).name
-        //return "voxels/textures/" + voxel.name + ".png"
     }
 
     override fun buildRepresentation(pile: ItemPile, worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
@@ -63,51 +62,60 @@ class ItemVoxel(type: ItemDefinition) : Item(type), WorldModificationCause {
         representationsGobbler.acceptRepresentation(representation, -1)
     }
 
-    override fun onControllerInput(owner: Entity, pile: ItemPile, input: Input, controller: Controller): Boolean {
+    open fun changeBlockData(cell: FutureCell, placingEntity: Entity) : Boolean {
+        cell.voxel = voxel
+        //cell.metaData = voxelMeta
+        cell.metaData = 0
+
+        // Opaque blocks overwrite the original light with zero.
+        if (voxel.opaque) {
+            cell.blocklight = 0
+            cell.sunlight = 0
+        }
+
+        // Glowy stuff should glow
+        cell.blocklight = voxel.getEmittedLightLevel(cell)
+
+        return true
+    }
+
+    override fun onControllerInput(entity: Entity, pile: ItemPile, input: Input, controller: Controller): Boolean {
         try {
-            if (owner.world is WorldMaster && input.name == "mouse.right") {
+            if (entity.world is WorldMaster && input.name == "mouse.right") {
                 // Require entities to be of the right kind
-                if (owner !is WorldModificationCause) {
+                if (entity !is WorldModificationCause) {
                     return true
                 }
 
-                val modifierEntity = owner as WorldModificationCause
+                val modifierEntity = entity as WorldModificationCause
 
-                val isEntityCreativeMode = owner.traits[TraitCreativeMode::class]?.get() ?: false
+                val isEntityCreativeMode = entity.traits[TraitCreativeMode::class]?.get() ?: false
 
-                val blockLocation = owner.traits[TraitVoxelSelection::class]?.getBlockLookingAt(false, true)
+                val blockLocation = entity.traits[TraitVoxelSelection::class]?.getBlockLookingAt(false, true)
 
                 if (blockLocation != null) {
-                    val futureCell = FutureCell(owner.world.peekSafely(blockLocation))
-                    futureCell.voxel = voxel
-                    futureCell.metaData = voxelMeta
+                    val futureCell = FutureCell(entity.world.peekSafely(blockLocation))
 
-                    // Opaque blocks overwrite the original light with zero.
-                    if (voxel.opaque) {
-                        futureCell.blocklight = 0
-                        futureCell.sunlight = 0
-                    }
-
-                    // Glowy stuff should glow
-                    // if(voxel.getDeclaration().getEmittedLightLevel() > 0)
-                    futureCell.blocklight = voxel.getEmittedLightLevel(futureCell)
+                    // Let's stop if this returns false
+                    if(!changeBlockData(futureCell, entity))
+                        return true
 
                     // Player events mod
                     if (controller is Player) {
-                        val ctx = owner.world.peek(blockLocation)
+                        val ctx = entity.world.peek(blockLocation)
                         val event = PlayerVoxelModificationEvent(ctx, futureCell,
                                 if (isEntityCreativeMode) TraitCreativeMode.CREATIVE_MODE else this, controller)
 
                         // Anyone has objections ?
-                        owner.world.gameContext.pluginManager.fireEvent(event)
+                        entity.world.gameContext.pluginManager.fireEvent(event)
 
                         if (event.isCancelled)
                             return true
 
-                        owner.world.soundManager.playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, futureCell.location, 1.0f, 1.0f)
+                        entity.world.soundManager.playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, futureCell.location, 1.0f, 1.0f)
                     }
 
-                    owner.world.poke(futureCell, modifierEntity)
+                    entity.world.poke(futureCell, modifierEntity)
 
                     // Decrease stack size
                     if (!isEntityCreativeMode) {
@@ -130,6 +138,8 @@ class ItemVoxel(type: ItemDefinition) : Item(type), WorldModificationCause {
 
     }
 
+    /*
+
     @Throws(IOException::class)
     override fun load(stream: DataInputStream) {
         voxel = store.getVoxel(stream.readUTF()) ?: store.air()
@@ -148,5 +158,5 @@ class ItemVoxel(type: ItemDefinition) : Item(type), WorldModificationCause {
         return if (item is ItemVoxel) {
             super.canStackWith(item) && item.voxel.sameKind(voxel) && item.voxelMeta == this.voxelMeta
         } else false
-    }
+    }*/
 }
