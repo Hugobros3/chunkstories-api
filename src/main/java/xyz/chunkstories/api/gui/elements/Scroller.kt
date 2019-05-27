@@ -87,9 +87,9 @@ open class Scroller<T : GuiElement>(layer: Layer, width: Int, height: Int, initi
                 if (hover || draggingScrollBar) {
                     if (hover || draggingScrollBar) {
                         draggingScrollBar = drawer.gui.mouse.mainButton.isPressed
-                        val relativeMy = positionX + height - my
+                        val relativeMy = positionY + height - my
 
-                        scroll = ((relativeMy - 0) / (height - 64) * maxScroll).toInt()
+                        scroll = ((relativeMy - barSize / 2) / (height - barSize) * maxScroll).toInt()
                     }
                 }
             } else {
@@ -129,8 +129,8 @@ open class Scroller<T : GuiElement>(layer: Layer, width: Int, height: Int, initi
         for (element in elements) {
             yPosition -= element.height
 
-            element.setPosition(positionX, yPosition)
-            element.width = width
+            //element.setPosition(positionX, yPosition)
+            //element.width = width
             if (element.isMouseOver && element is ClickableGuiElement)
                 return element.handleClick(mouseButton)
 
