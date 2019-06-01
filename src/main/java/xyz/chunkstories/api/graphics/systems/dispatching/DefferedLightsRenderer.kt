@@ -4,9 +4,9 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.graphics.systems.drawing
+package xyz.chunkstories.api.graphics.systems.dispatching
 
 /** Draws all the deffered lights in the scene (exc. the sun) as fullscreen quads. */
-interface DefferedLightsDrawer : DrawingSystem {
-    var maxBatchSize: Int
+interface DefferedLightsRenderer : DispatchingSystem {
+    //var maxBatchSize: Int
 }

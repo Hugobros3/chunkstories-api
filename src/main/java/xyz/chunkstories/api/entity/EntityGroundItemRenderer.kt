@@ -1,10 +1,14 @@
 package xyz.chunkstories.api.entity
 
 import org.joml.Matrix4f
+import org.joml.Vector3d
 import xyz.chunkstories.api.entity.traits.TraitRenderable
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
+import xyz.chunkstories.api.graphics.representation.PointLight
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
+import xyz.chunkstories.api.item.ItemVoxel
 import xyz.chunkstories.api.item.inventory.InventoryOwner
+import xyz.chunkstories.api.util.kotlin.toVec3d
 import xyz.chunkstories.api.util.kotlin.toVec3f
 
 class EntityGroundItemRenderer(private val entity2: EntityGroundItem) : TraitRenderable<EntityGroundItem>(entity2), InventoryOwner {

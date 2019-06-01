@@ -7,15 +7,15 @@
 package xyz.chunkstories.api.graphics.representation
 
 import org.joml.Vector3d
+import org.joml.Vector3dc
+import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 
-data class PointLight(var color: Vector3d) : Representation {
-    var enabled = true
+abstract class Light : Representation {
+    abstract val position: Vector3dc
 }
 
-data class SpotLight(var color: Vector3d, var direction: Vector3d) : Representation {
-    var enabled = true
-}
+data class PointLight(override val position: Vector3dc = Vector3d(), var color: Vector3dc = Vector3d()) : Light(), InterfaceBlock
 
-data class DirectionalLight(var color: Vector3d, var direction: Vector3d) : Representation {
-    var enabled = true
-}
+data class SpotLight(override val position: Vector3dc = Vector3d(), var color: Vector3dc = Vector3d(), var direction: Vector3dc = Vector3d()) : Light(), InterfaceBlock
+
+data class DirectionalLight(override val position: Vector3dc = Vector3d(), var color: Vector3dc = Vector3d(), var direction: Vector3dc = Vector3d()) : Light(), InterfaceBlock

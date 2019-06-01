@@ -17,6 +17,7 @@ import xyz.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test
 import xyz.chunkstories.api.graphics.rendergraph.ImageInput
 import xyz.chunkstories.api.graphics.rendergraph.asset
+import xyz.chunkstories.api.graphics.systems.dispatching.DefferedLightsRenderer
 
 data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : InterfaceBlock
 
@@ -49,8 +50,8 @@ class TestRenderGraphDSL {
 
                         draws {
                             fullscreenQuad()
-                            system(DefferedLightsDrawer::class) {
-                                maxBatchSize = 32
+                            system(DefferedLightsRenderer::class) {
+                                //maxBatchSize = 32
                             }
                             system(FarTerrainDrawer::class)
                         }

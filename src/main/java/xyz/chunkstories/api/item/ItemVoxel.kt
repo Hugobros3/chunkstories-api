@@ -7,6 +7,7 @@
 package xyz.chunkstories.api.item
 
 import org.joml.Matrix4f
+import org.joml.Vector4f
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
@@ -18,11 +19,14 @@ import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.graphics.MeshMaterial
 import xyz.chunkstories.api.graphics.representation.ModelInstance
 import xyz.chunkstories.api.graphics.representation.ModelPosition
+import xyz.chunkstories.api.graphics.representation.PointLight
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.item.inventory.ItemPile
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.sound.SoundSource.Mode
+import xyz.chunkstories.api.util.kotlin.toVec3d
+import xyz.chunkstories.api.util.kotlin.toVec3f
 import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.VoxelSide
 import xyz.chunkstories.api.world.WorldMaster
@@ -56,9 +60,17 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
             matrix.translate(-0.5f, -0.0f, -0.5f)
         }, customMaterials)
         representationsGobbler.acceptRepresentation(representation, -1)
+
+        val position = Vector4f(0f, 0f, 0f, 1f)
+        worldPosition.transform(position)
+        if (voxel.emittedLightLevel > 0) {
+            val light = PointLight(position.toVec3f().toVec3d().add(0.0, 0.5, 0.0), voxel.voxelTextures[0].color.toVec3f().toVec3d().mul(voxel.emittedLightLevel.toDouble()))
+            representationsGobbler.acceptRepresentation(light)
+            //println(light)
+        }
     }
 
-    open fun changeBlockData(cell: FutureCell, placingEntity: Entity) : Boolean {
+    open fun changeBlockData(cell: FutureCell, placingEntity: Entity): Boolean {
         cell.voxel = voxel
         //cell.metaData = voxelMeta
         cell.metaData = 0
@@ -93,7 +105,7 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
                     val futureCell = FutureCell(entity.world.peekSafely(blockLocation))
 
                     // Let's stop if this returns false
-                    if(!changeBlockData(futureCell, entity))
+                    if (!changeBlockData(futureCell, entity))
                         return true
 
                     // Player events mod

@@ -63,7 +63,6 @@ fun writeInventoryHandle(stream: DataOutputStream, inventory: Inventory?) {
         }
         else -> {
             stream.writeByte(0x00)
-
         }
     }
 }

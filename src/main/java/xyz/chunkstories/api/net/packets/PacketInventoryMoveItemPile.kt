@@ -26,7 +26,7 @@ import java.io.DataOutputStream
 import java.io.IOException
 
 class PacketInventoryMoveItemPile : PacketWorld {
-    private var itemPile: ItemPile? = null
+    private lateinit var itemPile: ItemPile
     private var sourceInventory: Inventory? = null
     private var destinationInventory: Inventory? = null
     private var sourceX: Int = 0
@@ -34,10 +34,11 @@ class PacketInventoryMoveItemPile : PacketWorld {
     private var destX: Int = 0
     private var destY: Int = 0
     private var amount: Int = 0
+    private var destroy: Boolean = false
 
     constructor(world: World) : super(world) {}
 
-    constructor(world: World, itemPile: ItemPile, from: Inventory, to: Inventory?, oldX: Int, oldY: Int, newX: Int, newY: Int, amount: Int) : super(world) {
+    constructor(world: World, itemPile: ItemPile, from: Inventory?, to: Inventory?, oldX: Int, oldY: Int, newX: Int, newY: Int, amount: Int) : super(world) {
         this.itemPile = itemPile
         this.sourceInventory = from
         this.destinationInventory = to
@@ -57,6 +58,7 @@ class PacketInventoryMoveItemPile : PacketWorld {
         stream.writeInt(destY)
 
         stream.writeInt(amount)
+        stream.writeBoolean(destroy)
 
         // Describe the inventories
         writeInventoryHandle(stream, sourceInventory)
@@ -65,7 +67,7 @@ class PacketInventoryMoveItemPile : PacketWorld {
         // Describe the itemPile if we are trying to spawn an item from nowhere
         if (sourceInventory == null || sourceInventory!!.owner == null) {
             //itemPile!!.item.save(stream)
-            itemPile!!.saveIntoStream(context.world.contentTranslator, stream)
+            itemPile.saveIntoStream(context.world.contentTranslator, stream)
         }
     }
 
@@ -92,6 +94,7 @@ class PacketInventoryMoveItemPile : PacketWorld {
         val destX = stream.readInt()
         val destY = stream.readInt()
 
+        val destroy = stream.readBoolean()
         val amount = stream.readInt()
 
         val sourceInventory = obtainInventoryByHandle(stream, processor)
@@ -163,25 +166,22 @@ class PacketInventoryMoveItemPile : PacketWorld {
                 // TODO or not ? Maybe the cancellable event deal can prevent this
 
                 // If we're pulling this out of an inventory ( and not /dev/null ), we need to
-                // remove it from that
-                //Inventory sourceInventory = itemPile.getInventory();
-
                 val loc = playerEntity.location
                 sourceItemPile?.let { it.amount -= amount }
 
-                val entity = world.content.entities().getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
-                entity.location = loc
-                entity.traits[TraitInventory::class]?.inventory?.addItem(item!!, amount)
-                loc.world.addEntity(entity)
-                return
+                if (!destroy) {
+                    val droppedItemEntity = world.content.entities().getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
+                    droppedItemEntity.location = loc
+                    droppedItemEntity.traits[TraitInventory::class]?.inventory?.addItem(item!!, amount)
+                    loc.world.addEntity(droppedItemEntity)
+                }
+            } else {
+                if (sourceItemPile != null) {
+                    sourceItemPile.moveTo(destinationInventory, destX, destY, amount)
+                } else {
+                    destinationInventory.placeItemAt(destX, destY, item!!, amount)
+                }
             }
-
-            if(sourceItemPile != null)
-                sourceItemPile.moveTo(destinationInventory, destX, destY, amount)
-            else
-                destinationInventory.placeItemAt(destX, destY, item!!, amount)
-
-            //itemPile!!.moveItemPileTo(destinationInventory, destX, destY, amount)
         }
     }
 }
