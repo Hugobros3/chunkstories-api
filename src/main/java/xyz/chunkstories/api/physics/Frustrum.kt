@@ -82,7 +82,7 @@ class Frustrum(val camera: Camera) {
         val farBottomLeft = farCenterPoint.minus((Y * fh).plus(X.times(fw)))
         val farBottomRight = farCenterPoint - ((Y * fh) - (X * fw))*/
 
-        val ntl = Vector4f(-1.0f, 1.0f, 0.0f ,1.0f)
+        /*val ntl = Vector4f(-1.0f, 1.0f, 0.0f ,1.0f)
         val ntr = Vector4f(1.0f, 1.0f, 0.0f ,1.0f)
         val nbl = Vector4f(-1.0f, -1.0f, 0.0f ,1.0f)
         val nbr = Vector4f(1.0f, -1.0f, 0.0f ,1.0f)
@@ -90,7 +90,17 @@ class Frustrum(val camera: Camera) {
         val ftl = Vector4f(-1.0f, 1.0f, 1.0f ,1.0f)
         val ftr = Vector4f(1.0f, 1.0f, 1.0f ,1.0f)
         val fbl = Vector4f(-1.0f, -1.0f, 1.0f ,1.0f)
-        val fbr = Vector4f(1.0f, -1.0f, 1.0f ,1.0f)
+        val fbr = Vector4f(1.0f, -1.0f, 1.0f ,1.0f)*/
+
+        val ntl = Vector4f(-1.0f, 1.0f,  1.0f ,1.0f)
+        val ntr = Vector4f(1.0f, 1.0f,   1.0f ,1.0f)
+        val nbl = Vector4f(-1.0f, -1.0f, 1.0f ,1.0f)
+        val nbr = Vector4f(1.0f, -1.0f,  1.0f ,1.0f)
+
+        val ftl = Vector4f(-1.0f, 1.0f,  0.0f ,1.0f)
+        val ftr = Vector4f(1.0f, 1.0f,   0.0f ,1.0f)
+        val fbl = Vector4f(-1.0f, -1.0f, 0.0f ,1.0f)
+        val fbr = Vector4f(1.0f, -1.0f,  0.0f ,1.0f)
 
         fun transform(a: Vector4fc) : Vector3f {
             val t = Vector4f(a)

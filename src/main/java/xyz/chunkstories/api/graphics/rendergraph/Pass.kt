@@ -67,7 +67,11 @@ class ImageInput {
 
     enum class DepthCompareMode {
         DISABLED,
-        SHADOWMAP
+        GREATER,
+        GREATER_OR_EQUAL,
+        EQUAL,
+        LESS_OR_EQUAL,
+        LESS
     }
 }
 
@@ -129,6 +133,7 @@ class DepthTestingConfiguration {
 
     /** Should we clear the buffer before proceeding ? */
     var clear = false
+    var clearValue = 0f
 
     /** Disable to stop the zBuffer from updating */
     var write = true
@@ -139,7 +144,7 @@ class DepthTestingConfiguration {
     fun renderBuffer(bufferName: String) = RenderTarget.RenderBufferReference(bufferName)
     fun taskInput(bufferName: String) = RenderTarget.TaskInput(bufferName)
 
-    var mode: DepthTestMode = DepthTestMode.LESS_OR_EQUAL
+    var mode: DepthTestMode = DepthTestMode.GREATER
 
     enum class DepthTestMode {
         GREATER, GREATER_OR_EQUAL, EQUAL, LESS_OR_EQUAL, LESS, ALWAYS
