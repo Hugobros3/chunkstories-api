@@ -184,8 +184,8 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
 
         lock.write {
             var amountLeft = amount
-            for (x in 0 until width)
-                for (y in 0 until height) {
+            for (y in 0 until height) {
+                for (x in 0 until width) {
                     val couldntPlace = canPlaceItemAt(x, y, item, amountLeft)
                     val amount2place = amountLeft - couldntPlace
 
@@ -200,6 +200,7 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
                         return 0
                     }
                 }
+            }
 
             return amountLeft
         }
