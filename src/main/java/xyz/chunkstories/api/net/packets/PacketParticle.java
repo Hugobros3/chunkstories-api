@@ -24,8 +24,9 @@ import xyz.chunkstories.api.world.World;
 
 import javax.annotation.Nullable;
 
-//TODO: Use ContentTranslator to assign ids to particles
-//TODO: Use reflection or something and send the raw fields of the Particle object
+// TODO: Use ContentTranslator to assign ids to particles
+// TODO: Use reflection or something and send the raw fields of the Particle
+// object
 public class PacketParticle extends PacketWorld {
 	private String particleName = "";
 	private Vector3dc position;
@@ -72,9 +73,9 @@ public class PacketParticle extends PacketWorld {
 			velocity.z = (in.readDouble());
 		}
 
-		/*if (processor instanceof ClientPacketsProcessor) {
-			ClientPacketsProcessor cpp = (ClientPacketsProcessor) processor;
-			cpp.getTaskInstance().getParticlesManager().spawnParticleAtPositionWithVelocity(particleName, position, velocity);
-		}*/
+		/* if (processor instanceof ClientPacketsProcessor) { ClientPacketsProcessor cpp
+		 * = (ClientPacketsProcessor) processor;
+		 * cpp.getTaskInstance().getParticlesManager().
+		 * spawnParticleAtPositionWithVelocity(particleName, position, velocity); } */
 	}
 }
