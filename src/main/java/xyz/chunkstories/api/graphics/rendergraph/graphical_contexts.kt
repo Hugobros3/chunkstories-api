@@ -12,6 +12,7 @@ import xyz.chunkstories.api.graphics.structs.Camera
 
 interface Frame {
     val frameNumber: Int
+    val animationTimer: Float
 
     val shaderResources: ShaderResources
 }

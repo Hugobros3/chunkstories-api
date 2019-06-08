@@ -6,6 +6,7 @@
 
 package xyz.chunkstories.api.graphics.systems.dispatching
 
+import xyz.chunkstories.api.graphics.rendergraph.Frame
 import xyz.chunkstories.api.graphics.rendergraph.RenderTaskInstance
 import xyz.chunkstories.api.graphics.representation.Representation
 import xyz.chunkstories.api.graphics.systems.GraphicSystem
@@ -17,7 +18,7 @@ interface DispatchingSystem : GraphicSystem {
 
 /** The interface responsible for enumerating every representation that will be used to draw frame N */
 interface RepresentationsGobbler {
-    //TODO val frame: Frame
+    val frame: Frame
     //TODO val framgeGraph: FrameGraph
     //val passInstances: Array<PassInstance>
     //val cameras: Array<Camera>
