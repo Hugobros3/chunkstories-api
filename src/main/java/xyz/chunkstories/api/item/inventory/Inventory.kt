@@ -11,6 +11,9 @@ import xyz.chunkstories.api.content.ContentTranslator
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
+import xyz.chunkstories.api.gui.Layer
+import xyz.chunkstories.api.gui.inventory.InventorySlot
+import xyz.chunkstories.api.gui.inventory.InventoryUI
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
@@ -328,6 +331,23 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
         return callbacks?.isAccessibleTo(entity) ?: true
     }
 
+    fun createInventoryUI(layer: Layer): InventoryUI {
+        val custom = callbacks?.createMainInventoryPanel(this, layer)
+        if(custom != null)
+            return custom
+
+        val ui = InventoryUI(layer, width * 20 + 16, height * 20 + 16)
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                val slot = InventorySlot.RealSlot(this, x, y)
+                val uiSlot = ui.InventorySlotUI(slot, x * 20 + 8, y * 20 + 8)
+                ui.slots.add(uiSlot)
+            }
+        }
+
+        return ui
+    }
+
     companion object {
         val logger = LoggerFactory.getLogger("inventory")
     }
@@ -335,7 +355,6 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
 
 @JvmOverloads
 fun ItemPile.canMoveTo(destInventory: Inventory, x: Int, y: Int, amount: Int = this.amount): Int = destInventory.movePileToInventory(x, y, this, item, amount, true)
-
 
 @JvmOverloads
 fun ItemPile.moveTo(destInventory: Inventory, x: Int, y: Int, amount: Int = this.amount): Int = destInventory.movePileToInventory(x, y, this, item, amount, false)

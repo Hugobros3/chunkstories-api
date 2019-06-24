@@ -43,6 +43,6 @@ interface Player : CommandEmitter, Controller, Subscriber, Interlocutor {
     /** Sends a text message to this player chat  */
     override fun sendMessage(msg: String)
 
-    /** Helper method: Tries to open the specified inventory for the following player  */
+    /** Opens an UI panel to inspect/transfer things to an inventory */
     fun openInventory(inventory: Inventory)
 }

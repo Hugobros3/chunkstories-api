@@ -62,24 +62,6 @@ abstract class TraitControllable(entity: Entity) : TraitSerializable(entity) {
         get() {
             val client = entity.world.gameContext as? IngameClient ?: throw Exception("calling getCamera() on a non-client taskInstance is undefined behavior")
 
-            /*val fov = (90.0 / 360.0 * (Math.PI * 2)).toFloat()
-            val aspect = client.gameWindow.width.toFloat() / client.gameWindow.height.toFloat()
-            val projectionMatrix = Matrix4f().perspective(fov, aspect, 0.1f, 2000f, true)
-
-            val location = entity.location
-            val cameraPosition = location
-
-            //cameraPosition.y += 1.8f
-
-            val entityDirection = (entity.traits[TraitRotation::class]?.directionLookingAt ?: Vector3d(0.0, 0.0, 1.0)).toVec3f()
-            val entityLookAt = Vector3f(cameraPosition).add(entityDirection)
-
-            val up = (entity.traits[TraitRotation::class]?.upDirection ?: Vector3d(0.0, 0.0, 1.0)).toVec3f()
-
-            val viewMatrix = Matrix4f()
-            viewMatrix.lookAt(cameraPosition, entityLookAt, up)
-
-            return Camera(cameraPosition, entityDirection, up, fov, viewMatrix, projectionMatrix)*/
             val entityDirection = (entity.traits[TraitRotation::class]?.directionLookingAt ?: Vector3d(0.0, 0.0, 1.0)).toVec3f()
             val up = (entity.traits[TraitRotation::class]?.upDirection ?: Vector3d(0.0, 0.0, 1.0)).toVec3f()
             return client.makeCamera(entity.location, entityDirection, up, 90.0f)

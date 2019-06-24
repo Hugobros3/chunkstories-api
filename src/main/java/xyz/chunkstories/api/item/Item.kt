@@ -72,12 +72,12 @@ open class Item(val definition: ItemDefinition) {
      *
      * @return The full path to the image file.
      */
-    open fun getTextureName(pile: ItemPile): String {
+    open fun getTextureName(): String {
         return "items/icons/${definition.name}.png"
     }
 
-    open fun buildRepresentation(pile: ItemPile, worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
-        representationsGobbler.acceptRepresentation(Sprite(worldPosition.transform(Vector4f(0.0f, 0f, 0f, 1f)).toVec4d().toVec3d(), 1f, MeshMaterial("item_$name", mapOf("albedoTexture" to getTextureName(pile)), "opaque")))
+    open fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
+        representationsGobbler.acceptRepresentation(Sprite(worldPosition.transform(Vector4f(0.0f, 0f, 0f, 1f)).toVec4d().toVec3d(), 1f, MeshMaterial("item_$name", mapOf("albedoTexture" to getTextureName()), "opaque")))
     }
 
     /** Unsafe, called upon loading this item from a stream. If you do use it,

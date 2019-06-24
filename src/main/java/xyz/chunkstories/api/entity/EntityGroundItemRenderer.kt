@@ -29,6 +29,6 @@ class EntityGroundItemRenderer(private val entity2: EntityGroundItem) : TraitRen
         matrix.translate(entity.location.toVec3f())
         matrix.translate(0f, 0.5f + 0.25f * Math.sin(dt).toFloat(), 0f)
         matrix.rotate(dt.toFloat(), 0f, 1f, 0f)
-        pile.item.buildRepresentation(pile, matrix, representationsGobbler)
+        pile.item.buildRepresentation(matrix, representationsGobbler)
     }
 }

@@ -8,6 +8,7 @@ package xyz.chunkstories.api.gui
 
 import xyz.chunkstories.api.client.Client
 import xyz.chunkstories.api.content.Content
+import xyz.chunkstories.api.gui.inventory.InventoryManagementUI
 import xyz.chunkstories.api.input.Mouse
 import xyz.chunkstories.api.item.inventory.Inventory
 
@@ -32,7 +33,7 @@ interface Gui {
     }
 
     val mouse: Mouse
-    fun hasFocus() : Boolean
+    fun hasFocus(): Boolean
 
     /** Font manager */
     val fonts: Fonts
@@ -40,5 +41,12 @@ interface Gui {
     fun localization(): Content.Translation
 
     /** Opens the inventory GUI with all the specified inventories opened  */
-    fun openInventories(vararg inventories: Inventory)
+    fun openInventories(vararg inventories: Inventory) {
+        val layer = InventoryManagementUI(this, topLayer)
+        for(inventory in inventories) {
+            layer.subwindows.add(inventory.createInventoryUI(layer))
+        }
+        topLayer = layer
+        mouse.isGrabbed = false
+    }
 }

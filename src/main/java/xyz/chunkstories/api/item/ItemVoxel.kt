@@ -43,14 +43,14 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
         voxel = store.getVoxel(definition["voxel"]!!)!!
     }
 
-    override fun getTextureName(pile: ItemPile): String {
+    override fun getTextureName(): String {
         return "voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, 0, 0, 15), VoxelSide.FRONT).name + ".png"
     }
 
-    override fun buildRepresentation(pile: ItemPile, worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
+    override fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         //val customMaterial = MeshMaterial("cubeMaterial", mapOf("albedoTexture" to getTextureName(pile)))
         val customMaterials = VoxelSide.values().map { side ->
-            val textureName = getTextureName(pile)//"voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), side).name + ".png"
+            val textureName = getTextureName()//"voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), side).name + ".png"
             //println("$side -> $textureName")
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)
