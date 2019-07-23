@@ -17,15 +17,12 @@ class EntityDefinition(val store: Content.EntityDefinitions, name: String, prope
      * value. Attempting to manually override/set this identifier yourself will result in a house fire. */
     var assignedId : Int by initOnce()
 
-    /** Shorthand for Java accesses */
-    fun store() = store
-
     val clazz: Class<Entity>
     private val constructor: Constructor<Entity>
 
     init {
         clazz = this.resolveProperty("class")?.let {
-            store.parent().modsManager().getClassByName(it)?.let {
+            store.parent.modsManager.getClassByName(it)?.let {
                 if(Entity::class.java.isAssignableFrom(it))
                     it as Class<Entity>
                 else

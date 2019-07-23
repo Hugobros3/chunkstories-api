@@ -30,7 +30,7 @@ interface Content {
     val animationsLibrary: AnimationsLibrary
 
     /** Returns the ModManager that was used to load this content  */
-    fun modsManager(): ModsManager
+    val modsManager: ModsManager
 
     /** Obtains an Asset using it's name string More advanced options for obtaining
      * assets are avaible using the ModsManager class  */
@@ -41,20 +41,20 @@ interface Content {
      * errors if you do this while in a world.  */
     fun reload()
 
-    fun voxels(): Voxels
+    val voxels: Voxels
 
     interface Voxels {
 
         /** Returns the 'air' voxel ( No voxel data )  */
-        fun air(): Voxel
+        val air: Voxel
 
         fun getVoxel(voxelName: String): Voxel?
 
-        fun all(): Collection<Voxel>
+        val all: Collection<Voxel>
 
-        fun parent(): Content
+        val parent: Content
 
-        fun textures(): VoxelTextures
+        val textures: VoxelTextures
 
         interface VoxelTextures {
             val defaultVoxelTexture: VoxelTexture
@@ -64,12 +64,12 @@ interface Content {
             /** Looks for a voxel texture, if it fails it returns the default texture  */
             fun get(voxelTextureName: String): VoxelTexture
 
-            fun parent(): Voxels
+            val parent: Voxels
 
-            fun logger(): Logger
+            val logger: Logger
         }
 
-        fun materials(): VoxelMaterials
+        val materials: VoxelMaterials
 
         interface VoxelMaterials {
 
@@ -77,42 +77,42 @@ interface Content {
 
             fun getVoxelMaterial(materialName: String): VoxelMaterial?
 
-            fun all(): Collection<VoxelMaterial>
+            val all: Collection<VoxelMaterial>
 
-            fun parent(): Content
+            val parent: Content
 
-            fun logger(): Logger
+            val logger: Logger
         }
 
-        fun logger(): Logger
+        val logger: Logger
     }
 
-    fun items(): ItemsDefinitions
+    val items: ItemsDefinitions
 
     interface ItemsDefinitions {
 
         fun getItemDefinition(itemName: String): ItemDefinition?
 
-        fun all(): Collection<ItemDefinition>
+        val all: Collection<ItemDefinition>
 
-        fun parent(): Content
+        val parent: Content
 
-        fun logger(): Logger
+        val logger: Logger
     }
 
-    fun entities(): EntityDefinitions
+    val entities: EntityDefinitions
 
     interface EntityDefinitions {
         fun getEntityDefinition(entityName: String): EntityDefinition?
 
-        fun all(): Collection<EntityDefinition>
+        val all: Collection<EntityDefinition>
 
-        fun parent(): Content
+        val parent: Content
 
-        fun logger(): Logger
+        val logger: Logger
     }
 
-    fun particles(): ParticlesTypes
+    val particles: ParticlesTypes
 
     interface ParticlesTypes {
         fun <T: ParticleType.Particle> getParticleType(string: String): ParticleType<T>?
@@ -123,7 +123,7 @@ interface Content {
         val logger: Logger
     }
 
-    fun packets(): PacketDefinitions
+    val packets: PacketDefinitions
 
     interface PacketDefinitions {
         fun getPacketByName(name: String): PacketDefinition?
@@ -131,25 +131,25 @@ interface Content {
         @Throws(UnknowPacketException::class)
         fun getPacketFromInstance(packet: Packet): PacketDefinition
 
-        fun all(): Collection<PacketDefinition>
+        val all: Collection<PacketDefinition>
 
-        fun parent(): Content
+        val parent: Content
 
-        fun logger(): Logger
+        val logger: Logger
     }
 
-    fun generators(): WorldGenerators
+    val generators: WorldGenerators
 
     interface WorldGenerators {
         fun getWorldGenerator(name: String): WorldGeneratorDefinition
 
         //fun getWorldGeneratorName(generator: WorldGenerator): String
 
-        fun all(): Collection<WorldGeneratorDefinition>
+        val all: Collection<WorldGeneratorDefinition>
 
-        fun parent(): Content
+        val parent: Content
 
-        fun logger(): Logger
+        val logger: Logger
     }
 
     fun localization(): LocalizationManager
@@ -163,7 +163,7 @@ interface Content {
 
         fun loadTranslation(translationCode: String)
 
-        fun logger(): Logger
+        val logger: Logger
     }
 
     interface Translation {
@@ -175,11 +175,11 @@ interface Content {
     interface AnimationsLibrary {
         fun getAnimation(name: String): Animation
 
-        fun parent(): Content
+        val parent: Content
 
         fun reloadAll()
 
-        fun logger(): Logger
+        val logger: Logger
     }
 
     val models : Models
@@ -192,5 +192,5 @@ interface Content {
     }
 
     /** General logger about content  */
-    fun logger(): Logger
+    val logger: Logger
 }

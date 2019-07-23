@@ -24,31 +24,28 @@ open class Item(val definition: ItemDefinition) {
     open val name: String
         get() = definition.name
 
-    /** Should be called when the owner has this item selected
-     *
-     * @param owner
+    /**
+     *  Called every tick when an entity has this item in it's hand
      */
-    open fun tickInHand(owner: Entity, itemPile: ItemPile) = Unit
+    open fun tickInHand(entity: Entity, itemPile: ItemPile) = Unit
 
-    /** Handles some input from the user
+    /** Called when an entity wielding this item is controlled and it's controller sends an input
      *
-     * @param user
-     * @param pile
-     * @param input
      * @return false if the item doesn't handle the input, true if it does
      */
-    open fun onControllerInput(owner: Entity, pile: ItemPile, input: Input, controller: Controller): Boolean = false
+    open fun onControllerInput(entity: Entity, pile: ItemPile, input: Input, controller: Controller): Boolean = false
 
-    /** Use : determine if two stacks can be merged together, should be overriden
+    /**
+     * Use : determine if two stacks can be merged together, should be overriden
      * when items have extra info.
      *
-     * @return Returns true if the two items are similar and can share a stack
-     * without loosing information.
+     * @return true if the two items are similar and can share a stack without loosing information.
      */
     open fun canStackWith(item: Item): Boolean {
         return definition == item.definition
     }
 
+    /** Deep-copies the item (via serialization & deserialization) */
     open fun duplicate(): Item {
         val new: Item = definition.newItem()
 

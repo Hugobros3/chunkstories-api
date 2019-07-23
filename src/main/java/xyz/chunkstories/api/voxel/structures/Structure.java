@@ -50,7 +50,7 @@ public abstract class Structure {
 		if ((flags & FLAG_USE_OFFSET) != 0)
 			actualPosition.add(offset);
 
-		Voxel air = world.getGameContext().getContent().voxels().air();
+		Voxel air = world.getGameContext().getContent().getVoxels().getAir();
 
 		for (int x = 0; x < size.x; x++) {
 			for (int y = 0; y < size.y; y++) {
@@ -71,7 +71,7 @@ public abstract class Structure {
 		if ((flags & FLAG_USE_OFFSET) != 0)
 			actualPosition.add(offset);
 
-		Voxel air = chunk.getWorld().getGameContext().getContent().voxels().air();
+		Voxel air = chunk.getWorld().getGameContext().getContent().getVoxels().getAir();
 
 		int initX = Math.max(0, chunk.getChunkX() * 32 - actualPosition.x);
 		int boundX = Math.min(size.x, (chunk.getChunkX() + 1) * 32 - actualPosition.x);

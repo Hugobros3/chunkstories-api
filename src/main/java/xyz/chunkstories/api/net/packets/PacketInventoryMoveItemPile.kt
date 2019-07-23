@@ -170,7 +170,7 @@ class PacketInventoryMoveItemPile : PacketWorld {
                 sourceItemPile?.let { it.amount -= amount }
 
                 if (!destroy) {
-                    val droppedItemEntity = world.content.entities().getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
+                    val droppedItemEntity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
                     droppedItemEntity.location = loc
                     droppedItemEntity.traits[TraitInventory::class]?.inventory?.addItem(item!!, amount)
                     loc.world.addEntity(droppedItemEntity)

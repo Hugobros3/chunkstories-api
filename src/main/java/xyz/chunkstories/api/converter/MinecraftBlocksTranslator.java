@@ -67,7 +67,7 @@ public class MinecraftBlocksTranslator {
 
 						try {
 							@SuppressWarnings("unchecked")
-							Class<? extends Mapper> mapperClass = (Class<? extends Mapper>) context.getContent().modsManager().getClassByName(className);
+							Class<? extends Mapper> mapperClass = (Class<? extends Mapper>) context.getContent().getModsManager().getClassByName(className);
 							Constructor<? extends Mapper> mapperConstructor = mapperClass.getConstructor(Voxel.class);
 							customMappers.put(name, mapperConstructor);
 						} catch (Exception e) {
@@ -103,7 +103,7 @@ public class MinecraftBlocksTranslator {
 							chunkStoriesName = cs;
 						}
 
-						Voxel voxel = context.getContent().voxels().getVoxel(chunkStoriesName);
+						Voxel voxel = context.getContent().getVoxels().getVoxel(chunkStoriesName);
 						if (voxel == null) {
 							System.out.println("Error: Voxel '" + chunkStoriesName + "' is nowhere to be found in the loaded content.");
 							System.out.println("Skipping line : '" + line + "'.");

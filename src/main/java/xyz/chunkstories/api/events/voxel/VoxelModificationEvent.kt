@@ -9,10 +9,7 @@ package xyz.chunkstories.api.events.voxel
 import xyz.chunkstories.api.events.EventListeners
 import xyz.chunkstories.api.world.cell.CellData
 
-open class VoxelModificationEvent(context: CellData, newData: CellData,
-        // Specific event code
-
-                                  val modificationCause: WorldModificationCause) : VoxelEvent(context) {
+open class VoxelModificationEvent(context: CellData, newData: CellData, val modificationCause: WorldModificationCause) : VoxelEvent(context) {
 
     override val listeners: EventListeners
         get() = listenersStatic
@@ -20,10 +17,10 @@ open class VoxelModificationEvent(context: CellData, newData: CellData,
         internal set
 
     val modification: ModifiationType
-        get() = if (context.voxel!!.isAir())
+        get() = if (context.voxel.isAir())
             ModifiationType.PLACEMENT
         else {
-            if (newData.voxel!!.isAir())
+            if (newData.voxel.isAir())
                 ModifiationType.DESTRUCTION
             else
                 ModifiationType.REPLACEMENT

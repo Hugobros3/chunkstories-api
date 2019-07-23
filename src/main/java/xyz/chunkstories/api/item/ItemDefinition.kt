@@ -16,9 +16,6 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
      * value. Attempting to manually override/set this identifier yourself will result in a house fire. */
     var assignedId: Int by initOnce()
 
-    /** Shorthand for Java accesses */
-    fun store() = store
-
     val clazz: Class<Item>
     private val constructor: Constructor<Item>
 
@@ -28,7 +25,7 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
 
     init {
         clazz = this.resolveProperty("class")?.let {
-            store.parent().modsManager().getClassByName(it)?.let {
+            store.parent.modsManager.getClassByName(it)?.let {
                 if (Item::class.java.isAssignableFrom(it))
                     it as Class<Item>
                 else

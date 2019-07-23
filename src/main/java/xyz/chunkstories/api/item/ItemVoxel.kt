@@ -35,7 +35,7 @@ import xyz.chunkstories.api.world.cell.FutureCell
 
 /** An item that contains voxels  */
 open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModificationCause {
-    private val store: Content.Voxels = definition.store().parent().voxels()
+    private val store: Content.Voxels = definition.store.parent.voxels
 
     val voxel: Voxel
 
@@ -50,12 +50,11 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
     override fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         //val customMaterial = MeshMaterial("cubeMaterial", mapOf("albedoTexture" to getTextureName(pile)))
         val customMaterials = VoxelSide.values().map { side ->
-            val textureName = getTextureName()//"voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, voxelMeta, 0, 15), side).name + ".png"
-            //println("$side -> $textureName")
+            val textureName = getTextureName()
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)
         }.toMap()
-        val representation = ModelInstance(store.parent().models["voxels/blockmodels/cube/cube.dae"], ModelPosition(worldPosition).apply {
+        val representation = ModelInstance(store.parent.models["voxels/blockmodels/cube/cube.dae"], ModelPosition(worldPosition).apply {
             matrix.scale(0.35f)
             matrix.translate(-0.5f, -0.0f, -0.5f)
         }, customMaterials)
@@ -66,13 +65,11 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
         if (voxel.emittedLightLevel > 0) {
             val light = PointLight(position.toVec3f().toVec3d().add(0.0, 0.5, 0.0), voxel.voxelTextures[0].color.toVec3f().toVec3d().mul(voxel.emittedLightLevel.toDouble()))
             representationsGobbler.acceptRepresentation(light)
-            //println(light)
         }
     }
 
     open fun changeBlockData(cell: FutureCell, placingEntity: Entity): Boolean {
         cell.voxel = voxel
-        //cell.metaData = voxelMeta
         cell.metaData = 0
 
         // Opaque blocks overwrite the original light with zero.
@@ -128,9 +125,6 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
                     // Decrease stack size
                     if (!isEntityCreativeMode) {
                         pile.amount--
-                        //var currentAmount = pile.amount
-                        //currentAmount--
-                        //pile.amount = currentAmount
                     }
                 } else {
                     // No space found :/
@@ -145,26 +139,4 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
         return false
 
     }
-
-    /*
-
-    @Throws(IOException::class)
-    override fun load(stream: DataInputStream) {
-        voxel = store.getVoxel(stream.readUTF()) ?: store.air()
-        voxelMeta = stream.readByte().toInt()
-    }
-
-    @Throws(IOException::class)
-    override fun save(stream: DataOutputStream) {
-        stream.writeUTF(voxel.name)
-        stream.writeByte(voxelMeta)
-    }
-
-    /** Two ItemVoxel can merge if they represent the same voxel & they share the
-     * same 8 bits of metadata  */
-    override fun canStackWith(item: Item): Boolean {
-        return if (item is ItemVoxel) {
-            super.canStackWith(item) && item.voxel.sameKind(voxel) && item.voxelMeta == this.voxelMeta
-        } else false
-    }*/
 }

@@ -7,9 +7,14 @@
 package xyz.chunkstories.api.voxel
 
 import org.joml.Vector3d
+import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.dsl.LootRules
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.entity.EntityGroundItem
+import xyz.chunkstories.api.entity.traits.serializable.TraitControllable
+import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
+import xyz.chunkstories.api.events.player.voxel.PlayerVoxelModificationEvent
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.input.Input
@@ -17,8 +22,11 @@ import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.item.ItemVoxel
 import xyz.chunkstories.api.physics.Box
+import xyz.chunkstories.api.player.Player
+import xyz.chunkstories.api.sound.SoundSource
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
 import xyz.chunkstories.api.voxel.textures.VoxelTexture
+import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.cell.CellData
 import xyz.chunkstories.api.world.cell.EditableCell
 import xyz.chunkstories.api.world.cell.FutureCell
@@ -31,13 +39,13 @@ open class Voxel(val definition: VoxelDefinition) {
         get() = definition.name
 
     /** Returns true only if this voxel is the 'void' air type  */
-    fun isAir() = store().air().sameKind(this)
+    fun isAir() = store.air.sameKind(this)
 
     /** The textures used for rendering this block. Goes unused with custom models ! */
-    var voxelTextures = Array<VoxelTexture>(6) { store().textures().get(name) }
+    var voxelTextures = Array<VoxelTexture>(6) { store.textures.get(name) }
 
     /** The material this block uses */
-    var voxelMaterial: VoxelMaterial = store().materials().defaultMaterial
+    var voxelMaterial: VoxelMaterial = store.materials.defaultMaterial
 
     /** Can entities pass through this block ? */
     var solid = definition.resolveProperty("solid", "true") == "true"
@@ -80,52 +88,47 @@ open class Voxel(val definition: VoxelDefinition) {
         definition.resolveProperty("selfOpaque")?.let { selfOpaque = it.toBoolean() }
 
         /** Sets all 6 sides of the voxel with one texture */
-        definition.resolveProperty("texture")?.let { voxelTextures.fill(store().textures().get(it)) }
+        definition.resolveProperty("texture")?.let { voxelTextures.fill(store.textures.get(it)) }
         /** Sets all 4 horizontal sides of the voxel with the same texture */
-        definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store().textures().get(it), 0, 4) }
+        definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store.textures.get(it), 0, 4) }
         /** Code for setting each side */
-        definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store().textures().get(it) }
-        definition.resolveProperty("textures.left")?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store().textures().get(it) }
-        definition.resolveProperty("textures.right")?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store().textures().get(it) }
-        definition.resolveProperty("textures.front")?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store().textures().get(it) }
-        definition.resolveProperty("textures.back")?.let { voxelTextures[VoxelSide.BACK.ordinal] = store().textures().get(it) }
-        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store().textures().get(it) }
+        definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store.textures.get(it) }
+        definition.resolveProperty("textures.left")?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store.textures.get(it) }
+        definition.resolveProperty("textures.right")?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store.textures.get(it) }
+        definition.resolveProperty("textures.front")?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store.textures.get(it) }
+        definition.resolveProperty("textures.back")?.let { voxelTextures[VoxelSide.BACK.ordinal] = store.textures.get(it) }
+        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store.textures.get(it) }
 
         /** Sets a custom voxel material */
-        (definition.resolveProperty("material") ?: name).let { voxelMaterial = store().materials().getVoxelMaterial(it) ?: store().materials().defaultMaterial }
+        (definition.resolveProperty("material") ?: name).let { voxelMaterial = store.materials.getVoxelMaterial(it) ?: store.materials.defaultMaterial }
 
         definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
         definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
 
         definition.resolveProperty("model")?.let {
-            val model = definition.store.parent().models[it]
+            val model = definition.store.parent.models[it]
 
             customRenderingRoutine = { _ ->
                 this.addModel(model)
             }
         }
 
-        variants = enumerateVariants(store().parent().items())
-        /*definition.resolveProperty("drops")?.let { lootLogic = LootRules {
-            entry {
-                items = listOf(Pair())
-            }
-        } }*/
+        variants = enumerateVariants(store.parent.items)
     }
 
-    /** Called before setting a getCell to this Voxel type. Previous state is assumed
-     * to be air.
+    /** Called before setting a cell to this Voxel type. Previous state is assumed
+     * to be air. If replacing a block, the previous block is actually removed first.
      *
-     * @param newData The data we want to place here. You are welcome to modify it !
-     * @throws Throw a IllegalBlockModificationException if you want to stop the
-     * modification from happening altogether.
+     * @param cell The data we want to place here. You are welcome to modify it !
+     * @param cause The data we want to place here. You are welcome to modify it !
+     * @throws WorldException if you want to stop the modification from happening altogether.
      */
     @Throws(WorldException::class)
     open fun onPlace(cell: FutureCell, cause: WorldModificationCause?) {
         // Do nothing
     }
 
-    /** Called *after* a getCell was successfully placed. Unlike onPlace you can
+    /** Called after a voxel was successfully placed. Unlike onPlace you can
      * add your voxelComponents here.
      *
      * @param cell
@@ -134,9 +137,9 @@ open class Voxel(val definition: VoxelDefinition) {
 
     }
 
-    /** Called before replacing a getCell contaning this voxel type with air.
+    /** Called when removing a voxel from the world and replacing it with air
      *
-     * @param context Current data in this getCell.
+     * @param context Current data in this cell.
      * @param cause The cause of this modification ( can be an Entity )
      * @throws Throw a IllegalBlockModificationException if you want to stop the
      * modification from happening.
@@ -146,10 +149,9 @@ open class Voxel(val definition: VoxelDefinition) {
         // Do nothing
     }
 
-    /** Called when either the metadata, block_light or sun_light values of a getCell
-     * of this Voxel type is touched.
+    /** Called when any of the metadata, block_light or sun_light values of the cell are modified.
      *
-     * @param context The current data in this getCell.
+     * @param context The current data in this cell.
      * @param newData The future data we want to put there
      * @param cause The cause of this modification ( can be an Entity )
      * @throws IllegalBlockModificationException If we want to prevent it
@@ -192,8 +194,8 @@ open class Voxel(val definition: VoxelDefinition) {
      * another, based on data from the two blocks and the side from wich it's
      * leaving the first block from.
      *
-     * @param `in` The getCell the light is going into (==this one) ( see [            CellData.class][CellData] )
-     * @param out The getCell the light is coming from ( see [            CellData.class][CellData] )
+     * @param `in` The cell the light is going into (==this one) ( see [            CellData.class][CellData] )
+     * @param out The cell the light is coming from ( see [            CellData.class][CellData] )
      * @param side The side of the block light would come out of ( see
      * [VoxelSides.class][VoxelSide] )
      * @return The reduction to apply to the light level on exit
@@ -255,19 +257,70 @@ open class Voxel(val definition: VoxelDefinition) {
         return listOf(definition)
     }
 
+    /** Returns the variant that best matches the cell */
     open fun getVariant(cell: CellData): ItemDefinition {
         return variants[0]
     }
 
     fun enumerateItemsForBuilding(): List<ItemVoxel> {
-        /*return listOf(store().parent().items().getItemDefinition("item_voxel")!!.newItem<ItemVoxel>().apply {
-                this.voxel = this@Voxel
-        })*/
         return variants.map { it.newItem<Item>() }.filterIsInstance<ItemVoxel>()
     }
 
-    /** Returns what's dropped when a getCell using this voxel type is destroyed  */
+    open fun breakBlock(cell: CellData, tool: MiningTool, entity: Entity?) {
+        val location = cell.location
+        val world = location.world
+
+        val future = FutureCell(cell)
+        future.voxel = world.content.voxels.air
+
+        var canBreak = true
+        var modificationCause: WorldModificationCause? = null
+
+        if (entity != null) {
+            val entityController = entity.traits[TraitControllable::class]?.controller
+            if (entityController != null && entityController is Player) {
+                if (entity is WorldModificationCause) {
+                    modificationCause = entity
+                    val event = PlayerVoxelModificationEvent(cell, future, entity, entityController)
+                    world.gameContext.pluginManager.fireEvent(event)
+                    canBreak = !event.isCancelled
+                }
+            }
+        }
+
+        // Break the block
+        if (canBreak) {
+            //TODO
+            //spawnBlockDestructionParticles(location, world)
+
+            world.soundManager.playSoundEffect("sounds/gameplay/voxel_remove.ogg", SoundSource.Mode.NORMAL, location, 1.0f, 1.0f)
+
+            val itemSpawnLocation = Location(world, location)
+            itemSpawnLocation.add(0.5, 0.25, 0.5)
+
+            // Drop loot !
+            for (drop in getLoot(cell, tool)) {
+                val thrownItem = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(itemSpawnLocation.world)
+                thrownItem.traitLocation.set(itemSpawnLocation)
+                thrownItem.entityVelocity.setVelocity(Vector3d(Math.random() * 0.125 - 0.0625, 0.1, Math.random() * 0.125 - 0.0625))
+                thrownItem.traits[TraitInventory::class]!!.inventory.addItem(drop.first, drop.second)
+                world.addEntity(thrownItem)
+            }
+
+            try {
+                world.poke(future, modificationCause)
+            } catch (e: WorldException) {
+                // Didn't work
+                // TODO make some ingame effect so as to clue in the player why it failed
+            }
+        }
+    }
+
+    /** Returns what's dropped when a cell using this voxel type is destroyed  */
     open fun getLoot(cell: CellData, tool: MiningTool): List<Pair<Item, Int>> {
+        if(isAir())
+            return emptyList()
+
         /** If this block has custom logic for loot spawning, use that ! */
         val logic = lootLogic
         if (logic != null)
@@ -285,7 +338,8 @@ open class Voxel(val definition: VoxelDefinition) {
         return "[Voxel name:$name]"
     }
 
-    fun store(): Content.Voxels {
-        return definition.store
-    }
+    val store: Content.Voxels
+        get() {
+            return definition.store
+        }
 }

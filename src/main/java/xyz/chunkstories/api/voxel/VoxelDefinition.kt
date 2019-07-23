@@ -27,7 +27,7 @@ class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<S
 
     init {
         clazz = this.resolveProperty("class")?.let {
-            store.parent().modsManager().getClassByName(it)?.let {
+            store.parent.modsManager.getClassByName(it)?.let {
                 if(Voxel::class.java.isAssignableFrom(it))
                     it as Class<Voxel>
                 else

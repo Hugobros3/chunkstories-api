@@ -165,7 +165,7 @@ fun drop(pile: ItemPile, amount: Int, player: Player?) {
         if (!dropItemEvent.isCancelled) {
             // If we're pulling this out of an inventory ( and not /dev/null ), we need to
             // remove it from that
-            val entity = world.content.entities().getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
+            val entity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
             entity.location = playerEntity.location
             entity.traits[TraitInventory::class]?.inventory?.addItem(pile.item, amount)
             loc.world.addEntity(entity)

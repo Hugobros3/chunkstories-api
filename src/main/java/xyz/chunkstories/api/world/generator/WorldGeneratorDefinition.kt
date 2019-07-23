@@ -17,7 +17,7 @@ class WorldGeneratorDefinition(val store: Content.WorldGenerators, name: String,
 
     init {
         clazz = this.resolveProperty("class")?.let {
-            store.parent().modsManager().getClassByName(it)?.let {
+            store.parent.modsManager.getClassByName(it)?.let {
                 if (WorldGenerator::class.java.isAssignableFrom(it))
                     it as Class<WorldGenerator>
                 else

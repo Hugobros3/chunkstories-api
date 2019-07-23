@@ -74,7 +74,7 @@ public class McSchematicStructure extends Structure {
 		NBTByteArray blocks = (NBTByteArray) root.getTag("Blocks");
 		NBTByteArray blocksdata = (NBTByteArray) root.getTag("Data");
 
-		Voxel air = translator.getContext().getContent().voxels().air();
+		Voxel air = translator.getContext().getContent().getVoxels().getAir();
 
 		data = new Cell[width * height * length];
 		FutureCell future = new FutureCell(new DummyWorld(), 0, 0, 0, air, 0, 0, 0);
