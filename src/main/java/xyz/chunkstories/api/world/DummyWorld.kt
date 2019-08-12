@@ -77,7 +77,7 @@ class DummyWorld : World {
 
     override// TODO Auto-generated method stub
     // TODO Auto-generated method stub
-    var time: Long
+    var sunCycle: Int
         get() = 0
         set(time) {
 

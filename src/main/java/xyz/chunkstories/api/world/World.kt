@@ -64,9 +64,8 @@ interface World {
 
     var defaultSpawnLocation: Location
 
-    /** Sets the time of the World. By default the time is set at 5000 and it uses a
-     * 10.000 cycle, 0 being midnight and 5000 being midday */
-    var time: Long
+    /** The position of the sun in the sky. [0-24000[ */
+    var sunCycle: Int
 
     /** The weather is represented by a normalised float value
      * - 0.0 equals dead dry
