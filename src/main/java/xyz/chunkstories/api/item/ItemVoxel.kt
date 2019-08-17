@@ -50,10 +50,12 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
     override fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         //val customMaterial = MeshMaterial("cubeMaterial", mapOf("albedoTexture" to getTextureName(pile)))
         val customMaterials = VoxelSide.values().map { side ->
-            val textureName = getTextureName()
+            val textureName = "voxels/textures/" + voxel.getVoxelTexture(DummyCell(0, 0, 0, voxel, 0, 0, 15), side).name + ".png"
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)
         }.toMap()
+
+
         val representation = ModelInstance(store.parent.models["voxels/blockmodels/cube/cube.dae"], ModelPosition(worldPosition).apply {
             matrix.scale(0.35f)
             matrix.translate(-0.5f, -0.0f, -0.5f)

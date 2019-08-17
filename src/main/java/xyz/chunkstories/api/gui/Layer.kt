@@ -26,7 +26,7 @@ abstract class Layer(val gui: Gui, val parentLayer: Layer?) {
         get() = if (parentLayer == null)
             this
         else
-            parentLayer!!.rootLayer
+            parentLayer.rootLayer
 
     init {
         xPosition = 0
