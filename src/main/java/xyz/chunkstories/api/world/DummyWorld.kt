@@ -6,9 +6,7 @@
 
 package xyz.chunkstories.api.world
 
-import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import org.joml.Vector3dc
-
 import xyz.chunkstories.api.GameContext
 import xyz.chunkstories.api.GameLogic
 import xyz.chunkstories.api.Location
@@ -17,26 +15,37 @@ import xyz.chunkstories.api.content.ContentTranslator
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
+import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.particles.ParticlesManager
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.sound.SoundManager
 import xyz.chunkstories.api.util.IterableIterator
 import xyz.chunkstories.api.voxel.Voxel
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.FutureCell
 import xyz.chunkstories.api.world.chunk.Chunk
 import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.ChunkHolder
+import xyz.chunkstories.api.world.chunk.WorldChunksManager
 import xyz.chunkstories.api.world.generator.WorldGenerator
-import xyz.chunkstories.api.world.heightmap.WorldHeightmaps
+import xyz.chunkstories.api.world.heightmap.WorldHeightmapsManager
 import xyz.chunkstories.api.world.region.Region
+import xyz.chunkstories.api.world.region.WorldRegionsManager
 
 /** DummyWorld doesn't exist. DummyWorld is immutable. DummyWorld is unique. You
  * can't prove the existence of the DummyWorld, but neither can you disprove it.
  * Don't mess with the forces at play here. You have been warned.  */
 class DummyWorld : World {
-    override val allLoadedRegions: Collection<Region>
+    override fun getEntitiesInBox(box: Box): World.NearEntitiesIterator {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override val chunksManager: WorldChunksManager
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val regionsManager: WorldRegionsManager
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val heightmapsManager: WorldHeightmapsManager
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
     override// TODO Auto-generated method stub
@@ -57,14 +66,6 @@ class DummyWorld : World {
 
     override// TODO Auto-generated method stub
     val allLoadedEntities: IterableIterator<Entity>
-        get() = throw NotImplementedError()
-
-    override// TODO Auto-generated method stub
-    val allLoadedChunks: Sequence<Chunk>
-        get() = emptySequence()
-
-    override// TODO Auto-generated method stub
-    val regionsSummariesHolder: WorldHeightmaps
         get() = throw NotImplementedError()
 
     override// TODO Auto-generated method stub
@@ -147,29 +148,24 @@ class DummyWorld : World {
         return throw NotImplementedError()
     }
 
-    override fun getEntitiesInBox(center: Vector3dc, boxSize: Vector3dc): World.NearEntitiesIterator {
+    @Throws(WorldException::class)
+    override fun tryPeek(x: Int, y: Int, z: Int): ChunkCell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }
 
     @Throws(WorldException::class)
-    override fun peek(x: Int, y: Int, z: Int): ChunkCell {
+    override fun tryPeek(location: Vector3dc): ChunkCell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }
 
-    @Throws(WorldException::class)
-    override fun peek(location: Vector3dc): ChunkCell {
+    override fun peek(x: Int, y: Int, z: Int): WorldCell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }
 
-    override fun peekSafely(x: Int, y: Int, z: Int): WorldCell {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun peekSafely(location: Vector3dc): WorldCell {
+    override fun peek(location: Vector3dc): WorldCell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }
@@ -179,89 +175,9 @@ class DummyWorld : World {
         return throw NotImplementedError()
     }
 
-    override fun getVoxelsWithin(boundingBox: Box): IterableIterator<CellData> {
+    override fun getVoxelsWithin(boundingBox: Box): IterableIterator<Cell> {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
-    }
-
-    override fun acquireChunkHolderLocation(user: WorldUser, location: Location): ChunkHolder? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun acquireChunkHolderWorldCoordinates(user: WorldUser, worldX: Int, worldY: Int, worldZ: Int): ChunkHolder? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun acquireChunkHolder(user: WorldUser, chunkX: Int, chunkY: Int, chunkZ: Int): ChunkHolder? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun isChunkLoaded(chunkX: Int, chunkY: Int, chunkZ: Int): Boolean {
-        // TODO Auto-generated method stub
-        return false
-    }
-
-    override fun getChunk(chunkX: Int, chunkY: Int, chunkZ: Int): Chunk? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun getChunkWorldCoordinates(worldX: Int, worldY: Int, worldZ: Int): Chunk? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun getChunkWorldCoordinates(location: Location): Chunk? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun acquireRegion(user: WorldUser, regionX: Int, regionY: Int, regionZ: Int): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun acquireRegionChunkCoordinates(user: WorldUser, chunkX: Int, chunkY: Int, chunkZ: Int): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun acquireRegionWorldCoordinates(user: WorldUser, worldX: Int, worldY: Int, worldZ: Int): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun acquireRegionLocation(user: WorldUser, location: Location): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun getRegion(regionX: Int, regionY: Int, regionZ: Int): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun getRegionChunkCoordinates(chunkX: Int, chunkY: Int, chunkZ: Int): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun getRegionWorldCoordinates(worldX: Int, worldY: Int, worldZ: Int): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun getRegionLocation(location: Location): Region? {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun handleInteraction(entity: Entity, blockLocation: Location?, input: Input): Boolean {
-        // TODO Auto-generated method stub
-        return false
     }
 
     override fun peekRaw(x: Int, y: Int, z: Int): Int {
@@ -291,7 +207,7 @@ class DummyWorld : World {
     }
 
     @Throws(WorldException::class)
-    override fun poke(fvc: FutureCell, cause: WorldModificationCause?): CellData {
+    override fun poke(fvc: FutureCell, cause: WorldModificationCause?): Cell {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
     }

@@ -14,7 +14,7 @@ import xyz.chunkstories.api.content.Asset;
 import xyz.chunkstories.api.converter.MinecraftBlocksTranslator;
 import xyz.chunkstories.api.voxel.Voxel;
 import xyz.chunkstories.api.world.DummyWorld;
-import xyz.chunkstories.api.world.cell.Cell;
+import xyz.chunkstories.api.world.cell.AbstractCell;
 import xyz.chunkstories.api.world.cell.FutureCell;
 import io.xol.enklume.nbt.NBTByteArray;
 import io.xol.enklume.nbt.NBTCompound;
@@ -76,7 +76,7 @@ public class McSchematicStructure extends Structure {
 
 		Voxel air = translator.getContext().getContent().getVoxels().getAir();
 
-		data = new Cell[width * height * length];
+		data = new AbstractCell[width * height * length];
 		FutureCell future = new FutureCell(new DummyWorld(), 0, 0, 0, air, 0, 0, 0);
 
 		for (int z = 0; z < length; z++) {

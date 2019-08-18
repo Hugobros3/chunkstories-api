@@ -11,14 +11,14 @@ import xyz.chunkstories.api.voxel.VoxelFormat
 import xyz.chunkstories.api.world.World
 
 /** Represents the data for a future state for a cell. */
-open class FutureCell @JvmOverloads constructor(override val world: World, x: Int, y: Int, z: Int, voxel: Voxel, meta: Int = -1, blocklight: Int = -1, sunlight: Int = -1) : Cell(x, y, z, voxel, meta, blocklight, sunlight), CellData, EditableCell {
+open class FutureCell @JvmOverloads constructor(override val world: World, x: Int, y: Int, z: Int, voxel: Voxel, meta: Int = -1, blocklight: Int = -1, sunlight: Int = -1) : AbstractCell(x, y, z, voxel, meta, blocklight, sunlight), Cell, EditableCell {
 
     val data: Int
         @Deprecated("")
         get() = VoxelFormat.format(world.contentTranslator.getIdForVoxel(voxel), metaData, sunlight, blocklight)
 
     //TODO WorldCell
-    constructor(ogContext: CellData) : this(ogContext.world, ogContext.x, ogContext.y, ogContext.z, ogContext.voxel, ogContext.metaData, ogContext.blocklight, ogContext.sunlight)
+    constructor(ogContext: Cell) : this(ogContext.world, ogContext.x, ogContext.y, ogContext.z, ogContext.voxel, ogContext.metaData, ogContext.blocklight, ogContext.sunlight)
 
     var overwriteVoxel: Boolean
 
@@ -43,7 +43,7 @@ open class FutureCell @JvmOverloads constructor(override val world: World, x: In
         throw UnsupportedOperationException()
     }
 
-    override fun getNeightbor(side: Int): CellData {
+    override fun getNeightbor(side: Int): Cell {
         throw UnsupportedOperationException("getNeightbor()")
     }
 }

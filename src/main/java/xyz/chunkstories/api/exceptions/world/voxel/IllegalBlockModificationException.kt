@@ -7,11 +7,11 @@
 package xyz.chunkstories.api.exceptions.world.voxel
 
 import xyz.chunkstories.api.exceptions.world.VoxelException
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 
 /** Used to restrict block operations, is thrown when a forbidden action is
  * being attempted  */
-class IllegalBlockModificationException(context: CellData, private val message2: String) : VoxelException(context) {
+class IllegalBlockModificationException(context: Cell, private val message2: String) : VoxelException(context) {
 
     override val message: String?
         get() {

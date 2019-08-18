@@ -85,7 +85,7 @@ public class PacketVoxelUpdate extends PacketWorld {
 			byte nextComponent = in.readByte();
 
 			try {
-				ChunkCell context = cpp.getWorld().getChunkWorldCoordinates(x, y, z).poke(x, y, z, voxel, VoxelFormat.sunlight(data),
+				ChunkCell context = cpp.getWorld().getChunksManager().getChunkWorldCoordinates(x, y, z).poke(x, y, z, voxel, VoxelFormat.sunlight(data),
 						VoxelFormat.blocklight(data), VoxelFormat.meta(data), null);
 
 				while (nextComponent != 0) {

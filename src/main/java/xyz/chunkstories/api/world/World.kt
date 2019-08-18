@@ -15,22 +15,23 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
-import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.particles.ParticlesManager
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.sound.SoundManager
 import xyz.chunkstories.api.util.IterableIterator
 import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.VoxelFormat
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.FutureCell
 import xyz.chunkstories.api.world.chunk.Chunk
 import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.ChunkHolder
 import xyz.chunkstories.api.world.generator.WorldGenerator
-import xyz.chunkstories.api.world.heightmap.WorldHeightmaps
+import xyz.chunkstories.api.world.heightmap.WorldHeightmapsManager
 import xyz.chunkstories.api.world.region.Region
 import org.joml.Vector3dc
+import xyz.chunkstories.api.world.chunk.WorldChunksManager
+import xyz.chunkstories.api.world.region.WorldRegionsManager
 
 interface World {
     val worldInfo: WorldInfo
@@ -51,14 +52,17 @@ interface World {
     val contentTranslator: ContentTranslator
 
     /** @return The height of the world, the last block can be placed at maxHeight - 1 */
+    @Deprecated("TODO remove", ReplaceWith("worldInfo.size.heightInChunks * 32"))
     val maxHeight: Int
         get() = worldInfo.size.heightInChunks * 32
 
     /** @return The length of a horizontal side of the world, in chunk size units (32) */
+    @Deprecated("TODO remove", ReplaceWith("worldInfo.size.sizeInChunks"))
     val sizeInChunks: Int
         get() = worldInfo.size.sizeInChunks
 
     /** @return The length of a horizontal side of the world. */
+    @Deprecated("TODO remove", ReplaceWith("(sizeInChunks * 32).toDouble()"))
     val worldSize: Double
         get() = (sizeInChunks * 32).toDouble()
 
@@ -103,9 +107,8 @@ interface World {
      * @return null if it can't be found */
     fun getEntityByUUID(uuid: Long): Entity?
 
-    /** Returns an iterator containing all the entities from within the box defined
-     * by center and boxSize  */
-    fun getEntitiesInBox(center: Vector3dc, boxSize: Vector3dc): NearEntitiesIterator
+    /** Returns an iterator containing all the entities from within the box  */
+    fun getEntitiesInBox(box: Box): NearEntitiesIterator
 
     /** Returns an iterator containing all the loaded entities. Supposedly
      * thread-safe  */
@@ -119,33 +122,26 @@ interface World {
 
     /* Direct voxel data accessors */
 
-    /** Get the data contained in this getCell as full 32-bit data format ( see
-     * [VoxelFormat])
-     *
-     * @return the data contained in this chunk as full 32-bit data format ( see
-     * [VoxelFormat])
+    /** Get the data contained in this cell
      * @throws WorldException if it couldn't peek the world at the specified
      * location for some reason
      */
     @Throws(WorldException::class)
-    fun peek(x: Int, y: Int, z: Int): ChunkCell
+    fun tryPeek(x: Int, y: Int, z: Int): ChunkCell
 
-    /** Convenient overload of peek() to take a Vector3dc derivative ( ie: a
-     * Location object )  */
+    /** Convenient overload of tryPeek() to take a vector */
     @Throws(WorldException::class)
-    fun peek(location: Vector3dc): ChunkCell
+    fun tryPeek(location: Vector3dc): ChunkCell
 
-    /** Safely calls peek() and returns a WorldVoxelContext no matter what.
+    /** Safely calls peeks and returns a WorldVoxelContext no matter what.
      * Zeroes-out if the normal peek() would have failed.  */
-    fun peekSafely(x: Int, y: Int, z: Int): WorldCell
+    fun peek(x: Int, y: Int, z: Int): WorldCell
 
-    /** Convenient overload of peekSafely() to take a Vector3dc derivative ( ie: a
-     * Location object )  */
-    fun peekSafely(location: Vector3dc): WorldCell
+    /** Convenient overload of peek() to take a vector */
+    fun peek(location: Vector3dc): WorldCell
 
-    /** Alternative to peek() that does not newEntity any VoxelContext object<br></br>
-     * **Does not throw exceptions**, instead safely returns zero upon
-     * failure.  */
+    /** Alternative to peek() that does not create any Cell object<br></br>
+     * **Does not throw exceptions**, instead  returns zero upon failure.  */
     fun peekSimple(x: Int, y: Int, z: Int): Voxel
 
     /** Peek the raw data of the chunk  */
@@ -168,7 +164,7 @@ interface World {
 
     /** Simply use a FutureVoxelContext to ease modifications  */
     @Throws(WorldException::class)
-    fun poke(fvc: FutureCell, cause: WorldModificationCause?): CellData
+    fun poke(fvc: FutureCell, cause: WorldModificationCause?): Cell
 
     /** Poke new information in a voxel getCell.
      *
@@ -202,96 +198,13 @@ interface World {
      * [VoxelFormat]) Does not trigger any updates.  */
     fun pokeRawSilently(x: Int, y: Int, z: Int, newVoxelData: Int)
 
-    fun getVoxelsWithin(boundingBox: Box): IterableIterator<CellData>
+    fun getVoxelsWithin(boundingBox: Box): IterableIterator<Cell>
 
-    /* Chunks */
-
-    /** acquires a ChunkHolder and registers it's user, triggering a load operation
-     * for the underlying chunk and preventing it to unload until all the users
-     * either unregisters or gets garbage collected and it's reference nulls out.  */
-    fun acquireChunkHolderLocation(user: WorldUser, location: Location): ChunkHolder?
-
-    /** acquires a ChunkHolder and registers it's user, triggering a load operation
-     * for the underlying chunk and preventing it to unload until all the users
-     * either unregisters or gets garbage collected and it's reference nulls out.  */
-    fun acquireChunkHolderWorldCoordinates(user: WorldUser, worldX: Int, worldY: Int, worldZ: Int): ChunkHolder?
-
-    /** acquires a ChunkHolder and registers it's user, triggering a load operation
-     * for the underlying chunk and preventing it to unload until all the users
-     * either unregisters or gets garbage collected and it's reference nulls out.  */
-    fun acquireChunkHolder(user: WorldUser, chunkX: Int, chunkY: Int, chunkZ: Int): ChunkHolder?
-
-    /** Returns true if a chunk was loaded. Not recommanded nor intended to use as a
-     * replacement for a '== null' check after getChunk() because of the load/unload
-     * mechanisms !  */
-    fun isChunkLoaded(chunkX: Int, chunkY: Int, chunkZ: Int): Boolean
-
-    /** Returns either null or a valid chunk if a corresponding ChunkHolder was
-     * acquired by someone and the chunk had time to load.  */
-    fun getChunk(chunkX: Int, chunkY: Int, chunkZ: Int): Chunk?
-
-    /** Returns either null or a valid chunk if a corresponding ChunkHolder was
-     * acquired by someone and the chunk had time to load.  */
-    fun getChunkWorldCoordinates(worldX: Int, worldY: Int, worldZ: Int): Chunk?
-
-    /** Returns either null or a valid chunk if a corresponding ChunkHolder was
-     * acquired by someone and the chunk had time to load.  */
-    fun getChunkWorldCoordinates(location: Location): Chunk?
-
-    /** Returns either null or a valid chunk if a corresponding ChunkHolder was
-     * acquired by someone and the chunk had time to load.  */
-    val allLoadedChunks: Sequence<Chunk>
-    val allLoadedRegions: Collection<Region>
-
-    /* Regions */
-
-    //TODO holder for regions and move aquire() stuff there
-
-    /** acquires a region and registers it's user, triggering a load operation for
-     * the region and preventing it to unload until all the users either unregisters
-     * or gets garbage collected and it's reference nulls out.  */
-    fun acquireRegion(user: WorldUser, regionX: Int, regionY: Int, regionZ: Int): Region?
-
-    /** acquires a region and registers it's user, triggering a load operation for
-     * the region and preventing it to unload until all the users either unregisters
-     * or gets garbage collected and it's reference nulls out.  */
-    fun acquireRegionChunkCoordinates(user: WorldUser, chunkX: Int, chunkY: Int, chunkZ: Int): Region?
-
-    /** acquires a region and registers it's user, triggering a load operation for
-     * the region and preventing it to unload until all the users either unregisters
-     * or gets garbage collected and it's reference nulls out.  */
-    fun acquireRegionWorldCoordinates(user: WorldUser, worldX: Int, worldY: Int, worldZ: Int): Region?
-
-    /** acquires a region and registers it's user, triggering a load operation for
-     * the region and preventing it to unload until all the users either unregisters
-     * or gets garbage collected and it's reference nulls out.  */
-    fun acquireRegionLocation(user: WorldUser, location: Location): Region?
-
-    /** Returns either null or a valid, entirely loaded region if the acquireRegion
-     * method was called and it had time to load and there is still one user using
-     * it  */
-    fun getRegion(regionX: Int, regionY: Int, regionZ: Int): Region?
-
-    /** Returns either null or a valid, entirely loaded region if the acquireRegion
-     * method was called and it had time to load and there is still one user using
-     * it  */
-    fun getRegionChunkCoordinates(chunkX: Int, chunkY: Int, chunkZ: Int): Region?
-
-    /** Returns either null or a valid, entirely loaded region if the acquireRegion
-     * method was called and it had time to load and there is still one user using
-     * it  */
-    fun getRegionWorldCoordinates(worldX: Int, worldY: Int, worldZ: Int): Region?
-
-    /** Returns either null or a valid, entirely loaded region if the acquireRegion
-     * method was called and it had time to load and there is still one user using
-     * it  */
-    fun getRegionLocation(location: Location): Region?
-
-    val regionsSummariesHolder: WorldHeightmaps
-
-    /** Called when some controllable entity try to interact with the world
-     *
-     * @return true if the interaction was handled
-     */
-    fun handleInteraction(entity: Entity, blockLocation: Location?, input: Input): Boolean
+    ///** Returns either null or a valid chunk if a corresponding ChunkHolder was
+    // * acquired by someone and the chunk had time to load.  */
+    //val loadedChunks: Sequence<Chunk>
+    //val loadedRegions: Collection<Region>
+    val chunksManager: WorldChunksManager
+    val regionsManager: WorldRegionsManager
+    val heightmapsManager: WorldHeightmapsManager
 }

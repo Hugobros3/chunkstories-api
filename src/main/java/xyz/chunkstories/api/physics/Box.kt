@@ -65,7 +65,7 @@ data class Box protected constructor(val min: Vector3d, val max: Vector3d) {
         for(x in minx..maxx) {
             for(y in miny..maxy) {
                 for(z in minz..maxz) {
-                    val cell = world.peekSafely(x, y, z)
+                    val cell = world.peek(x, y, z)
                     if(cell.voxel.solid) {
                         val cbs = cell.translatedCollisionBoxes ?: continue
                         for (cb in cbs) {
@@ -188,6 +188,12 @@ data class Box protected constructor(val min: Vector3d, val max: Vector3d) {
         }
 
         fun fromExtentsCenteredHorizontal(extents: Vector3dc) = fromExtentsCenteredHorizontal(extents.x(), extents.y(), extents.z())
+
+        fun fromExtentsCentered(ex: Double, ey: Double, ez: Double): Box {
+            return Box(Vector3d(-ex * 0.5, -ey * 0.5, -ez * 0.5), Vector3d(ex * 0.5, ey * 0.5, ez * 0.5))
+        }
+
+        fun fromExtentsCentered(extents: Vector3dc) = fromExtentsCentered(extents.x(), extents.y(), extents.z())
 
         fun fromExtents(sx: Double, sy: Double, sz: Double, ex: Double, ey: Double, ez: Double): Box {
             return Box(Vector3d(sx, sy, sz), Vector3d(ex, ey, ez))

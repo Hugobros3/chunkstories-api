@@ -1,20 +1,18 @@
 package xyz.chunkstories.api.physics
 
-import org.joml.Vector3d
-import org.joml.Vector3dc
+import org.joml.*
 import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.TraitHitboxes
-import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 import kotlin.math.sqrt
 
 data class RayQuery(val origin: Location,
                     val direction: Vector3dc,
                     val tMin: Double = 0.0,
                     val tMax: Double = 256.0,
-                    val voxelMask: (CellData) -> Boolean = { it.voxel.solid },
+                    val voxelMask: (Cell) -> Boolean = { it.voxel.solid },
                     val entityMask: (Entity) -> Boolean = { true }) {
     val invDir = Vector3d(1.0 / direction.x(), 1.0 / direction.y(), 1.0 / direction.z())
 }
@@ -33,7 +31,7 @@ sealed class RayResult(val rayQuery: RayQuery) {
             return newRay.trace()
         }
 
-        class VoxelHit(val cell: CellData, hitPosition: Vector3dc, t: Double, normal: Vector3dc, rayQuery: RayQuery) : Hit(hitPosition, t, normal, rayQuery) {
+        class VoxelHit(val cell: Cell, hitPosition: Vector3dc, t: Double, normal: Vector3dc, rayQuery: RayQuery) : Hit(hitPosition, t, normal, rayQuery) {
             override fun toString(): String {
                 return "VoxelHit(cell=$cell, pos: $hitPosition t=$t, normal=$normal)"
             }
@@ -50,7 +48,7 @@ sealed class RayResult(val rayQuery: RayQuery) {
 fun RayQuery.trace(): RayResult {
     val direction = Vector3d(this.direction).normalize()
     val origin = this.origin
-    var cell: CellData
+    var cell: Cell
 
     // DDA algorithm
     // It requires double arrays because it works using loops over each dimension
@@ -91,7 +89,10 @@ fun RayQuery.trace(): RayResult {
     var chunkZ = voxelCoords[2] / 32
 
     var tMinEntity = Double.MAX_VALUE
-    var entityHit: RayResult.Hit.EntityHit? = null
+    var bestEntityHit: RayResult.Hit.EntityHit? = null
+
+    var tMinVoxel = Double.MAX_VALUE
+    var bestVoxelHit: RayResult.Hit.VoxelHit? = null
 
     do {
         // DDA steps
@@ -117,44 +118,69 @@ fun RayQuery.trace(): RayResult {
             chunkX = cx
             chunkZ = cy
             chunkY = cz
-            val potentialEntities = this.origin.world.getEntitiesInBox(Vector3d(cx.toDouble(), cy.toDouble(), cz.toDouble()), Vector3d(32.0, 32.0, 32.0))
+            val potentialEntities = this.origin.world.getEntitiesInBox(Box.fromExtents(32.0, 32.0, 32.0).translate(x - 16.0, y - 16.0, z - 16.0))
             for (entity in potentialEntities) {
                 // Consider each entity only once
                 if (consideredEntities.add(entity)) {
                     val traitCollisions = entity.traits[TraitCollidable::class] ?: continue
                     val traitHitboxes = entity.traits[TraitHitboxes::class]
+
+                    if (traitHitboxes == null) {
+                        for (box in traitCollisions.collisionBoxes) {
+                            val intersection = box.intersect(origin, direction, this.invDir)
+                            if (intersection != null) {
+                                //val distance = collisionPoint.distance(origin)
+                                if (intersection.tMin > this.tMin && intersection.tMin <= this.tMax) {
+                                    if (intersection.tMin < tMinEntity) {
+                                        tMinEntity = intersection.tMin
+                                        bestEntityHit = RayResult.Hit.EntityHit(entity, null, intersection.hitPosition, intersection.tMin, intersection.normal, this)
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        for (hitBox in traitHitboxes.hitBoxes) {
+                            val intersection = hitBox.intersect(origin, direction, this.invDir)
+                            if (intersection != null) {
+                                //val distance = collisionPoint.distance(origin)
+                                if (intersection.tMin > this.tMin && intersection.tMin <= this.tMax) {
+                                    if (intersection.tMin < tMinEntity) {
+                                        tMinEntity = intersection.tMin
+                                        bestEntityHit = RayResult.Hit.EntityHit(entity, hitBox, intersection.hitPosition, intersection.tMin, intersection.normal, this)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        cell = this.origin.world.peekSafely(x, y, z)
+        cell = this.origin.world.peek(x, y, z)
         val voxel = cell.voxel
 
         if (this.voxelMask(cell)) {
             if (voxel.isAir())
                 continue
 
-            var nearest = Double.MAX_VALUE
-            var normal: Vector3dc = Vector3d()
             for (box in cell.translatedCollisionBoxes ?: emptyArray()) {
                 val intersection = box.intersect(origin, direction, this.invDir)
                 if (intersection != null) {
                     //val distance = collisionPoint.distance(origin)
                     val distance = intersection.tMin
                     if (distance > this.tMin && distance <= this.tMax) {
-                        if (distance < nearest) {
-                            nearest = distance
-                            normal = intersection.normal
+                        if (distance < tMinVoxel) {
+                            tMinVoxel = distance
+                            bestVoxelHit = RayResult.Hit.VoxelHit(cell, intersection.hitPosition, intersection.tMin, intersection.normal, this)
                         }
                     }
                 }
             }
-            if (nearest != Double.MAX_VALUE) {
-                if(nearest < tMinEntity) {
-                    val tMin = nearest
-                    val hitPosition = Vector3d(origin)
-                    hitPosition.add(direction.x() * tMin,direction.y() * tMin,direction.z() * tMin)
-                    return RayResult.Hit.VoxelHit(cell, hitPosition, tMin, normal, this)
+            if (tMinVoxel != Double.MAX_VALUE) {
+                if (tMinVoxel < tMinEntity) {
+                    return bestVoxelHit!!
+                } else if (bestEntityHit != null) {
+                    return bestEntityHit
                 }
             }
         }
@@ -166,11 +192,11 @@ fun RayQuery.trace(): RayResult {
     return RayResult.NoHit(this)
 }
 
-data class BoxIntersection(val tMin: Double, val normal: Vector3dc)
+data class BoxIntersection(val tMin: Double, val hitPosition: Vector3dc, val normal: Vector3dc)
 
 fun Box.intersect(origin: Vector3dc, direction: Vector3dc, invDirection: Vector3dc): BoxIntersection? {
-    println("${min.x} ${min.y} ${min.z}")
-    println("${max.x} ${max.y} ${max.z}")
+    //println("${min.x} ${min.y} ${min.z}")
+    //println("${max.x} ${max.y} ${max.z}")
 
     var tmin = (min.x - origin.x()) * invDirection.x()
     var tmax = (max.x - origin.x()) * invDirection.x()
@@ -228,10 +254,61 @@ fun Box.intersect(origin: Vector3dc, direction: Vector3dc, invDirection: Vector3
         tmax = tzmax
     }
 
-    fun one(a: Int) = if(a == enterAxis) 1.0 else 0.0
+    fun one(a: Int) = if (a == enterAxis) 1.0 else 0.0
     val normal = Vector3d(one(0), one(1), one(2))
-    if(normal.dot(direction) > 0)
+    if (normal.dot(direction) > 0)
         normal.negate()
 
-    return BoxIntersection(tmin, normal)
+    val hitPosition = Vector3d(origin)
+    hitPosition.add(direction.x() * tmin, direction.y() * tmin, direction.z() * tmin)
+
+    return BoxIntersection(tmin, hitPosition, normal)
+}
+
+fun EntityHitbox.intersect(lineStart: Vector3dc, lineDirection: Vector3dc, invDirection: Vector3dc): BoxIntersection? {
+    val fromAABBToWorld = Matrix4f()
+    if (this.animationTrait != null)
+        fromAABBToWorld.set(animationTrait.animatedSkeleton.getBoneHierarchyTransformationMatrix(name, (System.currentTimeMillis() % 1000000).toDouble()))
+
+    val worldPositionTransformation = Matrix4f()
+
+    val entityLoc = entity.location
+
+    val pos = Vector3f(entityLoc.x.toFloat(), entityLoc.y.toFloat(), entityLoc.z.toFloat())
+    worldPositionTransformation.translate(pos)
+
+    // Creates from AABB space to worldspace
+    worldPositionTransformation.mul(fromAABBToWorld, fromAABBToWorld)
+
+    // Invert it.
+    val fromWorldToAABB = Matrix4f()
+    fromAABBToWorld.invert(fromWorldToAABB)
+
+    // Transform line start into AABB space
+    val lineStart4 = Vector4f(lineStart.x().toFloat(), lineStart.y().toFloat(), lineStart.z().toFloat(), 1.0f)
+    val lineDirection4 = Vector4f(lineDirection.x().toFloat(), lineDirection.y().toFloat(), lineDirection.z().toFloat(), 0.0f)
+
+    fromWorldToAABB.transform(lineStart4)
+    fromWorldToAABB.transform(lineDirection4)
+
+    val lineStartTransformed = Vector3d(lineStart4.x().toDouble(), lineStart4.y().toDouble(), lineStart4.z().toDouble())
+    val lineDirectionTransformed = Vector3d(lineDirection4.x().toDouble(), lineDirection4.y().toDouble(), lineDirection4.z().toDouble())
+
+    // Actual computation
+    val intersection = box.intersect(lineStartTransformed, lineDirectionTransformed, invDirection) ?: return null
+
+    // Transform hitPoint back into world
+    val hitPoint = intersection.hitPosition
+    val hitPoint4 = Vector4f(hitPoint.x().toFloat(), hitPoint.y().toFloat(), hitPoint.z().toFloat(), 1.0f)
+    fromAABBToWorld.transform(hitPoint4)
+    hitPoint4.mul(1.0f / hitPoint4.w())
+
+    val normal = intersection.normal
+    val normal4 = Vector4f(normal.x().toFloat(), normal.y().toFloat(), normal.z().toFloat(), 0.0f)
+    fromAABBToWorld.transform(normal4)
+    //normal4.mul(1.0f / normal4.w())
+
+    val hitPointWS = Vector3d(hitPoint4.x().toDouble(), hitPoint4.y().toDouble(), hitPoint4.z().toDouble())
+    val normalWS = Vector3d(normal4.x().toDouble(), normal4.y().toDouble(), normal4.z().toDouble())
+    return BoxIntersection(intersection.tMin, hitPointWS, normalWS)
 }

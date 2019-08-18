@@ -26,8 +26,7 @@ import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.sound.SoundSource
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
 import xyz.chunkstories.api.voxel.textures.VoxelTexture
-import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.EditableCell
 import xyz.chunkstories.api.world.cell.FutureCell
 import xyz.chunkstories.api.world.chunk.ChunkCell
@@ -75,7 +74,7 @@ open class Voxel(val definition: VoxelDefinition) {
 
     var lootLogic: LootRules? = null
 
-    var customRenderingRoutine: (ChunkMeshRenderingInterface.(CellData) -> Unit)? = null
+    var customRenderingRoutine: (ChunkMeshRenderingInterface.(Cell) -> Unit)? = null
 
     val variants: List<ItemDefinition>
 
@@ -171,7 +170,7 @@ open class Voxel(val definition: VoxelDefinition) {
      *
      * @return The aformentioned light level
      */
-    open fun getEmittedLightLevel(info: CellData): Int {
+    open fun getEmittedLightLevel(info: Cell): Int {
         // By default the light output is the one defined in the type, you can change it
         // depending on the provided data
         return emittedLightLevel
@@ -182,7 +181,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * @param side The side of the block we want the texture of ( see
      * [VoxelSides.class][VoxelSide] )
      */
-    open fun getVoxelTexture(cell: CellData, side: VoxelSide): VoxelTexture {
+    open fun getVoxelTexture(cell: Cell, side: VoxelSide): VoxelTexture {
         // By default we don't care about taskInstance, we give the same texture to everyone
         return voxelTextures[side.ordinal]
     }
@@ -191,13 +190,13 @@ open class Voxel(val definition: VoxelDefinition) {
      * another, based on data from the two blocks and the side from wich it's
      * leaving the first block from.
      *
-     * @param `in` The cell the light is going into (==this one) ( see [            CellData.class][CellData] )
-     * @param out The cell the light is coming from ( see [            CellData.class][CellData] )
+     * @param `in` The cell the light is going into (==this one) ( see [            CellData.class][Cell] )
+     * @param out The cell the light is coming from ( see [            CellData.class][Cell] )
      * @param side The side of the block light would come out of ( see
      * [VoxelSides.class][VoxelSide] )
      * @return The reduction to apply to the light level on exit
      */
-    open fun getLightLevelModifier(cell: CellData, out: CellData, side: VoxelSide): Int {
+    open fun getLightLevelModifier(cell: Cell, out: Cell, side: VoxelSide): Int {
         return if (opaque) 15 else shadingLightLevel
     }
 
@@ -224,7 +223,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * [VoxelFormat.class][VoxelFormat] )
      * @return An array of Box or null.
      */
-    fun getTranslatedCollisionBoxes(cell: CellData): Array<Box>? {
+    fun getTranslatedCollisionBoxes(cell: Cell): Array<Box>? {
         val boxes = getCollisionBoxes(cell)
         if (boxes != null)
             for (b in boxes)
@@ -238,7 +237,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * @param The full 4-byte data related to this voxel ( see [VoxelFormat.class][VoxelFormat] )
      * @return An array of Box or null.
      */
-    open fun getCollisionBoxes(info: CellData): Array<Box>? = arrayOf(Box.fromExtents(Vector3d(1.0)))
+    open fun getCollisionBoxes(info: Cell): Array<Box>? = arrayOf(Box.fromExtents(Vector3d(1.0)))
 
     /** Two voxels are of the same kind if they share the same declaration.  */
     open fun sameKind(that: Voxel): Boolean {
@@ -255,7 +254,7 @@ open class Voxel(val definition: VoxelDefinition) {
     }
 
     /** Returns the variant that best matches the cell */
-    open fun getVariant(cell: CellData): ItemDefinition {
+    open fun getVariant(cell: Cell): ItemDefinition {
         return variants[0]
     }
 
@@ -263,7 +262,7 @@ open class Voxel(val definition: VoxelDefinition) {
         return variants.map { it.newItem<Item>() }.filterIsInstance<ItemVoxel>()
     }
 
-    open fun breakBlock(cell: CellData, tool: MiningTool, entity: Entity?) {
+    open fun breakBlock(cell: Cell, tool: MiningTool, entity: Entity?) {
         val location = cell.location
         val world = location.world
 
@@ -314,7 +313,7 @@ open class Voxel(val definition: VoxelDefinition) {
     }
 
     /** Returns what's dropped when a cell using this voxel type is destroyed  */
-    open fun getLoot(cell: CellData, tool: MiningTool): List<Pair<Item, Int>> {
+    open fun getLoot(cell: Cell, tool: MiningTool): List<Pair<Item, Int>> {
         if(isAir())
             return emptyList()
 

@@ -9,7 +9,7 @@ package xyz.chunkstories.api.world.cell
 import xyz.chunkstories.api.voxel.Voxel
 
 /** A getCell we have the right to edit.  */
-interface EditableCell : CellData {
+interface EditableCell : Cell {
     override var voxel: Voxel
 
     override var metaData: Int

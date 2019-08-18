@@ -8,8 +8,8 @@ package xyz.chunkstories.api.voxel.structures;
 
 import xyz.chunkstories.api.voxel.Voxel;
 import xyz.chunkstories.api.world.World;
+import xyz.chunkstories.api.world.cell.AbstractCell;
 import xyz.chunkstories.api.world.cell.Cell;
-import xyz.chunkstories.api.world.cell.CellData;
 import xyz.chunkstories.api.world.cell.FutureCell;
 import xyz.chunkstories.api.world.chunk.Chunk;
 import org.joml.Vector3i;
@@ -17,7 +17,7 @@ import org.joml.Vector3i;
 import javax.annotation.Nullable;
 
 public abstract class Structure {
-	protected Cell[] data;
+	protected AbstractCell[] data;
 	protected Vector3i size;
 
 	protected Vector3i offset = new Vector3i(0);
@@ -100,7 +100,7 @@ public abstract class Structure {
 		chunk.getMesh().requestUpdate();
 	}
 
-	public class StructureCell extends Cell {
+	public class StructureCell extends AbstractCell {
 
 		public StructureCell(int x, int y, int z, @Nullable Voxel voxel, int meta, int blocklight, int sunlight) {
 			super(x, y, z, voxel, meta, blocklight, sunlight);
@@ -112,7 +112,7 @@ public abstract class Structure {
 		}
 
 		@Override
-		public CellData getNeightbor(int side) {
+		public Cell getNeightbor(int side) {
 			// TODO try
 			throw new UnsupportedOperationException();
 		}

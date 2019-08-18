@@ -9,9 +9,9 @@ package xyz.chunkstories.api.world.heightmap
 import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldUser
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 
-interface WorldHeightmaps {
+interface WorldHeightmapsManager {
     /** Return the associated World  */
     val world: World
 
@@ -57,5 +57,5 @@ interface WorldHeightmaps {
 
     fun getHeightAtWorldCoordinates(worldX: Int, worldZ: Int): Int
 
-    fun getTopCellAtWorldCoordinates(worldX: Int, worldZ: Int): CellData
+    fun getTopCellAtWorldCoordinates(worldX: Int, worldZ: Int): Cell
 }

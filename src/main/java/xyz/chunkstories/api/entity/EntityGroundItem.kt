@@ -6,14 +6,10 @@
 
 package xyz.chunkstories.api.entity
 
-import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.entity.EntityDefinition
-import xyz.chunkstories.api.entity.traits.ItemOnGroundContents
 import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.entity.traits.serializable.TraitVelocity
 import xyz.chunkstories.api.item.inventory.InventoryOwner
-import xyz.chunkstories.api.item.inventory.ItemPile
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldClient
@@ -44,7 +40,7 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
         val velocity = entityVelocity.velocity
 
         if (world is WorldMaster) {
-            val voxelIn = world.peekSafely(location).voxel
+            val voxelIn = world.peek(location).voxel
             val inWater = voxelIn?.liquid == true
 
             val terminalVelocity = if (inWater) -0.25 else -0.5

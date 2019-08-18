@@ -11,7 +11,7 @@ import org.joml.Vector4f
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.entity.traits.TraitVoxelSelection
+import xyz.chunkstories.api.entity.traits.TraitSight
 import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
 import xyz.chunkstories.api.events.player.voxel.PlayerVoxelModificationEvent
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
@@ -98,10 +98,10 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
 
                 val isEntityCreativeMode = entity.traits[TraitCreativeMode::class]?.get() ?: false
 
-                val blockLocation = entity.traits[TraitVoxelSelection::class]?.getBlockLookingAt(false, true)
+                val freeCell = entity.traits[TraitSight::class]?.getFreeSpaceAdjacentToSolidBlock(5.0)
 
-                if (blockLocation != null) {
-                    val futureCell = FutureCell(entity.world.peekSafely(blockLocation))
+                if (freeCell != null) {
+                    val futureCell = FutureCell(entity.world.peek(freeCell.location))
 
                     // Let's stop if this returns false
                     if (!changeBlockData(futureCell, entity))
@@ -109,7 +109,7 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
 
                     // Player events mod
                     if (controller is Player) {
-                        val ctx = entity.world.peek(blockLocation)
+                        val ctx = entity.world.tryPeek(freeCell.location)
                         val event = PlayerVoxelModificationEvent(ctx, futureCell,
                                 if (isEntityCreativeMode) TraitCreativeMode.CREATIVE_MODE else this, controller)
 

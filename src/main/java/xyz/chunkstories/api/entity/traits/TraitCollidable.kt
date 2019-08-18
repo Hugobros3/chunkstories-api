@@ -26,7 +26,7 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
     // Fine
     val isStuckInEntity: Entity?
         get() {
-            for (adverseEntity in entity.world.getEntitiesInBox(entity.location, Vector3d(1.0, 2.0, 1.0))) {
+            for (adverseEntity in entity.world.getEntitiesInBox(entity.getTranslatedBoundingBox())) {
                 if (adverseEntity !== entity) {
                     val traitCollidable = adverseEntity.traits[TraitCollidable::class.java] ?: continue
                     if (traitCollidable.collidesWithEntities) {

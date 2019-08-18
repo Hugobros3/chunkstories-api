@@ -87,7 +87,7 @@ fun obtainInventoryByHandle(stream: DataInputStream, context: PacketReceptionCon
         val traitName = stream.readUTF()
 
         try {
-            val voxelContext = context.world!!.peek(x, y, z)
+            val voxelContext = context.world!!.tryPeek(x, y, z)
             val com = voxelContext.components.getVoxelComponent(traitName)
             if (com != null && com is VoxelInventoryComponent) {
                 val comp = com as VoxelInventoryComponent?

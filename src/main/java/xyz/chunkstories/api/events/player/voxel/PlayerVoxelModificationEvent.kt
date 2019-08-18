@@ -10,9 +10,9 @@ import xyz.chunkstories.api.events.EventListeners
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.events.voxel.VoxelModificationEvent
 import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 
-class PlayerVoxelModificationEvent(context: CellData, newData: CellData, cause: WorldModificationCause, // Specific event code
+class PlayerVoxelModificationEvent(context: Cell, newData: Cell, cause: WorldModificationCause, // Specific event code
                                    val player: Player) : VoxelModificationEvent(context, newData, cause) {
 
     override val listeners: EventListeners

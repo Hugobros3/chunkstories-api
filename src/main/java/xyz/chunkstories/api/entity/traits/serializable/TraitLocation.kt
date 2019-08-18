@@ -174,7 +174,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
             if (chunk != null)
                 chunk!!.removeEntity(entity)
 
-            chunk = world.getChunk(chunkX, chunkY, chunkZ)
+            chunk = world.chunksManager.getChunk(chunkX, chunkY, chunkZ)
             // When the region is loaded, add this entity to it.
             if (chunk != null)
             // && regionWithin.isDiskDataLoaded())

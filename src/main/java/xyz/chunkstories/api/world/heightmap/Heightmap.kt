@@ -8,8 +8,7 @@ package xyz.chunkstories.api.world.heightmap
 
 import xyz.chunkstories.api.util.concurrency.Fence
 import xyz.chunkstories.api.world.WorldUser
-import xyz.chunkstories.api.world.cell.CellData
-import xyz.chunkstories.api.world.region.Region
+import xyz.chunkstories.api.world.cell.Cell
 
 /** Represents the topmost getCell for 256 * 256 area. X and Z coordinates match
  * those of regions  */
@@ -29,8 +28,8 @@ interface Heightmap {
      * available  */
     fun getHeight(x: Int, z: Int): Int
 
-    fun getTopCell(x: Int, z: Int): CellData
-    fun setTopCell(data: CellData)
+    fun getTopCell(x: Int, z: Int): Cell
+    fun setTopCell(data: Cell)
 
     //fun save(): Fence
 

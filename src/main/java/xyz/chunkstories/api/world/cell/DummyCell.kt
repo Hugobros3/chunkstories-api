@@ -16,7 +16,7 @@ import xyz.chunkstories.api.world.World
  * A special getCell outside of any physical realm; using id-relative or
  * world-relative methods will throw exceptions.
  */
-open class DummyCell(x: Int, y: Int, z: Int, voxel: Voxel, meta: Int, blocklight: Int, sunlight: Int) : Cell(x, y, z, voxel, meta, blocklight, sunlight), CellData, EditableCell {
+open class DummyCell(x: Int, y: Int, z: Int, voxel: Voxel, meta: Int, blocklight: Int, sunlight: Int) : AbstractCell(x, y, z, voxel, meta, blocklight, sunlight), Cell, EditableCell {
 
     override val world: World
         get() = throw UnsupportedOperationException()
@@ -37,7 +37,7 @@ open class DummyCell(x: Int, y: Int, z: Int, voxel: Voxel, meta: Int, blocklight
         throw UnsupportedOperationException()
     }
 
-    override fun getNeightbor(side: Int): CellData {
+    override fun getNeightbor(side: Int): Cell {
         throw UnsupportedOperationException()
     }
 

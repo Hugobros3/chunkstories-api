@@ -7,13 +7,13 @@
 package xyz.chunkstories.api.events.voxel
 
 import xyz.chunkstories.api.events.EventListeners
-import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.Cell
 
-open class VoxelModificationEvent(context: CellData, newData: CellData, val modificationCause: WorldModificationCause) : VoxelEvent(context) {
+open class VoxelModificationEvent(context: Cell, newData: Cell, val modificationCause: WorldModificationCause) : VoxelEvent(context) {
 
     override val listeners: EventListeners
         get() = listenersStatic
-    var newData: CellData
+    var newData: Cell
         internal set
 
     val modification: ModifiationType
