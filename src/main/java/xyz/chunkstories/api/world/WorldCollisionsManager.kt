@@ -10,6 +10,8 @@ import org.joml.Vector3dc
 
 import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.physics.EntityHitbox
+import xyz.chunkstories.api.world.cell.Cell
 
 interface WorldCollisionsManager {
     /** Raytraces throught the world to find a solid block

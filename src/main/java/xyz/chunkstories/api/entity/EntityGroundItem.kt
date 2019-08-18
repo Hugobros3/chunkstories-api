@@ -136,6 +136,6 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
 	}*/
 
     override fun getBoundingBox(): Box {
-        return Box(0.5, 0.75, 0.5).translate(-0.25, 0.0, -0.25)
+        return Box.fromExtentsCenteredHorizontal(0.5, 0.75, 0.5)
     }
 }

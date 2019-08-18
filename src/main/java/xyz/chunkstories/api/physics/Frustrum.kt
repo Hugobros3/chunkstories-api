@@ -6,22 +6,19 @@
 
 package xyz.chunkstories.api.physics
 
-import xyz.chunkstories.api.graphics.Window
-import xyz.chunkstories.api.graphics.structs.Camera
 import org.joml.Vector3f
 import org.joml.Vector3fc
 import org.joml.Vector4f
 import org.joml.Vector4fc
+import xyz.chunkstories.api.graphics.structs.Camera
+import xyz.chunkstories.api.util.kotlin.toVec3f
 
 /** Leftover from the old renderin code, bound for some massive improvements in the not too distant future */
 class Frustrum(val camera: Camera) {
-    var corners : Array<Vector3f>
-    var cameraPlanes : Array<Plane>
+    //var corners : Array<Vector3f>
+    var cameraPlanes: Array<Plane> = Array(6) { Plane(Vector3f(), Vector3f(), Vector3f()) }
 
     init {
-        corners = Array(8) { Vector3f() }
-        cameraPlanes = Array(6) { Plane(Vector3f(), Vector3f(), Vector3f())}
-
         computeFrustrumPlanes()
     }
 
@@ -92,17 +89,17 @@ class Frustrum(val camera: Camera) {
         val fbl = Vector4f(-1.0f, -1.0f, 1.0f ,1.0f)
         val fbr = Vector4f(1.0f, -1.0f, 1.0f ,1.0f)*/
 
-        val ntl = Vector4f(-1.0f, 1.0f,  1.0f ,1.0f)
-        val ntr = Vector4f(1.0f, 1.0f,   1.0f ,1.0f)
-        val nbl = Vector4f(-1.0f, -1.0f, 1.0f ,1.0f)
-        val nbr = Vector4f(1.0f, -1.0f,  1.0f ,1.0f)
+        val ntl = Vector4f(-1.0f, 1.0f, 1.0f, 1.0f)
+        val ntr = Vector4f(1.0f, 1.0f, 1.0f, 1.0f)
+        val nbl = Vector4f(-1.0f, -1.0f, 1.0f, 1.0f)
+        val nbr = Vector4f(1.0f, -1.0f, 1.0f, 1.0f)
 
-        val ftl = Vector4f(-1.0f, 1.0f,  0.0f ,1.0f)
-        val ftr = Vector4f(1.0f, 1.0f,   0.0f ,1.0f)
-        val fbl = Vector4f(-1.0f, -1.0f, 0.0f ,1.0f)
-        val fbr = Vector4f(1.0f, -1.0f,  0.0f ,1.0f)
+        val ftl = Vector4f(-1.0f, 1.0f, 0.0f, 1.0f)
+        val ftr = Vector4f(1.0f, 1.0f, 0.0f, 1.0f)
+        val fbl = Vector4f(-1.0f, -1.0f, 0.0f, 1.0f)
+        val fbr = Vector4f(1.0f, -1.0f, 0.0f, 1.0f)
 
-        fun transform(a: Vector4fc) : Vector3f {
+        fun transform(a: Vector4fc): Vector3f {
             val t = Vector4f(a)
             camera.projectionMatrixInverted.transform(t, t)
             camera.viewMatrixInverted.transform(t, t)
@@ -144,52 +141,58 @@ class Frustrum(val camera: Camera) {
     }
 
     fun isBoxInFrustrum(box: Box): Boolean {
-        val frustrumCheckBoxOrigin = Vector3f()
+        /*val frustrumCheckBoxOrigin = Vector3f()
         frustrumCheckBoxOrigin.set((box.xPosition + box.xWidth / 2).toFloat(), (box.yPosition + box.yHeight / 2).toFloat(), (box.zPosition + box.zWidth / 2).toFloat())
 
         val frustrumCheckBoxSize = Vector3f()
-        frustrumCheckBoxSize.set(box.xWidth.toFloat(), box.yHeight.toFloat(), box.zWidth.toFloat())
+        frustrumCheckBoxSize.set(box.xWidth.toFloat(), box.yHeight.toFloat(), box.zWidth.toFloat())*/
 
-        return this.isBoxInFrustrum(frustrumCheckBoxOrigin, frustrumCheckBoxSize)
+        return this.isBoxInFrustrum(box.min.toVec3f(), box.max.toVec3f())
     }
 
-    fun isBoxInFrustrum(center: Vector3fc, dimensions: Vector3fc): Boolean {
-
-        val PLUSONE = 0.5f
-        val MINUSONE = -0.5f
-
-        // i=0 j=0 k=0
-        corners[0].x = center.x() + dimensions.x() * MINUSONE
-        corners[0].y = center.y() + dimensions.y() * MINUSONE
-        corners[0].z = center.z() + dimensions.z() * MINUSONE
-        // i=0 j=0 k=1
-        corners[1].x = center.x() + dimensions.x() * MINUSONE
-        corners[1].y = center.y() + dimensions.y() * MINUSONE
-        corners[1].z = center.z() + dimensions.z() * PLUSONE
-        // i=0 j=1 k=0
-        corners[2].x = center.x() + dimensions.x() * MINUSONE
-        corners[2].y = center.y() + dimensions.y() * PLUSONE
-        corners[2].z = center.z() + dimensions.z() * MINUSONE
-        // i=0 j=1 k=1
-        corners[3].x = center.x() + dimensions.x() * MINUSONE
-        corners[3].y = center.y() + dimensions.y() * PLUSONE
-        corners[3].z = center.z() + dimensions.z() * PLUSONE
-        // i=1 j=0 k=0
-        corners[4].x = center.x() + dimensions.x() * PLUSONE
-        corners[4].y = center.y() + dimensions.y() * MINUSONE
-        corners[4].z = center.z() + dimensions.z() * MINUSONE
-        // i=1 j=0 k=1
-        corners[5].x = center.x() + dimensions.x() * PLUSONE
-        corners[5].y = center.y() + dimensions.y() * MINUSONE
-        corners[5].z = center.z() + dimensions.z() * PLUSONE
-        // i=1 j=1 k=0
-        corners[6].x = center.x() + dimensions.x() * PLUSONE
-        corners[6].y = center.y() + dimensions.y() * PLUSONE
-        corners[6].z = center.z() + dimensions.z() * MINUSONE
-        // i=1 j=1 k=1
-        corners[7].x = center.x() + dimensions.x() * PLUSONE
-        corners[7].y = center.y() + dimensions.y() * PLUSONE
-        corners[7].z = center.z() + dimensions.z() * PLUSONE
+    fun isBoxInFrustrum(min: Vector3fc, max: Vector3fc): Boolean {
+        val corners = arrayOf(Vector3f(
+                // i=0 j=0 k=0
+                min.x(),
+                min.y(),
+                min.z()
+        ), Vector3f(
+                // i=0 j=0 k=1
+                min.x(),
+                min.y(),
+                max.z()
+        ), Vector3f(
+                // i=0 j=1 k=0
+                min.x(),
+                max.x(),
+                min.z()
+        ), Vector3f(
+                // i=0 j=1 k=1
+                min.x(),
+                max.y(),
+                max.z()
+        ), Vector3f(
+                // i=1 j=0 k=0
+                max.x(),
+                min.y(),
+                min.z()
+        ), Vector3f(
+                // i=1 j=0 k=1
+                max.x(),
+                min.y(),
+                max.z()
+        ), Vector3f(
+                // i=1 j=1 k=0
+                max.x(),
+                max.y(),
+                min.y()
+        ), Vector3f(
+                // i=1 j=1 k=1
+                max.x(),
+                max.y(),
+                max.z()
+        )
+        )
 
         for (i in 0..5) {
             var out = 0

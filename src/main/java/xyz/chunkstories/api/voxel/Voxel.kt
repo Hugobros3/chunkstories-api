@@ -73,9 +73,6 @@ open class Voxel(val definition: VoxelDefinition) {
     /** How much, on top of the normal attenuation, does the light level of light passing through this block is reduced ? */
     var shadingLightLevel = 0
 
-    var collisionBoxes = arrayOf(Box(Vector3d(0.0), Vector3d(1.0)))
-        get() = Array(field.size) { i -> Box(field[i]) }
-
     var lootLogic: LootRules? = null
 
     var customRenderingRoutine: (ChunkMeshRenderingInterface.(CellData) -> Unit)? = null
@@ -241,7 +238,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * @param The full 4-byte data related to this voxel ( see [VoxelFormat.class][VoxelFormat] )
      * @return An array of Box or null.
      */
-    open fun getCollisionBoxes(info: CellData): Array<Box>? = collisionBoxes
+    open fun getCollisionBoxes(info: CellData): Array<Box>? = arrayOf(Box.fromExtents(Vector3d(1.0)))
 
     /** Two voxels are of the same kind if they share the same declaration.  */
     open fun sameKind(that: Voxel): Boolean {

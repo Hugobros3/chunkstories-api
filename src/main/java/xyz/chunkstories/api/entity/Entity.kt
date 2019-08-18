@@ -291,7 +291,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
 
     abstract fun tick() : Unit
 
-    open fun getBoundingBox() = Box(1.0, 1.0, 1.0)
+    open fun getBoundingBox() = Box.fromExtentsCenteredHorizontal(1.0, 1.0, 1.0)
 
     fun getTranslatedBoundingBox() = Box(getBoundingBox()).translate(location)
 }

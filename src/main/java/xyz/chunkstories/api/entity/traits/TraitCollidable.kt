@@ -51,7 +51,7 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
         }
 
     open val boundingBox: Box
-        get() = Box(1.0, 1.0, 1.0).translate(-0.5, 0.0, -0.5)
+        get() = Box.fromExtentsCenteredHorizontal(1.0, 1.0, 1.0)
 
     open val collisionBoxes: Array<Box>
         get() = arrayOf(boundingBox)
