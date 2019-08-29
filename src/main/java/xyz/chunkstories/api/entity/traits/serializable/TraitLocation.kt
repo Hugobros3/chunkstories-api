@@ -73,6 +73,11 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
     }
 
     fun move(dx: Double, dy: Double, dz: Double) {
+        if(dx.isNaN() || dy.isNaN() || dz.isNaN()) {
+            System.err.println("move by nan $dx $dy $dz")
+            Thread.dumpStack()
+            return
+        }
         try {
             lock.lock()
             actualLocation.x = actualLocation.x() + dx

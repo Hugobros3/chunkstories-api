@@ -6,19 +6,19 @@
 
 package xyz.chunkstories.api.physics
 
-import org.joml.Vector3f
 import org.joml.Vector3d
+import org.joml.Vector3dc
 
-class Plane(p1: Vector3f, p2: Vector3f, p3: Vector3f) {
-    val a: Double
-    val b: Double
-    val c: Double
-    val d: Double
-    internal var n: Vector3d
+class Plane3d(p1: Vector3dc, p2: Vector3dc, p3: Vector3dc) {
+    internal val a: Double
+    internal val b: Double
+    internal val c: Double
+    internal val d: Double
+    internal val n: Vector3d
 
     init {
-        val v = Vector3d(p2.x().toDouble(), p2.y().toDouble(), p2.z().toDouble())
-        val u = Vector3d(p3.x().toDouble(), p3.y().toDouble(), p3.z().toDouble())
+        val v = Vector3d(p2)
+        val u = Vector3d(p3)
 
         val p1d = Vector3d(p1)
 
@@ -37,7 +37,7 @@ class Plane(p1: Vector3f, p2: Vector3f, p3: Vector3f) {
         d = -p1d.dot(n)
     }
 
-    fun distance(point: Vector3f): Double {
+    fun distance(point: Vector3dc): Double {
         return a * point.x() + b * point.y() + c * point.z() + d
     }
 }

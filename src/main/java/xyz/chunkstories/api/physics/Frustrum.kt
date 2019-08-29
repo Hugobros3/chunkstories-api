@@ -6,17 +6,16 @@
 
 package xyz.chunkstories.api.physics
 
-import org.joml.Vector3f
-import org.joml.Vector3fc
-import org.joml.Vector4f
-import org.joml.Vector4fc
+import org.joml.*
 import xyz.chunkstories.api.graphics.structs.Camera
+import xyz.chunkstories.api.util.kotlin.toVec3d
 import xyz.chunkstories.api.util.kotlin.toVec3f
+import java.lang.Math
 
 /** Leftover from the old renderin code, bound for some massive improvements in the not too distant future */
 class Frustrum(val camera: Camera) {
     //var corners : Array<Vector3f>
-    var cameraPlanes: Array<Plane> = Array(6) { Plane(Vector3f(), Vector3f(), Vector3f()) }
+    var cameraPlanes: Array<Plane3d> = Array(6) { Plane3d(Vector3d(), Vector3d(), Vector3d()) }
 
     init {
         computeFrustrumPlanes()
@@ -107,15 +106,15 @@ class Frustrum(val camera: Camera) {
             return Vector3f(t.x, t.y, t.z)
         }
 
-        val nearTopLeft = transform(ntl)
-        val nearTopRight = transform(ntr)
-        val nearBottomLeft = transform(nbl)
-        val nearBottomRight = transform(nbr)
+        val nearTopLeft = transform(ntl).toVec3d()
+        val nearTopRight = transform(ntr).toVec3d()
+        val nearBottomLeft = transform(nbl).toVec3d()
+        val nearBottomRight = transform(nbr).toVec3d()
 
-        val farTopLeft = transform(ftl)
-        val farTopRight = transform(ftr)
-        val farBottomLeft = transform(fbl)
-        val farBottomRight = transform(fbr)
+        val farTopLeft = transform(ftl).toVec3d()
+        val farTopRight = transform(ftr).toVec3d()
+        val farBottomLeft = transform(fbl).toVec3d()
+        val farBottomRight = transform(fbr).toVec3d()
 
         /*println("fbr: ${farTopLeft.x()} ${farTopLeft.y()} ${farTopLeft.z()}")
         val a = ftl
@@ -132,12 +131,12 @@ class Frustrum(val camera: Camera) {
         d.mul(1f / d.w)
         println("dd: ${d.x()} ${d.y()} ${d.z()}")*/
 
-        cameraPlanes[0] = Plane(nearTopRight, nearTopLeft, farTopLeft)
-        cameraPlanes[1] = Plane(nearBottomLeft, nearBottomRight, farBottomRight)
-        cameraPlanes[2] = Plane(nearTopLeft, nearBottomLeft, farBottomLeft)
-        cameraPlanes[3] = Plane(nearBottomRight, nearTopRight, farBottomRight)
-        cameraPlanes[4] = Plane(nearTopLeft, nearTopRight, nearBottomRight)
-        cameraPlanes[5] = Plane(farTopRight, farTopLeft, farBottomLeft)
+        cameraPlanes[0] = Plane3d(nearTopRight, nearTopLeft, farTopLeft)
+        cameraPlanes[1] = Plane3d(nearBottomLeft, nearBottomRight, farBottomRight)
+        cameraPlanes[2] = Plane3d(nearTopLeft, nearBottomLeft, farBottomLeft)
+        cameraPlanes[3] = Plane3d(nearBottomRight, nearTopRight, farBottomRight)
+        cameraPlanes[4] = Plane3d(nearTopLeft, nearTopRight, nearBottomRight)
+        cameraPlanes[5] = Plane3d(farTopRight, farTopLeft, farBottomLeft)
     }
 
     fun isBoxInFrustrum(box: Box): Boolean {
@@ -147,46 +146,46 @@ class Frustrum(val camera: Camera) {
         val frustrumCheckBoxSize = Vector3f()
         frustrumCheckBoxSize.set(box.xWidth.toFloat(), box.yHeight.toFloat(), box.zWidth.toFloat())*/
 
-        return this.isBoxInFrustrum(box.min.toVec3f(), box.max.toVec3f())
+        return this.isBoxInFrustrum(box.min, box.max)
     }
 
-    fun isBoxInFrustrum(min: Vector3fc, max: Vector3fc): Boolean {
-        val corners = arrayOf(Vector3f(
+    private fun isBoxInFrustrum(min: Vector3dc, max: Vector3dc): Boolean {
+        val corners = arrayOf(Vector3d(
                 // i=0 j=0 k=0
                 min.x(),
                 min.y(),
                 min.z()
-        ), Vector3f(
+        ), Vector3d(
                 // i=0 j=0 k=1
                 min.x(),
                 min.y(),
                 max.z()
-        ), Vector3f(
+        ), Vector3d(
                 // i=0 j=1 k=0
                 min.x(),
                 max.x(),
                 min.z()
-        ), Vector3f(
+        ), Vector3d(
                 // i=0 j=1 k=1
                 min.x(),
                 max.y(),
                 max.z()
-        ), Vector3f(
+        ), Vector3d(
                 // i=1 j=0 k=0
                 max.x(),
                 min.y(),
                 min.z()
-        ), Vector3f(
+        ), Vector3d(
                 // i=1 j=0 k=1
                 max.x(),
                 min.y(),
                 max.z()
-        ), Vector3f(
+        ), Vector3d(
                 // i=1 j=1 k=0
                 max.x(),
                 max.y(),
                 min.y()
-        ), Vector3f(
+        ), Vector3d(
                 // i=1 j=1 k=1
                 max.x(),
                 max.y(),

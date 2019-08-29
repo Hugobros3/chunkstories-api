@@ -92,8 +92,10 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
 
                     val knockback = Math.max(1.0, Math.pow(damageDealt.toDouble(), 0.5)).toFloat()
 
-                    attackKnockback.mul(knockback / 50.0)
+                    attackKnockback.mul(knockback * 50.0)
                     attackKnockback.y = knockback / 50.0
+
+                    println("attackKnockback: $attackKnockback")
 
                     ev.addVelocity(attackKnockback)
                 }

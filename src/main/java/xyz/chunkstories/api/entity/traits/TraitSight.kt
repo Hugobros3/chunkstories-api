@@ -22,12 +22,14 @@ abstract class TraitSight(entity: Entity) : Trait(entity) {
     abstract val lookingAt: Vector3dc
 
     fun getLookingAt(reach: Double): RayResult {
-        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.voxel.isAir() && (!it.voxel.liquid) })
+        val notMe = {other: Entity -> other != entity}
+        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.voxel.isAir() && (!it.voxel.liquid) }, notMe)
         return query.trace()
     }
 
     fun getSelectableBlockLookingAt(reach: Double) : Cell? {
-        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.voxel.isAir() && (!it.voxel.liquid) })
+        val notMe = {other: Entity -> other != entity}
+        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.voxel.isAir() && (!it.voxel.liquid) }, notMe)
         return when(val hit = query.trace()) {
             is RayResult.Hit.VoxelHit -> hit.cell
             else -> null
@@ -35,7 +37,8 @@ abstract class TraitSight(entity: Entity) : Trait(entity) {
     }
 
     fun getSolidBlockLookingAt(reach: Double) : Cell? {
-        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { it.voxel.solid })
+        val notMe = {other: Entity -> other != entity}
+        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { it.voxel.solid }, notMe)
         return when(val hit = query.trace()) {
             is RayResult.Hit.VoxelHit -> hit.cell
             else -> null
@@ -43,7 +46,8 @@ abstract class TraitSight(entity: Entity) : Trait(entity) {
     }
 
     fun getFreeSpaceAdjacentToSolidBlock(reach: Double) : Cell? {
-        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { it.voxel.solid })
+        val notMe = {other: Entity -> other != entity}
+        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { it.voxel.solid }, notMe)
         when(val hit = query.trace()) {
             is RayResult.Hit.VoxelHit -> {
                 val normali = hit.normal.toVec3i()

@@ -8,6 +8,7 @@ package xyz.chunkstories.api.entity.traits
 
 import org.joml.Vector3d
 import org.joml.Vector3dc
+import xyz.chunkstories.api.client.IngameClient
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.physics.Box
 
@@ -26,12 +27,13 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
     // Fine
     val isStuckInEntity: Entity?
         get() {
-            for (adverseEntity in entity.world.getEntitiesInBox(entity.getTranslatedBoundingBox())) {
-                if (adverseEntity !== entity) {
+            val bbox = entity.getTranslatedBoundingBox()
+            val candidates = entity.world.getEntitiesInBox(bbox)
+            for (adverseEntity in candidates) {
+                if (adverseEntity != entity) {
                     val traitCollidable = adverseEntity.traits[TraitCollidable::class.java] ?: continue
                     if (traitCollidable.collidesWithEntities) {
-
-                        if (traitCollidable.boundingBox.collidesWith(this.boundingBox))
+                        if (adverseEntity.getTranslatedBoundingBox().collidesWith(this.entity.getTranslatedBoundingBox()))
                             for (b in traitCollidable.translatedCollisionBoxes)
                                 for (c in this.translatedCollisionBoxes)
                                     if (b.collidesWith(c))
@@ -43,18 +45,18 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
             return null
         }
 
-    val translatedBoundingBox: Box
+    /*val translatedBoundingBox: Box
         get() {
             val box = boundingBox
             box.translate(entity.location)
             return box
         }
 
-    open val boundingBox: Box
-        get() = Box.fromExtentsCenteredHorizontal(1.0, 1.0, 1.0)
-
+    val boundingBox: Box
+        get() = entity.getBoundingBox()
+*/
     open val collisionBoxes: Array<Box>
-        get() = arrayOf(boundingBox)
+        get() = arrayOf(entity.getBoundingBox())
 
     val translatedCollisionBoxes: Array<Box>
         get() {
@@ -110,6 +112,7 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
     fun unstuck() {
         val stuckIn = this.isStuckInEntity
         if (stuckIn != null) {
+            //println("$entity stuck in $stuckIn")
             val delta = entity.location
             delta.sub(stuckIn.location)
             delta.add(0.01, 0.01, 0.01)

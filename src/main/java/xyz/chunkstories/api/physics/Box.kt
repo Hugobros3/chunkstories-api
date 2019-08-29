@@ -159,11 +159,18 @@ data class Box protected constructor(val min: Vector3d, val max: Vector3d) {
     }
 
     fun collidesWith(b: Box): Boolean {
-        val overlapX = (b.min.x >= min.x && b.min.x <= max.x) || (min.x >= b.min.x && min.x <= b.max.x)
-        val overlapY = (b.min.y >= min.y && b.min.y <= max.y) || (min.y >= b.min.y && min.y <= b.max.y)
-        val overlapZ = (b.min.z >= min.z && b.min.z <= max.z) || (min.z >= b.min.z && min.z <= b.max.z)
-
-        return overlapX && overlapY && overlapZ
+        //val overlapX = (b.min.x >= min.x && b.min.x <= max.x) || (min.x >= b.min.x && min.x <= b.max.x)
+        //val overlapY = (b.min.y >= min.y && b.min.y <= max.y) || (min.y >= b.min.y && min.y <= b.max.y)
+        //val overlapZ = (b.min.z >= min.z && b.min.z <= max.z) || (min.z >= b.min.z && min.z <= b.max.z)
+        //return overlapX && overlapY && overlapZ
+        return !(
+                this.max.x < b.min.x ||
+                this.max.y < b.min.y ||
+                this.max.z < b.min.z ||
+                        this.min.x > b.max.x ||
+                        this.min.y > b.max.y ||
+                        this.min.z > b.max.z
+                )
     }
 
     fun isPointInside(x: Double, y: Double, z: Double): Boolean = x >= min.x && x <= max.x && y >= min.y && y <= max.y && z >= min.z && z <= max.z

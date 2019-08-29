@@ -121,12 +121,12 @@ fun RayQuery.trace(): RayResult {
             val potentialEntities = this.origin.world.getEntitiesInBox(Box.fromExtents(32.0, 32.0, 32.0).translate(x - 16.0, y - 16.0, z - 16.0))
             for (entity in potentialEntities) {
                 // Consider each entity only once
-                if (consideredEntities.add(entity)) {
+                if (consideredEntities.add(entity) && this.entityMask(entity)) {
                     val traitCollisions = entity.traits[TraitCollidable::class] ?: continue
                     val traitHitboxes = entity.traits[TraitHitboxes::class]
 
                     if (traitHitboxes == null) {
-                        for (box in traitCollisions.collisionBoxes) {
+                        for (box in traitCollisions.translatedCollisionBoxes) {
                             val intersection = box.intersect(origin, direction, this.invDir)
                             if (intersection != null) {
                                 //val distance = collisionPoint.distance(origin)
