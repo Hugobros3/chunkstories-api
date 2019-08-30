@@ -14,6 +14,7 @@ import xyz.chunkstories.api.events.player.PlayerDeathEvent
 import xyz.chunkstories.api.physics.EntityHitbox
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.server.Server
+import xyz.chunkstories.api.sound.SoundSource
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.serialization.StreamSource
 import xyz.chunkstories.api.world.serialization.StreamTarget
@@ -72,6 +73,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
 
         if (!event.isCancelled) {
             applyDamage(event.damageDealt)
+            playDamageSound()
             lastDamageCause = cause
 
             damageCooldown = System.currentTimeMillis() + cause.cooldownInMs
@@ -82,7 +84,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         return 0f
     }
 
-    fun applyDamage(dmg: Float) {
+    private fun applyDamage(dmg: Float) {
         val wasntDead = health > 0.0
         this.health -= dmg
 
@@ -154,5 +156,9 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
                 return
             }
         }
+    }
+
+    open fun playDamageSound() {
+        entity.world.soundManager.playSoundEffect("sounds/entities/flesh.ogg", SoundSource.Mode.NORMAL, entity.location, Math.random().toFloat() * 0.4f + 0.4f, 1f)
     }
 }
