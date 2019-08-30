@@ -6,11 +6,6 @@
 
 package xyz.chunkstories.api.entity.traits.serializable
 
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.File
-import java.io.IOException
-
 import xyz.chunkstories.api.entity.DamageCause
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.events.entity.EntityDamageEvent
@@ -22,18 +17,21 @@ import xyz.chunkstories.api.server.Server
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.serialization.StreamSource
 import xyz.chunkstories.api.world.serialization.StreamTarget
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.File
+import java.io.IOException
 
 /** Any entity with this component is considered living, even if it's dead.
  * Handles health management and death  */
 open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
     var maxHealth = 100f
     private var health: Float = 0.toFloat()
-
     private var damageCooldown: Long = 0
 
     var lastDamageCause: DamageCause? = null
         private set
-    private var deathDespawnTimer: Long = 6000
+    private var deathDespawnTimer: Long = 60 * 3 // stays for 3s (180 ticks at 60tps)
 
     val isDead: Boolean
         get() = getHealth() <= 0
@@ -78,31 +76,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
 
             damageCooldown = System.currentTimeMillis() + cause.cooldownInMs
 
-            val damageDealt = event.damageDealt
-
-            // Applies knockback
-            if (cause is Entity) {
-                // Only runs if the entity do have a velocity
-                entity.traits[TraitVelocity::class]?.let { ev ->
-
-                    val attacker = cause as Entity
-                    val attackKnockback = entity.location.sub(attacker.location.add(0.0, 0.0, 0.0))
-                    attackKnockback.y = 0.0
-                    attackKnockback.normalize()
-
-                    val knockback = Math.max(1.0, Math.pow(damageDealt.toDouble(), 0.5)).toFloat()
-
-                    attackKnockback.mul(knockback * 50.0)
-                    attackKnockback.y = knockback / 50.0
-
-                    println("attackKnockback: $attackKnockback")
-
-                    ev.addVelocity(attackKnockback)
-                }
-
-            }
-
-            return damageDealt
+            return event.damageDealt
         }
 
         return 0f
@@ -147,9 +121,7 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
                         playerSavefile.delete()
                     }
 
-                    if (event.deathMessage != null) {
-                        (player.controlledEntity?.world?.gameContext as? Server)?.broadcastMessage(event.deathMessage!!)
-                    }
+                    (player.controlledEntity?.world?.gameContext as? Server)?.broadcastMessage(event.deathMessage)
                 } else {
                     // Weird, undefined cases ( controller wasn't a player, maybe some weird mod
                     // logic here
@@ -168,7 +140,13 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         health = dis.readFloat()
     }
 
-    fun removeCorpseAfterDelay() {
+    override fun tick() {
+        if (entity.world is WorldMaster) {
+            removeCorpseAfterDelay()
+        }
+    }
+
+    private fun removeCorpseAfterDelay() {
         if (isDead) {
             deathDespawnTimer--
             if (deathDespawnTimer < 0) {
@@ -177,6 +155,4 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
             }
         }
     }
-
-    /* public float getMaxHealth() { return maxHealth; } */
 }

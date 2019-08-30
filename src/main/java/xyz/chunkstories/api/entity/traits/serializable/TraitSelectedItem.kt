@@ -6,22 +6,20 @@
 
 package xyz.chunkstories.api.entity.traits.serializable
 
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.IOException
-
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.inventory.Inventory
 import xyz.chunkstories.api.item.inventory.ItemPile
+import xyz.chunkstories.api.item.inventory.obtainItemPileFromStream
+import xyz.chunkstories.api.item.inventory.saveIntoStream
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.serialization.OfflineSerializedData
 import xyz.chunkstories.api.world.serialization.StreamSource
 import xyz.chunkstories.api.world.serialization.StreamTarget
-
-import xyz.chunkstories.api.item.inventory.obtainItemPileFromStream
-import xyz.chunkstories.api.item.inventory.saveIntoStream
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 
 class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitSerializable(entity) {
     internal var inventory: Inventory
@@ -61,6 +59,11 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitS
         return selectedSlot
     }
 
+    override fun tick() {
+        // Tick item in hand if one such exists
+        selectedItem?.let { it.item.tickInHand(entity, it) }
+    }
+
     @Throws(IOException::class)
     override fun push(destinator: StreamTarget, dos: DataOutputStream) {
         dos.writeInt(selectedSlot)
@@ -86,16 +89,16 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitS
             // ItemPile pile;
 
             val (item, amount) =
-            try {
-                obtainItemPileFromStream(entity.world.contentTranslator, dis)
-            } catch (e: NullItemException) {
-                // Don't do anything about it, no big deal
-                Pair(null, null)
-            } catch (e: UndefinedItemTypeException) {
-                // This is slightly more problematic
-                this.entity.world.gameContext.logger().info(e.message)
-                return
-            }
+                    try {
+                        obtainItemPileFromStream(entity.world.contentTranslator, dis)
+                    } catch (e: NullItemException) {
+                        // Don't do anything about it, no big deal
+                        Pair(null, null)
+                    } catch (e: UndefinedItemTypeException) {
+                        // This is slightly more problematic
+                        this.entity.world.gameContext.logger().info(e.message)
+                        return
+                    }
 
             // Ensures only client worlds accepts such pushes
             if (entity.world !is WorldMaster)

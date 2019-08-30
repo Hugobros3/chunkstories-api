@@ -6,13 +6,7 @@
 
 package xyz.chunkstories.api.entity.traits.serializable
 
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.IOException
-import java.util.concurrent.locks.ReentrantLock
-
 import org.joml.Vector3dc
-
 import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.events.entity.EntityTeleportEvent
@@ -21,6 +15,10 @@ import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.chunk.Chunk
 import xyz.chunkstories.api.world.serialization.StreamSource
 import xyz.chunkstories.api.world.serialization.StreamTarget
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
+import java.util.concurrent.locks.ReentrantLock
 
 /** Holds the information about an entity whereabouts and a flag to mark it as
  * unspawned  */
@@ -73,7 +71,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
     }
 
     fun move(dx: Double, dy: Double, dz: Double) {
-        if(dx.isNaN() || dy.isNaN() || dz.isNaN()) {
+        if (dx.isNaN() || dy.isNaN() || dz.isNaN()) {
             System.err.println("move by nan $dx $dy $dz")
             Thread.dumpStack()
             return
@@ -187,6 +185,15 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
 
             return true
         }
+    }
+
+    override fun tick() {
+        if (get().x.isNaN() || get().y.isNaN() || get().z.isNaN()) {
+            world.gameContext.logger().warn("Entity $entity had invalid location: ${get()}, resetting to world spawn")
+            set(world.defaultSpawnLocation)
+        }
+        //Shouldn't be necessary !
+        //sanitize()
     }
 
     fun onRemoval() {

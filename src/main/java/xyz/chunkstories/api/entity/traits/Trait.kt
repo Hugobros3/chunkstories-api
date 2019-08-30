@@ -7,6 +7,7 @@
 package xyz.chunkstories.api.entity.traits
 
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.input.Input
 
 abstract class Trait(val entity: Entity) {
     val id: Int
@@ -17,5 +18,13 @@ abstract class Trait(val entity: Entity) {
 
     fun id(): Int {
         return id
+    }
+
+    open fun tick() {
+
+    }
+
+    open fun handleInput(input: Input): Boolean {
+        return false
     }
 }

@@ -20,12 +20,10 @@ import kotlin.reflect.KClass
 import java.util.HashSet
 
 abstract class Entity(val definition: EntityDefinition, val world: World) {
-    //var location : Location = Location(world, .0, .0, .0)
     var location: Location
         get() = traitLocation.get()
         set(value) = traitLocation.set(value)
 
-    //fun getWorld() = world
 
     var UUID : Long = -1L
         set(value) {
@@ -46,7 +44,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
 
     @JvmField
     val subscribers = Subscribers()
-    interface Traits_ : Map<Class<Trait>, Trait> {
+    /*interface Traits_ : Map<Class<Trait>, Trait> {
         fun registerTrait(trait : Trait) : Int
 
         fun has(trait : Trait) : Boolean
@@ -65,7 +63,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         fun all() : Collection<Trait>
 
         fun byId() : Array<Trait>
-    }
+    }*/
 
     fun afterIntialization() {
         if (initialized)
@@ -85,7 +83,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
     }
 
     inner class Traits {
-        var map: MutableMap<Class<out Trait>, Trait> = HashMap()
+        val map: MutableMap<Class<out Trait>, Trait> = HashMap()
 
         lateinit var byId: Array<Trait>
         lateinit var set: Set<Trait>
@@ -102,11 +100,9 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
                 return trait.id()
             }
 
-            //println("registering trait $trait")
             var id = purge(trait)
             if (id == -1)
                 id = count++
-            //println("got id $id")
 
             map[trait.javaClass] = trait
 
@@ -289,7 +285,11 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         }
     }
 
-    abstract fun tick() : Unit
+    open fun tick() {
+        for(trait in traits.byId) {
+            trait.tick()
+        }
+    }
 
     open fun getBoundingBox() = Box.fromExtentsCenteredHorizontal(1.0, 1.0, 1.0)
 

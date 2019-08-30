@@ -14,6 +14,7 @@ import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldClient
 import xyz.chunkstories.api.world.WorldMaster
+import kotlin.math.abs
 
 class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(definition, world), InventoryOwner {
     protected var rotation = 0f
@@ -26,7 +27,6 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
     val inventory = TraitInventory(this, 1, 1, true)
 
     init {
-        //traitContents = ItemOnGroundContents(this)
         EntityGroundItemRenderer(this)
         spawnTime = System.currentTimeMillis()
     }
@@ -36,12 +36,10 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
     }
 
     override fun tick() {
-        // this.moveWithCollisionRestrain(0, -0.05, 0);
         val velocity = entityVelocity.velocity
 
         if (world is WorldMaster) {
-            val voxelIn = world.peek(location).voxel
-            val inWater = voxelIn?.liquid == true
+            val inWater = world.peek(location).voxel.liquid
 
             val terminalVelocity = if (inWater) -0.25 else -0.5
             if (velocity.y() > terminalVelocity && !collisions.isOnGround)
@@ -67,12 +65,12 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
             velocity.x *= 0.98
             velocity.z *= 0.98
 
-            if (Math.abs(velocity.x) < 0.02)
+            if (abs(velocity.x) < 0.02)
                 velocity.x = 0.0
-            if (Math.abs(velocity.z) < 0.02)
+            if (abs(velocity.z) < 0.02)
                 velocity.z = 0.0
 
-            if (Math.abs(velocity.y) < 0.01)
+            if (abs(velocity.y) < 0.01)
                 velocity.y = 0.0
 
             entityVelocity.setVelocity(velocity)
@@ -86,50 +84,6 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
             }
         }
     }
-
-    /*static class EntityGroundItemRenderer extends EntityRenderer<EntityGroundItem> {
-
-		@Override
-		public int renderEntities(RenderingInterface renderer,
-				RenderingIterator<EntityGroundItem> renderableEntitiesIterator) {
-			renderer.useShader("entities");
-
-			int i = 0;
-
-			while (renderableEntitiesIterator.hasNext()) {
-				EntityGroundItem e = renderableEntitiesIterator.next();
-
-				ItemPile within = e.itemPileWithin.getItemPile();
-				if (within != null) {
-					CellData cell = e.getWorld().peekSafely(e.getLocation());
-					renderer.currentShader().setUniform2f("worldLightIn", cell.getBlocklight(), cell.getSunlight());
-
-					Matrix4f matrix = new Matrix4f();
-
-					Vector3d loc = e.getLocation().add(0.0, 0.25, 0.0);
-					matrix.translate((float) loc.x,
-							(float) (loc.y + Math.sin(Math.PI / 180 * e.rotation * 2) * 0.125 + 0.25), (float) loc.z);
-					// matrix.rotate((float)Math.PI/2, new Vector3f(1,0 ,0));
-					matrix.rotate((float) Math.PI / 180 * e.rotation, new Vector3f(0, 1, 0));
-					within.getItem().getDefinition().getRenderer().renderItemInWorld(renderer, within, e.getWorld(),
-							e.getLocation(), matrix);
-					// renderingInterface.flush();
-				} else {
-					System.out.println("EntityGroundItem: Not within any inventory ???");
-				}
-
-				i++;
-			}
-
-			return i;
-		}
-
-		@Override
-		public void freeRessources() {
-			// Not much either
-		}
-
-	}*/
 
     override fun getBoundingBox(): Box {
         return Box.fromExtentsCenteredHorizontal(0.5, 0.75, 0.5)
