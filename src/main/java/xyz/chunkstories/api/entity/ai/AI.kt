@@ -7,6 +7,7 @@
 package xyz.chunkstories.api.entity.ai
 
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.entity.traits.Trait
 
 abstract class AI<E : Entity>(val entity: E) {
     var currentTask: AiTask<E> = AiTaskIdle(this)
@@ -27,5 +28,11 @@ abstract class AiTask<E : Entity>(val ai: AI<E>) {
 class AiTaskIdle<E: Entity>(ai: AI<E>) : AiTask<E>(ai) {
     override fun execute() {
         // Do nothing (idle)
+    }
+}
+
+class TraitAi<E : Entity>(entity: E, val ai: AI<E>): Trait(entity) {
+    override fun tick() {
+        ai.tick()
     }
 }

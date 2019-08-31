@@ -21,9 +21,21 @@ import xyz.chunkstories.api.world.serialization.StreamTarget
 
 class TraitRotation(entity: Entity) : TraitSerializable(entity) {
     var horizontalRotation = 0f
-        private set
+        private set(value) {
+            if(value.isNaN()) {
+                entity.world.gameContext.logger().warn("Tried to set TraitRotation.x to NaN $entity")
+            } else {
+                field = value
+            }
+        }
     var verticalRotation = 0f
-        private set
+        private set(value) {
+            if(value.isNaN()) {
+                entity.world.gameContext.logger().warn("Tried to set TraitRotation.y to NaN $entity")
+            } else {
+                field = value
+            }
+        }
 
     private val rotationImpulse = Vector2f()
 
