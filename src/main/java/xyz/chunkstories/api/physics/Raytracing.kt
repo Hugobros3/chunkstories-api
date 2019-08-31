@@ -189,6 +189,10 @@ fun RayQuery.trace(): RayResult {
 
     } while (voxelDelta[0] * voxelDelta[0] + voxelDelta[1] * voxelDelta[1] + voxelDelta[2] * voxelDelta[2] < this.tMax * this.tMax)
 
+    if(tMinEntity != Double.MAX_VALUE) {
+        return bestEntityHit!!
+    }
+
     return RayResult.NoHit(this)
 }
 
@@ -266,14 +270,17 @@ fun Box.intersect(origin: Vector3dc, direction: Vector3dc, invDirection: Vector3
 }
 
 fun EntityHitbox.intersect(lineStart: Vector3dc, lineDirection: Vector3dc, invDirection: Vector3dc): BoxIntersection? {
+    val realWorldTimeTruncated = (System.nanoTime() % 1000_000_000_000)
+    val realWorldTimeMs = realWorldTimeTruncated / 1000_000
+    val animationTime = (realWorldTimeMs / 1000.0) * 1000.0
+
     val fromAABBToWorld = Matrix4f()
     if (this.animationTrait != null)
-        fromAABBToWorld.set(animationTrait.animatedSkeleton.getBoneHierarchyTransformationMatrix(name, (System.currentTimeMillis() % 1000000).toDouble()))
+        fromAABBToWorld.set(animationTrait!!.animatedSkeleton.getBoneHierarchyTransformationMatrix(name, animationTime))
 
     val worldPositionTransformation = Matrix4f()
 
     val entityLoc = entity.location
-
     val pos = Vector3f(entityLoc.x.toFloat(), entityLoc.y.toFloat(), entityLoc.z.toFloat())
     worldPositionTransformation.translate(pos)
 
@@ -284,6 +291,9 @@ fun EntityHitbox.intersect(lineStart: Vector3dc, lineDirection: Vector3dc, invDi
     val fromWorldToAABB = Matrix4f()
     fromAABBToWorld.invert(fromWorldToAABB)
 
+    //println("fromAABBToWorld: $fromAABBToWorld")
+    //println("animationTrait: $animationTrait")
+
     // Transform line start into AABB space
     val lineStart4 = Vector4f(lineStart.x().toFloat(), lineStart.y().toFloat(), lineStart.z().toFloat(), 1.0f)
     val lineDirection4 = Vector4f(lineDirection.x().toFloat(), lineDirection.y().toFloat(), lineDirection.z().toFloat(), 0.0f)
@@ -291,11 +301,22 @@ fun EntityHitbox.intersect(lineStart: Vector3dc, lineDirection: Vector3dc, invDi
     fromWorldToAABB.transform(lineStart4)
     fromWorldToAABB.transform(lineDirection4)
 
+    //println("lineStart: $lineStart")
+    //println("lineStart4: $lineStart4")
+
     val lineStartTransformed = Vector3d(lineStart4.x().toDouble(), lineStart4.y().toDouble(), lineStart4.z().toDouble())
     val lineDirectionTransformed = Vector3d(lineDirection4.x().toDouble(), lineDirection4.y().toDouble(), lineDirection4.z().toDouble())
+    val lineDirectionTransformedInversed = Vector3d(1.0 / lineDirectionTransformed.x(), 1.0 / lineDirectionTransformed.y(), 1.0 / lineDirectionTransformed.z())
 
     // Actual computation
-    val intersection = box.intersect(lineStartTransformed, lineDirectionTransformed, invDirection) ?: return null
+    val oldstyleIntersection = this.lineIntersection(lineStart, lineDirection)
+
+    val intersection = box.intersect(lineStartTransformed, lineDirectionTransformed, lineDirectionTransformedInversed)
+
+    //println("$name os: ${oldstyleIntersection != null} ns: ${intersection != null} ${intersection?.tMin}")
+
+    if(intersection == null)
+        return null
 
     // Transform hitPoint back into world
     val hitPoint = intersection.hitPosition

@@ -16,19 +16,15 @@ import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.TraitAnimated
 
-class EntityHitbox(internal val entity: Entity, internal val box: Box, val name: String) {
-    internal val animationTrait: TraitAnimated?
-
-    init {
-        this.animationTrait = entity.traits[TraitAnimated::class.java]
-    }
+class EntityHitbox(internal val entity: Entity,     val box: Box, val name: String) {
+    internal val animationTrait: TraitAnimated? by lazy { entity.traits[TraitAnimated::class.java] }
 
     /** Tricky maths; transforms the inbound ray so the hitbox would be at 0.0.0 and
      * axis-aligned  */
     fun lineIntersection(lineStart: Vector3dc, lineDirection: Vector3dc): Vector3dc? {
         val fromAABBToWorld = Matrix4f()
         if (this.animationTrait != null)
-            fromAABBToWorld.set(animationTrait.animatedSkeleton.getBoneHierarchyTransformationMatrix(name, (System.currentTimeMillis() % 1000000).toDouble()))
+            fromAABBToWorld.set(animationTrait!!.animatedSkeleton.getBoneHierarchyTransformationMatrix(name, (System.currentTimeMillis() % 1000000).toDouble()))
 
         val worldPositionTransformation = Matrix4f()
 

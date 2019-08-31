@@ -52,3 +52,14 @@ fun Vector3dc.toVec2d() = Vector2d(x(), y())
 fun Vector4ic.toVec3i() = Vector3i(x(), y(), z())
 fun Vector4ic.toVec2i() = Vector2i(x(), y())
 fun Vector3ic.toVec2i() = Vector2i(x(), y())
+
+
+fun Matrix4f.toMatrix4d() = Matrix4d(m00().toDouble(), m01().toDouble(), m02().toDouble(), m03().toDouble(),
+        m10().toDouble(), m11().toDouble(), m12().toDouble(), m13().toDouble(),
+        m20().toDouble(), m21().toDouble(), m22().toDouble(), m23().toDouble(),
+        m30().toDouble(), m31().toDouble(), m32().toDouble(), m33().toDouble())
+
+fun Matrix4d.toMatrix4f() = Matrix4f(m00().toFloat(), m01().toFloat(), m02().toFloat(), m03().toFloat(),
+        m10().toFloat(), m11().toFloat(), m12().toFloat(), m13().toFloat(),
+        m20().toFloat(), m21().toFloat(), m22().toFloat(), m23().toFloat(),
+        m30().toFloat(), m31().toFloat(), m32().toFloat(), m33().toFloat())
