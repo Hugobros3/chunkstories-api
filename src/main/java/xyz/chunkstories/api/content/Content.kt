@@ -19,7 +19,10 @@ import xyz.chunkstories.api.voxel.materials.VoxelMaterial
 import xyz.chunkstories.api.voxel.textures.VoxelTexture
 import xyz.chunkstories.api.world.generator.WorldGeneratorDefinition
 import org.slf4j.Logger
+import xyz.chunkstories.api.crafting.Recipe
 import xyz.chunkstories.api.graphics.representation.Model
+import xyz.chunkstories.api.gui.inventory.InventorySlot
+import xyz.chunkstories.api.gui.inventory.InventoryUI
 import xyz.chunkstories.api.particles.ParticleType
 
 /** Encapsulates all the user-definable content available  */
@@ -189,6 +192,16 @@ interface Content {
         fun getOrLoadModel(assetName: String): Model
 
         val defaultModel: Model
+    }
+
+    val recipes: Recipes
+    interface Recipes {
+        val all: Collection<Recipe>
+
+        /** The underlying slots have to be fake slots ! */
+        fun getRecipeForInventorySlots(craftingAreaSlots: Array<Array<InventorySlot.FakeSlot>>): Recipe?
+
+        fun reloadAll()
     }
 
     /** General logger about content  */

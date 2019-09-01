@@ -46,7 +46,7 @@ open class InventoryUI(layer: Layer, width: Int, height: Int) : GuiElement(layer
                 }
 
                 if (InventoryManagementUI.draggingAmount < 0) {
-                    RuntimeException("bad")
+                    throw RuntimeException("InventoryManagementUI.draggingAmount < 0")
                 } else if (InventoryManagementUI.draggingAmount == 0)
                     InventoryManagementUI.draggingFrom = null
             } else {
