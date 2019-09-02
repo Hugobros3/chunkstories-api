@@ -6,7 +6,7 @@ import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.item.inventory.Inventory
 import xyz.chunkstories.api.item.inventory.ItemPile
 
-abstract class Recipe(val result: ItemDefinition) {
+abstract class Recipe(val result: Pair<ItemDefinition, Int>) {
     companion object {
         val logger = LoggerFactory.getLogger("crafting")
     }
@@ -22,7 +22,7 @@ class AmorphRecipe(val ingredients: List<Ingredient>) {
     data class Ingredient(val item: ItemDefinition, val quantity: Int)
 }
 
-class PatternedRecipe(val pattern: Array<Array<ItemDefinition?>>, result: ItemDefinition) : Recipe(result) {
+class PatternedRecipe(val pattern: Array<Array<ItemDefinition?>>, result: Pair<ItemDefinition, Int>) : Recipe(result) {
     val width = pattern.size
     val height = pattern[0].size
 
@@ -92,7 +92,7 @@ class PatternedRecipe(val pattern: Array<Array<ItemDefinition?>>, result: ItemDe
         for((itemPile, amount) in suppliedIngredients) {
             itemPile.amount -= amount
         }
-        destinationInventory.placeItemAt(destX, destY, result.newItem(), 1)
+        destinationInventory.placeItemAt(destX, destY, result.first.newItem(), result.second)
     }
 
     override fun craftUsing(craftingAreaSlots: Array<Array<InventorySlot.FakeSlot>>, destinationInventory: Inventory, destX: Int, destY: Int) {

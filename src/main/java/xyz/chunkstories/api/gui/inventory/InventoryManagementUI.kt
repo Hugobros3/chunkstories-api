@@ -81,7 +81,7 @@ open class InventoryUI(layer: Layer, width: Int, height: Int) : GuiElement(layer
             var (item, amount) = slot.underlying.visibleContents ?: continue
             if (InventoryManagementUI.draggingFrom == slot.underlying)
                 amount -= InventoryManagementUI.draggingAmount
-            if (amount <= 0)
+            if (amount <= 1)
                 continue
 
             drawer.drawStringWithShadow(layer.gui.fonts.defaultFont(), this@InventoryUI.positionX + slot.x + 20 * item.definition.slotsWidth - 8, this@InventoryUI.positionY + slot.y - 2, "$amount")

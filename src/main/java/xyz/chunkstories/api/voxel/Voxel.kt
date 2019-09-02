@@ -289,7 +289,9 @@ open class Voxel(val definition: VoxelDefinition) {
             //TODO
             //spawnBlockDestructionParticles(location, world)
 
-            world.soundManager.playSoundEffect("sounds/gameplay/voxel_remove.ogg", SoundSource.Mode.NORMAL, location, 1.0f, 1.0f)
+            //TODO if cause world
+            //if(entity != null)
+            //    world.soundManager.playSoundEffect("sounds/gameplay/voxel_remove.ogg", SoundSource.Mode.NORMAL, location, 1.0f, 1.0f)
 
             val itemSpawnLocation = Location(world, location)
             itemSpawnLocation.add(0.5, 0.25, 0.5)
