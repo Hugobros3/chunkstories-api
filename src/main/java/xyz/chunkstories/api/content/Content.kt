@@ -23,6 +23,7 @@ import xyz.chunkstories.api.crafting.Recipe
 import xyz.chunkstories.api.graphics.representation.Model
 import xyz.chunkstories.api.gui.inventory.InventorySlot
 import xyz.chunkstories.api.gui.inventory.InventoryUI
+import xyz.chunkstories.api.loot.LootTable
 import xyz.chunkstories.api.particles.ParticleType
 
 /** Encapsulates all the user-definable content available  */
@@ -201,7 +202,16 @@ interface Content {
         /** The underlying slots have to be fake slots ! */
         fun getRecipeForInventorySlots(craftingAreaSlots: Array<Array<InventorySlot.FakeSlot>>): Recipe?
 
-        fun reloadAll()
+        fun reload()
+    }
+
+    val lootTables: LootTables
+    interface LootTables {
+        val all: Map<String, LootTable>
+
+        operator fun get(name: String) = all[name]
+
+        fun reload()
     }
 
     /** General logger about content  */

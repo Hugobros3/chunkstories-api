@@ -22,6 +22,7 @@ import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.item.ItemVoxel
 import xyz.chunkstories.api.loot.LootTable
+import xyz.chunkstories.api.loot.makeLootTableFromJson
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
@@ -42,48 +43,55 @@ open class Voxel(val definition: VoxelDefinition) {
 
     /** The textures used for rendering this block. Goes unused with custom models ! */
     var voxelTextures = Array<VoxelTexture>(6) { store.textures.get(name) }
+        protected set
 
     /** The material this block uses */
     var voxelMaterial: VoxelMaterial = store.materials.defaultMaterial
+        protected set
 
     /** Can entities pass through this block ? */
     var solid = definition["solid"].asBoolean ?: true //definition.resolveProperty("solid", "true") == "true"
         @JvmName("isSolid")
         get
+        protected set
 
     /** Can entities swim through this block ? */
     var liquid = definition["liquid"].asBoolean ?: false //.resolveProperty("liquid", "false") == "true"
         @JvmName("isLiquid")
         get
+        protected set
 
     /** Does this block completely hides adjacent ones (and can we just skip rendering those hidden faces) ? */
     var opaque = definition["opaque"].asBoolean ?: true //definition.resolveProperty("opaque", "true") == "true"
         @JvmName("isOpaque")
         get
+        protected set
 
     /** Should adjacent copies of this block have the faces in between them rendered ? */
     var selfOpaque = definition["selfOpaque"].asBoolean ?: false //definition.resolveProperty("selfOpaque", "false") == "true"
         @JvmName("isSelfOpaque")
         get
+        protected set
 
     /** The light level the block emmits */
     var emittedLightLevel = 0
+        protected set
 
     /** How much, on top of the normal attenuation, does the light level of light passing through this block is reduced ? */
     var shadingLightLevel = 0
+        protected set
 
-    var lootLogic: LootTable
+    var lootLogic: LootTable protected set
 
     var customRenderingRoutine: (ChunkMeshRenderingInterface.(Cell) -> Unit)? = null
 
+    //TODO remove variants from here and plainly assign them different ids?
+    //ie: whool colors: different voxels
+    //  !!stair orientations: same voxel, different metadata
     val variants: List<ItemDefinition>
         get() = definition.variants
 
     init {
-        //definition.resolveProperty("solid")?.let { solid = it.toBoolean() }
-        //definition.resolveProperty("opaque")?.let { opaque = it.toBoolean() }
-        //definition.resolveProperty("selfOpaque")?.let { selfOpaque = it.toBoolean() }
-
         /** Sets all 6 sides of the voxel with one texture */
         definition["texture"]?.asString?.let { voxelTextures.fill(store.textures.get(it)) }
         //definition.resolveProperty("texture")?.let { voxelTextures.fill(store.textures.get(it)) }
@@ -100,17 +108,9 @@ open class Voxel(val definition: VoxelDefinition) {
             textures["back"]?.asString?.let { voxelTextures[VoxelSide.BACK.ordinal] = store.textures.get(it) }
             textures["bottom"]?.asString?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store.textures.get(it) }
         }
-        //definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store.textures.get(it), 0, 4) }
-        /*definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store.textures.get(it) }
-        definition.resolveProperty("textures.left")?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store.textures.get(it) }
-        definition.resolveProperty("textures.right")?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store.textures.get(it) }
-        definition.resolveProperty("textures.front")?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store.textures.get(it) }
-        definition.resolveProperty("textures.back")?.let { voxelTextures[VoxelSide.BACK.ordinal] = store.textures.get(it) }
-        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store.textures.get(it) }*/
 
         /** Sets a custom voxel material */
         (definition["material"]?.asString ?: name).let { voxelMaterial = store.materials.getVoxelMaterial(it) ?: store.materials.defaultMaterial }
-        //(definition.resolveProperty("material") ?: name).let { voxelMaterial = store.materials.getVoxelMaterial(it) ?: store.materials.defaultMaterial }
 
         (definition["emittedLightLevel"].asInt ?: 0).let { emittedLightLevel = it.coerceIn(0..16) ?: 0 }
         (definition["shadingLightLevel"].asInt ?: 0).let { shadingLightLevel = it.coerceIn(0..16) ?: 0 }
@@ -123,10 +123,8 @@ open class Voxel(val definition: VoxelDefinition) {
             }
         }
 
-        //variants = enumerateVariants(store.parent.items)
-
-        //TODO TODO TODO
-        lootLogic = LootTable.Nothing(0.0)
+        //lootLogic = definition["drops"]?.let { makeLootTableFromJson(it, store.parent, Pair()) }
+        lootLogic = LootTable.Nothing(1.0)
     }
 
     /** Called before setting a cell to this Voxel type. Previous state is assumed
@@ -261,7 +259,13 @@ open class Voxel(val definition: VoxelDefinition) {
         return this == that
     }
 
-    internal fun enumerateVariants_(itemStore: Content.ItemsDefinitions) = enumerateVariants(itemStore)
+    internal fun enumerateVariants_(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
+        val variants = enumerateVariants(itemStore)
+
+        lootLogic = definition["drops"]?.let { makeLootTableFromJson(it, store.parent, Pair(variants[0], 1)) } ?: LootTable.Entry(variants[0], 1..1, 1.0)
+
+        return variants
+    }
 
     protected open fun enumerateVariants(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
         val definition = ItemDefinition(itemStore, name, Json.Dict(mapOf(
@@ -337,14 +341,7 @@ open class Voxel(val definition: VoxelDefinition) {
     open fun getLoot(cell: Cell, tool: MiningTool): List<Pair<Item, Int>> {
         if (isAir())
             return emptyList()
-
-        ///** If this block has custom logic for loot spawning, use that ! */
-        val logic = lootLogic
-        //if (logic != null)
-        return logic.spawn()
-
-        ///** Returns *one* of the variants for this block */
-        //return enumerateItemsForBuilding().shuffled().subList(0, 1).map { Pair(it, 1) }
+        return lootLogic.spawn()
     }
 
     open fun tick(cell: EditableCell) {
