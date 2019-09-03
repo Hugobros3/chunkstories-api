@@ -8,10 +8,13 @@ package xyz.chunkstories.api.item
 
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.content.Definition
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asInt
+import xyz.chunkstories.api.content.json.asString
 import xyz.chunkstories.api.util.kotlin.initOnce
 import java.lang.reflect.Constructor
 
-class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properties: Map<String, String>) : Definition(name, properties) {
+class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properties: Json.Dict) : Definition(name, properties) {
     /** When added to the game content, either by being loaded explicitly or programatically, will be set to an integer
      * value. Attempting to manually override/set this identifier yourself will result in a house fire. */
     var assignedId: Int by initOnce()
@@ -24,7 +27,7 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
     val maxStackSize: Int
 
     init {
-        clazz = this.resolveProperty("class")?.let {
+        clazz = this["class"].asString?.let {
             store.parent.modsManager.getClassByName(it)?.let {
                 if (Item::class.java.isAssignableFrom(it))
                     it as Class<Item>
@@ -39,14 +42,14 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
             throw Exception("Your custom class, $clazz, lacks the correct Item(ItemDefinition) constructor.")
         }
 
-        slotsWidth = this.resolveProperty("slotsWidth")?.toIntOrNull() ?: 1
-        slotsHeight = this.resolveProperty("slotsHeight")?.toIntOrNull() ?: 1
-        maxStackSize = this.resolveProperty("maxStackSize")?.toIntOrNull() ?: 64
+        slotsWidth = this["slotsWidth"].asInt ?: 1
+        slotsHeight = this["slotsHeight"].asInt ?: 1
+        maxStackSize = this["maxStackSize"].asInt ?: 64
     }
 
     fun <I : Item> newItem() = (constructor.newInstance(this)!! as I)!!
 
     override fun toString(): String {
-        return "ItemDefinition($name, $allProperties)"
+        return "ItemDefinition($name, $properties)"
     }
 }

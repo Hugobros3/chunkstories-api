@@ -9,6 +9,7 @@ package xyz.chunkstories.api.item
 import org.joml.Matrix4f
 import org.joml.Vector4f
 import xyz.chunkstories.api.content.Content
+import xyz.chunkstories.api.content.json.asString
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.TraitSight
@@ -40,7 +41,7 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
     val voxel: Voxel
 
     init {
-        voxel = store.getVoxel(definition["voxel"]!!)!!
+        voxel = store.getVoxel(definition["voxel"].asString!!)!!
     }
 
     override fun getTextureName(): String {

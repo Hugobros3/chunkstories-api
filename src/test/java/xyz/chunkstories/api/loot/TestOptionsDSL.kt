@@ -4,7 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
-package xyz.chunkstories.api.dsl
+package xyz.chunkstories.api.loot
 
 import xyz.chunkstories.api.util.configuration.OptionsDeclarationCtx
 import org.junit.Test

@@ -8,13 +8,15 @@ package xyz.chunkstories.api.voxel
 
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.content.Definition
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asString
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.util.kotlin.initOnce
 import java.lang.reflect.Constructor
 
 /** A Voxel definition defines a voxel type, one that can be placed in game, and is assignated an ID. */
-class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<String, String>) : Definition(name, properties) {
+class VoxelDefinition(val store: Content.Voxels, name: String, properties: Json.Dict) : Definition(name, properties) {
     /** When added to the game content, either by being loaded explicitly or programatically, will be set to an integer
      * value between 1 and 65535. Attempting to manually override/set this identifier yourself will result in a house fire. */
     var assignedId : Int by initOnce()
@@ -25,8 +27,11 @@ class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<S
     val clazz: Class<Voxel>
     private val constructor: Constructor<Voxel>
 
+    val voxel: Voxel
+    val variants: List<ItemDefinition>
+
     init {
-        clazz = this.resolveProperty("class")?.let {
+        clazz = this["class"].asString?.let {
             store.parent.modsManager.getClassByName(it)?.let {
                 if(Voxel::class.java.isAssignableFrom(it))
                     it as Class<Voxel>
@@ -40,11 +45,14 @@ class VoxelDefinition(val store: Content.Voxels, name: String, properties: Map<S
         } catch (e: NoSuchMethodException) {
             throw Exception("Your custom class, $clazz, lacks the correct Voxel(VoxelDefinition) constructor.")
         }
+
+        voxel = create()
+        variants = voxel.enumerateVariants_(store.parent.items)
     }
 
-    fun <V : Voxel> create() = constructor.newInstance(this) as V
+    private fun <V : Voxel> create() = constructor.newInstance(this) as V
 
     override fun toString(): String {
-        return "VoxelDefinition($name, $allProperties)"
+        return "VoxelDefinition($name, $properties)"
     }
 }

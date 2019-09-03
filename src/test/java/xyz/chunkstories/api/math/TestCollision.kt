@@ -25,10 +25,10 @@ class TestCollision {
         val b = Box.fromExtents(2.0, 1.0, 1.0).translate(10.0, 0.0, 0.0)
         val v = Vector3d(1.0, 0.0, 0.0).normalize()
 
-        val t = distanceToIntersection(a, b, v)
+        val t = distanceToIntersection(a, b, v, 100.0)
         println("t: $t")
 
-        println("t wrong dir: ${distanceToIntersection(a, b, Vector3d(-1.0, 0.0, 0.0).normalize())}")
-        println("t self: ${distanceToIntersection(a, a, Vector3d(-1.0, 0.0, 0.0).normalize())}")
+        println("t wrong dir: ${distanceToIntersection(a, b, Vector3d(-1.0, 0.0, 0.0).normalize(), 100.0)}")
+        println("t self: ${distanceToIntersection(a, a, Vector3d(-1.0, 0.0, 0.0).normalize(), 100.0)}")
     }
 }

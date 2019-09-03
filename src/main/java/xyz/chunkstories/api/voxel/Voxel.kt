@@ -9,7 +9,7 @@ package xyz.chunkstories.api.voxel
 import org.joml.Vector3d
 import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.content.Content
-import xyz.chunkstories.api.dsl.LootRules
+import xyz.chunkstories.api.content.json.*
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityGroundItem
 import xyz.chunkstories.api.entity.traits.serializable.TraitControllable
@@ -21,9 +21,9 @@ import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.item.ItemVoxel
+import xyz.chunkstories.api.loot.LootTable
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.sound.SoundSource
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
 import xyz.chunkstories.api.voxel.textures.VoxelTexture
 import xyz.chunkstories.api.world.cell.Cell
@@ -47,22 +47,22 @@ open class Voxel(val definition: VoxelDefinition) {
     var voxelMaterial: VoxelMaterial = store.materials.defaultMaterial
 
     /** Can entities pass through this block ? */
-    var solid = definition.resolveProperty("solid", "true") == "true"
+    var solid = definition["solid"].asBoolean ?: true //definition.resolveProperty("solid", "true") == "true"
         @JvmName("isSolid")
         get
 
     /** Can entities swim through this block ? */
-    var liquid = definition.resolveProperty("liquid", "false") == "true"
+    var liquid = definition["liquid"].asBoolean ?: false //.resolveProperty("liquid", "false") == "true"
         @JvmName("isLiquid")
         get
 
     /** Does this block completely hides adjacent ones (and can we just skip rendering those hidden faces) ? */
-    var opaque = definition.resolveProperty("opaque", "true") == "true"
+    var opaque = definition["opaque"].asBoolean ?: true //definition.resolveProperty("opaque", "true") == "true"
         @JvmName("isOpaque")
         get
 
     /** Should adjacent copies of this block have the faces in between them rendered ? */
-    var selfOpaque = definition.resolveProperty("selfOpaque", "false") == "true"
+    var selfOpaque = definition["selfOpaque"].asBoolean ?: false //definition.resolveProperty("selfOpaque", "false") == "true"
         @JvmName("isSelfOpaque")
         get
 
@@ -72,36 +72,50 @@ open class Voxel(val definition: VoxelDefinition) {
     /** How much, on top of the normal attenuation, does the light level of light passing through this block is reduced ? */
     var shadingLightLevel = 0
 
-    var lootLogic: LootRules? = null
+    var lootLogic: LootTable
 
     var customRenderingRoutine: (ChunkMeshRenderingInterface.(Cell) -> Unit)? = null
 
     val variants: List<ItemDefinition>
+        get() = definition.variants
 
     init {
-        definition.resolveProperty("solid")?.let { solid = it.toBoolean() }
-        definition.resolveProperty("opaque")?.let { opaque = it.toBoolean() }
-        definition.resolveProperty("selfOpaque")?.let { selfOpaque = it.toBoolean() }
+        //definition.resolveProperty("solid")?.let { solid = it.toBoolean() }
+        //definition.resolveProperty("opaque")?.let { opaque = it.toBoolean() }
+        //definition.resolveProperty("selfOpaque")?.let { selfOpaque = it.toBoolean() }
 
         /** Sets all 6 sides of the voxel with one texture */
-        definition.resolveProperty("texture")?.let { voxelTextures.fill(store.textures.get(it)) }
-        /** Sets all 4 horizontal sides of the voxel with the same texture */
-        definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store.textures.get(it), 0, 4) }
-        /** Code for setting each side */
-        definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store.textures.get(it) }
+        definition["texture"]?.asString?.let { voxelTextures.fill(store.textures.get(it)) }
+        //definition.resolveProperty("texture")?.let { voxelTextures.fill(store.textures.get(it)) }
+        val textures = definition["textures"]?.asDict
+        if (textures != null) {
+            /** Sets all 4 horizontal sides of the voxel with the same texture */
+            textures["sides"]?.asString?.let { voxelTextures.fill(store.textures.get(it), 0, 4) }
+
+            /** Code for setting each side */
+            textures["top"]?.asString?.let { voxelTextures[VoxelSide.TOP.ordinal] = store.textures.get(it) }
+            textures["left"]?.asString?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store.textures.get(it) }
+            textures["right"]?.asString?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store.textures.get(it) }
+            textures["front"]?.asString?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store.textures.get(it) }
+            textures["back"]?.asString?.let { voxelTextures[VoxelSide.BACK.ordinal] = store.textures.get(it) }
+            textures["bottom"]?.asString?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store.textures.get(it) }
+        }
+        //definition.resolveProperty("textures.sides")?.let { voxelTextures.fill(store.textures.get(it), 0, 4) }
+        /*definition.resolveProperty("textures.top")?.let { voxelTextures[VoxelSide.TOP.ordinal] = store.textures.get(it) }
         definition.resolveProperty("textures.left")?.let { voxelTextures[VoxelSide.LEFT.ordinal] = store.textures.get(it) }
         definition.resolveProperty("textures.right")?.let { voxelTextures[VoxelSide.RIGHT.ordinal] = store.textures.get(it) }
         definition.resolveProperty("textures.front")?.let { voxelTextures[VoxelSide.FRONT.ordinal] = store.textures.get(it) }
         definition.resolveProperty("textures.back")?.let { voxelTextures[VoxelSide.BACK.ordinal] = store.textures.get(it) }
-        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store.textures.get(it) }
+        definition.resolveProperty("textures.bottom")?.let { voxelTextures[VoxelSide.BOTTOM.ordinal] = store.textures.get(it) }*/
 
         /** Sets a custom voxel material */
-        (definition.resolveProperty("material") ?: name).let { voxelMaterial = store.materials.getVoxelMaterial(it) ?: store.materials.defaultMaterial }
+        (definition["material"]?.asString ?: name).let { voxelMaterial = store.materials.getVoxelMaterial(it) ?: store.materials.defaultMaterial }
+        //(definition.resolveProperty("material") ?: name).let { voxelMaterial = store.materials.getVoxelMaterial(it) ?: store.materials.defaultMaterial }
 
-        definition.resolveProperty("emittedLightLevel")?.let { emittedLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
-        definition.resolveProperty("shadingLightLevel")?.let { shadingLightLevel = it.toDoubleOrNull()?.toInt()?.coerceIn(0..16) ?: 0 }
+        (definition["emittedLightLevel"].asInt ?: 0).let { emittedLightLevel = it.coerceIn(0..16) ?: 0 }
+        (definition["shadingLightLevel"].asInt ?: 0).let { shadingLightLevel = it.coerceIn(0..16) ?: 0 }
 
-        definition.resolveProperty("model")?.let {
+        definition["model"].asString?.let {
             val model = definition.store.parent.models[it]
 
             customRenderingRoutine = { _ ->
@@ -109,7 +123,10 @@ open class Voxel(val definition: VoxelDefinition) {
             }
         }
 
-        variants = enumerateVariants(store.parent.items)
+        //variants = enumerateVariants(store.parent.items)
+
+        //TODO TODO TODO
+        lootLogic = LootTable.Nothing(0.0)
     }
 
     /** Called before setting a cell to this Voxel type. Previous state is assumed
@@ -244,11 +261,13 @@ open class Voxel(val definition: VoxelDefinition) {
         return this == that
     }
 
+    internal fun enumerateVariants_(itemStore: Content.ItemsDefinitions) = enumerateVariants(itemStore)
+
     protected open fun enumerateVariants(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
-        val definition = ItemDefinition(itemStore, name, mapOf(
-                "voxel" to name,
-                "class" to ItemVoxel::class.java.canonicalName!!
-        ))
+        val definition = ItemDefinition(itemStore, name, Json.Dict(mapOf(
+                "voxel" to Json.Value.Text(name),
+                "class" to Json.Value.Text(ItemVoxel::class.java.canonicalName!!)
+        )))
 
         return listOf(definition)
     }
@@ -316,16 +335,16 @@ open class Voxel(val definition: VoxelDefinition) {
 
     /** Returns what's dropped when a cell using this voxel type is destroyed  */
     open fun getLoot(cell: Cell, tool: MiningTool): List<Pair<Item, Int>> {
-        if(isAir())
+        if (isAir())
             return emptyList()
 
-        /** If this block has custom logic for loot spawning, use that ! */
+        ///** If this block has custom logic for loot spawning, use that ! */
         val logic = lootLogic
-        if (logic != null)
-            return logic.spawn()
+        //if (logic != null)
+        return logic.spawn()
 
-        /** Returns *one* of the variants for this block */
-        return enumerateItemsForBuilding().shuffled().subList(0, 1).map { Pair(it, 1) }
+        ///** Returns *one* of the variants for this block */
+        //return enumerateItemsForBuilding().shuffled().subList(0, 1).map { Pair(it, 1) }
     }
 
     open fun tick(cell: EditableCell) {

@@ -8,15 +8,17 @@ package xyz.chunkstories.api.world.generator
 
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.content.Definition
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asString
 import xyz.chunkstories.api.world.World
 import java.lang.reflect.Constructor
 
-class WorldGeneratorDefinition(val store: Content.WorldGenerators, name: String, properties: Map<String, String>) : Definition(name, properties) {
+class WorldGeneratorDefinition(val store: Content.WorldGenerators, name: String, properties: Json.Dict) : Definition(name, properties) {
     val clazz: Class<WorldGenerator>
     private val constructor: Constructor<WorldGenerator>
 
     init {
-        clazz = this.resolveProperty("class")?.let {
+        clazz = this["class"].asString?.let {
             store.parent.modsManager.getClassByName(it)?.let {
                 if (WorldGenerator::class.java.isAssignableFrom(it))
                     it as Class<WorldGenerator>

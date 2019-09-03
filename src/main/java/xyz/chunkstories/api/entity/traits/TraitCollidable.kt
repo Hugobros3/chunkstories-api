@@ -9,6 +9,8 @@ package xyz.chunkstories.api.entity.traits
 import org.joml.Vector3d
 import org.joml.Vector3dc
 import xyz.chunkstories.api.client.IngameClient
+import xyz.chunkstories.api.content.json.asBoolean
+import xyz.chunkstories.api.content.json.asDict
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.physics.Box
 
@@ -67,7 +69,7 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
         }
 
     init {
-        collidesWithEntities = entity.definition.resolveProperty("collisions.withOtherEntities", "true") == "true"
+        collidesWithEntities = entity.definition["collisions"]?.asDict?.get("withOtherEntities")?.asBoolean ?: true
     }
 
     fun moveWithCollisionRestrain(delta: Vector3dc): Vector3dc {
