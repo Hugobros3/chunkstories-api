@@ -127,23 +127,8 @@ open class Voxel(val definition: VoxelDefinition) {
         lootLogic = LootTable.Nothing(1.0)
     }
 
-    /** Called before setting a cell to this Voxel type. Previous state is assumed
-     * to be air. If replacing a block, the previous block is actually removed first.
-     *
-     * @param cell The data we want to place here. You are welcome to modify it !
-     * @param cause The data we want to place here. You are welcome to modify it !
-     * @throws WorldException if you want to stop the modification from happening altogether.
-     */
-    @Throws(WorldException::class)
-    open fun onPlace(cell: FutureCell, cause: WorldModificationCause?) {
-        // Do nothing
-    }
-
-    /** Called after a voxel was successfully placed. Unlike onPlace you can
-     * add your voxelComponents here.
-     *
-     * @param cell
-     */
+    /** Called after a voxel was successfully placed. Use to initialize additional VoxelComponents.
+     * If you want to customize the behavior when attempting to place the block, please subclass ItemVoxel */
     open fun whenPlaced(cell: FreshChunkCell) {
 
     }
@@ -291,6 +276,8 @@ open class Voxel(val definition: VoxelDefinition) {
 
         val future = FutureCell(cell)
         future.voxel = world.content.voxels.air
+        future.metaData = 0
+        future.blocklight = 0
 
         var canBreak = true
         var modificationCause: WorldModificationCause? = null
