@@ -12,12 +12,19 @@ import xyz.chunkstories.api.content.json.asBoolean
 import xyz.chunkstories.api.content.json.asDict
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.physics.Box
+import xyz.chunkstories.api.physics.overlaps
 
 open class TraitCollidable(entity: Entity) : Trait(entity) {
 
-    var collidesWithEntities = true
+    var selectable: Boolean
+    var collidesWithEntities: Boolean
 
-    // System.out.println(canMoveWithCollisionRestrain(onGroundTest_).length());
+    init {
+        val collisions = entity.definition["collisions"]?.asDict
+        collidesWithEntities = collisions?.get("withOtherEntities")?.asBoolean ?: false
+        selectable = collisions?.get("selectable")?.asBoolean ?: true
+    }
+
     val isOnGround: Boolean
         get() = if (isStuckInEntity == null)
             entity.world.collisionsManager.runEntityAgainstWorldVoxelsAndEntities(entity, entity.location, onGroundTest_)
@@ -37,7 +44,7 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
                         if (adverseEntity.getTranslatedBoundingBox().collidesWith(this.entity.getTranslatedBoundingBox()))
                             for (b in adverseEntityTraitCollidable.translatedCollisionBoxes)
                                 for (c in this.translatedCollisionBoxes)
-                                    if (b.collidesWith(c))
+                                    if (overlaps(b, c))
                                         return adverseEntity
                     }
 
@@ -46,16 +53,6 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
             return null
         }
 
-    /*val translatedBoundingBox: Box
-        get() {
-            val box = boundingBox
-            box.translate(entity.location)
-            return box
-        }
-
-    val boundingBox: Box
-        get() = entity.getBoundingBox()
-*/
     open val collisionBoxes: Array<Box>
         get() = arrayOf(entity.getBoundingBox())
 
@@ -66,10 +63,6 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
                 box.translate(entity.location)
             return boxes
         }
-
-    init {
-        collidesWithEntities = entity.definition["collisions"]?.asDict?.get("withOtherEntities")?.asBoolean ?: false
-    }
 
     fun moveWithCollisionRestrain(delta: Vector3dc): Vector3dc {
         val movementLeft = entity.world.collisionsManager.runEntityAgainstWorldVoxels(entity, entity.location, delta)

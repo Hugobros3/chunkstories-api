@@ -32,7 +32,7 @@ class EntityGroundItem(definition: EntityDefinition, world: World) : Entity(defi
     }
 
     fun canBePickedUpYet(): Boolean {
-        return System.currentTimeMillis() - spawnTime > 2000L
+        return System.currentTimeMillis() - spawnTime > 1000L
     }
 
     override fun tick() {

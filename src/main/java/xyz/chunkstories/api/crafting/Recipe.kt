@@ -70,7 +70,22 @@ class PatternedRecipe(val pattern: Array<Array<ItemDefinition?>>, result: Pair<I
                             }
                         }
 
+                        // mismatch, skip recipe
                         continue@outer
+                    }
+                }
+
+
+                for(x in 0 until slotsWidth) {
+                    for(y in 0 until slotsHeight) {
+                        if (x !in offsetX until width + offsetX || y !in offsetY until height + offsetY) {
+                            val slot = craftingAreaSlots[x][y] as? InventorySlot.FakeSlot ?: throw Exception("these have to be fake")
+                            val displayContents = slot.visibleContents
+
+                            // there can't be anything outside of the crafting area !
+                            if(displayContents != null)
+                                continue@outer
+                        }
                     }
                 }
 

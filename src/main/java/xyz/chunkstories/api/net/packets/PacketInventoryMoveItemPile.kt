@@ -6,10 +6,13 @@
 
 package xyz.chunkstories.api.net.packets
 
+import org.joml.Vector3d
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityGroundItem
 import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
+import xyz.chunkstories.api.entity.traits.serializable.TraitRotation
+import xyz.chunkstories.api.entity.traits.serializable.TraitVelocity
 import xyz.chunkstories.api.events.player.PlayerDropItemEvent
 import xyz.chunkstories.api.events.player.PlayerMoveItemEvent
 import xyz.chunkstories.api.events.player.PlayerSpawnItemInInventoryEvent
@@ -173,6 +176,11 @@ class PacketInventoryMoveItemPile : PacketWorld {
                     val droppedItemEntity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
                     droppedItemEntity.location = loc
                     droppedItemEntity.traits[TraitInventory::class]?.inventory?.addItem(item!!, amount)
+
+                    val initVelocity = playerEntity.traits[TraitRotation::class]?.directionLookingAt?.let { Vector3d(it).mul(0.1).add(0.0, 0.2, 0.0) }
+                    if(initVelocity != null)
+                        droppedItemEntity.traits[TraitVelocity::class]?.addVelocity(initVelocity)
+
                     loc.world.addEntity(droppedItemEntity)
                 }
             } else {
