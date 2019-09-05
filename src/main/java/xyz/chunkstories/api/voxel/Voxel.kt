@@ -82,7 +82,7 @@ open class Voxel(val definition: VoxelDefinition) {
     var shadingLightLevel = 0
         protected set
 
-    var lootLogic: LootTable protected set
+    lateinit var lootLogic: BlockLootTable protected set
 
     var customRenderingRoutine: (ChunkMeshRenderingInterface.(Cell) -> Unit)? = null
 
@@ -125,7 +125,7 @@ open class Voxel(val definition: VoxelDefinition) {
         }
 
         //lootLogic = definition["drops"]?.let { makeLootTableFromJson(it, store.parent, Pair()) }
-        lootLogic = LootTable.Nothing(1.0)
+        //lootLogic = LootTable.Nothing(1.0)
     }
 
     /** Called after a voxel was successfully placed. Use to initialize additional VoxelComponents.
@@ -248,7 +248,7 @@ open class Voxel(val definition: VoxelDefinition) {
     internal fun enumerateVariants_(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
         val variants = enumerateVariants(itemStore)
 
-        lootLogic = definition["drops"]?.let { makeLootTableFromJson(it, store.parent, Pair(variants[0], 1)) } ?: LootTable.Entry(variants[0], 1..1, 1.0)
+        lootLogic = makeBlockLootTableFromJson(definition["drops"] ?: Json.Value.Bool(true), itemStore.parent, Pair(variants[0], 1))
 
         return variants
     }
@@ -328,7 +328,7 @@ open class Voxel(val definition: VoxelDefinition) {
     open fun getLoot(cell: Cell, tool: MiningTool): List<Pair<Item, Int>> {
         if (isAir())
             return emptyList()
-        return lootLogic.spawn()
+        return lootLogic.spawn(tool)
     }
 
     open fun tick(cell: EditableCell) {
