@@ -13,6 +13,7 @@ import xyz.chunkstories.api.content.json.*
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityGroundItem
 import xyz.chunkstories.api.entity.traits.serializable.TraitControllable
+import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.events.player.voxel.PlayerVoxelModificationEvent
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
@@ -299,20 +300,19 @@ open class Voxel(val definition: VoxelDefinition) {
             //TODO
             //spawnBlockDestructionParticles(location, world)
 
-            //TODO if cause world
-            //if(entity != null)
-            //    world.soundManager.playSoundEffect("sounds/gameplay/voxel_remove.ogg", SoundSource.Mode.NORMAL, location, 1.0f, 1.0f)
-
             val itemSpawnLocation = Location(world, location)
             itemSpawnLocation.add(0.5, 0.25, 0.5)
 
-            // Drop loot !
-            for (drop in getLoot(cell, tool)) {
-                val thrownItem = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(itemSpawnLocation.world)
-                thrownItem.traitLocation.set(itemSpawnLocation)
-                thrownItem.entityVelocity.setVelocity(Vector3d(Math.random() * 0.125 - 0.0625, 0.1, Math.random() * 0.125 - 0.0625))
-                thrownItem.traits[TraitInventory::class]!!.inventory.addItem(drop.first, drop.second)
-                world.addEntity(thrownItem)
+            val shouldDropLoot = tool != TraitCreativeMode.CREATIVE_MODE_MINING_TOOL
+
+            if(shouldDropLoot) {
+                for (drop in getLoot(cell, tool)) {
+                    val thrownItem = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(itemSpawnLocation.world)
+                    thrownItem.traitLocation.set(itemSpawnLocation)
+                    thrownItem.entityVelocity.setVelocity(Vector3d(Math.random() * 0.125 - 0.0625, 0.1, Math.random() * 0.125 - 0.0625))
+                    thrownItem.traits[TraitInventory::class]!!.inventory.addItem(drop.first, drop.second)
+                    world.addEntity(thrownItem)
+                }
             }
 
             try {

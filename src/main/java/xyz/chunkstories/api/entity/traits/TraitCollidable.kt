@@ -8,7 +8,6 @@ package xyz.chunkstories.api.entity.traits
 
 import org.joml.Vector3d
 import org.joml.Vector3dc
-import xyz.chunkstories.api.client.IngameClient
 import xyz.chunkstories.api.content.json.asBoolean
 import xyz.chunkstories.api.content.json.asDict
 import xyz.chunkstories.api.entity.Entity
@@ -33,10 +32,10 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
             val candidates = entity.world.getEntitiesInBox(bbox)
             for (adverseEntity in candidates) {
                 if (adverseEntity != entity) {
-                    val traitCollidable = adverseEntity.traits[TraitCollidable::class.java] ?: continue
-                    if (traitCollidable.collidesWithEntities) {
+                    val adverseEntityTraitCollidable = adverseEntity.traits[TraitCollidable::class.java] ?: continue
+                    if (adverseEntityTraitCollidable.collidesWithEntities) {
                         if (adverseEntity.getTranslatedBoundingBox().collidesWith(this.entity.getTranslatedBoundingBox()))
-                            for (b in traitCollidable.translatedCollisionBoxes)
+                            for (b in adverseEntityTraitCollidable.translatedCollisionBoxes)
                                 for (c in this.translatedCollisionBoxes)
                                     if (b.collidesWith(c))
                                         return adverseEntity
@@ -69,7 +68,7 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
         }
 
     init {
-        collidesWithEntities = entity.definition["collisions"]?.asDict?.get("withOtherEntities")?.asBoolean ?: true
+        collidesWithEntities = entity.definition["collisions"]?.asDict?.get("withOtherEntities")?.asBoolean ?: false
     }
 
     fun moveWithCollisionRestrain(delta: Vector3dc): Vector3dc {
