@@ -6,6 +6,8 @@
 
 package xyz.chunkstories.api.entity
 
+import xyz.chunkstories.api.entity.traits.serializable.TraitName
+
 interface DamageCause {
     val name: String
 
@@ -15,12 +17,18 @@ interface DamageCause {
         get() = 0
 
     companion object {
-
         val DAMAGE_CAUSE_FALL: DamageCause = object : DamageCause {
-
             override val name: String
                 get() = "damage.fall"
 
         }
     }
+
+    data class Entity(val entity: xyz.chunkstories.api.entity.Entity, val weapon: MeleeWeapon) : DamageCause {
+        override val name: String
+            get() = "${entity.name} weilding ${weapon.name}"
+    }
 }
+
+private val Entity.name : String
+    get() = this.traits[TraitName::class]?.name ?: this.definition.name

@@ -44,26 +44,6 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
 
     @JvmField
     val subscribers = Subscribers()
-    /*interface Traits_ : Map<Class<Trait>, Trait> {
-        fun registerTrait(trait : Trait) : Int
-
-        fun has(trait : Trait) : Boolean
-
-        operator fun <T: Trait> get(traitClass: KClass<T>) = this[traitClass.java]
-        operator fun <T: Trait> get(traitClass: Class<T>) : T?
-
-        fun <T : Trait> with(traitClass: Class<T>, action: VoidAction<T>)
-
-        fun <T: Trait, R> tryWith(traitClass: KClass<T>, action: T.() -> R) : R
-        fun <T: Trait, R> tryWith(traitClass: Class<T>, action : ReturnsAction<T, R>) : R
-
-        fun <T: Trait> tryWithBoolean(traitClass: KClass<T>, action: T.() -> Boolean) : Boolean
-        fun <T: Trait> tryWithBoolean(traitClass: Class<T>, action : BooleanAction<T>) : Boolean
-
-        fun all() : Collection<Trait>
-
-        fun byId() : Array<Trait>
-    }*/
 
     fun afterIntialization() {
         if (initialized)

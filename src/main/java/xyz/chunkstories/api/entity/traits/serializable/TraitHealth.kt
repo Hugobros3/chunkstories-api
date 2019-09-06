@@ -8,6 +8,8 @@ package xyz.chunkstories.api.entity.traits.serializable
 
 import xyz.chunkstories.api.entity.DamageCause
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.entity.EntityGroundItem
+import xyz.chunkstories.api.entity.traits.TraitLoot
 import xyz.chunkstories.api.events.entity.EntityDamageEvent
 import xyz.chunkstories.api.events.entity.EntityDeathEvent
 import xyz.chunkstories.api.events.player.PlayerDeathEvent
@@ -84,9 +86,9 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         return 0f
     }
 
-    private fun applyDamage(dmg: Float) {
+    private fun applyDamage(damage: Float) {
         val wasntDead = health > 0.0
-        this.health -= dmg
+        this.health -= damage
 
         if (health <= 0.0 && wasntDead)
             handleDeath()
@@ -128,6 +130,33 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
                     // Weird, undefined cases ( controller wasn't a player, maybe some weird mod
                     // logic here
                 }
+            }
+        }
+
+        val world = entity.world
+        // Drop items !
+        for (trait in entity.traits.all()) {
+            if (trait is TraitInventory) {
+                for (itemPile in trait.inventory.contents) {
+                    val entity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
+                    entity.location = this.entity.location
+                    entity.traits[TraitInventory::class]!!.inventory.addItem(itemPile.item, itemPile.amount)
+                    entity.traits[TraitVelocity::class]?.let { it.addVelocity(Math.random() * 0.2 - 0.1, Math.random() * 0.1 + 0.1, Math.random() * 0.2 - 0.1) }
+                    world.addEntity(entity)
+                }
+                trait.inventory.clear()
+            }
+        }
+
+        // Handle loot
+        entity.traits[TraitLoot::class]?.let {
+            val loot = it.lootTable.spawn(lastDamageCause)
+            for ((item, amount) in loot) {
+                val entity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
+                entity.location = this.entity.location
+                entity.traits[TraitInventory::class]!!.inventory.addItem(item, amount)
+                entity.traits[TraitVelocity::class]?.let { it.addVelocity(Math.random() * 0.2 - 0.1, Math.random() * 0.1 + 0.1, Math.random() * 0.2 - 0.1) }
+                world.addEntity(entity)
             }
         }
     }
