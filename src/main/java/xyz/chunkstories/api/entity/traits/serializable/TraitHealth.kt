@@ -6,9 +6,10 @@
 
 package xyz.chunkstories.api.entity.traits.serializable
 
+import org.joml.Vector3d
 import xyz.chunkstories.api.entity.DamageCause
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.entity.EntityGroundItem
+import xyz.chunkstories.api.entity.EntityDroppedItem
 import xyz.chunkstories.api.entity.traits.TraitLoot
 import xyz.chunkstories.api.events.entity.EntityDamageEvent
 import xyz.chunkstories.api.events.entity.EntityDeathEvent
@@ -24,6 +25,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 /** Any entity with this component is considered living, even if it's dead.
  * Handles health management and death  */
@@ -138,11 +140,8 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         for (trait in entity.traits.all()) {
             if (trait is TraitInventory) {
                 for (itemPile in trait.inventory.contents) {
-                    val entity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
-                    entity.location = this.entity.location
-                    entity.traits[TraitInventory::class]!!.inventory.addItem(itemPile.item, itemPile.amount)
-                    entity.traits[TraitVelocity::class]?.let { it.addVelocity(Math.random() * 0.2 - 0.1, Math.random() * 0.1 + 0.1, Math.random() * 0.2 - 0.1) }
-                    world.addEntity(entity)
+                    val velocity = Vector3d(Math.random() * 0.2 - 0.1, Math.random() * 0.1 + 0.1, Math.random() * 0.2 - 0.1)
+                    EntityDroppedItem.spawn(itemPile.item, itemPile.amount, this.entity.location, velocity)
                 }
                 trait.inventory.clear()
             }
@@ -152,11 +151,8 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
         entity.traits[TraitLoot::class]?.let {
             val loot = it.lootTable.spawn(lastDamageCause)
             for ((item, amount) in loot) {
-                val entity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
-                entity.location = this.entity.location
-                entity.traits[TraitInventory::class]!!.inventory.addItem(item, amount)
-                entity.traits[TraitVelocity::class]?.let { it.addVelocity(Math.random() * 0.2 - 0.1, Math.random() * 0.1 + 0.1, Math.random() * 0.2 - 0.1) }
-                world.addEntity(entity)
+                val velocity = Vector3d(Math.random() * 0.2 - 0.1, Math.random() * 0.1 + 0.1, Math.random() * 0.2 - 0.1)
+                EntityDroppedItem.spawn(item, amount, this.entity.location, velocity)
             }
         }
     }

@@ -11,10 +11,9 @@ import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.content.json.*
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.entity.EntityGroundItem
+import xyz.chunkstories.api.entity.EntityDroppedItem
 import xyz.chunkstories.api.entity.traits.serializable.TraitControllable
 import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
-import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.events.player.voxel.PlayerVoxelModificationEvent
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
@@ -22,8 +21,6 @@ import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.item.ItemVoxel
-import xyz.chunkstories.api.loot.LootTable
-import xyz.chunkstories.api.loot.makeLootTableFromJson
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.voxel.materials.VoxelMaterial
@@ -248,7 +245,8 @@ open class Voxel(val definition: VoxelDefinition) {
     internal fun enumerateVariants_(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
         val variants = enumerateVariants(itemStore)
 
-        lootLogic = makeBlockLootTableFromJson(definition["drops"] ?: Json.Value.Bool(true), itemStore.parent, Pair(variants[0], 1))
+        val default = variants.getOrNull(0)?.let { Pair(it, 1) }
+        lootLogic = makeBlockLootTableFromJson(definition["drops"] ?: Json.Value.Bool(true), itemStore.parent, default)
 
         return variants
     }
@@ -305,13 +303,12 @@ open class Voxel(val definition: VoxelDefinition) {
 
             val shouldDropLoot = tool != TraitCreativeMode.CREATIVE_MODE_MINING_TOOL
 
-            if(shouldDropLoot) {
-                for (drop in getLoot(cell, tool)) {
-                    val thrownItem = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(itemSpawnLocation.world)
-                    thrownItem.traitLocation.set(itemSpawnLocation)
-                    thrownItem.entityVelocity.setVelocity(Vector3d(Math.random() * 0.125 - 0.0625, 0.1, Math.random() * 0.125 - 0.0625))
-                    thrownItem.traits[TraitInventory::class]!!.inventory.addItem(drop.first, drop.second)
-                    world.addEntity(thrownItem)
+            if (shouldDropLoot) {
+                for ((item, amount) in getLoot(cell, tool)) {
+                    val velocity = Vector3d(Math.random() * 0.125 - 0.0625, 0.1, Math.random() * 0.125 - 0.0625)
+                    val lootLocation = Location(cell.location)
+                    lootLocation.add(0.5, 0.5, 0.5)
+                    EntityDroppedItem.spawn(item, amount, lootLocation, velocity)
                 }
             }
 

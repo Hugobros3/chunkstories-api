@@ -8,7 +8,7 @@ package xyz.chunkstories.api.net.packets
 
 import org.joml.Vector3d
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.entity.EntityGroundItem
+import xyz.chunkstories.api.entity.EntityDroppedItem
 import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.entity.traits.serializable.TraitRotation
@@ -173,7 +173,7 @@ class PacketInventoryMoveItemPile : PacketWorld {
                 sourceItemPile?.let { it.amount -= amount }
 
                 if (!destroy) {
-                    val droppedItemEntity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
+                    /*val droppedItemEntity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityDroppedItem>(world)
                     droppedItemEntity.location = loc
                     droppedItemEntity.traits[TraitInventory::class]?.inventory?.addItem(item!!, amount)
 
@@ -181,7 +181,9 @@ class PacketInventoryMoveItemPile : PacketWorld {
                     if(initVelocity != null)
                         droppedItemEntity.traits[TraitVelocity::class]?.addVelocity(initVelocity)
 
-                    loc.world.addEntity(droppedItemEntity)
+                    loc.world.addEntity(droppedItemEntity)*/
+                    val initialVelocity = playerEntity.traits[TraitRotation::class]?.directionLookingAt?.let { Vector3d(it).mul(0.1).add(0.0, 0.2, 0.0) } ?: Vector3d(0.0)
+                    EntityDroppedItem.spawn(item!!, amount, playerEntity.location, initialVelocity)
                 }
             } else {
                 if (sourceItemPile != null) {

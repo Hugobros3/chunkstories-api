@@ -7,10 +7,8 @@
 package xyz.chunkstories.api.gui.inventory
 
 import org.joml.Vector3d
-import xyz.chunkstories.api.entity.EntityGroundItem
-import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
+import xyz.chunkstories.api.entity.EntityDroppedItem
 import xyz.chunkstories.api.entity.traits.serializable.TraitRotation
-import xyz.chunkstories.api.entity.traits.serializable.TraitVelocity
 import xyz.chunkstories.api.events.player.PlayerDropItemEvent
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.Inventory
@@ -172,21 +170,10 @@ fun drop(pile: ItemPile, amount: Int, player: Player?) {
         world.gameContext.pluginManager.fireEvent(dropItemEvent)
 
         if (!dropItemEvent.isCancelled) {
-            // If we're pulling this out of an inventory ( and not /dev/null ), we need to
-            // remove it from that
-            val droppedItemEntity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityGroundItem>(world)
-            droppedItemEntity.location = playerEntity.location
-            droppedItemEntity.traits[TraitInventory::class]?.inventory?.addItem(pile.item, amount)
-
-            val initVelocity = playerEntity.traits[TraitRotation::class]?.directionLookingAt?.let { Vector3d(it).mul(0.1).add(0.0, 0.2, 0.0) }
-            if(initVelocity != null)
-                droppedItemEntity.traits[TraitVelocity::class]?.addVelocity(initVelocity)
-
-            loc.world.addEntity(droppedItemEntity)
+            val initialVelocity = playerEntity.traits[TraitRotation::class]?.directionLookingAt?.let { Vector3d(it).mul(0.1).add(0.0, 0.2, 0.0) } ?: Vector3d(0.0)
+            EntityDroppedItem.spawn(pile.item, amount, playerEntity.location, initialVelocity)
 
             pile.amount -= amount
-
-            //println("drop: $pile2drop")
         }
     } else if (world is WorldClientNetworkedRemote) {
         // In MP scenario, move into /dev/null

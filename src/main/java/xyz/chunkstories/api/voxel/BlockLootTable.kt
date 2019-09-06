@@ -31,7 +31,7 @@ class BlockLootTable(val default: LootTable, val predicates: List<MatchablePredi
     }
 }
 
-fun makeBlockLootTableFromJson(json: Json, content: Content, default: Pair<ItemDefinition, Int>): BlockLootTable {
+fun makeBlockLootTableFromJson(json: Json, content: Content, default: Pair<ItemDefinition, Int>?): BlockLootTable {
     if(json is Json.Dict && json["type"].asString == "match_tool") {
         val defaultTable = makeLootTableFromJson(json["default"] ?: Json.Value.Bool(true), content, default)
         val predicates = json["predicates"].asArray?.elements?.map {
