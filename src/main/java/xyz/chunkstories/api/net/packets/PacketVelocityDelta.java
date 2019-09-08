@@ -62,12 +62,6 @@ public class PacketVelocityDelta extends PacketWorld {
 				ev.addVelocity(delta);
 			});
 		}
-
-		// old style
-		// if (entity != null && entity instanceof EntityWithVelocity) {
-		// System.out.println("Debug: received velocity delta " + delta);
-		// ((EntityWithVelocity) entity).getVelocityComponent().addVelocity(delta);
-		// }
 	}
 
 }

@@ -4,6 +4,7 @@
 // Website: http://chunkstories.xyz
 //
 
+
 package xyz.chunkstories.api.entity
 
 import xyz.chunkstories.api.Location
@@ -24,7 +25,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         get() = traitLocation.get()
         set(value) = traitLocation.set(value)
 
-
+    @Suppress("PropertyName")
     var UUID : Long = -1L
         set(value) {
             if(field == -1L)
@@ -34,7 +35,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         }
 
     var initialized = false
-        set(value) = if(!value) throw Exception("Can't de-initialize an entity!") else field = value
+        private set(value) = if(!value) throw Exception("Can't de-initialize an entity!") else field = value
 
     @JvmField
     val traits : Traits = Traits()
@@ -45,9 +46,9 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
     @JvmField
     val subscribers = Subscribers()
 
-    fun afterIntialization() {
+    internal fun finalizeInit() {
         if (initialized)
-            throw RuntimeException("afterIntialization() is supposed to be called only once.")
+            throw RuntimeException("finalizeInit() is supposed to be called only once.")
 
         //Creates a static array and set for the traits
         val set = HashSet<Trait>()
@@ -72,12 +73,10 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
 
         fun registerTrait(trait: Trait): Int {
             if (initialized)
-                throw RuntimeException("You can't register traits after the entity initializes.")
+                throw Exception("You can't register traits after the entity initializes.")
 
             if (map[trait.javaClass] === trait) {
-                world.gameLogic.gameContext.logger().warn(
-                        "Tried to register the same trait twice" + " (hint: don't call registertrait yourself, the superconstructor does it already )")
-                return trait.id()
+                throw Exception("Tried to register the same trait twice (hint: don't call registerTrait yourself, the Trait() constructor does it for you)")
             }
 
             var id = purge(trait)
@@ -90,7 +89,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
             // superclasses that trait encompasses
             var c: Class<*> = trait.javaClass
             while (true) {
-                if (c.getDeclaredAnnotationsByType(Specialized::class.java).size != 0) {
+                if (c.getDeclaredAnnotationsByType(Specialized::class.java).isNotEmpty()) {
                     // println(c.getSimpleName()+" : this is a specialized class, no overshadowing parents");
                     break
                 }
@@ -98,7 +97,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
                 if (c == Trait::class.java)
                     break // stop there
 
-                if (c.getDeclaredAnnotationsByType(Generalized::class.java).size != 0) {
+                if (c.getDeclaredAnnotationsByType(Generalized::class.java).isNotEmpty()) {
                     // println(c.getSimpleName()+" : this is a generalized class, not overriding that.");
                     break
                 }
@@ -133,7 +132,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
                 c = c.superclass
                 if (c == Trait::class.java)
                     break
-                if (c.getDeclaredAnnotationsByType(Generalized::class.java).size != 0) {
+                if (c.getDeclaredAnnotationsByType(Generalized::class.java).isNotEmpty()) {
                     // System.out.println(c.getSimpleName()+" : this is a generalized class,
                     // stopping purge");
                     break
@@ -141,7 +140,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
             }
 
             if (remove != null) {
-                println("Purging matching trait: $remove")
+                //println("Purging matching trait: $remove")
                 val i = map.entries.iterator()
                 while (i.hasNext()) {
                     val e = i.next()
@@ -151,21 +150,19 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
                     }
                 }
 
-                println("returning purged id:" + remove.id())
+                //println("returning purged id:" + remove.id())
                 return remove.id()
             }
 
             return -1
         }
 
-        fun has(traitType: Class<out Trait>): Boolean {
-            return map.containsKey(traitType)
-        }
-
+        /** Returns the best trait matching that class, or null. */
         operator fun <T : Trait> get(trait: Class<T>): T? {
             return map[trait] as? T?
         }
 
+        /** Returns the best trait matching that class, or null. */
         operator fun <T : Trait> get(trait: KClass<T>) = this[trait.java]
 
         /** Tries to find a trait matching this type, executes some action on it and
@@ -185,6 +182,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         /** Tries to find a trait matching this type, executes some boolean action
          * on it and returns the result. Returns false if no such trait was
          * found.  */
+        @Deprecated("Use traits directly")
         fun <T : Trait> tryWithBoolean(traitType: Class<T>, action: BooleanAction<T>): Boolean {
             val trait = map[traitType] as? T?
             return if (trait != null) {
@@ -192,12 +190,14 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
             } else false
         }
 
+        @Deprecated("Use traits directly")
         fun <T: Trait> tryWithBoolean(traitClass: KClass<T>, action: T.() -> Boolean) = tryWithBoolean(traitClass.java, BooleanAction{
             it?.let(action) ?: false
         })
 
         /** Tries to find a trait matching this type, executes some action on it and
-         * returns true. Returns false if no such trait was found.  */
+         * returns true. Returns false if no such trait was found. */
+        @Deprecated("Use traits directly")
         fun <T : Trait> with(traitType: Class<T>, action: VoidAction<T>): Boolean {
             val trait = map[traitType] as? T?
             if (trait != null) {
@@ -207,6 +207,8 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
             return false
         }
 
+
+        @Deprecated("Use traits directly")
         fun <T : Trait> with(traitClass: KClass<T>, action: T.() -> Unit) = with(traitClass.java, VoidAction {
             it.apply(action)
         })
@@ -245,7 +247,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
          * when he unsubscribe() to this entity  */
         fun unregister(subscriber: Subscriber): Boolean {
             if (remove(subscriber)) {
-                subscriber.pushPacket(PacketEntity(this@Entity))
+                subscriber.pushPacket(PacketEntity.createKillerPacket(this@Entity))
 
                 // PacketEntity checks if the subscriber is registered in the entity it's about
                 // to update him about, if he's not he'll send a special flag to tell the

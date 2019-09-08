@@ -4,6 +4,8 @@
 // Website: http://chunkstories.xyz
 //
 
+@file:Suppress("UNCHECKED_CAST")
+
 package xyz.chunkstories.api.entity
 
 import xyz.chunkstories.api.content.Content
@@ -24,9 +26,9 @@ class EntityDefinition(val store: Content.EntityDefinitions, name: String, prope
 
     init {
         clazz = this["class"].asString?.let {
-            store.parent.modsManager.getClassByName(it)?.let {
-                if(Entity::class.java.isAssignableFrom(it))
-                    it as Class<Entity>
+            store.parent.modsManager.getClassByName(it)?.let { clazz ->
+                if(Entity::class.java.isAssignableFrom(clazz))
+                    clazz as Class<Entity>
                 else
                     throw Exception("The custom class has to extend the Voxel class !")
             }
@@ -40,8 +42,8 @@ class EntityDefinition(val store: Content.EntityDefinitions, name: String, prope
     }
 
     fun <E : Entity> newEntity(world: World) : E {
-        val entity = (constructor.newInstance(this, world)!! as E)!!
-        entity.afterIntialization()
+        val entity = (constructor.newInstance(this, world) as E)
+        entity.finalizeInit()
 
         return entity
     }

@@ -23,7 +23,6 @@ import xyz.chunkstories.api.world.serialization.StreamSource
 import xyz.chunkstories.api.world.serialization.StreamTarget
 
 class VoxelInventoryComponent(cell: CellComponents, width: Int, height: Int) : VoxelComponent(cell), InventoryOwner, InventoryCallbacks {
-
     val inventory: Inventory
 
     override val inventoryName: String

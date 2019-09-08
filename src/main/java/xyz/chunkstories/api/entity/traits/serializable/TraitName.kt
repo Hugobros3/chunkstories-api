@@ -6,30 +6,51 @@
 
 package xyz.chunkstories.api.entity.traits.serializable
 
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asString
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
+import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.net.Interlocutor
+import xyz.chunkstories.api.world.WorldClient
+import xyz.chunkstories.api.world.WorldMaster
 
-class TraitName(entity: Entity) : TraitSerializable(entity) {
-
+class TraitName(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitName.NameUpdate> {
     var name = ""
         set(value) {
             field = value
-            this.pushComponentEveryone()
+
+            if(entity.world is WorldMaster)
+                sendMessageAllSubscribers(NameUpdate(value))
         }
 
-    @Throws(IOException::class)
-    override fun push(destinator: StreamTarget, dos: DataOutputStream) {
-        dos.writeUTF(name)
+    override fun deserialize(json: Json) {
+        name = json.asString ?: name
     }
 
-    @Throws(IOException::class)
-    override fun pull(from: StreamSource, dis: DataInputStream) {
-        name = dis.readUTF()
+    override fun serialize(): Json {
+        return Json.Value.Text(name)
     }
 
+    override fun processMessage(message: NameUpdate, from: Interlocutor) {
+        if(entity.world is WorldClient) {
+            name = message.name
+        }
+    }
+
+    override fun whenSubscriberRegisters(subscriber: Subscriber) {
+        sendMessage(subscriber, NameUpdate(name))
+    }
+
+    override fun readMessage(dis: DataInputStream): NameUpdate {
+        return NameUpdate(dis.readUTF())
+    }
+
+    data class NameUpdate(val name: String) : TraitMessage() {
+        override fun write(dos: DataOutputStream) {
+            dos.writeUTF(name)
+        }
+    }
 }

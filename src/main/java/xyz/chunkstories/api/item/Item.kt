@@ -8,6 +8,7 @@ package xyz.chunkstories.api.item
 
 import org.joml.Matrix4f
 import org.joml.Vector4f
+import xyz.chunkstories.api.content.json.Json
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.graphics.MeshMaterial
@@ -49,7 +50,7 @@ open class Item(val definition: ItemDefinition) {
     open fun duplicate(): Item {
         val new: Item = definition.newItem()
 
-        val data = ByteArrayOutputStream()
+        /*val data = ByteArrayOutputStream()
         try {
             this.save(DataOutputStream(data))
 
@@ -59,7 +60,8 @@ open class Item(val definition: ItemDefinition) {
             new.load(dis)
             dis.close()
         } catch (e: IOException) {
-        }
+        }*/
+        new.deserialize(this.serialize())
 
         return new
     }
@@ -77,7 +79,7 @@ open class Item(val definition: ItemDefinition) {
         representationsGobbler.acceptRepresentation(Sprite(worldPosition.transform(Vector4f(0.0f, 0f, 0f, 1f)).toVec4d().toVec3d(), 1f, MeshMaterial("item_$name", mapOf("albedoTexture" to getTextureName()), "opaque")))
     }
 
-    /** Unsafe, called upon loading this item from a stream. If you do use it,
+    /*/** Unsafe, called upon loading this item from a stream. If you do use it,
      * PLEASE ensure you remember how many bytes you read/write and be consistent,
      * else you break the savefile  */
     @Throws(IOException::class)
@@ -87,5 +89,11 @@ open class Item(val definition: ItemDefinition) {
     /** See load().  */
     @Throws(IOException::class)
     open fun save(stream: DataOutputStream) {
-    }
+    }*/
+
+    @Throws(IOException::class)
+    open fun serialize() : Json.Dict = Json.Dict(emptyMap())
+
+    @Throws(IOException::class)
+    open fun deserialize(json: Json.Dict) {}
 }

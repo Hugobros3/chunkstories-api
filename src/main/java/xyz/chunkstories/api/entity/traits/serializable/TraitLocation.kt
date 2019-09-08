@@ -8,22 +8,24 @@ package xyz.chunkstories.api.entity.traits.serializable
 
 import org.joml.Vector3dc
 import xyz.chunkstories.api.Location
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asArray
+import xyz.chunkstories.api.content.json.asDouble
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.events.entity.EntityTeleportEvent
+import xyz.chunkstories.api.net.Interlocutor
+import xyz.chunkstories.api.net.packets.PacketEntity
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.chunk.Chunk
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 import java.util.concurrent.locks.ReentrantLock
 
 /** Holds the information about an entity whereabouts and a flag to mark it as
  * unspawned  */
-class TraitLocation(entity: Entity, private val actualLocation: Location) : TraitSerializable(entity) {
-
+class TraitLocation(entity: Entity, private val actualLocation: Location) : TraitSerializable(entity), TraitNetworked<TraitLocation.LocationUpdate> {
     private val world: World = actualLocation.world
 
     private val lock = ReentrantLock()
@@ -67,7 +69,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
         // In server/master mode any drastic location change is told to everyone, as
         // setLocation() is not called when the server receives updates
         // from the controller but only when an external event changes the location.
-        this.pushComponentEveryone()
+        sendMessageAllSubscribers(LocationUpdate(actualLocation.x, actualLocation.y, actualLocation.z))
     }
 
     fun move(dx: Double, dy: Double, dz: Double) {
@@ -76,6 +78,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
             Thread.dumpStack()
             return
         }
+
         try {
             lock.lock()
             actualLocation.x = actualLocation.x() + dx
@@ -87,7 +90,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
             lock.unlock()
         }
 
-        this.pushComponentEveryone()
+        sendMessageAllSubscribers(LocationUpdate(actualLocation.x, actualLocation.y, actualLocation.z))
     }
 
     fun move(delta: Vector3dc) {
@@ -101,36 +104,38 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
         return Location(pos.world, pos)
     }
 
-    @Throws(IOException::class)
-    public override fun push(to: StreamTarget, dos: DataOutputStream) {
-        dos.writeDouble(actualLocation.x())
-        dos.writeDouble(actualLocation.y())
-        dos.writeDouble(actualLocation.z())
+    data class LocationUpdate(val x: Double, val y: Double, val z: Double) : TraitMessage() {
+        override fun write(dos: DataOutputStream) {
+            dos.writeDouble(x)
+            dos.writeDouble(y)
+            dos.writeDouble(z)
+        }
     }
 
-    @Throws(IOException::class)
-    public override fun pull(from: StreamSource, dis: DataInputStream) {
-        // pos = new Location(world, 0, 0, 0);
+    override fun readMessage(dis: DataInputStream): LocationUpdate =
+            LocationUpdate(dis.readDouble(), dis.readDouble(), dis.readDouble())
 
-        val x = dis.readDouble()
-        val y = dis.readDouble()
-        val z = dis.readDouble()
+    override fun processMessage(message: LocationUpdate, from: Interlocutor) {
+        if (world is WorldMaster && from != entity.traits[TraitControllable::class]?.controller) {
+            //throw Exception("Security violation: Someone tried to update an entity they don't control !")
+            //Because of lag this might have been legit, so just reject it for now
+            return
+        }
 
         try {
             lock.lock()
-            this.actualLocation.x = x
-            this.actualLocation.y = y
-            this.actualLocation.z = z
+            this.actualLocation.x = message.x
+            this.actualLocation.y = message.y
+            this.actualLocation.z = message.z
 
             sanitize()
         } finally {
             lock.unlock()
         }
 
-        // Position updates received by the server should be told to everyone but the
-        // controller
+        // Position updates received by the server should be told to everyone but the controller
         if (world is WorldMaster)
-            pushComponentEveryoneButController()
+            sendMessageAllSubscribersButController(message)
     }
 
     /** Prevents entities from going outside the world area and updates the
@@ -171,8 +176,8 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
         if (!spawned)
             return false
 
-        if (chunk != null && chunk!!.chunkX == chunkX && chunk!!.chunkY == chunkY && chunk!!.chunkZ == chunkZ) {
-            return false // Nothing to do !
+        return if (chunk != null && chunk!!.chunkX == chunkX && chunk!!.chunkY == chunkY && chunk!!.chunkZ == chunkZ) {
+            false // Nothing to do !
         } else {
             if (chunk != null)
                 chunk!!.removeEntity(entity)
@@ -183,7 +188,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
             // && regionWithin.isDiskDataLoaded())
                 chunk!!.addEntity(entity)
 
-            return true
+            true
         }
     }
 
@@ -208,10 +213,11 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
             lock.unlock()
         }
 
-        this.pushComponentEveryone()
-
         // Tell anyone still subscribed to this entity to sod off
-        entity.subscribers.forEach { subscriber -> subscriber.unsubscribe(entity) }
+        entity.subscribers.forEach { subscriber ->
+            subscriber.pushPacket(PacketEntity.createKillerPacket(entity))
+            subscriber.unsubscribe(entity)
+        }
     }
 
     fun wasRemoved(): Boolean {
@@ -231,6 +237,19 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
 
     fun hasSpawned(): Boolean {
         return spawned
+    }
+
+    override fun whenSubscriberRegisters(subscriber: Subscriber) {
+        sendMessage(subscriber, LocationUpdate(actualLocation.x, actualLocation.y, actualLocation.z))
+    }
+
+    override fun deserialize(json: Json) {
+        val arr = json.asArray ?: return
+        actualLocation.set(arr[0].asDouble!!, arr[1].asDouble!!, arr[3].asDouble!!)
+    }
+
+    override fun serialize(): Json {
+        return Json.Array(listOf(Json.Value.Number(actualLocation.x), Json.Value.Number(actualLocation.y), Json.Value.Number(actualLocation.z)))
     }
 }
 

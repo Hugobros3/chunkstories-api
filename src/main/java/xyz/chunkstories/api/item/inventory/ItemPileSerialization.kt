@@ -7,6 +7,10 @@
 package xyz.chunkstories.api.item.inventory
 
 import xyz.chunkstories.api.content.ContentTranslator
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asDict
+import xyz.chunkstories.api.content.json.stringSerialize
+import xyz.chunkstories.api.content.json.toJson
 import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.Item
@@ -23,7 +27,9 @@ fun obtainItemPileFromStream(translator: ContentTranslator, stream: DataInputStr
     val itemType = translator.getItemForId(itemId) ?: throw UndefinedItemTypeException(itemId)
     val amount = stream.readInt()
     val item = itemType.newItem<Item>()
-    item.load(stream)
+
+    item.deserialize(stream.readUTF().toJson().asDict ?: Json.Dict(emptyMap()))
+    //item.load(stream)
 
     //val itemPile = ItemPile(itemType, amount)
     //itemPile.item.load(stream)
@@ -35,11 +41,14 @@ fun obtainItemPileFromStream(translator: ContentTranslator, stream: DataInputStr
 fun ItemPile.saveIntoStream(translator: ContentTranslator, stream: DataOutputStream) {
     stream.writeInt(translator.getIdForItem(item))
     stream.writeInt(amount)
-    item.save(stream)
+
+    stream.writeUTF(item.serialize().stringSerialize())
+    //item.save(stream)
 }
 
 fun Item.saveIntoStream(amount: Int, translator: ContentTranslator, stream: DataOutputStream) {
     stream.writeInt(translator.getIdForItem(this))
     stream.writeInt(amount)
-    this.save(stream)
+    //this.save(stream)
+    stream.writeUTF(this.serialize().stringSerialize())
 }

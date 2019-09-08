@@ -6,31 +6,34 @@
 
 package xyz.chunkstories.api.entity.traits.serializable
 
+import org.joml.Vector2f
+import org.joml.Vector3d
+import org.joml.Vector3dc
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asArray
+import xyz.chunkstories.api.content.json.asFloat
+import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.net.Interlocutor
+import xyz.chunkstories.api.world.WorldMaster
+import xyz.chunkstories.api.world.serialization.StreamSource
+import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 
-import org.joml.Vector2f
-import org.joml.Vector3d
-import org.joml.Vector3dc
-
-import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
-
-class TraitRotation(entity: Entity) : TraitSerializable(entity) {
-    var horizontalRotation = 0f
+class TraitRotation(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitRotation.RotationUpdate> {
+    var yaw = 0f
         private set(value) {
-            if(value.isNaN()) {
+            if (value.isNaN()) {
                 entity.world.gameContext.logger().warn("Tried to set TraitRotation.x to NaN $entity")
             } else {
                 field = value
             }
         }
-    var verticalRotation = 0f
+    var pitch = 0f
         private set(value) {
-            if(value.isNaN()) {
+            if (value.isNaN()) {
                 entity.world.gameContext.logger().warn("Tried to set TraitRotation.y to NaN $entity")
             } else {
                 field = value
@@ -45,8 +48,8 @@ class TraitRotation(entity: Entity) : TraitSerializable(entity) {
         get() {
             val direction = Vector3d()
 
-            val horizontalRotationRad = (horizontalRotation / 360f).toDouble() * 2.0 * Math.PI
-            val verticalRotationRad = (verticalRotation / 360f).toDouble() * 2.0 * Math.PI
+            val horizontalRotationRad = (yaw / 360f).toDouble() * 2.0 * Math.PI
+            val verticalRotationRad = (pitch / 360f).toDouble() * 2.0 * Math.PI
             return eulerXYtoVec3(direction, horizontalRotationRad, verticalRotationRad)
         }
 
@@ -54,8 +57,8 @@ class TraitRotation(entity: Entity) : TraitSerializable(entity) {
         get() {
             val direction = Vector3d(0.0, 1.0, 0.0)
 
-            val horizontalRotationRad = (horizontalRotation / 360f).toDouble() * 2.0 * Math.PI
-            val verticalRotationRad = ((verticalRotation + 90f) / 360f).toDouble() * 2.0 * Math.PI
+            val horizontalRotationRad = (yaw / 360f).toDouble() * 2.0 * Math.PI
+            val verticalRotationRad = ((pitch + 90f) / 360f).toDouble() * 2.0 * Math.PI
             return eulerXYtoVec3(direction, horizontalRotationRad, verticalRotationRad)
         }
 
@@ -68,36 +71,19 @@ class TraitRotation(entity: Entity) : TraitSerializable(entity) {
     }
 
     fun setRotation(horizontalAngle: Double, verticalAngle: Double) {
-        this.horizontalRotation = (360 + horizontalAngle).toFloat() % 360
-        this.verticalRotation = verticalAngle.toFloat()
+        this.yaw = (360 + horizontalAngle).toFloat() % 360
+        this.pitch = verticalAngle.toFloat()
 
-        if (verticalRotation > 90)
-            verticalRotation = 90f
-        if (verticalRotation < -90)
-            verticalRotation = -90f
+        if (pitch > 90)
+            pitch = 90f
+        if (pitch < -90)
+            pitch = -90f
 
-        this.pushComponentEveryone()
+        sendMessageAllSubscribers(RotationUpdate(yaw, pitch))
     }
 
     fun addRotation(d: Double, e: Double) {
-        setRotation(horizontalRotation + d, verticalRotation + e)
-    }
-
-    @Throws(IOException::class)
-    override fun push(destinator: StreamTarget, dos: DataOutputStream) {
-        dos.writeFloat(horizontalRotation)
-        dos.writeFloat(verticalRotation)
-    }
-
-    @Throws(IOException::class)
-    override fun pull(from: StreamSource, dis: DataInputStream) {
-        horizontalRotation = dis.readFloat()
-        verticalRotation = dis.readFloat()
-
-        // Position updates received by the server should be told to everyone but the
-        // controller
-        if (entity.world is WorldMaster)
-            this.pushComponentEveryoneButController()
+        setRotation(yaw + d, pitch + e)
     }
 
     /** Sends the view flying about  */
@@ -113,4 +99,37 @@ class TraitRotation(entity: Entity) : TraitSerializable(entity) {
         return rotationImpulse
     }
 
+    data class RotationUpdate(val yaw: Float, val pitch: Float) : TraitMessage() {
+        override fun write(dos: DataOutputStream) {
+            dos.writeFloat(yaw)
+            dos.writeFloat(pitch)
+        }
+    }
+
+    override fun readMessage(dis: DataInputStream) = RotationUpdate(dis.readFloat(), dis.readFloat())
+
+    override fun processMessage(message: RotationUpdate, from: Interlocutor) {
+        if (entity.world is WorldMaster && from != entity.traits[TraitControllable::class]?.controller) {
+            //throw Exception("Security violation: Someone tried to update an entity they don't control !")
+            //Because of lag this might have been legit, so just reject it for now
+            return
+        }
+
+        yaw = message.yaw
+        pitch = message.pitch
+
+        // Position updates received by the server should be told to everyone but the controller
+        if (entity.world is WorldMaster)
+            sendMessageAllSubscribersButController(message)
+    }
+
+    override fun whenSubscriberRegisters(subscriber: Subscriber) {
+
+    }
+
+    override fun serialize(): Json = Json.Array(listOf(Json.Value.Number(yaw.toDouble()), Json.Value.Number(pitch.toDouble())))
+
+    override fun deserialize(json: Json) {
+        json.asArray?.let { yaw = it[0].asFloat!! ; pitch = it[1].asFloat!! }
+    }
 }

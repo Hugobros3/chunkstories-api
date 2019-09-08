@@ -36,10 +36,10 @@ class PacketInventoryPartialUpdate : PacketWorld {
 
     constructor(world: World) : super(world)
 
-    constructor(world: World, inventory: Inventory?, slotx: Int, sloty: Int, newItemPile: ItemPile?) : super(world) {
+    constructor(world: World, inventory: Inventory?, x: Int, y: Int, newItemPile: ItemPile?) : super(world) {
         this.inventory = inventory
-        this.x = slotx
-        this.y = sloty
+        this.x = x
+        this.y = y
         this.itemPile = newItemPile
     }
 

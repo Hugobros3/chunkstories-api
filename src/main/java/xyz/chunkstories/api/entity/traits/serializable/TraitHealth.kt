@@ -7,13 +7,17 @@
 package xyz.chunkstories.api.entity.traits.serializable
 
 import org.joml.Vector3d
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asFloat
 import xyz.chunkstories.api.entity.DamageCause
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityDroppedItem
+import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.TraitLoot
 import xyz.chunkstories.api.events.entity.EntityDamageEvent
 import xyz.chunkstories.api.events.entity.EntityDeathEvent
 import xyz.chunkstories.api.events.player.PlayerDeathEvent
+import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.physics.EntityHitbox
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.server.Server
@@ -25,13 +29,27 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
-import java.util.*
 
 /** Any entity with this component is considered living, even if it's dead.
  * Handles health management and death  */
-open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
-    var maxHealth = 100f
-    private var health: Float = 0.toFloat()
+open class TraitHealth(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitHealth.HealthUpdate> {
+    val maxHealth : Float = entity.definition["maxHealth"].asFloat ?: 100.0f
+    var health: Float = entity.definition["startHealth"].asFloat ?: 100.0f
+        set(value) {
+            val wasAliveBefore = this.health > 0.0
+            field = value
+
+            if (health <= 0.0 && wasAliveBefore)
+                handleDeath()
+
+            if (entity.world is WorldMaster) {
+                if (health > 0.0)
+                    sendMessageController(HealthUpdate(value))
+                else // Let everyone know when an entity is dead
+                    sendMessageAllSubscribers(HealthUpdate(value))
+            }
+        }
+
     private var damageCooldown: Long = 0
 
     var lastDamageCause: DamageCause? = null
@@ -39,30 +57,34 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
     private var deathDespawnTimer: Long = 60 * 3 // stays for 3s (180 ticks at 60tps)
 
     val isDead: Boolean
-        get() = getHealth() <= 0
+        get() = health <= 0
 
-    init {
-        this.health = maxHealth
-    }
-
-    fun getHealth(): Float {
-        return health
-    }
-
-    fun setHealth(health: Float) {
-        val wasntDead = this.health > 0.0
-        this.health = health
-
-        if (health <= 0.0 && wasntDead)
-            handleDeath()
-
-        if (entity.world is WorldMaster) {
-            if (health > 0.0)
-                this.pushComponentController()
-            else
-                this.pushComponentEveryone()
+    data class HealthUpdate(val newHealth: Float) : TraitMessage() {
+        override fun write(dos: DataOutputStream) {
+            dos.writeFloat(newHealth)
         }
     }
+
+    override fun readMessage(dis: DataInputStream) = HealthUpdate(dis.readFloat())
+
+    override fun processMessage(message: HealthUpdate, from: Interlocutor) {
+        if(entity.world is WorldMaster) {
+            return
+        }
+
+        health = message.newHealth
+    }
+
+    override fun whenSubscriberRegisters(subscriber: Subscriber) {
+        if(subscriber == entity.traits[TraitControllable::class]?.controller)
+            sendMessageController(HealthUpdate(health))
+    }
+
+    override fun deserialize(json: Json) {
+        health = json.asFloat ?: health
+    }
+
+    override fun serialize() = Json.Value.Number(health.toDouble())
 
     open fun damage(cause: DamageCause, damage: Float): Float {
         return damage(cause, null, damage)
@@ -97,9 +119,9 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
 
         if (entity.world is WorldMaster) {
             if (health > 0.0)
-                this.pushComponentController()
-            else
-                this.pushComponentEveryone()
+                sendMessageController(HealthUpdate(health))
+            else // Let everyone know when an entity is dead
+                sendMessageAllSubscribers(HealthUpdate(health))
         }
     }
 
@@ -155,16 +177,6 @@ open class TraitHealth(entity: Entity) : TraitSerializable(entity) {
                 EntityDroppedItem.spawn(item, amount, this.entity.location, velocity)
             }
         }
-    }
-
-    @Throws(IOException::class)
-    public override fun push(destinator: StreamTarget, dos: DataOutputStream) {
-        dos.writeFloat(health)
-    }
-
-    @Throws(IOException::class)
-    public override fun pull(from: StreamSource, dis: DataInputStream) {
-        health = dis.readFloat()
     }
 
     override fun tick() {
