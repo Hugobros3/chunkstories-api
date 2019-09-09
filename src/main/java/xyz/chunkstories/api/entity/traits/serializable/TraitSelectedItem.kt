@@ -6,13 +6,18 @@
 
 package xyz.chunkstories.api.entity.traits.serializable
 
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asInt
+import xyz.chunkstories.api.content.json.stringSerialize
+import xyz.chunkstories.api.content.json.toJson
+import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
+import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
-import xyz.chunkstories.api.item.inventory.Inventory
-import xyz.chunkstories.api.item.inventory.ItemPile
-import xyz.chunkstories.api.item.inventory.obtainItemPileFromStream
-import xyz.chunkstories.api.item.inventory.saveIntoStream
+import xyz.chunkstories.api.item.Item
+import xyz.chunkstories.api.item.inventory.*
+import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.serialization.OfflineSerializedData
 import xyz.chunkstories.api.world.serialization.StreamSource
@@ -21,15 +26,17 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 
-class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitSerializable(entity) {
-    internal var inventory: Inventory
+class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitSerializable(entity), TraitNetworked<TraitSelectedItem.SelectedItemUpdate> {
+    private var inventory: Inventory
+    var selectedSlot = 0
+    set(value) {
+        field = value % inventory.width
+        if (field < 0)
+            field += inventory.width
 
-    internal var selectedSlot = 0
+        sendMessageAllSubscribersButController(SelectedItemUpdate.ServerToClientsUpdate(selectedItem?.item, selectedItem?.amount ?: 0))
+    }
 
-    /** Returns the selected item
-     *
-     * @return
-     */
     val selectedItem: ItemPile?
         get() = inventory.getItemPileAt(selectedSlot, 0)
 
@@ -37,26 +44,54 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitS
         this.inventory = traitInventory.inventory
     }
 
-    /** Selects the slot given
-     *
-     * @param newSlot
-     */
-    fun setSelectedSlot(newSlot: Int) {
-        var newSlot = newSlot
-        while (newSlot < 0)
-            newSlot += inventory.width
-        selectedSlot = newSlot % inventory.width
+    sealed class SelectedItemUpdate : TraitMessage() {
+        data class ServerToClientsUpdate(val item: Item?, val amount: Int) : SelectedItemUpdate() {
+            override fun write(dos: DataOutputStream) {
+                dos.write(0)
+                dos.writeUTF(serializeItemAndAmount(item, amount).stringSerialize())
+            }
+        }
 
-        // TODO permissions check
-        this.pushComponentEveryone()
+        data class ControllerUpdate(val slot: Int) : SelectedItemUpdate() {
+            override fun write(dos: DataOutputStream) {
+                dos.write(1)
+                dos.writeInt(slot)
+            }
+        }
     }
 
-    /** Returns the selected slot
-     *
-     * @return
-     */
-    fun getSelectedSlot(): Int {
-        return selectedSlot
+    override fun readMessage(dis: DataInputStream): SelectedItemUpdate {
+        val type = dis.read()
+        return when(type) {
+            0 -> deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
+                SelectedItemUpdate.ServerToClientsUpdate(it.first, it.second)
+            }
+            1 -> SelectedItemUpdate.ControllerUpdate(dis.readInt())
+            else -> throw Exception()
+        }
+    }
+
+    override fun processMessage(message: SelectedItemUpdate, from: Interlocutor) {
+        when(message) {
+            is SelectedItemUpdate.ServerToClientsUpdate -> {
+                if(entity.world is WorldMaster)
+                    return
+
+                // other players don't get to know the full contents of another's inventory
+                inventory.setItemAt(0, 0, message.item, message.amount, true)
+            }
+            is SelectedItemUpdate.ControllerUpdate -> {
+                selectedSlot = message.slot
+            }
+        }
+    }
+
+    override fun whenSubscriberRegisters(subscriber: Subscriber) {
+        if(subscriber is Controller && subscriber == entity.traits[TraitControllable::class]?.controller) {
+            sendMessage(subscriber, SelectedItemUpdate.ControllerUpdate(selectedSlot))
+        } else {
+            sendMessage(subscriber, SelectedItemUpdate.ServerToClientsUpdate(selectedItem?.item, selectedItem?.amount ?: 0))
+        }
     }
 
     override fun tick() {
@@ -64,55 +99,9 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitS
         selectedItem?.let { it.item.tickInHand(entity, it) }
     }
 
-    @Throws(IOException::class)
-    override fun push(destinator: StreamTarget, dos: DataOutputStream) {
-        dos.writeInt(selectedSlot)
+    override fun serialize() = Json.Value.Number(selectedSlot.toDouble())
 
-        val pile = inventory.getItemPileAt(selectedSlot, 0)
-        // don't bother writing the item pile if we're not master or if we'd be telling
-        // the controller about his own item pile
-        if (pile == null || entity.world !is WorldMaster || entity.traits[TraitControllable::class]?.controller == destinator)
-            dos.writeBoolean(false)
-        else {
-            dos.writeBoolean(true)
-            pile.saveIntoStream(entity.world.contentTranslator, dos)
-        }
-    }
-
-    @Throws(IOException::class)
-    override fun pull(from: StreamSource, dis: DataInputStream) {
-        selectedSlot = dis.readInt()
-
-        val itemIncluded = dis.readBoolean()
-        if (itemIncluded) {
-            // System.out.println("reading item from packet for entity"+entity);
-            // ItemPile pile;
-
-            val (item, amount) =
-                    try {
-                        obtainItemPileFromStream(entity.world.contentTranslator, dis)
-                    } catch (e: NullItemException) {
-                        // Don't do anything about it, no big deal
-                        Pair(null, null)
-                    } catch (e: UndefinedItemTypeException) {
-                        // This is slightly more problematic
-                        this.entity.world.gameContext.logger().info(e.message)
-                        return
-                    }
-
-            // Ensures only client worlds accepts such pushes
-            if (entity.world !is WorldMaster)
-                inventory.setItemAt(selectedSlot, 0, item, amount ?: 0)
-        }
-
-        this.pushComponentEveryoneButController()
-    }
-
-    @Throws(IOException::class)
-    override fun pushComponentInStream(to: StreamTarget, dos: DataOutputStream) {
-        if (to is OfflineSerializedData)
-            println("Not writing component SelectedItem to offline data")
-        else
-            super.pushComponentInStream(to, dos)
+    override fun deserialize(json: Json) {
+        selectedSlot = json.asInt ?: selectedSlot
     }
 }

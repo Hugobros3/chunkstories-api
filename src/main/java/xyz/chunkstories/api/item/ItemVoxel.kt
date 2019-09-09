@@ -87,25 +87,7 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
 
                 val modifierEntity = entity as WorldModificationCause
 
-                val isEntityCreativeMode = entity.traits[TraitCreativeMode::class]?.get() ?: false
-
-                /*fun getFreeSpaceAdjacentToSolidBlock(reach: Double) : Cell? {
-                    val notMe = {other: Entity -> other != entity}
-                    val query = RayQuery(headLocation, lookingAt, 0.0, reach, { it.voxel.solid }, notMe)
-                    when(val hit = query.trace()) {
-                        is RayResult.Hit.VoxelHit -> {
-                            val normali = hit.normal.toVec3i()
-                            val x = hit.cell.x + normali.x
-                            val y = hit.cell.y + normali.y
-                            val z = hit.cell.z + normali.z
-                            if(y in 0 until hit.cell.world.maxHeight) {
-                                return hit.cell.world.peek(x, y, z)
-                            }
-                        }
-                    }
-
-                    return null
-                }*/
+                val isEntityCreativeMode = entity.traits[TraitCreativeMode::class]?.enabled ?: false
 
                 val hit: RayResult.Hit.VoxelHit = entity.traits[TraitSight::class]?.let {
                     val reach = 5.0
