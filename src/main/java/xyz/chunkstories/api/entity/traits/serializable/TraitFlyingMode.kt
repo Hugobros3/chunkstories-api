@@ -11,13 +11,16 @@ import xyz.chunkstories.api.content.json.asBoolean
 import xyz.chunkstories.api.content.json.asDict
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
 /** Keeps track of the flying flag, movement logic has moved to PlayerMovementController in core */
-class TraitFlyingMode(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitFlyingMode.FlyModeUpdate> {
+class TraitFlyingMode(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitFlyingMode.FlyModeUpdate> {
+    override val serializedTraitName = "flyMode"
+
     var isAllowed: Boolean = false
         set(value) {
             field = value

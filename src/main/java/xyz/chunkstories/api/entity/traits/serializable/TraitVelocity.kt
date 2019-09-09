@@ -13,6 +13,7 @@ import xyz.chunkstories.api.content.json.asArray
 import xyz.chunkstories.api.content.json.asDouble
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.net.packets.PacketVelocityDelta
 import xyz.chunkstories.api.world.WorldMaster
@@ -21,7 +22,8 @@ import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
-class TraitVelocity(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitVelocity.VelocityUpdate> {
+class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitVelocity.VelocityUpdate> {
+    override val serializedTraitName = "velocity"
     val velocity = Vector3d()
 
     fun setVelocity(velocity: Vector3dc) = setVelocity(velocity.x(), velocity.y(), velocity.z())

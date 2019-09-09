@@ -13,11 +13,14 @@ import java.io.DataOutputStream
 
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldClient
 import xyz.chunkstories.api.world.WorldMaster
 
-class TraitName(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitName.NameUpdate> {
+class TraitName(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitName.NameUpdate> {
+    override val serializedTraitName = "name"
+
     var name = ""
         set(value) {
             field = value

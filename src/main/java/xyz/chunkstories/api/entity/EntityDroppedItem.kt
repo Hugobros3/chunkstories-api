@@ -10,6 +10,7 @@ import org.joml.Matrix4f
 import org.joml.Vector3d
 import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.content.json.*
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.TraitRenderable
 import xyz.chunkstories.api.entity.traits.serializable.*
@@ -120,7 +121,9 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
     }
 }
 
-class TraitItemContainer(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitItemContainer.DroppedItemUpdate> {
+class TraitItemContainer(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitItemContainer.DroppedItemUpdate> {
+    override val serializedTraitName = "item"
+
     var item: Item? = null
     var amount: Int = 0
 

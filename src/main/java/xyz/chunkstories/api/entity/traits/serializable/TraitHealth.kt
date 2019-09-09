@@ -13,6 +13,7 @@ import xyz.chunkstories.api.entity.DamageCause
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityDroppedItem
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.TraitLoot
 import xyz.chunkstories.api.events.entity.EntityDamageEvent
 import xyz.chunkstories.api.events.entity.EntityDeathEvent
@@ -32,7 +33,9 @@ import java.io.IOException
 
 /** Any entity with this component is considered living, even if it's dead.
  * Handles health management and death  */
-open class TraitHealth(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitHealth.HealthUpdate> {
+open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitHealth.HealthUpdate> {
+    override val serializedTraitName = "health"
+
     val maxHealth : Float = entity.definition["maxHealth"].asFloat ?: 100.0f
     var health: Float = entity.definition["startHealth"].asFloat ?: 100.0f
         set(value) {

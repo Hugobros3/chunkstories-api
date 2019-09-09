@@ -14,6 +14,7 @@ import xyz.chunkstories.api.content.json.asArray
 import xyz.chunkstories.api.content.json.asFloat
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.serialization.StreamSource
@@ -22,7 +23,9 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 
-class TraitRotation(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitRotation.RotationUpdate> {
+class TraitRotation(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitRotation.RotationUpdate> {
+    override val serializedTraitName = "rotation"
+
     var yaw = 0f
         private set(value) {
             if (value.isNaN()) {

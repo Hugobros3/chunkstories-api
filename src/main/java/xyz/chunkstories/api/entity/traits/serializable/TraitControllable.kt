@@ -32,7 +32,8 @@ import xyz.chunkstories.api.net.RemoteServer
 import xyz.chunkstories.api.server.RemotePlayer
 import java.lang.Exception
 
-/** Holds information about who controls one entity  */
+/** Holds information about who controls one entity.
+ * Important note: this information is not serialized on purpose ! */
 abstract class TraitControllable(entity: Entity) : Trait(entity), TraitNetworked<TraitControllable.ControllerUpdate> {
     private var actualController : Controller? = null
 

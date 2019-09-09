@@ -10,6 +10,7 @@ import xyz.chunkstories.api.content.json.Json
 import xyz.chunkstories.api.content.json.asBoolean
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.voxel.MiningTool
@@ -17,7 +18,9 @@ import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
-class TraitCreativeMode(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitCreativeMode.CreativeModeUpdate> {
+class TraitCreativeMode(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitCreativeMode.CreativeModeUpdate> {
+    override val serializedTraitName = "creativeMode"
+
     var enabled: Boolean = false
         set(value) {
             field = value

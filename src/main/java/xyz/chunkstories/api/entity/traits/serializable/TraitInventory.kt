@@ -13,6 +13,7 @@ import xyz.chunkstories.api.content.json.stringSerialize
 import xyz.chunkstories.api.content.json.toJson
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.Item
@@ -27,7 +28,9 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 
-open class TraitInventory(entity: Entity, width: Int, height: Int, val publicContents: Boolean = false) : TraitSerializable(entity), TraitNetworked<TraitInventory.InventoryUpdate>, InventoryCallbacks {
+open class TraitInventory(entity: Entity, width: Int, height: Int, val publicContents: Boolean = false) : Trait(entity), TraitSerializable, TraitNetworked<TraitInventory.InventoryUpdate>, InventoryCallbacks {
+    override val serializedTraitName = "inventory"
+
     val inventory: Inventory //private set
 
     init {

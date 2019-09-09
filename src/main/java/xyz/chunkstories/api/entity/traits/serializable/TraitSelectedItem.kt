@@ -13,6 +13,7 @@ import xyz.chunkstories.api.content.json.toJson
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.Item
@@ -26,7 +27,9 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 
-class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : TraitSerializable(entity), TraitNetworked<TraitSelectedItem.SelectedItemUpdate> {
+class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(entity), TraitSerializable, TraitNetworked<TraitSelectedItem.SelectedItemUpdate> {
+    override val serializedTraitName = "selectedItem"
+
     private var inventory: Inventory
     var selectedSlot = 0
     set(value) {

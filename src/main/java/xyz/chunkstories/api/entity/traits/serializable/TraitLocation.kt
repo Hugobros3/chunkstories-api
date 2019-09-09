@@ -13,6 +13,7 @@ import xyz.chunkstories.api.content.json.asArray
 import xyz.chunkstories.api.content.json.asDouble
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.events.entity.EntityTeleportEvent
 import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.net.packets.PacketEntity
@@ -25,7 +26,9 @@ import java.util.concurrent.locks.ReentrantLock
 
 /** Holds the information about an entity whereabouts and a flag to mark it as
  * unspawned  */
-class TraitLocation(entity: Entity, private val actualLocation: Location) : TraitSerializable(entity), TraitNetworked<TraitLocation.LocationUpdate> {
+class TraitLocation(entity: Entity, private val actualLocation: Location) : Trait(entity), TraitSerializable, TraitNetworked<TraitLocation.LocationUpdate> {
+    override val serializedTraitName = "location"
+
     private val world: World = actualLocation.world
 
     private val lock = ReentrantLock()
