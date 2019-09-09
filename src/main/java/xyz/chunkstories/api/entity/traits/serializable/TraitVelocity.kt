@@ -15,33 +15,44 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.net.Interlocutor
-import xyz.chunkstories.api.net.packets.PacketVelocityDelta
 import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
 class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitVelocity.VelocityUpdate> {
     override val serializedTraitName = "velocity"
-    val velocity = Vector3d()
+    private val realVelocity = Vector3d()
+    val velocity: Vector3dc
+        get() = Vector3d(realVelocity)
 
     fun setVelocity(velocity: Vector3dc) = setVelocity(velocity.x(), velocity.y(), velocity.z())
 
     fun setVelocity(x: Double, y: Double, z: Double) {
-        this.velocity.x = x
-        this.velocity.y = y
-        this.velocity.z = z
+        this.realVelocity.x = x
+        this.realVelocity.y = y
+        this.realVelocity.z = z
 
-        sendMessageAllSubscribers(VelocityUpdate.Absolute(velocity.x, velocity.y, velocity.z))
+        sendMessageAllSubscribers(VelocityUpdate.Absolute(realVelocity.x, realVelocity.y, realVelocity.z))
+    }
+
+    fun setVelocityX(x: Double) {
+        setVelocity(x, realVelocity.y, realVelocity.z)
+    }
+
+    fun setVelocityY(y: Double) {
+        setVelocity(realVelocity.x, y, realVelocity.z)
+    }
+
+    fun setVelocityZ(z: Double) {
+        setVelocity(realVelocity.x, realVelocity.y, z)
     }
 
     fun addVelocity(velocity: Vector3dc) = addVelocity(velocity.x(), velocity.y(), velocity.z())
 
     fun addVelocity(dx: Double, dy: Double, dz: Double) {
-        this.velocity.add(dx, dy, dz)
+        this.realVelocity.add(dx, dy, dz)
 
-        sendMessageAllSubscribers(VelocityUpdate.Absolute(velocity.x, velocity.y, velocity.z))
+        sendMessageAllSubscribers(VelocityUpdate.Absolute(realVelocity.x, realVelocity.y, realVelocity.z))
 
         // Notify the controller in a special way so they don't experience lag
         // due to being set back at a previous velocity
@@ -57,6 +68,7 @@ class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
                 dos.writeDouble(this.z)
             }
         }
+
         data class Relative(val dx: Double, val dy: Double, val dz: Double) : VelocityUpdate() {
             override fun write(dos: DataOutputStream) {
                 dos.writeByte(1)
@@ -68,7 +80,7 @@ class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
     }
 
     override fun readMessage(dis: DataInputStream): VelocityUpdate {
-        return when(dis.read()) {
+        return when (dis.read()) {
             0 -> VelocityUpdate.Absolute(dis.readDouble(), dis.readDouble(), dis.readDouble())
             1 -> VelocityUpdate.Relative(dis.readDouble(), dis.readDouble(), dis.readDouble())
             else -> throw Exception()
@@ -82,16 +94,16 @@ class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
             return
         }
 
-        when(message) {
+        when (message) {
             is VelocityUpdate.Absolute -> {
-                velocity.x = message.x
-                velocity.y = message.y
-                velocity.z = message.z
+                realVelocity.x = message.x
+                realVelocity.y = message.y
+                realVelocity.z = message.z
             }
             is VelocityUpdate.Relative -> {
-                velocity.x += message.dx
-                velocity.y += message.dy
-                velocity.z += message.dz
+                realVelocity.x += message.dx
+                realVelocity.y += message.dy
+                realVelocity.z += message.dz
             }
         }
 
@@ -101,21 +113,21 @@ class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
     }
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {
-        sendMessage(subscriber, VelocityUpdate.Absolute(velocity.x, velocity.y, velocity.z))
+        sendMessage(subscriber, VelocityUpdate.Absolute(realVelocity.x, realVelocity.y, realVelocity.z))
     }
 
     override fun tick() {
-        if (velocity.x.isNaN() || velocity.y.isNaN() || velocity.z.isNaN()) {
-            entity.world.gameContext.logger().warn("Entity $entity had invalid velocity: $velocity, resetting to zero")
-            velocity.set(0.0, 0.0, 0.0)
+        if (realVelocity.x.isNaN() || realVelocity.y.isNaN() || realVelocity.z.isNaN()) {
+            entity.world.gameContext.logger().warn("Entity $entity had invalid velocity: $realVelocity, resetting to zero")
+            realVelocity.set(0.0, 0.0, 0.0)
         }
     }
 
     override fun serialize(): Json {
-        return Json.Array(listOf(Json.Value.Number(velocity.x), Json.Value.Number(velocity.y), Json.Value.Number(velocity.z)))
+        return Json.Array(listOf(Json.Value.Number(realVelocity.x), Json.Value.Number(realVelocity.y), Json.Value.Number(realVelocity.z)))
     }
 
     override fun deserialize(json: Json) {
-        json.asArray?.let { velocity.x = it[0].asDouble!! ; velocity.y = it[1].asDouble!! ; velocity.z = it[2].asDouble!! }
+        json.asArray?.let { realVelocity.x = it[0].asDouble!!; realVelocity.y = it[1].asDouble!!; realVelocity.z = it[2].asDouble!! }
     }
 }

@@ -14,8 +14,6 @@ import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.TraitRenderable
 import xyz.chunkstories.api.entity.traits.serializable.*
-import xyz.chunkstories.api.exceptions.NullItemException
-import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
@@ -25,11 +23,8 @@ import xyz.chunkstories.api.util.kotlin.toVec3f
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldClient
 import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 import kotlin.math.abs
 
 class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(definition, world), InventoryOwner {
@@ -53,7 +48,7 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
     }
 
     override fun tick() {
-        val velocity = entityVelocity.velocity
+        val velocity = Vector3d(entityVelocity.velocity)
 
         if (world is WorldMaster) {
             val inWater = world.peek(location).voxel.liquid

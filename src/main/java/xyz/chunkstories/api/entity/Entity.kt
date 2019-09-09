@@ -4,7 +4,6 @@
 // Website: http://chunkstories.xyz
 //
 
-
 package xyz.chunkstories.api.entity
 
 import xyz.chunkstories.api.Location
