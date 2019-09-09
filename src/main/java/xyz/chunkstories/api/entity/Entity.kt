@@ -10,6 +10,7 @@ package xyz.chunkstories.api.entity
 import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.serializable.TraitLocation
+import xyz.chunkstories.api.entity.traits.serializable.TraitNetworked
 import xyz.chunkstories.api.net.packets.PacketEntity
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.player.Player
@@ -238,7 +239,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         fun register(subscriber: Subscriber): Boolean {
             // If it didn't already contain the subscriber ...
             return if (add(subscriber)) {
-                //TODO some logic here maybe
+                traits.all().forEach { if (it is TraitNetworked<*>) it.whenSubscriberRegisters(subscriber) }
                 true
             } else false
         }
@@ -247,6 +248,8 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
          * when he unsubscribe() to this entity  */
         fun unregister(subscriber: Subscriber): Boolean {
             if (remove(subscriber)) {
+                traits.all().forEach { if (it is TraitNetworked<*>) it.whenSubscriberUnregisters(subscriber) }
+
                 subscriber.pushPacket(PacketEntity.createKillerPacket(this@Entity))
 
                 // PacketEntity checks if the subscriber is registered in the entity it's about

@@ -9,18 +9,16 @@ package xyz.chunkstories.api.entity
 import org.joml.Matrix4f
 import org.joml.Vector3d
 import xyz.chunkstories.api.Location
+import xyz.chunkstories.api.content.json.*
 import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.TraitRenderable
-import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
-import xyz.chunkstories.api.entity.traits.serializable.TraitSerializable
-import xyz.chunkstories.api.entity.traits.serializable.TraitVelocity
+import xyz.chunkstories.api.entity.traits.serializable.*
 import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.item.Item
-import xyz.chunkstories.api.item.inventory.InventoryOwner
-import xyz.chunkstories.api.item.inventory.obtainItemPileFromStream
-import xyz.chunkstories.api.item.inventory.saveIntoStream
+import xyz.chunkstories.api.item.inventory.*
+import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.util.kotlin.toVec3f
 import xyz.chunkstories.api.world.World
@@ -122,27 +120,38 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
     }
 }
 
-class TraitItemContainer(entity: Entity) : TraitSerializable(entity) {
+class TraitItemContainer(entity: Entity) : TraitSerializable(entity), TraitNetworked<TraitItemContainer.DroppedItemUpdate> {
     var item: Item? = null
     var amount: Int = 0
 
-    @Throws(IOException::class)
-    override fun push(destinator: StreamTarget, dos: DataOutputStream) {
-        item?.saveIntoStream(amount, entity.world.contentTranslator, dos) ?: dos.writeInt(0)
+    override fun serialize() = serializeItemAndAmount(item, amount)
+
+    override fun deserialize(json: Json) {
+        val (item, amount) = deserializeItemAndAmount(entity.world.contentTranslator, json)
+        this.item = item
+        this.amount = amount
     }
 
-    @Throws(IOException::class)
-    override fun pull(from: StreamSource, dis: DataInputStream) {
-        try {
-            val (item, amount) = obtainItemPileFromStream(entity.world.contentTranslator, dis)
-            this.item = item
-            this.amount = amount
-        } catch (e: NullItemException) {
-            this.item = null
-            this.amount = 0
-        } catch (e: UndefinedItemTypeException) {
-            e.printStackTrace()
+    data class DroppedItemUpdate(val item: Item?, val amount: Int) : TraitMessage() {
+        override fun write(dos: DataOutputStream) {
+            dos.writeUTF(serializeItemAndAmount(item, amount).stringSerialize())
         }
+    }
+
+    override fun readMessage(dis: DataInputStream) = deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
+        DroppedItemUpdate(it.first, it.second)
+    }
+
+    override fun processMessage(message: DroppedItemUpdate, from: Interlocutor) {
+        if (entity.world is WorldMaster)
+            return
+
+        item = message.item
+        amount = message.amount
+    }
+
+    override fun whenSubscriberRegisters(subscriber: Subscriber) {
+        sendMessage(subscriber, DroppedItemUpdate(item, amount))
     }
 }
 

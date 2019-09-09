@@ -4,7 +4,7 @@
  */
 
 buildscript {
-	ext.kotlin_version = '1.3.0'
+	ext.kotlin_version = '1.3.50'
 
 	repositories {
 		//mavenLocal()
@@ -27,12 +27,8 @@ apply plugin: 'java-library'
 apply plugin: 'maven'
 apply plugin: 'kotlin'
 
-ext {
-	useEclipseCompiler = false
-}
-
 //TODO Make version depend on Git ?
-version = '202'
+version = '203'
 
 group = 'xyz.chunkstories'
 description = 'API for the game \'Chunk Stories\''
@@ -58,11 +54,6 @@ repositories {
 	maven { url "http://maven.xol.io/repository/public/" }
 }
 
-if(ext.useEclipseCompiler) {
-	apply plugin: 'de.johni0702.ecj'
-	println "Using ECJ compiler"
-}
-
 compileJava {
 	options.encoding = 'utf-8'
 
@@ -82,13 +73,13 @@ configurations {
 }
 
 dependencies {
-	compile group: 'org.joml', name: 'joml', version: '1.9.3'
-	compile group: 'io.xol.enklume', name: 'enklume', version: 100
-	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.9'
-	compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
-
 	api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+	api group: 'org.joml', name: 'joml', version: '1.9.3'
+	api group: 'io.xol.enklume', name: 'enklume', version: 100
+	api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.9'
+
 	implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+	implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
 
 	deployerJars "org.apache.maven.wagon:wagon-ssh:3.0.0"
 }

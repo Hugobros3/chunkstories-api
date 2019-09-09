@@ -45,7 +45,7 @@ interface TraitNetworked<M : TraitMessage> {
 
     fun whenSubscriberRegisters(subscriber: Subscriber)
 
-    fun whenSubscriberUnRegisters(subscriber: Subscriber) {}
+    fun whenSubscriberUnregisters(subscriber: Subscriber) {}
 }
 
 abstract class TraitMessage {

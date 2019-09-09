@@ -50,17 +50,6 @@ open class Item(val definition: ItemDefinition) {
     open fun duplicate(): Item {
         val new: Item = definition.newItem()
 
-        /*val data = ByteArrayOutputStream()
-        try {
-            this.save(DataOutputStream(data))
-
-            val stream = ByteArrayInputStream(data.toByteArray())
-            val dis = DataInputStream(stream)
-
-            new.load(dis)
-            dis.close()
-        } catch (e: IOException) {
-        }*/
         new.deserialize(this.serialize())
 
         return new
@@ -78,18 +67,6 @@ open class Item(val definition: ItemDefinition) {
     open fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         representationsGobbler.acceptRepresentation(Sprite(worldPosition.transform(Vector4f(0.0f, 0f, 0f, 1f)).toVec4d().toVec3d(), 1f, MeshMaterial("item_$name", mapOf("albedoTexture" to getTextureName()), "opaque")))
     }
-
-    /*/** Unsafe, called upon loading this item from a stream. If you do use it,
-     * PLEASE ensure you remember how many bytes you read/write and be consistent,
-     * else you break the savefile  */
-    @Throws(IOException::class)
-    open fun load(stream: DataInputStream) {
-    }
-
-    /** See load().  */
-    @Throws(IOException::class)
-    open fun save(stream: DataOutputStream) {
-    }*/
 
     @Throws(IOException::class)
     open fun serialize() : Json.Dict = Json.Dict(emptyMap())
