@@ -14,19 +14,12 @@ import xyz.chunkstories.api.content.json.toJson
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.exceptions.NullItemException
-import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
 import xyz.chunkstories.api.net.Interlocutor
-import xyz.chunkstories.api.net.packets.PacketInventoryPartialUpdate
-import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 
 open class TraitInventory(entity: Entity, width: Int, height: Int, val publicContents: Boolean = false) : Trait(entity), TraitSerializable, TraitNetworked<TraitInventory.InventoryUpdate>, InventoryCallbacks {
     override val serializedTraitName = "inventory"
@@ -147,10 +140,10 @@ open class TraitInventory(entity: Entity, width: Int, height: Int, val publicCon
     override val inventoryName: String
         get() = entity.traits[TraitName::class]?.name ?: entity::class.java.simpleName
 
-    override fun serialize() = inventory.serialize(entity.world.contentTranslator)
+    override fun serialize() = InventorySerialization.serializeInventory(inventory, entity.world.contentTranslator)
 
     override fun deserialize(json: Json) {
         val dict = json.asDict ?: return
-        inventory.deserialize(entity.world.contentTranslator, dict)
+        InventorySerialization.deserializeInventory(inventory, entity.world.contentTranslator, dict)
     }
 }

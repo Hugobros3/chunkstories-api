@@ -51,7 +51,7 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
         data class ServerToClientsUpdate(val item: Item?, val amount: Int) : SelectedItemUpdate() {
             override fun write(dos: DataOutputStream) {
                 dos.write(0)
-                dos.writeUTF(serializeItemAndAmount(item, amount).stringSerialize())
+                dos.writeUTF(InventorySerialization.serializeItemAndAmount(item, amount).stringSerialize())
             }
         }
 
@@ -66,7 +66,7 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
     override fun readMessage(dis: DataInputStream): SelectedItemUpdate {
         val type = dis.read()
         return when(type) {
-            0 -> deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
+            0 -> InventorySerialization.deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
                 SelectedItemUpdate.ServerToClientsUpdate(it.first, it.second)
             }
             1 -> SelectedItemUpdate.ControllerUpdate(dis.readInt())

@@ -122,21 +122,21 @@ class TraitItemContainer(entity: Entity) : Trait(entity), TraitSerializable, Tra
     var item: Item? = null
     var amount: Int = 0
 
-    override fun serialize() = serializeItemAndAmount(item, amount)
+    override fun serialize() = InventorySerialization.serializeItemAndAmount(item, amount)
 
     override fun deserialize(json: Json) {
-        val (item, amount) = deserializeItemAndAmount(entity.world.contentTranslator, json)
+        val (item, amount) = InventorySerialization.deserializeItemAndAmount(entity.world.contentTranslator, json)
         this.item = item
         this.amount = amount
     }
 
     data class DroppedItemUpdate(val item: Item?, val amount: Int) : TraitMessage() {
         override fun write(dos: DataOutputStream) {
-            dos.writeUTF(serializeItemAndAmount(item, amount).stringSerialize())
+            dos.writeUTF(InventorySerialization.serializeItemAndAmount(item, amount).stringSerialize())
         }
     }
 
-    override fun readMessage(dis: DataInputStream) = deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
+    override fun readMessage(dis: DataInputStream) = InventorySerialization.deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
         DroppedItemUpdate(it.first, it.second)
     }
 
