@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReentrantLock
 /** Holds the information about an entity whereabouts and a flag to mark it as
  * unspawned  */
 class TraitLocation(entity: Entity, private val actualLocation: Location) : Trait(entity), TraitSerializable, TraitNetworked<TraitLocation.LocationUpdate> {
-    override val serializedTraitName = "location"
+    override val traitName = "location"
 
     private val world: World = actualLocation.world
 

@@ -9,4 +9,6 @@ package xyz.chunkstories.api.entity.traits
 import xyz.chunkstories.api.entity.Entity
 
 /** Any entity with this trait won't be saved in the chunks data  */
-class TraitDontSave(entity: Entity) : Trait(entity)
+class TraitDontSave(entity: Entity) : Trait(entity) {
+    override val traitName = "dontsave"
+}

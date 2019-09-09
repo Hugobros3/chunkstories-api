@@ -19,7 +19,7 @@ import xyz.chunkstories.api.world.WorldClient
 import xyz.chunkstories.api.world.WorldMaster
 
 class TraitName(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitName.NameUpdate> {
-    override val serializedTraitName = "name"
+    override val traitName = "name"
 
     var name = ""
         set(value) {

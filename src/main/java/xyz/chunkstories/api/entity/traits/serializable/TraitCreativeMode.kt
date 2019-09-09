@@ -19,7 +19,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 
 class TraitCreativeMode(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitCreativeMode.CreativeModeUpdate> {
-    override val serializedTraitName = "creativeMode"
+    override val traitName = "creativeMode"
 
     var enabled: Boolean = false
         set(value) {

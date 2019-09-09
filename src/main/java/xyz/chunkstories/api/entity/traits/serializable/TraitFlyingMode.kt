@@ -19,7 +19,7 @@ import java.io.DataOutputStream
 
 /** Keeps track of the flying flag, movement logic has moved to PlayerMovementController in core */
 class TraitFlyingMode(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitFlyingMode.FlyModeUpdate> {
-    override val serializedTraitName = "flyMode"
+    override val traitName = "flyMode"
 
     var isAllowed: Boolean = false
         set(value) {

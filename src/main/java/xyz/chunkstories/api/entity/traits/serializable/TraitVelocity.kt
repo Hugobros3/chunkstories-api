@@ -20,7 +20,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 
 class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitVelocity.VelocityUpdate> {
-    override val serializedTraitName = "velocity"
+    override val traitName = "velocity"
     private val realVelocity = Vector3d()
     val velocity: Vector3dc
         get() = Vector3d(realVelocity)

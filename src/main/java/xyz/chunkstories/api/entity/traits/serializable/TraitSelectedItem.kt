@@ -28,7 +28,7 @@ import java.io.DataOutputStream
 import java.io.IOException
 
 class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(entity), TraitSerializable, TraitNetworked<TraitSelectedItem.SelectedItemUpdate> {
-    override val serializedTraitName = "selectedItem"
+    override val traitName = "selectedItem"
 
     private var inventory: Inventory
     var selectedSlot = 0

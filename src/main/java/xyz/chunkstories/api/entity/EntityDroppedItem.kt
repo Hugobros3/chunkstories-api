@@ -117,7 +117,7 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
 }
 
 class TraitItemContainer(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitItemContainer.DroppedItemUpdate> {
-    override val serializedTraitName = "item"
+    override val traitName = "item"
 
     var item: Item? = null
     var amount: Int = 0

@@ -24,7 +24,7 @@ import java.io.DataOutputStream
 import java.io.IOException
 
 class TraitRotation(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitRotation.RotationUpdate> {
-    override val serializedTraitName = "rotation"
+    override val traitName = "rotation"
 
     var yaw = 0f
         private set(value) {

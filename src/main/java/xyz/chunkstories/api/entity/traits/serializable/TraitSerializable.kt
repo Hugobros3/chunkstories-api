@@ -21,7 +21,7 @@ import java.io.DataOutputStream
 import java.io.IOException
 
 interface TraitSerializable {
-    val serializedTraitName: String
+    val traitName: String
 
     @Throws(IOException::class)
     fun serialize() : Json

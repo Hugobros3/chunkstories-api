@@ -32,6 +32,8 @@ class AiTaskIdle<E: Entity>(ai: AI<E>) : AiTask<E>(ai) {
 }
 
 class TraitAi<E : Entity>(entity: E, val ai: AI<E>): Trait(entity) {
+    override val traitName = "ai"
+
     override fun tick() {
         ai.tick()
     }

@@ -15,6 +15,7 @@ import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.physics.overlaps
 
 open class TraitCollidable(entity: Entity) : Trait(entity) {
+    override val traitName = "collisions"
 
     var selectable: Boolean
     var collidesWithEntities: Boolean

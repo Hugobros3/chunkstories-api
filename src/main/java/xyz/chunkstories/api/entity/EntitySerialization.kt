@@ -17,7 +17,7 @@ object EntitySerialization {
         return Json.Dict(mapOf(
                 "uuid" to Json.Value.Text(entity.UUID.toString()),
                 "entityType" to Json.Value.Text(entity.definition.name),
-                "traits" to Json.Dict(entity.traits.all().filterIsInstance<TraitSerializable>().map { Pair(it.serializedTraitName, it.serialize()) }.toMap())
+                "traits" to Json.Dict(entity.traits.all().filterIsInstance<TraitSerializable>().map { Pair(it.traitName, it.serialize()) }.toMap())
         ))
     }
 
@@ -30,7 +30,7 @@ object EntitySerialization {
         entity.UUID = uuid
 
         for((name, traitJsonPayload) in json["traits"].asDict!!.elements) {
-            val trait = entity.traits.all().find { it is TraitSerializable && it.serializedTraitName == name } as? TraitSerializable ?: continue
+            val trait = entity.traits.all().find { it is TraitSerializable && it.traitName == name } as? TraitSerializable ?: continue
             trait.deserialize(traitJsonPayload)
         }
 

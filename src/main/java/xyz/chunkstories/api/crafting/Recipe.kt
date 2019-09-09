@@ -50,8 +50,6 @@ class PatternedRecipe(val pattern: Array<Array<ItemDefinition?>>, result: Pair<I
 
         for (offsetX in 0..slotsWidth - width) {
             outer@ for (offsetY in 0..slotsHeight - height) {
-                val list = mutableListOf<InventorySlot.FakeSlot>()
-
                 for (x in 0 until width) {
                     for (y in 0 until height) {
                         val slot = craftingAreaSlots[x + offsetX][y + offsetY] as? InventorySlot.FakeSlot ?: throw Exception("these have to be fake")

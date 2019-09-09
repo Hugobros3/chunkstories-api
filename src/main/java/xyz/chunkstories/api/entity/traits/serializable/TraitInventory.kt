@@ -22,7 +22,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 
 open class TraitInventory(entity: Entity, width: Int, height: Int, val publicContents: Boolean = false) : Trait(entity), TraitSerializable, TraitNetworked<TraitInventory.InventoryUpdate>, InventoryCallbacks {
-    override val serializedTraitName = "inventory"
+    override val traitName = "inventory"
 
     val inventory: Inventory //private set
 

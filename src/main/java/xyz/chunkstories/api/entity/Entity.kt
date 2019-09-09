@@ -56,7 +56,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         traits.set = Collections.unmodifiableSet(set)
 
         val array = arrayOfNulls<Trait>(set.size)
-        set.forEach {array[it.id()] = it}
+        set.forEach {array[it.id] = it}
         traits.byId = array.requireNoNulls()
 
         // Set the initialized flag so the above structures become immutable
@@ -151,7 +151,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
                 }
 
                 //println("returning purged id:" + remove.id())
-                return remove.id()
+                return remove.id
             }
 
             return -1
@@ -220,7 +220,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         override fun toString(): String {
             var ok = ""
             for (trait in all())
-                ok += "(" + safename(trait.javaClass) + ", " + trait.id() + ")" + ", "
+                ok += "(" + safename(trait.javaClass) + ", " + trait.id + ")" + ", "
             return all()!!.size.toString() + "{" + ok + "}"
         }
 

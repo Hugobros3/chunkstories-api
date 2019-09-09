@@ -34,7 +34,7 @@ import java.io.IOException
 /** Any entity with this component is considered living, even if it's dead.
  * Handles health management and death  */
 open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitHealth.HealthUpdate> {
-    override val serializedTraitName = "health"
+    override val traitName = "health"
 
     val maxHealth : Float = entity.definition["maxHealth"].asFloat ?: 100.0f
     var health: Float = entity.definition["startHealth"].asFloat ?: 100.0f

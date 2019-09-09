@@ -50,7 +50,7 @@ fun writeInventoryHandle(stream: DataOutputStream, inventory: Inventory?) {
 
             stream.writeByte(0x01)
             stream.writeLong((inventory.owner as Entity).UUID)
-            stream.writeShort(trait.id())
+            stream.writeShort(trait.id)
         }
         is VoxelInventoryComponent -> {
             val component = inventory.owner as VoxelInventoryComponent?

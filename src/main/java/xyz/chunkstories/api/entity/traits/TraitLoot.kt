@@ -11,5 +11,7 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.makeEntityLootTableFromJson
 
 class TraitLoot(entity: Entity) : Trait(entity) {
+    override val traitName = "loot"
+
     val lootTable = makeEntityLootTableFromJson(entity.definition["drops"] ?: Json.Value.Null, entity.definition.store.parent)
 }
