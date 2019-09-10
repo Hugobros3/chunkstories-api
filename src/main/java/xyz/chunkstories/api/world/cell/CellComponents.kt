@@ -14,8 +14,7 @@ import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.chunk.Chunk
 import xyz.chunkstories.api.world.chunk.ChunkCell
 
-/** Represents the various VoxelComponents that may exist in one voxel
- * getCell  */
+/** Represents the various VoxelComponents that may exist in one voxel cell */
 interface CellComponents {
     val chunk: Chunk
 
@@ -30,17 +29,17 @@ interface CellComponents {
     /** Returns the WORLD z coordinate  */
     val z: Int
 
-    /** Peeks the getCell containing those components  */
+    /** Peeks the cell containing those components  */
     val cell: ChunkCell
 
     val allVoxelComponents: Collection<Entry<String, VoxelComponent>>
 
-    /// ** Returns a list of users that can see this getCell */
+    /// ** Returns a list of users that can see this cell */
     // public IterableIterator<WorldUser> users();
 
     fun getVoxelComponent(name: String): VoxelComponent?
 
     /** Looks for a VoxelComponent and returns it's name if it is contained in this
-     * getCell.  */
+     * cell.  */
     fun getRegisteredComponentName(component: VoxelComponent): String?
 }

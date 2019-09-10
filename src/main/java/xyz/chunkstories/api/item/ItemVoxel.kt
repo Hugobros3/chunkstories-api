@@ -43,7 +43,6 @@ import xyz.chunkstories.api.world.cell.FutureCell
 /** An item that contains voxels  */
 open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModificationCause {
     private val store: Content.Voxels = definition.store.parent.voxels
-
     val voxel: Voxel
 
     init {

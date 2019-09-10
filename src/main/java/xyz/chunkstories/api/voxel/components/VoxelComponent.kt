@@ -6,6 +6,7 @@
 
 package xyz.chunkstories.api.voxel.components
 
+import xyz.chunkstories.api.content.json.Json
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
@@ -40,11 +41,9 @@ abstract class VoxelComponent(val holder: CellComponents) {
         player.pushPacket(packet)
     }
 
-    /** Serializes this components data as a stream of bytes  */
     @Throws(IOException::class)
-    abstract fun push(destinator: StreamTarget, dos: DataOutputStream)
+    abstract fun serialize() : Json?
 
-    /** Loads in the component data from a stream of bytes  */
     @Throws(IOException::class)
-    abstract fun pull(from: StreamSource, dis: DataInputStream)
+    abstract fun deserialize(json: Json)
 }

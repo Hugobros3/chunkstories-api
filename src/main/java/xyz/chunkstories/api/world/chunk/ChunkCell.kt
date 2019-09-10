@@ -14,7 +14,7 @@ interface ChunkCell : WorldCell {
 
     @get:Deprecated("")
             /** Accesses the raw data in that getCell. Reserved for internal engine
-             * purposes!  */
+             * purposes! */
     val data: Int
 
     val components: CellComponents

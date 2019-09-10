@@ -6,15 +6,14 @@
 
 package xyz.chunkstories.api.voxel.components
 
+import xyz.chunkstories.api.content.json.Json
+import xyz.chunkstories.api.content.json.asDict
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.item.Item
-import xyz.chunkstories.api.item.inventory.Inventory
-import xyz.chunkstories.api.item.inventory.InventoryCallbacks
-import xyz.chunkstories.api.item.inventory.InventoryOwner
-import xyz.chunkstories.api.item.inventory.ItemPile
+import xyz.chunkstories.api.item.inventory.*
 import xyz.chunkstories.api.net.packets.PacketInventoryPartialUpdate
 import xyz.chunkstories.api.server.RemotePlayer
 import xyz.chunkstories.api.world.WorldUser
@@ -45,23 +44,20 @@ class VoxelInventoryComponent(cell: CellComponents, width: Int, height: Int) : V
         }
     }
 
-    @Throws(IOException::class)
-    override fun push(destinator: StreamTarget, dos: DataOutputStream) {
-        inventory.saveToStream(dos, holder.world.contentTranslator)
-        //inventory.pushInventory(destinator, dos, getHolder().getWorld().getContentTranslator());
-    }
-
-    @Throws(IOException::class)
-    override fun pull(from: StreamSource, dis: DataInputStream) {
-        inventory.loadFromStream(dis, holder.world.contentTranslator)
-    }
-
     override fun isAccessibleTo(entity: Entity): Boolean {
         //TODO compute distance ?
-        return true
+        return entity.location.distance(holder.cell.location) < 6.0F
     }
 
     override fun isItemAccepted(item: Item): Boolean {
         return true
+    }
+
+    override fun deserialize(json: Json) {
+        InventorySerialization.deserializeInventory(inventory, holder.cell.world.contentTranslator, json.asDict ?: return)
+    }
+
+    override fun serialize(): Json? {
+        return InventorySerialization.serializeInventory(inventory, holder.cell.world.contentTranslator, false)
     }
 }
