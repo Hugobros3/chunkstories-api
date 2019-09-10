@@ -10,6 +10,7 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.gui.GuiDrawer
 
 abstract class TraitHasOverlay(entity: Entity) : Trait(entity) {
+    override val traitName = "overlay"
 
     abstract fun drawEntityOverlay(drawer: GuiDrawer)
 

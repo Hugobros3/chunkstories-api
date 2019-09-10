@@ -16,6 +16,7 @@ import xyz.chunkstories.api.world.cell.Cell
 
 /** Represents the fact this entity has a concept of "head" and direction looking at */
 abstract class TraitSight(entity: Entity) : Trait(entity) {
+    override val traitName = "sight"
 
     abstract val headLocation: Location
     abstract val lookingAt: Vector3dc

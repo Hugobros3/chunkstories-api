@@ -10,6 +10,7 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.input.Input
 
 abstract class TraitInteractible(entity: Entity) : Trait(entity) {
+    override val traitName = "interaction"
 
     abstract fun handleInteraction(entity: Entity, input: Input): Boolean
 }

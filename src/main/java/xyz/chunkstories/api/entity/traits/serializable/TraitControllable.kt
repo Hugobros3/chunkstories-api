@@ -35,6 +35,7 @@ import java.lang.Exception
 /** Holds information about who controls one entity.
  * Important note: this information is not serialized on purpose ! */
 abstract class TraitControllable(entity: Entity) : Trait(entity), TraitNetworked<TraitControllable.ControllerUpdate> {
+    override val traitName = "controller"
     private var actualController : Controller? = null
 
     var controller: Controller?

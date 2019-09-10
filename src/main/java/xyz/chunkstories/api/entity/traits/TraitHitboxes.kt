@@ -12,6 +12,7 @@ import xyz.chunkstories.api.physics.EntityHitbox
 /** Any entity exposing a children of that trait will be considered having
  * hitboxes  */
 abstract class TraitHitboxes(entity: Entity) : Trait(entity) {
+    override val traitName = "hitboxes"
 
     abstract val hitBoxes: Array<EntityHitbox>
 }

@@ -10,5 +10,6 @@ import xyz.chunkstories.api.animation.Animator
 import xyz.chunkstories.api.entity.Entity
 
 abstract class TraitAnimated(entity: Entity) : Trait(entity) {
+    override val traitName = "animation"
     abstract val animatedSkeleton: Animator
 }
