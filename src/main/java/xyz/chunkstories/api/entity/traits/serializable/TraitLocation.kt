@@ -248,7 +248,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
 
     override fun deserialize(json: Json) {
         val arr = json.asArray ?: return
-        actualLocation.set(arr[0].asDouble!!, arr[1].asDouble!!, arr[3].asDouble!!)
+        actualLocation.set(arr[0].asDouble!!, arr[1].asDouble!!, arr[2].asDouble!!)
     }
 
     override fun serialize(): Json {
