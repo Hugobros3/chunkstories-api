@@ -6,10 +6,6 @@
 
 package xyz.chunkstories.api.net.packets
 
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.IOException
-
 import xyz.chunkstories.api.client.net.ClientPacketsProcessor
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
@@ -22,6 +18,9 @@ import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.server.RemotePlayer
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldMaster
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 
 class PacketEntity : PacketWorld {
     private lateinit var entity: Entity
@@ -44,7 +43,7 @@ class PacketEntity : PacketWorld {
     }
 
     companion object {
-        fun <M> createUpdatePacket(entity: Entity, trait: TraitNetworked<M>, message: M) where M: TraitMessage = PacketEntity(entity, trait as Trait, message)
+        fun <M> createUpdatePacket(entity: Entity, trait: TraitNetworked<M>, message: M) where M : TraitMessage = PacketEntity(entity, trait as Trait, message)
         fun createKillerPacket(entity: Entity) = PacketEntity(entity, true)
     }
 
@@ -82,7 +81,7 @@ class PacketEntity : PacketWorld {
         val world = processor.world ?: return
 
         var entity = world.getEntityByUUID(entityUUID)
-        var shouldCreateEntity = false
+        var freshlyCreatedEntity = false
 
         if (entity == null) {
             if (world is WorldMaster && sender is RemotePlayer) {
@@ -90,25 +89,25 @@ class PacketEntity : PacketWorld {
                 return
             } else if (!killerPacket) {
                 entity = world.contentTranslator.getEntityForId(entityTypeID.toInt())!!.newEntity(world) // This is technically
-
                 entity.UUID = entityUUID
-                shouldCreateEntity = true
+                freshlyCreatedEntity = true
             }
         }
 
-        val traitId = dis.readInt()
-        trait = entity!!.traits.byId[traitId]
-        message = (trait as TraitNetworked<*>).readMessage(dis)
-        (trait as TraitNetworked<TraitMessage>).processMessage(message, sender as Interlocutor)
+        if (!killerPacket) {
+            val traitId = dis.readInt()
+            trait = entity!!.traits.byId[traitId]
+            message = (trait as TraitNetworked<*>).readMessage(dis)
+            @Suppress("UNCHECKED_CAST")
+            (trait as TraitNetworked<TraitMessage>).processMessage(message, sender as Interlocutor)
 
-        if (shouldCreateEntity && !killerPacket) {
-            // Only the WorldMaster is allowed to spawn new entities in the world
-            if (processor is ClientPacketsProcessor)
-                processor.world.addEntity(entity)
-        }
-
-        if (killerPacket) {
-            world.removeEntity(entity)
+            if (freshlyCreatedEntity) {
+                // Only the WorldMaster is allowed to spawn new entities in the world
+                if (processor is ClientPacketsProcessor)
+                    processor.world.addEntity(entity)
+            }
+        } else {
+            world.removeEntity(entity!!)
         }
     }
 }

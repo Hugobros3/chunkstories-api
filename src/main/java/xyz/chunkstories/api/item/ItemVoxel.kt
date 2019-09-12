@@ -162,7 +162,6 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
         }
 
         return false
-
     }
 
     open fun prepareNewBlockData(cell: FutureCell, adjacentCell: Cell, adjacentCellSide: VoxelSide, placingEntity: Entity, hit: RayResult.Hit.VoxelHit): Boolean {

@@ -37,7 +37,10 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
         if (field < 0)
             field += inventory.width
 
-        sendMessageAllSubscribersButController(SelectedItemUpdate.ServerToClientsUpdate(selectedItem?.item, selectedItem?.amount ?: 0))
+        if(entity.world is WorldMaster)
+            sendMessageAllSubscribersButController(SelectedItemUpdate.ServerToClientsUpdate(selectedItem?.item, selectedItem?.amount ?: 0))
+        else
+            sendMessageAllSubscribers(SelectedItemUpdate.ControllerUpdate(value))
     }
 
     val selectedItem: ItemPile?
@@ -84,7 +87,8 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
                 inventory.setItemAt(0, 0, message.item, message.amount, true)
             }
             is SelectedItemUpdate.ControllerUpdate -> {
-                selectedSlot = message.slot
+                if(from == entity.traits[TraitControllable::class]?.controller)
+                    selectedSlot = message.slot
             }
         }
     }

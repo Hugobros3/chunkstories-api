@@ -6,7 +6,10 @@
 
 package xyz.chunkstories.api.content.json
 
+import com.google.gson.annotations.JsonAdapter
+
 /** Tight, type-safe representation of Json for use in engine internals */
+@JsonAdapter(GsonJsonAdapter::class)
 sealed class Json {
     sealed class Value : Json() {
         data class Text(val text: String) : Value()

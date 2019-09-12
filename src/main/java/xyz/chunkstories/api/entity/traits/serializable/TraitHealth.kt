@@ -24,12 +24,8 @@ import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.server.Server
 import xyz.chunkstories.api.sound.SoundSource
 import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.File
-import java.io.IOException
 
 /** Any entity with this component is considered living, even if it's dead.
  * Handles health management and death  */
@@ -140,22 +136,17 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
 
                 // Serverside stuff
                 if (controller is Player && entity.world is WorldMaster) {
-                    val player = controller as Player
-
-                    val event = PlayerDeathEvent(player)
+                    val event = PlayerDeathEvent(controller)
                     entity.world.gameLogic.pluginsManager.fireEvent(event)
+                    (controller.controlledEntity?.world?.gameContext as? Server)?.broadcastMessage(event.deathMessage)
 
                     // When a player dies, delete his save as well
-                    val playerSavefile = File((entity.world as WorldMaster).folderPath + "/players/" + player.name.toLowerCase() + ".csf")
+                    /*val playerSavefile = File((entity.world as WorldMaster).folderPath + "/players/" + player.name.toLowerCase() + ".csf")
                     if (playerSavefile.exists()) {
                         // Player save file is deleted upon death
                         playerSavefile.delete()
-                    }
+                    }*/
 
-                    (player.controlledEntity?.world?.gameContext as? Server)?.broadcastMessage(event.deathMessage)
-                } else {
-                    // Weird, undefined cases ( controller wasn't a player, maybe some weird mod
-                    // logic here
                 }
             }
         }
