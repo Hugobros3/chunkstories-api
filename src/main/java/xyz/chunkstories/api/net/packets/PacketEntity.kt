@@ -17,11 +17,7 @@ import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.serializable.TraitMessage
 import xyz.chunkstories.api.entity.traits.serializable.TraitNetworked
 import xyz.chunkstories.api.exceptions.UnknownComponentException
-import xyz.chunkstories.api.net.PacketDestinator
-import xyz.chunkstories.api.net.PacketReceptionContext
-import xyz.chunkstories.api.net.PacketSender
-import xyz.chunkstories.api.net.PacketSendingContext
-import xyz.chunkstories.api.net.PacketWorld
+import xyz.chunkstories.api.net.*
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.server.RemotePlayer
 import xyz.chunkstories.api.world.World
@@ -103,6 +99,7 @@ class PacketEntity : PacketWorld {
         val traitId = dis.readInt()
         trait = entity!!.traits.byId[traitId]
         message = (trait as TraitNetworked<*>).readMessage(dis)
+        (trait as TraitNetworked<TraitMessage>).processMessage(message, sender as Interlocutor)
 
         if (shouldCreateEntity && !killerPacket) {
             // Only the WorldMaster is allowed to spawn new entities in the world
