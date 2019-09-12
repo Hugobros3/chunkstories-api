@@ -55,6 +55,8 @@ open class TraitInventory(entity: Entity, width: Int, height: Int, val publicCon
                 dos.write(1)
                 dos.writeInt(contents.size)
                 for((x, y, item, amount) in contents) {
+                    dos.writeInt(x)
+                    dos.writeInt(y)
                     dos.writeInt(contentTranslator.getIdForItem(item))
                     dos.writeInt(amount)
                     dos.writeUTF(item.serialize().stringSerialize())
@@ -109,12 +111,12 @@ open class TraitInventory(entity: Entity, width: Int, height: Int, val publicCon
 
         when(message) {
             is InventoryUpdate.RefreshSlot -> {
-                inventory.setItemAt(message.x, message.y, message.item, message.amount)
+                inventory.setItemAt(message.x, message.y, message.item, message.amount, true)
             }
             is InventoryUpdate.RefreshInventory -> {
                 inventory.clear()
                 for((x, y, item, amount) in message.contents) {
-                    inventory.setItemAt(x, y, item, amount)
+                    inventory.setItemAt(x, y, item, amount, true)
                 }
             }
         }

@@ -217,7 +217,7 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
         }
 
         // Tell anyone still subscribed to this entity to sod off
-        entity.subscribers.forEach { subscriber ->
+        entity.subscribers.toList().forEach { subscriber ->
             subscriber.pushPacket(PacketEntity.createKillerPacket(entity))
             subscriber.unsubscribe(entity)
         }
