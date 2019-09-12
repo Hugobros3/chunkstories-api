@@ -31,7 +31,7 @@ interface Region {
 
     /** WorldUsers keep the chunk loaded. The region is only kept in memory as long as this set is non-null. */
     val users: Set<WorldUser>
-    fun registerUser(user: WorldUser): Boolean
+    //fun registerUser(user: WorldUser): Boolean
 
     /** Unregisters an user.
      * In a master world, unregistering the last user will cause a transition to the Saving state.
