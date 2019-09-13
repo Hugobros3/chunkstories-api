@@ -17,8 +17,6 @@ interface Server : GameContext {
     /** Returns how many seconds this server has been running for  */
     val uptime: Long
 
-    val userPrivileges: UserPrivileges
-
     /** @return The players that are **logged in**
      */
     val connectedPlayers: Set<Player>
