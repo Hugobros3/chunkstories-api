@@ -139,19 +139,10 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
                     val event = PlayerDeathEvent(controller)
                     entity.world.gameLogic.pluginsManager.fireEvent(event)
                     (controller.controlledEntity?.world?.gameContext as? Server)?.broadcastMessage(event.deathMessage)
-
-                    // When a player dies, delete his save as well
-                    /*val playerSavefile = File((entity.world as WorldMaster).folderPath + "/players/" + player.name.toLowerCase() + ".csf")
-                    if (playerSavefile.exists()) {
-                        // Player save file is deleted upon death
-                        playerSavefile.delete()
-                    }*/
-
                 }
             }
         }
 
-        val world = entity.world
         // Drop items !
         for (trait in entity.traits.all()) {
             if (trait is TraitInventory) {

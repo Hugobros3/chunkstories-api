@@ -60,8 +60,8 @@ class PacketInventoryMoveItemPile : PacketWorld {
         stream.writeInt(destX)
         stream.writeInt(destY)
 
-        stream.writeInt(amount)
         stream.writeBoolean(destroy)
+        stream.writeInt(amount)
 
         // Describe the inventories
         writeInventoryHandle(stream, sourceInventory)
