@@ -21,7 +21,6 @@ interface Heightmap {
     val state: State
 
     val users: Set<WorldUser>
-    //fun registerUser(user: WorldUser): Boolean
     fun unregisterUser(user: WorldUser): Boolean
 
     /** Return the height of the topmost block or NO_DATA is no data is yet
@@ -31,7 +30,6 @@ interface Heightmap {
     fun getTopCell(x: Int, z: Int): Cell
     fun setTopCell(data: Cell)
 
-    //fun save(): Fence
 
     sealed class State {
         open class Loading(val fence: Fence) : State()

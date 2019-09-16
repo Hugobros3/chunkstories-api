@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import xyz.chunkstories.api.GameContext;
+import xyz.chunkstories.api.content.Asset;
 import xyz.chunkstories.api.converter.mappings.Mapper;
 import xyz.chunkstories.api.voxel.Voxel;
 import xyz.chunkstories.api.world.cell.FutureCell;
@@ -38,9 +39,9 @@ public class MinecraftBlocksTranslator {
 
 	private GameContext context;
 
-	public MinecraftBlocksTranslator(GameContext context, File file) throws IOException {
+	public MinecraftBlocksTranslator(GameContext context, Asset asset) throws IOException {
 		this.context = context;
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		BufferedReader reader = new BufferedReader(asset.reader());
 
 		Section currentSection = Section.MAPPINGS;
 		Map<String, Constructor<? extends Mapper>> customMappers = new HashMap<>();
