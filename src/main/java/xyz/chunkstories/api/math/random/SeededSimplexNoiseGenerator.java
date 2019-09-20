@@ -6,37 +6,49 @@
 
 package xyz.chunkstories.api.math.random;
 
+import org.joml.Vector4d;
+import org.joml.Vector4f;
+import org.joml.Vector4fc;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // This class takes care of providing the simplex noise functions for the world
 // generator. It is based on other people's work as the comments below show.
 
-/** A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
- *
+/**
+ * A speed-improved simplex noise algorithm for 2D, 3D and 4D in Java.
+ * <p>
  * Based on example code by Stefan Gustavson (stegu@itn.liu.se). Optimisations
  * by Peter Eastman (peastman@drizzle.stanford.edu). Better rank ordering method
  * by Stefan Gustavson in 2012.
- *
+ * <p>
  * This could be speeded up even further, but it's useful as it is.
- *
+ * <p>
  * Version 2012-03-09
- *
+ * <p>
  * This code was placed in the public domain by its original author, Stefan
- * Gustavson. You may use it as you see fit, but attribution is appreciated. */
+ * Gustavson. You may use it as you see fit, but attribution is appreciated.
+ */
 public class SeededSimplexNoiseGenerator {
 	private Grad[] grad3 = { new Grad(1, 1, 0), new Grad(-1, 1, 0), new Grad(1, -1, 0), new Grad(-1, -1, 0), new Grad(1, 0, 1), new Grad(-1, 0, 1),
 			new Grad(1, 0, -1), new Grad(-1, 0, -1), new Grad(0, 1, 1), new Grad(0, -1, 1), new Grad(0, 1, -1), new Grad(0, -1, -1) };
 
-	private Grad[] grad4 = { new Grad(0, 1, 1, 1), new Grad(0, 1, 1, -1), new Grad(0, 1, -1, 1), new Grad(0, 1, -1, -1), new Grad(0, -1, 1, 1),
-			new Grad(0, -1, 1, -1), new Grad(0, -1, -1, 1), new Grad(0, -1, -1, -1), new Grad(1, 0, 1, 1), new Grad(1, 0, 1, -1), new Grad(1, 0, -1, 1),
-			new Grad(1, 0, -1, -1), new Grad(-1, 0, 1, 1), new Grad(-1, 0, 1, -1), new Grad(-1, 0, -1, 1), new Grad(-1, 0, -1, -1), new Grad(1, 1, 0, 1),
-			new Grad(1, 1, 0, -1), new Grad(1, -1, 0, 1), new Grad(1, -1, 0, -1), new Grad(-1, 1, 0, 1), new Grad(-1, 1, 0, -1), new Grad(-1, -1, 0, 1),
-			new Grad(-1, -1, 0, -1), new Grad(1, 1, 1, 0), new Grad(1, 1, -1, 0), new Grad(1, -1, 1, 0), new Grad(1, -1, -1, 0), new Grad(-1, 1, 1, 0),
-			new Grad(-1, 1, -1, 0), new Grad(-1, -1, 1, 0), new Grad(-1, -1, -1, 0) };
+	private Grad[] grad4 = {
+			new Grad(0, 1, 1, 1), new Grad(0, 1, 1, -1), new Grad(0, 1, -1, 1), new Grad(0, 1, -1, -1),
+			new Grad(0, -1, 1, 1), new Grad(0, -1, 1, -1), new Grad(0, -1, -1, 1), new Grad(0, -1, -1, -1),
+
+			new Grad(1, 0, 1, 1), new Grad(1, 0, 1, -1), new Grad(1, 0, -1, 1), new Grad(1, 0, -1, -1),
+			new Grad(-1, 0, 1, 1), new Grad(-1, 0, 1, -1), new Grad(-1, 0, -1, 1), new Grad(-1, 0, -1, -1),
+
+			new Grad(1, 1, 0, 1), new Grad(1, 1, 0, -1), new Grad(1, -1, 0, 1), new Grad(1, -1, 0, -1),
+			new Grad(-1, 1, 0, 1), new Grad(-1, 1, 0, -1), new Grad(-1, -1, 0, 1), new Grad(-1, -1, 0, -1),
+
+			new Grad(1, 1, 1, 0), new Grad(1, 1, -1, 0), new Grad(1, -1, 1, 0), new Grad(1, -1, -1, 0),
+			new Grad(-1, 1, 1, 0), new Grad(-1, 1, -1, 0), new Grad(-1, -1, 1, 0), new Grad(-1, -1, -1, 0) };
 
 	// To remove the need for index wrapping, float the permutation table length
-	private short[] perm = new short[512];
+	public short[] perm = new short[512];
 	private short[] permMod12 = new short[512];
 
 	public SeededSimplexNoiseGenerator(String seed) {
@@ -89,7 +101,25 @@ public class SeededSimplexNoiseGenerator {
 	}
 
 	public float looped_noise(float x, float y, float period) {
-		return looped_noise(x, y, period, 0, 0, 1, 1);
+		float s = x / period;
+		float t = y / period;
+
+		return looped_noise(s, t, zero, one);
+	}
+
+	private Vector4f one = new Vector4f(1f);
+	private Vector4f zero = new Vector4f(0f);
+
+	public float looped_noise(float s, float t, Vector4fc offset, Vector4fc multiplier) {
+
+		float pi = (float) Math.PI;
+
+		float nx = (float) Math.cos(s * 2 * pi) * multiplier.x() + offset.x();
+		float ny = (float) Math.cos(t * 2 * pi) * multiplier.y() + offset.y();
+		float nz = (float) Math.sin(s * 2 * pi) * multiplier.z() + offset.z();
+		float nw = (float) Math.sin(t * 2 * pi) * multiplier.w() + offset.w();
+
+		return noise(nx, ny, nz, nw);
 	}
 
 	public float looped_noise3d(float x, float y, float z, float period, float x1, float y1, float x2, float y2) {
@@ -108,34 +138,6 @@ public class SeededSimplexNoiseGenerator {
 		return (noise(nx, ny, z) + noise(nz, nw, z)) / 2;
 	}
 
-	public float looped_noise(float x, float y, float period, float x1, float y1, float x2, float y2) {
-		// Hugo 'Gobrosse' Devillers 2015
-
-		float s = x / period;
-		float t = y / period;
-
-		// float dx = x2-x1;
-		// float dy = y2-y1;
-
-		float pi = (float) Math.PI;
-
-		float nx = (float) (x1 + Math.cos(s * 2 * pi) * x2);
-		float ny = (float) (y1 + Math.cos(t * 2 * pi) * y2);
-		float nz = (float) (x1 + Math.sin(s * 2 * pi) * x2);
-		float nw = (float) (y1 + Math.sin(t * 2 * pi) * y2);
-
-		// return (noise(nx,ny)+noise(51844+nz,nw))/2;
-		return noise(nx, ny, nz, nw);
-
-		// Old dirty method
-		// shall be replaced by a proper 4D dual-circle thing
-		/* float result = 0; result+=noise(x,y)*(period-x)*(period-y);
-		 * result+=noise(x-period,y)*(x)*(period-y);
-		 * result+=noise(x-period,y-period)*(x)*(y);
-		 * result+=noise(x,y-period)*(period-x)*(y); result/=period*period; return
-		 * result; */
-	}
-
 	// 2D simplex noise
 	public float noise(float xin, float yin) {
 		float n0, n1, n2; // Noise contributions from the three corners
@@ -151,7 +153,7 @@ public class SeededSimplexNoiseGenerator {
 		// For the 2D case, the simplex shape is an equilateral triangle.
 		// Determine which simplex we are in.
 		int i1, j1; // Offsets for second (middle) corner of simplex in (i,j)
-					// coords
+		// coords
 		if (x0 > y0) {
 			i1 = 1;
 			j1 = 0;
@@ -160,14 +162,14 @@ public class SeededSimplexNoiseGenerator {
 			i1 = 0;
 			j1 = 1;
 		} // upper triangle, YX order: (0,0)->(0,1)->(1,1)
-			// A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
-			// a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
-			// c = (3-sqrt(3))/6
+		// A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
+		// a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
+		// c = (3-sqrt(3))/6
 		float x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed
-									// coords
+		// coords
 		float y1 = y0 - j1 + G2;
 		float x2 = x0 - 1.0f + 2.0f * G2; // Offsets for last corner in (x,y)
-											// unskewed coords
+		// unskewed coords
 		float y2 = y0 - 1.0f + 2.0f * G2;
 		// Work out the hashed gradient indices of the three simplex corners
 		int ii = i & 255;
@@ -182,7 +184,7 @@ public class SeededSimplexNoiseGenerator {
 		else {
 			t0 *= t0;
 			n0 = t0 * t0 * dot(grad3[gi0], x0, y0); // (x,y) of grad3 used for
-													// 2D gradient
+			// 2D gradient
 		}
 		float t1 = 0.5f - x1 * x1 - y1 * y1;
 		if (t1 < 0)
@@ -209,7 +211,7 @@ public class SeededSimplexNoiseGenerator {
 		// Skew the input space to determine which simplex cell we're in
 		float f3 = (float) (1.0f / 3.0);
 		float s = (xin + yin + zin) * f3; // Very nice and simple skew factor
-											// for 3D
+		// for 3D
 		int i = fastfloor(xin + s);
 		int j = fastfloor(yin + s);
 		int k = fastfloor(zin + s);
@@ -225,7 +227,7 @@ public class SeededSimplexNoiseGenerator {
 		// tetrahedron.
 		// Determine which simplex we are in.
 		int i1, j1, k1; // Offsets for second corner of simplex in (i,j,k)
-						// coords
+		// coords
 		int i2, j2, k2; // Offsets for third corner of simplex in (i,j,k) coords
 		if (x0 >= y0) {
 			if (y0 >= z0) {
@@ -288,11 +290,11 @@ public class SeededSimplexNoiseGenerator {
 		float y1 = y0 - j1 + g3;
 		float z1 = z0 - k1 + g3;
 		float x2 = x0 - i2 + 2.0f * g3; // Offsets for third corner in (x,y,z)
-										// coords
+		// coords
 		float y2 = y0 - j2 + 2.0f * g3;
 		float z2 = z0 - k2 + 2.0f * g3;
 		float x3 = x0 - 1.0f + 3.0f * g3; // Offsets for last corner in (x,y,z)
-											// coords
+		// coords
 		float y3 = y0 - 1.0f + 3.0f * g3;
 		float z3 = z0 - 1.0f + 3.0f * g3;
 		// Work out the hashed gradient indices of the four simplex corners
@@ -420,22 +422,22 @@ public class SeededSimplexNoiseGenerator {
 		// The fifth corner has all coordinate offsets = 1, so no need to
 		// compute that.
 		float x1 = x0 - i1 + G4; // Offsets for second corner in (x,y,z,w)
-									// coords
+		// coords
 		float y1 = y0 - j1 + G4;
 		float z1 = z0 - k1 + G4;
 		float w1 = w0 - l1 + G4;
 		float x2 = x0 - i2 + 2.0f * G4; // Offsets for third corner in (x,y,z,w)
-										// coords
+		// coords
 		float y2 = y0 - j2 + 2.0f * G4;
 		float z2 = z0 - k2 + 2.0f * G4;
 		float w2 = w0 - l2 + 2.0f * G4;
 		float x3 = x0 - i3 + 3.0f * G4; // Offsets for fourth corner in
-										// (x,y,z,w) coords
+		// (x,y,z,w) coords
 		float y3 = y0 - j3 + 3.0f * G4;
 		float z3 = z0 - k3 + 3.0f * G4;
 		float w3 = w0 - l3 + 3.0f * G4;
 		float x4 = x0 - 1.0f + 4.0f * G4; // Offsets for last corner in (x,y,z,w)
-											// coords
+		// coords
 		float y4 = y0 - 1.0f + 4.0f * G4;
 		float z4 = z0 - 1.0f + 4.0f * G4;
 		float w4 = w0 - 1.0f + 4.0f * G4;
