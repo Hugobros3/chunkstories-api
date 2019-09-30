@@ -62,7 +62,7 @@ class InputText @JvmOverloads constructor(layer: Layer, x: Int, y: Int, width: I
                 && mouse.cursorY <= positionY + height)
     }
 
-    override fun render(renderer: GuiDrawer) {
+    override fun render(drawer: GuiDrawer) {
 
         var text = this.text
         if (isPassword) {
@@ -76,8 +76,8 @@ class InputText @JvmOverloads constructor(layer: Layer, x: Int, y: Int, width: I
         if (this.isTransparent)
             backgroundTexture = if (isFocused) "textures/gui/textboxnofocustransp.png" else "textures/gui/textboxtransp.png"
 
-        renderer.drawBoxWithCorners(positionX, positionY, width, height, 8, backgroundTexture)
-        renderer.drawStringWithShadow(font, positionX + 4, positionY + 1,
+        drawer.drawBoxWithCorners(positionX, positionY, width, height, 8, backgroundTexture)
+        drawer.drawStringWithShadow(font, positionX + 4, positionY + 1,
                 text + if (isFocused && System.currentTimeMillis() % 1000 > 500) "|" else "", -1, Vector4f(1.0f))
 
     }

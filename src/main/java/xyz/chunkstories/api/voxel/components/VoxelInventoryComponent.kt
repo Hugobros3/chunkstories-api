@@ -21,15 +21,11 @@ import xyz.chunkstories.api.world.cell.CellComponents
 import xyz.chunkstories.api.world.serialization.StreamSource
 import xyz.chunkstories.api.world.serialization.StreamTarget
 
-class VoxelInventoryComponent(cell: CellComponents, width: Int, height: Int) : VoxelComponent(cell), InventoryOwner, InventoryCallbacks {
-    val inventory: Inventory
+open class VoxelInventoryComponent(cell: CellComponents, width: Int, height: Int) : VoxelComponent(cell), InventoryOwner, InventoryCallbacks {
+    val inventory: Inventory = Inventory(width, height, this, this)
 
     override val inventoryName: String
         get() = holder.cell.voxel.name
-
-    init {
-        this.inventory = Inventory(width, height, this, this)
-    }
 
     override fun refreshCompleteInventory() {
         this@VoxelInventoryComponent.pushComponentEveryone()

@@ -22,7 +22,6 @@ import org.slf4j.Logger
 import xyz.chunkstories.api.crafting.Recipe
 import xyz.chunkstories.api.graphics.representation.Model
 import xyz.chunkstories.api.gui.inventory.InventorySlot
-import xyz.chunkstories.api.gui.inventory.InventoryUI
 import xyz.chunkstories.api.loot.LootTable
 import xyz.chunkstories.api.particles.ParticleType
 

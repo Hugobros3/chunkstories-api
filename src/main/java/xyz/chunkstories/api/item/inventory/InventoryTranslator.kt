@@ -10,6 +10,7 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.net.PacketReceptionContext
+import xyz.chunkstories.api.voxel.components.VoxelComponent
 import xyz.chunkstories.api.voxel.components.VoxelInventoryComponent
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -52,10 +53,10 @@ fun writeInventoryHandle(stream: DataOutputStream, inventory: Inventory?) {
             stream.writeLong((inventory.owner as Entity).UUID)
             stream.writeShort(trait.id)
         }
-        is VoxelInventoryComponent -> {
-            val component = inventory.owner as VoxelInventoryComponent?
+        is VoxelComponent -> {
+            val component = inventory.owner as VoxelComponent?
 
-            stream.writeByte(0x03)
+            stream.writeByte(0x02)
             stream.writeInt(component!!.holder.x)
             stream.writeInt(component.holder.y)
             stream.writeInt(component.holder.z)
@@ -79,7 +80,7 @@ fun obtainInventoryByHandle(stream: DataInputStream, context: PacketReceptionCon
         if (trait is TraitInventory) {
             return trait.inventory
         }
-    } else if (holderType.toInt() == 0x03) {
+    } else if (holderType.toInt() == 0x02) {
         val x = stream.readInt()
         val y = stream.readInt()
         val z = stream.readInt()
@@ -88,10 +89,9 @@ fun obtainInventoryByHandle(stream: DataInputStream, context: PacketReceptionCon
 
         try {
             val voxelContext = context.world!!.tryPeek(x, y, z)
-            val com = voxelContext.components.getVoxelComponent(traitName)
-            if (com != null && com is VoxelInventoryComponent) {
-                val comp = com as VoxelInventoryComponent?
-                return comp!!.inventory
+            val component = voxelContext.components.getVoxelComponent(traitName)
+            if (component is VoxelInventoryComponent) {
+                return component.inventory
             }
         } catch (e: WorldException) {
             // TODO log as warning

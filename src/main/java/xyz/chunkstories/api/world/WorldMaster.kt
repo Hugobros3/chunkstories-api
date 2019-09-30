@@ -18,7 +18,7 @@ interface WorldMaster : World {
     /** Returns the folder where the world files are on disk.  */
     val folderPath: String
 
-    fun spawnPlayer(player: Player)
+    //fun spawnPlayer(player: Player)
 
     fun getPlayerByName(playerName: String): Player?
 

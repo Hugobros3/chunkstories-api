@@ -30,5 +30,5 @@ abstract class GuiElement protected constructor(protected val layer: Layer, open
         return mouse.cursorX >= this.positionX && mouse.cursorY >= this.positionY && mouse.cursorX <= this.positionX + this.width && mouse.cursorY <= this.positionY + this.height
     }
 
-    abstract fun render(renderer: GuiDrawer)
+    abstract fun render(drawer: GuiDrawer)
 }

@@ -47,15 +47,15 @@ open class Button(layer: Layer, val font: Font, x: Int, y: Int, var text: String
                 && mouse.cursorY <= positionY + height)
     }
 
-    override fun render(renderer: GuiDrawer) {
+    override fun render(drawer: GuiDrawer) {
         val localizedText = layer.gui.localization().localize(text)
 
         var buttonTexture = "textures/gui/scalableButton.png"
         if (isFocused || isMouseOver)
             buttonTexture = "textures/gui/scalableButtonOver.png"
 
-        renderer.drawBoxWithCorners(positionX, positionY, width, height, 8, buttonTexture)
-        renderer.drawString(font, positionX + 4, positionY + (height / 2) - (font.lineHeight / 2) - 2 , localizedText, -1, Vector4f(0f, 0f, 0f, 1f))
+        drawer.drawBoxWithCorners(positionX, positionY, width, height, 8, buttonTexture)
+        drawer.drawString(font, positionX + 4, positionY + (height / 2) - (font.lineHeight / 2) - 2 , localizedText, -1, Vector4f(0f, 0f, 0f, 1f))
     }
 
     override fun handleClick(mouseButton: MouseButton): Boolean {

@@ -13,26 +13,14 @@ import xyz.chunkstories.api.exceptions.NullItemException
 import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.gui.Layer
 import xyz.chunkstories.api.gui.inventory.InventorySlot
-import xyz.chunkstories.api.gui.inventory.InventoryUI
+import xyz.chunkstories.api.gui.inventory.InventoryManagementUIPanel
 import xyz.chunkstories.api.item.Item
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 import java.lang.Integer.min
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.read
 import kotlin.concurrent.write
-
-// . . . . . . . . . .
-// . . . . . . . . . .
-// . . . . . . . . . .
-// . . . . . . . . . .
-
-// . . . . . . B B B .
-// . . . . . . B B B .
-// . . . A A . . . . .
-// . X . A A . . . . .
 
 /** Mostly the data structure that actually holds items  */
 class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = null, private val callbacks: InventoryCallbacks?) {
@@ -74,14 +62,14 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
         }
     }
 
-    internal fun movePileToInventory(x: Int, y: Int, source: ItemPile?, item: Item, amount: Int, dryRun: Boolean): Int {
+    internal fun movePileToInventory(x: Int, y: Int, source: ItemPile?, item: Item, amount: Int, dryRun: Boolean, force: Boolean = false): Int {
         if (!inBounds(x, y))
             throw Exception("Out of bounds exception: ($x,$y) isn't in range [0..$width[,[0..$height[")
 
-        if(amount < 1)
+        if(!force && amount < 1)
             throw Exception("Illegal amount")
 
-        if(callbacks?.isItemAccepted(item) == false)
+        if(!force && callbacks?.isItemAccepted(item) == false)
             return amount
 
         fun withSourceLocked(): Int {
@@ -156,7 +144,7 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
     fun canPlaceItemAt(x: Int, y: Int, item: Item, amount: Int = 1) = movePileToInventory(x, y, null, item, amount, true)
 
     @JvmOverloads
-    fun placeItemAt(x: Int, y: Int, item: Item, amount: Int = 1) = movePileToInventory(x, y, null, item, amount, false)
+    fun placeItemAt(x: Int, y: Int, item: Item, amount: Int = 1, force: Boolean = false) = movePileToInventory(x, y, null, item, amount, false, force)
 
     //fun placeItemPileAt(x: Int, y: Int, itemPile: ItemPile): Int = movePileToInventory(x, y, itemPile, false)
 
@@ -227,14 +215,14 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
 
                 return when {
                     overlap.isEmpty() -> {
-                        placeItemAt(x, y, item, amount)
+                        placeItemAt(x, y, item, amount, force)
                         true
                     }
                     force -> {
                         for(pile in overlap) {
                             pile.amount = 0
                         }
-                        placeItemAt(x, y, item, amount)
+                        placeItemAt(x, y, item, amount, force)
                         true
                     }
                     else -> false
@@ -331,12 +319,12 @@ class Inventory(val width: Int, val height: Int, val owner: InventoryOwner? = nu
         return callbacks?.isAccessibleTo(entity) ?: true
     }
 
-    fun createInventoryUI(layer: Layer): InventoryUI {
+    fun createInventoryUI(layer: Layer): InventoryManagementUIPanel {
         val custom = callbacks?.createMainInventoryPanel(this, layer)
         if(custom != null)
             return custom
 
-        val ui = InventoryUI(layer, width * 20 + 16, height * 20 + 16)
+        val ui = InventoryManagementUIPanel(layer, width * 20 + 16, height * 20 + 16)
         for (x in 0 until width) {
             for (y in 0 until height) {
                 val slot = InventorySlot.RealSlot(this, x, y)

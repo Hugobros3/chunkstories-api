@@ -145,13 +145,13 @@ open class Voxel(val definition: VoxelDefinition) {
 
     /** Called when any of the metadata, block_light or sun_light values of the cell are modified.
      *
-     * @param context The current data in this cell.
-     * @param newData The future data we want to put there
+     * @param cell The current data in this cell.
+     * @param newCell The future data we want to put there
      * @param cause The cause of this modification ( can be an Entity )
      * @throws IllegalBlockModificationException If we want to prevent it
      */
     @Throws(WorldException::class)
-    open fun onModification(context: ChunkCell, newData: FutureCell, cause: WorldModificationCause?) {
+    open fun onModification(cell: ChunkCell, newCell: FutureCell, cause: WorldModificationCause?) {
         // Do nothing
     }
 
@@ -160,7 +160,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * @return True if the interaction was 'handled', and won't be passed to the
      * next stage of the input pipeline
      */
-    open fun handleInteraction(entity: Entity, voxelContext: ChunkCell, input: Input): Boolean {
+    open fun handleInteraction(entity: Entity, cell: ChunkCell, input: Input): Boolean {
         return false
     }
 
@@ -168,7 +168,7 @@ open class Voxel(val definition: VoxelDefinition) {
      *
      * @return The aformentioned light level
      */
-    open fun getEmittedLightLevel(info: Cell): Int {
+    open fun getEmittedLightLevel(cell: Cell): Int {
         // By default the light output is the one defined in the type, you can change it
         // depending on the provided data
         return emittedLightLevel
@@ -235,7 +235,7 @@ open class Voxel(val definition: VoxelDefinition) {
      * @param The full 4-byte data related to this voxel ( see [VoxelFormat.class][VoxelFormat] )
      * @return An array of Box or null.
      */
-    open fun getCollisionBoxes(info: Cell): Array<Box>? = arrayOf(Box.fromExtents(Vector3d(1.0)))
+    open fun getCollisionBoxes(cell: Cell): Array<Box>? = arrayOf(Box.fromExtents(Vector3d(1.0)))
 
     /** Two voxels are of the same kind if they share the same declaration.  */
     open fun sameKind(that: Voxel): Boolean {
@@ -252,10 +252,16 @@ open class Voxel(val definition: VoxelDefinition) {
     }
 
     protected open fun enumerateVariants(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
-        val definition = ItemDefinition(itemStore, name, Json.Dict(mapOf(
+        val map = mutableMapOf<String, Json>(
                 "voxel" to Json.Value.Text(name),
                 "class" to Json.Value.Text(ItemVoxel::class.java.canonicalName!!)
-        )))
+        )
+
+        val additionalItems = definition["itemProperties"].asDict?.elements
+        if (additionalItems != null)
+            map.putAll(additionalItems)
+
+        val definition = ItemDefinition(itemStore, name, Json.Dict(map))
 
         return listOf(definition)
     }
@@ -298,11 +304,14 @@ open class Voxel(val definition: VoxelDefinition) {
             //TODO
             //spawnBlockDestructionParticles(location, world)
 
-            val itemSpawnLocation = Location(world, location)
-            itemSpawnLocation.add(0.5, 0.25, 0.5)
+            try {
+                world.poke(future, modificationCause)
+            } catch (e: WorldException) {
+                // Didn't work
+                // TODO make some ingame effect so as to clue in the player why it failed
+            }
 
             val shouldDropLoot = tool != TraitCreativeMode.CREATIVE_MODE_MINING_TOOL
-
             if (shouldDropLoot) {
                 for ((item, amount) in getLoot(cell, tool)) {
                     val velocity = Vector3d(Math.random() * 0.125 - 0.0625, 0.1, Math.random() * 0.125 - 0.0625)
@@ -310,13 +319,6 @@ open class Voxel(val definition: VoxelDefinition) {
                     lootLocation.add(0.5, 0.5, 0.5)
                     EntityDroppedItem.spawn(item, amount, lootLocation, velocity)
                 }
-            }
-
-            try {
-                world.poke(future, modificationCause)
-            } catch (e: WorldException) {
-                // Didn't work
-                // TODO make some ingame effect so as to clue in the player why it failed
             }
         }
     }

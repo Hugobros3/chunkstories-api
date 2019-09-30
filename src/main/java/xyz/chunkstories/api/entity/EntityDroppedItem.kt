@@ -98,7 +98,7 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
     }
 
     override fun getBoundingBox(): Box {
-        return Box.fromExtentsCenteredHorizontal(0.5, 0.75, 0.5)
+        return Box.fromExtentsCenteredHorizontal(0.25, 0.25, 0.25)
     }
 
     companion object {

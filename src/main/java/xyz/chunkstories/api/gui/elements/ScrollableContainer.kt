@@ -13,7 +13,6 @@ import xyz.chunkstories.api.gui.Layer
 import xyz.chunkstories.api.input.Mouse
 import xyz.chunkstories.api.input.Mouse.MouseButton
 import org.joml.Vector4f
-import java.util.ArrayList
 
 abstract class ScrollableContainer protected constructor(layer: Layer) : FocusableGuiElement(layer, 480, 1024), ClickableGuiElement {
 
@@ -24,7 +23,7 @@ abstract class ScrollableContainer protected constructor(layer: Layer) : Focusab
         return mx >= positionX && mx <= positionX + width && my >= positionY && my <= positionY + height
     }
 
-    override fun render(renderer: GuiDrawer) {
+    override fun render(drawer: GuiDrawer) {
         var startY = this.positionY + height
         var i = scroll
 
@@ -38,7 +37,7 @@ abstract class ScrollableContainer protected constructor(layer: Layer) : Focusab
             i++
 
             element.setPosition(this.positionX, startY)
-            element.render(renderer)
+            element.render(drawer)
             startY -= 4
         }
 

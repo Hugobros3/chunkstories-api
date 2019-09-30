@@ -18,27 +18,27 @@ class LargeButtonWithIcon(layer: Layer, private val iconName: String) : Button(l
         this.text = "#{menu.$iconName}"
     }
 
-    override fun render(renderer: GuiDrawer) {
+    override fun render(drawer: GuiDrawer) {
         val localizedText = layer.gui.localization().localize(text)
 
         var buttonTexture = "textures/gui/scalableButton.png"
         if (isFocused || isMouseOver)
             buttonTexture = "textures/gui/scalableButtonOver.png"
 
-        renderer.drawBoxWithCorners(positionX, positionY, width, height, 8, buttonTexture)
+        drawer.drawBoxWithCorners(positionX, positionY, width, height, 8, buttonTexture)
 
         val font = layer.gui.fonts.getFont("LiberationSansNarrow-Bold", 16.2f)
         val a = 1
 
         val yPositionText = positionY + 26
         val centering = width / 2 - font.getWidth(localizedText) / 2
-        renderer.drawString(font, positionX + centering + 1, yPositionText - 1, localizedText, -1,
+        drawer.drawString(font, positionX + centering + 1, yPositionText - 1, localizedText, -1,
                 Vector4f(161 / 255f, 161 / 255f, 161 / 255f, 1f))
 
-        renderer.drawString(font, positionX + centering, yPositionText, localizedText, -1,
+        drawer.drawString(font, positionX + centering, yPositionText, localizedText, -1,
                 Vector4f(38 / 255f, 38 / 255f, 38 / 255f, 1f))
 
-        renderer.drawBox(positionX + width / 2 - 16, positionY + 0,
+        drawer.drawBox(positionX + width / 2 - 16, positionY + 0,
                 32, 32, 0f, 1f, 1f, 0f, "textures/gui/icons/$iconName.png", null)
     }
 

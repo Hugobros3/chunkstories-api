@@ -8,7 +8,7 @@ package xyz.chunkstories.api.item.inventory
 
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.gui.Layer
-import xyz.chunkstories.api.gui.inventory.InventoryUI
+import xyz.chunkstories.api.gui.inventory.InventoryManagementUIPanel
 import xyz.chunkstories.api.item.Item
 
 /** Returnable by Inventory.getHolder()  */
@@ -26,5 +26,5 @@ interface InventoryCallbacks {
     val inventoryName: String
 
     /** Override this to have a custom inventory panel ! */
-    fun createMainInventoryPanel(inventory: Inventory, layer: Layer) : InventoryUI? = null
+    fun createMainInventoryPanel(inventory: Inventory, layer: Layer) : InventoryManagementUIPanel? = null
 }
