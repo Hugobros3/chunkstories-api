@@ -26,20 +26,18 @@ import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import kotlin.math.abs
+import kotlin.math.sin
 
 class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(definition, world), InventoryOwner {
-    protected var rotation = 0f
-
-    val entityVelocity = TraitVelocity(this)
-    val collisions = TraitCollidable(this)
+    private val entityVelocity = TraitVelocity(this)
+    private val collisions = TraitCollidable(this)
 
     var spawnTime: Long = 0
 
-    val container = TraitItemContainer(this)
-    //val inventory = TraitInventory(this, 1, 1, true)
-
     init {
         DroppedItemRenderer(this)
+        TraitItemContainer(this)
+
         spawnTime = System.currentTimeMillis()
     }
 
@@ -86,14 +84,6 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
                 velocity.y = 0.0
 
             entityVelocity.setVelocity(velocity)
-        }
-
-        if (world is WorldClient) {
-
-            if (collisions.isOnGround) {
-                rotation += 1.0f
-                rotation %= 360f
-            }
         }
     }
 
@@ -163,7 +153,7 @@ class DroppedItemRenderer(private val entityGroundItem: EntityDroppedItem) : Tra
 
         val matrix = Matrix4f()
         matrix.translate(entity.location.toVec3f())
-        matrix.translate(0f, 0.5f + 0.25f * Math.sin(dt).toFloat(), 0f)
+        matrix.translate(0f, 0.5f + 0.25f * sin(dt).toFloat(), 0f)
         matrix.rotate(dt.toFloat(), 0f, 1f, 0f)
         pile.item?.buildRepresentation(matrix, representationsGobbler)
     }

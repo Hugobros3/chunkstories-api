@@ -40,7 +40,7 @@ open class Voxel(val definition: VoxelDefinition) {
     fun isAir() = store.air.sameKind(this)
 
     /** The textures used for rendering this block. Goes unused with custom models ! */
-    var voxelTextures = Array<VoxelTexture>(6) { store.textures.get(name) }
+    var voxelTextures = Array(6) { store.textures.get(name) }
         protected set
 
     /** The material this block uses */
@@ -120,9 +120,6 @@ open class Voxel(val definition: VoxelDefinition) {
                 this.addModel(model)
             }
         }
-
-        //lootLogic = definition["drops"]?.let { makeLootTableFromJson(it, store.parent, Pair()) }
-        //lootLogic = LootTable.Nothing(1.0)
     }
 
     /** Called after a voxel was successfully placed. Use to initialize additional VoxelComponents.
@@ -176,8 +173,7 @@ open class Voxel(val definition: VoxelDefinition) {
 
     /** Gets the texture for this voxel
      *
-     * @param side The side of the block we want the texture of ( see
-     * [VoxelSides.class][VoxelSide] )
+     * @param side The side of the block we want the texture of ( see [VoxelSides.class][VoxelSide] )
      */
     open fun getVoxelTexture(cell: Cell, side: VoxelSide): VoxelTexture {
         // By default we don't care about taskInstance, we give the same texture to everyone
