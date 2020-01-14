@@ -15,7 +15,7 @@ class RenderTaskDeclaration {
     val finalPass: PassDeclaration
         get() = passesDeclarations.passes.find { it.name == finalPassName }!!
 
-    lateinit var renderBuffersDeclarations : RenderBuffersDeclarations
+    lateinit var renderBuffersDeclarations: RenderBuffersDeclarations
     fun renderBuffers(dslCode: RenderBuffersDeclarations.() -> Unit) {
         renderBuffersDeclarations = RenderBuffersDeclarations().apply(dslCode)
     }
@@ -28,6 +28,11 @@ class RenderTaskDeclaration {
     var inputs: RenderTaskInputs? = null
     fun taskInputs(dslCode: RenderTaskInputs.() -> Unit) {
         inputs = RenderTaskInputs().apply(dslCode)
+    }
+
+    val setupLambdas = mutableListOf<RenderTaskInstance.() -> Unit>()
+    fun setup(dslCode: RenderTaskInstance.() -> Unit) {
+        setupLambdas.add(dslCode)
     }
 }
 

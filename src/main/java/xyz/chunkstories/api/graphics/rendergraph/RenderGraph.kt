@@ -6,14 +6,19 @@
 
 package xyz.chunkstories.api.graphics.rendergraph
 
-import org.joml.Vector2i
+fun renderGraph(dslCode: RenderGraphDeclaration.() -> Unit) = dslCode
 
 class RenderGraphDeclaration {
     val renderTasks = mutableMapOf<String, RenderTaskDeclaration>()
 
     fun renderTask(dslCode: RenderTaskDeclaration.() -> Unit) {
         val task = RenderTaskDeclaration().apply(dslCode)
-        renderTasks.put(task.name, task)
+        renderTasks[task.name] = task
+    }
+
+    val frameSetupHooks = mutableListOf<Frame.() -> Unit>()
+    fun setup(frameSetup: Frame.() -> Unit) {
+        frameSetupHooks.add(frameSetup)
     }
 
     val viewportSize : RenderBufferSize.ViewportRelativeSize

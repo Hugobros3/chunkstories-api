@@ -9,6 +9,10 @@ package xyz.chunkstories.api.graphics.rendergraph
 import org.joml.Vector4d
 import xyz.chunkstories.api.graphics.Texture
 import xyz.chunkstories.api.graphics.TextureTilingMode
+import xyz.chunkstories.api.graphics.systems.GraphicSystem
+import xyz.chunkstories.api.graphics.systems.RegisteredGraphicSystem
+import xyz.chunkstories.api.graphics.systems.drawing.FullscreenQuadDrawer
+import kotlin.reflect.KClass
 
 class PassDeclaration {
     lateinit var name: String
@@ -16,7 +20,7 @@ class PassDeclaration {
     val passDependencies = mutableListOf<String>()
     fun dependsOn(vararg pass: String) = passDependencies.addAll(pass)
 
-    var depthTestingConfiguration : DepthTestingConfiguration = noDepthTest
+    var depthTestingConfiguration: DepthTestingConfiguration = noDepthTest
     fun depth(dslCode: DepthTestingConfiguration.() -> Unit) {
         depthTestingConfiguration = DepthTestingConfiguration().apply(dslCode)
     }
@@ -27,7 +31,7 @@ class PassDeclaration {
     }
 
     var draws: DrawsDeclarations? = null
-    fun draws(dslCode : DrawsDeclarations.() -> Unit) {
+    fun draws(dslCode: DrawsDeclarations.() -> Unit) {
         draws = DrawsDeclarations().apply(dslCode)
     }
 
@@ -35,21 +39,19 @@ class PassDeclaration {
     fun setup(dslCode: PassInstance.() -> Unit) {
         setupLambdas.add(dslCode)
     }
-    /*var inputs: PassInputsDeclarations? = null
-    fun inputs(dslCode: PassInputsDeclarations.() -> Unit) {
-        inputs = PassInputsDeclarations().also(dslCode)
-    }*/
 }
 
-/*class PassInputsDeclarations {
-    val imageInputs = mutableListOf<ImageInput>()
-    fun imageInput(imageInputConfiguration: ImageInput.() -> Unit) = imageInputs.add(ImageInput().apply(imageInputConfiguration))
-}*/
+class DrawsDeclarations {
+    val registeredSystems = mutableListOf<RegisteredGraphicSystem<*>>()
+
+    fun <T : GraphicSystem> system(type: KClass<T>, dslCode: (T.() -> Unit)) = registeredSystems.add(RegisteredGraphicSystem(type.java, dslCode))
+
+    fun <T : GraphicSystem> system(type: KClass<T>) = system(type) {}
+
+    fun fullscreenQuad() = system(FullscreenQuadDrawer::class)
+}
 
 class ImageInput {
-    ///** Name of the sampler this will bind to */
-    //lateinit var name: String
-
     /** Name of the source RenderBuffer or a path to an asset, or a Texture object. */
     lateinit var source: ImageSource
 

@@ -6,9 +6,7 @@
 
 package xyz.chunkstories.api.graphics.rendergraph
 
-import xyz.chunkstories.api.graphics.Texture2D
 import xyz.chunkstories.api.graphics.TextureFormat
-import org.joml.Vector2i
 
 class RenderBufferDeclaration {
     lateinit var name: String

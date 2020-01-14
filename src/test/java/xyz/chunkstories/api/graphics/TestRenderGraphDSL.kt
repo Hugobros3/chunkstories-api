@@ -11,11 +11,11 @@ import xyz.chunkstories.api.graphics.rendergraph.DepthTestingConfiguration.Depth
 import xyz.chunkstories.api.graphics.rendergraph.PassOutput.BlendMode.*
 
 
-import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
 import xyz.chunkstories.api.graphics.structs.InterfaceBlock
 import xyz.chunkstories.api.graphics.systems.drawing.*
 import org.junit.Test
 import xyz.chunkstories.api.graphics.rendergraph.ImageInput
+import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclaration
 import xyz.chunkstories.api.graphics.rendergraph.asset
 import xyz.chunkstories.api.graphics.systems.dispatching.DefferedLightsRenderer
 
@@ -24,7 +24,7 @@ data class MyTestInterfaceBlock(val someFloat: Float, val someInt: Int) : Interf
 class TestRenderGraphDSL {
     @Test
     fun testRenderGraphDSL() {
-        val testScript: RenderGraphDeclarationScript = {
+        val testScript: RenderGraphDeclaration.() -> Unit = {
             renderTask {
                 name = "mainTask"
 

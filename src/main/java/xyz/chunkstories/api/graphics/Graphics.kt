@@ -6,11 +6,11 @@
 
 package xyz.chunkstories.api.graphics
 
-import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclarationScript
+import xyz.chunkstories.api.graphics.rendergraph.RenderGraphDeclaration
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsProvider
 
 interface GraphicsEngine {
-    fun loadRenderGraph(declaration: RenderGraphDeclarationScript)
+    fun loadRenderGraph(declaration: RenderGraphDeclaration.() -> Unit)
 
     val representationsProviders: RepresentationsProviders
     interface RepresentationsProviders {

@@ -12,21 +12,20 @@ import xyz.chunkstories.api.graphics.structs.Camera
 
 interface Frame {
     val frameNumber: Int
-    val animationTimer: Float
 
+    val animationTimer: Float
     val shaderResources: ShaderResources
 }
 
 interface RenderTaskInstance {
+    val declaration: RenderTaskDeclaration
+
+    val frame: Frame
     val name: String
     val requester: PassInstance?
 
-    val frame: Frame
-
-    val declaration: RenderTaskDeclaration
-
+    val shaderResources: ShaderResources
     val camera: Camera
-
     val parameters: Map<String, Any>
     val artifacts: MutableMap<String, Any>
 }
