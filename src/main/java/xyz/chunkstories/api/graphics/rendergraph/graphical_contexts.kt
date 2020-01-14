@@ -40,9 +40,3 @@ interface PassInstance {
 
     fun dispatchRenderTask(taskInstanceName: String, camera: Camera, renderTaskName: String, parameters: Map<String, Any>, callback: (RenderTaskInstance) -> Unit)
 }
-
-interface SystemExecutionContext {
-    val passInstance: PassInstance
-
-    val shaderResources: ShaderResources
-}
