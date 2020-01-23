@@ -8,16 +8,42 @@ package xyz.chunkstories.api.graphics
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.security.MessageDigest
+import java.util.*
 
-/**
- *
- * */
-data class Mesh(val vertices: Int, val attributes: List<MeshAttributeSet>, val material: MeshMaterial, val boneIds: Map<String, Int>?)
+
+data class Mesh(val vertices: Int, val attributes: List<MeshAttributeSet>, val material: MeshMaterial, val boneIds: Map<String, Int>?) {
+    // For simplicity and speed we assume each mesh is different
+    val uuid = UUID.randomUUID()!!
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Mesh
+
+        if (uuid != other.uuid) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return uuid.hashCode()
+    }
+}
 
 /** Contains all the per-vertex data for a certain attribute slot (position, normal, color etc) */
 data class MeshAttributeSet(val name: String, val components: Int, val format: VertexFormat, val data: ByteBuffer) {
     override fun equals(other: Any?): Boolean {
         return super.equals(other) && (other as MeshAttributeSet).data == data
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + components
+        result = 31 * result + format.hashCode()
+        result = 31 * result + data.hashCode()
+        return result
     }
 }
 

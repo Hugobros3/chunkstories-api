@@ -66,7 +66,7 @@ open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModifi
             matrix.scale(0.35f)
             matrix.translate(-0.5f, -0.0f, -0.5f)
         }, customMaterials)
-        representationsGobbler.acceptRepresentation(representation, -1)
+        representationsGobbler.acceptRepresentation(representation)
 
         val position = Vector4f(0f, 0f, 0f, 1f)
         worldPosition.transform(position)
