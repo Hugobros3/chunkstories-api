@@ -34,6 +34,11 @@ class RenderTaskDeclaration {
     fun setup(dslCode: RenderTaskInstance.() -> Unit) {
         setupLambdas.add(dslCode)
     }
+
+    val cleanupHooks = mutableListOf<() -> Unit>()
+    fun cleanup(cleanupHook: () -> Unit) {
+        cleanupHooks.add(cleanupHook)
+    }
 }
 
 class RenderBuffersDeclarations {

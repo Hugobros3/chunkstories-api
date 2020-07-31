@@ -39,6 +39,11 @@ class PassDeclaration {
     fun setup(dslCode: PassInstance.() -> Unit) {
         setupLambdas.add(dslCode)
     }
+
+    val cleanupHooks = mutableListOf<() -> Unit>()
+    fun cleanup(cleanupHook: () -> Unit) {
+        cleanupHooks.add(cleanupHook)
+    }
 }
 
 class DrawsDeclarations {

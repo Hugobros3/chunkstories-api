@@ -11,4 +11,6 @@ package xyz.chunkstories.api.graphics.systems.drawing
  * will just draw a quad without having to write explicit code. */
 interface FullscreenQuadDrawer : DrawingSystem {
     var shader: String
+
+    val defines: MutableMap<String, String>
 }

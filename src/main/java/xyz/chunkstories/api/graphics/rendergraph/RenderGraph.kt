@@ -21,6 +21,11 @@ class RenderGraphDeclaration {
         frameSetupHooks.add(frameSetup)
     }
 
+    val cleanupHooks = mutableListOf<() -> Unit>()
+    fun cleanup(cleanupHook: () -> Unit) {
+        cleanupHooks.add(cleanupHook)
+    }
+
     val viewportSize : RenderBufferSize.ViewportRelativeSize
         get() = RenderBufferSize.ViewportRelativeSize(1f, 1f)
 }
