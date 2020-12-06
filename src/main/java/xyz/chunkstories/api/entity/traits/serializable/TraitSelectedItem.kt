@@ -14,18 +14,11 @@ import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.exceptions.NullItemException
-import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.serialization.OfflineSerializedData
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 
 class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(entity), TraitSerializable, TraitNetworked<TraitSelectedItem.SelectedItemUpdate> {
     override val traitName = "selectedItem"

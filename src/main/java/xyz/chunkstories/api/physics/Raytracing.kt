@@ -13,6 +13,7 @@ import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.TraitHitboxes
 import xyz.chunkstories.api.world.animationTime
 import xyz.chunkstories.api.world.cell.Cell
+import xyz.chunkstories.api.world.cell.translatedCollisionBoxes
 import kotlin.math.sqrt
 
 data class RayQuery(val origin: Location,

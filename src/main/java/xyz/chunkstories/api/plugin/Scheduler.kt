@@ -9,5 +9,5 @@ package xyz.chunkstories.api.plugin
 /** Quick and dirty interface to reproduce Bukkit scheduler functionality for
  * the time being  */
 interface Scheduler {
-    fun scheduleSyncRepeatingTask(p: ChunkStoriesPlugin, runnable: Runnable, l: Long, m: Long)
+    fun scheduleSyncRepeatingTask(p: Plugin, runnable: Runnable, l: Long, m: Long)
 }

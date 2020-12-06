@@ -6,15 +6,10 @@
 
 package xyz.chunkstories.api.plugin
 
-import java.io.File
-
-import xyz.chunkstories.api.GameContext
-import xyz.chunkstories.api.exceptions.plugins.PluginCreationException
-
 data class PluginInformation(
         val name: String,
-        val pluginVersion: String = "1.0",
-        val author: String,
+        val version: String = "1.0",
+        val authors: String,
         val pluginType: PluginType = PluginType.UNIVERSAL,
         val entryPoint: String
 ) {

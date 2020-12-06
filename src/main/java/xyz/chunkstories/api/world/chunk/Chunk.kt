@@ -8,25 +8,25 @@ package xyz.chunkstories.api.world.chunk
 
 import org.joml.Vector3dc
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.VoxelFormat
 import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.cell.CellComponents
+import xyz.chunkstories.api.world.WorldCell
 import xyz.chunkstories.api.world.region.Region
+
+interface ChunkCell : WorldCell {
+    val chunk: Chunk
+}
 
 /** Contains 32x32x32 voxels worth of data  */
 interface Chunk {
     val world: World
-
     val region: Region
 
     val chunkX: Int
     val chunkY: Int
     val chunkZ: Int
-
-    val isAirChunk: Boolean
 
     /** Add some entity to the chunk's confines  */
     fun addEntity(entity: Entity)
@@ -111,10 +111,4 @@ interface Chunk {
      * or triggering any updates<br></br>
      * **Does not throw exceptions**, instead fails silently.  */
     fun pokeRawSilently(x: Int, y: Int, z: Int, newVoxelData: Int)
-
-    /** Obtains the EntityVoxel saved at the given location  */
-    fun getComponentsAt(worldX: Int, worldY: Int, worldZ: Int): CellComponents
-
-    fun destroy()
-
 }

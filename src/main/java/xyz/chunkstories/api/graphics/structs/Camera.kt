@@ -10,10 +10,12 @@ import xyz.chunkstories.api.util.kotlin.getNormalMatrix
 import xyz.chunkstories.api.util.kotlin.inverse
 import org.joml.*
 import xyz.chunkstories.api.client.Client
-import xyz.chunkstories.api.graphics.GraphicsEngine
+import xyz.chunkstories.api.client.IngameClient
+import xyz.chunkstories.api.entity.traits.serializable.TraitRotation
 import xyz.chunkstories.api.physics.Frustrum
+import xyz.chunkstories.api.player.IngamePlayer
+import xyz.chunkstories.api.player.SpectatingPlayer
 import xyz.chunkstories.api.util.kotlin.toVec3f
-import java.lang.Math.floor
 
 //TODO PerspectiveCamera & OrthogonalCamera
 //TODO use double-precision and cast them when sending those to the GPU
@@ -32,17 +34,13 @@ data class Camera @JvmOverloads constructor(
     ) : InterfaceBlock {
     @IgnoreGLSL
     val frustrum = Frustrum(this)
-
-    val combinedViewProjectionMatrix: Matrix4f
-        get() { return Matrix4f().mul(projectionMatrix).mul(viewMatrix) }
 }
 
 fun Client.makeCamera(position: Vector3dc, direction: Vector3fc, up: Vector3fc, fov: Float): Camera {
-    val fov = (fov / 360.0 * (Math.PI * 2)).toFloat()
+    val fovRadiants = (fov / 360.0 * (Math.PI * 2)).toFloat()
     val aspect = gameWindow.width.toFloat() / gameWindow.height.toFloat()
-    //val projectionMatrix = Matrix4f().perspective(fov, aspect, 2000f, 0.1f, true)
     val projectionMatrix = Matrix4f()
-    val f = 1.0f / Math.tan(fov / 2.0).toFloat()
+    val f = 1.0f / Math.tan(fovRadiants / 2.0).toFloat()
     val zNear = 0.1f
 
     projectionMatrix.set(f / aspect, 0.0f, 0.0f, 0.0f,
@@ -50,19 +48,29 @@ fun Client.makeCamera(position: Vector3dc, direction: Vector3fc, up: Vector3fc, 
                             0.0f, 0.0f, 0.0f, -1.0f,
                             0.0f, 0.0f, zNear, 0.0f)
 
-    //val cameraOffset = Vector3d(floor(position.x() / 32) * 32.0, floor(position.y() / 32) * 32.0, floor(position.z() / 32) * 32.0)
-    //val cameraPosition = Vector3d(position).sub(cameraOffset).toVec3f()
     val cameraPosition = position.toVec3f()
 
-    //cameraPosition.y += 1.8f
-
-    val entityDirection = direction//(entity.traits[TraitRotation::class]?.directionLookingAt ?: Vector3d(0.0, 0.0, 1.0)).toVec3f()
-    val entityLookAt = Vector3f(cameraPosition).add(entityDirection)
-
-    //val up = (entity.traits[TraitRotation::class]?.upDirection ?: Vector3d(0.0, 0.0, 1.0)).toVec3f()
+    val entityLookAt = Vector3f(cameraPosition).add(direction)
 
     val viewMatrix = Matrix4f()
     viewMatrix.lookAt(cameraPosition, entityLookAt, up)
 
-    return Camera(position, entityDirection, up, fov, viewMatrix, projectionMatrix)
+    return Camera(position, direction, up, fovRadiants, viewMatrix, projectionMatrix)
 }
+
+val IngameClient.camera: Camera
+    get() {
+        when(player) {
+            is IngamePlayer -> {
+                val entity = (player as IngamePlayer)?.entity
+                val entityDirection = (entity.traits[TraitRotation::class]?.directionLookingAt?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
+                val up = (entity.traits[TraitRotation::class]?.upDirection?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
+                return makeCamera(entity.location, entityDirection, up, 90.0f)
+            }
+            is SpectatingPlayer -> {
+                // TODO handle spectating camera
+            }
+            else -> {}
+        }
+        return makeCamera(world.properties.spawn, Vector3f(1f, 0f, 0f), Vector3f(0.0f, 0.0f, 1.0f), 90.0f)
+    }

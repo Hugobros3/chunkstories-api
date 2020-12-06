@@ -11,8 +11,6 @@ import xyz.chunkstories.api.content.json.asBoolean
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.events.voxel.WorldModificationCause
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.voxel.MiningTool
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream

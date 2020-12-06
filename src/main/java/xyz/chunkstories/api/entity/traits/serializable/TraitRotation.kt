@@ -15,13 +15,9 @@ import xyz.chunkstories.api.content.json.asFloat
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 
 class TraitRotation(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitRotation.RotationUpdate> {
     override val traitName = "rotation"

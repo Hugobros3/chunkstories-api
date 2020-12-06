@@ -8,12 +8,9 @@ package xyz.chunkstories.api.world.chunk
 
 import org.joml.Vector3dc
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.cell.CellComponents
-import xyz.chunkstories.api.world.cell.DummyCell
 import xyz.chunkstories.api.world.region.Region
 
 /** A fake chunk, for all the non-reality fans Also, might be usefull when

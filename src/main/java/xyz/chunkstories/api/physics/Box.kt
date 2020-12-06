@@ -11,6 +11,7 @@ import org.joml.Vector3dc
 import xyz.chunkstories.api.math.MathUtils.floor
 
 import xyz.chunkstories.api.world.World
+import xyz.chunkstories.api.world.cell.translatedCollisionBoxes
 import java.lang.Math.ceil
 
 /** AABB box used for various collision testing purposes  */

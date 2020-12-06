@@ -12,22 +12,17 @@ import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.ItemDefinition
 import xyz.chunkstories.api.voxel.Voxel
 
-/** This interface describes the world-specific mapping from named content
- * definitions to integer IDs.  */
+/** This interface describes the world-specific mapping from named content definitions to integer IDs.  */
 interface ContentTranslator {
-    /** Returns a Collection containing the internalNames of the mods that were used
-     * with this world.  */
+    /** Returns a Collection containing the internalNames of the mods that were used with this world.  */
     val requiredMods: Collection<String>
 
-    /** Get the content we are translating  */
     val content: Content
 
-    /** Return the assignated ID for this declaration or -1 if it isn't a part of
-     * the current content  */
+    /** Return the assignated ID for this declaration or -1 if it isn't a part of the current content  */
     fun getIdForVoxel(voxel: Voxel?): Int
 
-    /** Return the Voxel associated with that ID or null if the ID was outside of
-     * bounds  */
+    /** Return the Voxel associated with that ID or null if the ID was outside of bounds  */
     fun getVoxelForId(id: Int): Voxel?
 
     /** Return the assignated ID for this declaration or -1 if it isn't a part of

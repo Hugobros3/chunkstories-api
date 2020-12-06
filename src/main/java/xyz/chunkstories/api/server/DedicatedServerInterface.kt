@@ -6,7 +6,7 @@
 
 package xyz.chunkstories.api.server
 
-interface DedicatedServerInterface : Server {
+interface DedicatedServerInterface : Host {
 
     /** Stops the server.  */
     fun stop()

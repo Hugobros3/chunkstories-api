@@ -6,118 +6,63 @@
 
 package xyz.chunkstories.api.world
 
-import xyz.chunkstories.api.GameContext
-import xyz.chunkstories.api.GameLogic
-import xyz.chunkstories.api.Location
-import xyz.chunkstories.api.content.Content
-import xyz.chunkstories.api.content.ContentTranslator
+import org.joml.Vector3d
+import org.slf4j.Logger
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.events.voxel.WorldModificationCause
-import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import xyz.chunkstories.api.particles.ParticlesManager
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.sound.SoundManager
 import xyz.chunkstories.api.util.IterableIterator
-import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.VoxelFormat
 import xyz.chunkstories.api.world.cell.Cell
-import xyz.chunkstories.api.world.cell.FutureCell
-import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.heightmap.WorldHeightmapsManager
-import org.joml.Vector3dc
+import xyz.chunkstories.api.entity.EntityID
+import xyz.chunkstories.api.voxel.structures.Prefab
+import xyz.chunkstories.api.world.cell.MutableCell
 import xyz.chunkstories.api.world.chunk.WorldChunksManager
 import xyz.chunkstories.api.world.region.WorldRegionsManager
 
 interface World {
-    val worldInfo: WorldInfo
+    val gameInstance: GameInstance
 
-    /** Returns the map generator used to create the new bits of the map */
+    var properties: Properties
+    data class Properties(
+            val internalName: String,
+            /** Display name */
+            val name: String,
+            val description: String,
+            val seed: String,
+            val size: WorldSize,
+            val spawn: Vector3d,
+            val generator: String
+            )
+
     val generator: WorldGenerator
 
-    /** Returns the GameLogic thread this world runs on */
-    val gameLogic: GameLogic
+    var sky: Sky
+    data class Sky(
+            val timeOfDay: Float,
+            val overcast: Float,
+            val raining: Float
+    )
 
-    /** Returns the GameContext this world lives in */
-    val gameContext: GameContext
-
-    /** Return the Content used with this world */
-    val content: Content
-
-    /** Returns the ContentTranslator associated with this world  */
-    val contentTranslator: ContentTranslator
-
-    /** @return The height of the world, the last block can be placed at maxHeight - 1 */
-    @Deprecated("TODO remove", ReplaceWith("worldInfo.size.heightInChunks * 32"))
-    val maxHeight: Int
-        get() = worldInfo.size.heightInChunks * 32
-
-    /** @return The length of a horizontal side of the world, in chunk size units (32) */
-    @Deprecated("TODO remove", ReplaceWith("worldInfo.size.sizeInChunks"))
-    val sizeInChunks: Int
-        get() = worldInfo.size.sizeInChunks
-
-    /** @return The length of a horizontal side of the world. */
-    @Deprecated("TODO remove", ReplaceWith("(sizeInChunks * 32).toDouble()"))
-    val worldSize: Double
-        get() = (sizeInChunks * 32).toDouble()
-
-    var defaultSpawnLocation: Location
-
-    /** The position of the sun in the sky. [0-24000[ */
-    var sunCycle: Int
-
-    /** The weather is represented by a normalised float value
-     * - 0.0 equals dead dry
-     * - 0.2 equals sunny
-     * - 0.4 equals overcast
-     * - 0.5 equals foggy/cloudy
-     * - above 0.5 it rains
-     * - 0.8 max rain intensity
-     * - 0.9 lightning
-     * - 1.0 hurricane
-     * */
-    var weather: Float
-
-    /** How many ticks have elapsed since the creation of this world.
-     * Never resets, never skips, no matter the daytime changes. */
     val ticksElapsed: Long
 
-    val decalsManager: DecalsManager
-    val particlesManager: ParticlesManager
-    val soundManager: SoundManager
-    val collisionsManager: WorldCollisionsManager
-
-    /* Entity management */
-
     /** Adds an entity to the world, the entity location has to be in this world !*/
-    fun addEntity(entity: Entity)
+    fun addEntity(entity: Entity): EntityID
+    fun getEntity(id: EntityID): Entity?
+    fun getEntitiesInBox(box: Box): Sequence<Entity>
+    val entities: Sequence<Entity>
+    fun removeEntity(id: EntityID): Boolean
 
-    /** Removes an entity from the world. Returns true on success */
-    fun removeEntity(entity: Entity): Boolean
+    fun getCell(x: Int, y: Int, z: Int): Cell?
+    fun getCellMut(x: Int, y: Int, z: Int): MutableCell?
 
-    /** Removes an entity from the world, based on UUID */
-    fun removeEntityByUUID(uuid: Long): Boolean
+    fun pastePrefab(x: Int, y: Int, z: Int, prefab: Prefab)
 
-    /** @param uuid a valid UUID
-     * @return null if it can't be found */
-    fun getEntityByUUID(uuid: Long): Entity?
-
-    /** Returns an iterator containing all the entities from within the box  */
-    fun getEntitiesInBox(box: Box): NearEntitiesIterator
-
-    /** Returns an iterator containing all the loaded entities. Supposedly thread-safe */
-    val allLoadedEntities: IterableIterator<Entity>
-
-    interface NearEntitiesIterator : IterableIterator<Entity> {
-        /** Returns the distance of the last entity returned by next() to the center of the box */
-        fun distance(): Double
-    }
-
-    /* Direct voxel data accessors */
-
-    /** Get the data contained in this cell
+   /* /** Get the data contained in this cell
      * @throws WorldException if it couldn't peek the world at the specified
      * location for some reason
      */
@@ -137,12 +82,12 @@ interface World {
 
     /** Alternative to peek() that does not create any Cell object<br></br>
      * **Does not throw exceptions**, instead  returns zero upon failure.  */
-    fun peekSimple(x: Int, y: Int, z: Int): Voxel
+    fun peekSimple(x: Int, y: Int, z: Int): Voxel*/
 
     /** Peek the raw data of the chunk  */
     fun peekRaw(x: Int, y: Int, z: Int): Int
 
-    /** Poke new information in a voxel getCell.
+    /*/** Poke new information in a voxel getCell.
      *
      * If 'voxel' is null the voxel bits will not be updated. If 'sunlight' is -1
      * the sunlight bits will not be updated. If 'blocklight' is -1 the blocklight
@@ -183,7 +128,7 @@ interface World {
      * This will *not* trigger any update.  */
     fun pokeSimpleSilently(x: Int, y: Int, z: Int, voxel: Voxel?, sunlight: Int, blocklight: Int, metadata: Int)
 
-    fun pokeSimpleSilently(fvc: FutureCell)
+    fun pokeSimpleSilently(fvc: FutureCell)*/
 
     /** Poke the raw data for a voxel getCell Takes a full 32-bit data format ( see [VoxelFormat])  */
     fun pokeRaw(x: Int, y: Int, z: Int, newVoxelData: Int)
@@ -194,15 +139,20 @@ interface World {
 
     fun getVoxelsWithin(boundingBox: Box): IterableIterator<Cell>
 
-    ///** Returns either null or a valid chunk if a corresponding ChunkHolder was
-    // * acquired by someone and the chunk had time to load.  */
-    //val loadedChunks: Sequence<Chunk>
-    //val loadedRegions: Collection<Region>
+    val decalsManager: DecalsManager
+    val particlesManager: ParticlesManager
+    val soundManager: SoundManager
+    val collisionsManager: WorldCollisionsManager
+
     val chunksManager: WorldChunksManager
     val regionsManager: WorldRegionsManager
     val heightmapsManager: WorldHeightmapsManager
+
+    val logger: Logger
 }
 
+// Helper function
+// TODO move somewhere more appropriate
 val World.animationTime: Float
     get() {
         val realWorldTimeTruncated = (System.nanoTime() % 1000_000_000_000)

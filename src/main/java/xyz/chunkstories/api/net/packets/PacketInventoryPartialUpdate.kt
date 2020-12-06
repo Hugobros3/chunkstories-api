@@ -16,8 +16,6 @@ import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.inventory.Inventory
 import xyz.chunkstories.api.item.inventory.*
 import xyz.chunkstories.api.item.inventory.ItemPile
-import xyz.chunkstories.api.net.PacketDestinator
-import xyz.chunkstories.api.net.PacketSender
 import xyz.chunkstories.api.net.PacketSendingContext
 import xyz.chunkstories.api.net.PacketWorld
 import xyz.chunkstories.api.world.World

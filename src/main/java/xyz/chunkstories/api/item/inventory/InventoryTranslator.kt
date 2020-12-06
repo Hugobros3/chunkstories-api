@@ -50,7 +50,7 @@ fun writeInventoryHandle(stream: DataOutputStream, inventory: Inventory?) {
                     ?: throw Exception("This inventory is attached to an entity but that entity does not have a TraitInventory linking it back !")
 
             stream.writeByte(0x01)
-            stream.writeLong((inventory.owner as Entity).UUID)
+            stream.writeLong((inventory.owner as Entity).id)
             stream.writeShort(trait.id)
         }
         is VoxelComponent -> {
@@ -74,7 +74,7 @@ fun obtainInventoryByHandle(stream: DataInputStream, context: PacketReceptionCon
     if (holderType.toInt() == 0x01) {
         val uuid = stream.readLong()
         val traitId = stream.readShort()
-        val entity = context.world!!.getEntityByUUID(uuid)
+        val entity = context.world!!.getEntity(uuid)
         val trait = entity!!.traits.byId()[traitId.toInt()]
 
         if (trait is TraitInventory) {

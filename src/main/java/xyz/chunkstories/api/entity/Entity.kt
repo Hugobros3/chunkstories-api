@@ -20,18 +20,19 @@ import java.util.*
 import kotlin.reflect.KClass
 import java.util.HashSet
 
+typealias EntityID = Long
 abstract class Entity(val definition: EntityDefinition, val world: World) {
     var location: Location
         get() = traitLocation.get()
         set(value) = traitLocation.set(value)
 
     @Suppress("PropertyName")
-    var UUID : Long = -1L
+    var id : EntityID = -1L
         set(value) {
             if(field == -1L)
                 field = value
             else
-                throw Exception("You can't re-assign UUIDs !")
+                throw Exception("You can't re-assign entity IDs !")
         }
 
     var initialized = false

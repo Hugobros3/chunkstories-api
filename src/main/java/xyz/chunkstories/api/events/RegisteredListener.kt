@@ -6,11 +6,11 @@
 
 package xyz.chunkstories.api.events
 
-import xyz.chunkstories.api.plugin.ChunkStoriesPlugin
+import xyz.chunkstories.api.plugin.Plugin
 
 /** Describes a successfully processed event handler annotation, called when a
  * specific event happens  */
-class RegisteredListener(internal var listener: Listener, internal var plugin: ChunkStoriesPlugin, internal var executor: EventExecutor, internal var priority: EventHandler.EventPriority) {
+class RegisteredListener(internal var listener: Listener, internal var plugin: Plugin, internal var executor: EventExecutor, internal var priority: EventHandler.EventPriority) {
 
     @Throws(Exception::class)
     fun invokeForEvent(event: Event) {

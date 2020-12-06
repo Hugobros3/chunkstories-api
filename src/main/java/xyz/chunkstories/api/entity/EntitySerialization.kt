@@ -15,7 +15,7 @@ import xyz.chunkstories.api.world.World
 object EntitySerialization {
     fun serializeEntity(entity: Entity) : Json {
         return Json.Dict(mapOf(
-                "uuid" to Json.Value.Text(entity.UUID.toString()),
+                "uuid" to Json.Value.Text(entity.id.toString()),
                 "entityType" to Json.Value.Text(entity.definition.name),
                 "traits" to Json.Dict(entity.traits.all().filterIsInstance<TraitSerializable>().map { Pair(it.traitName, it.serialize()) }.toMap())
         ))

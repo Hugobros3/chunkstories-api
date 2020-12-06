@@ -18,10 +18,10 @@ import xyz.chunkstories.api.entity.traits.TraitLoot
 import xyz.chunkstories.api.events.entity.EntityDamageEvent
 import xyz.chunkstories.api.events.entity.EntityDeathEvent
 import xyz.chunkstories.api.events.player.PlayerDeathEvent
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.physics.EntityHitbox
+import xyz.chunkstories.api.player.IngamePlayer
 import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.server.Server
+import xyz.chunkstories.api.server.Host
 import xyz.chunkstories.api.sound.SoundSource
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
@@ -66,7 +66,7 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
 
     override fun readMessage(dis: DataInputStream) = HealthUpdate(dis.readFloat())
 
-    override fun processMessage(message: HealthUpdate, from: Interlocutor) {
+    override fun processMessage(message: HealthUpdate, player: IngamePlayer?) {
         if(entity.world is WorldMaster) {
             return
         }
@@ -94,7 +94,7 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
             return 0f
 
         val event = EntityDamageEvent(entity, cause, damage)
-        entity.world.gameLogic.pluginsManager.fireEvent(event)
+        entity.world.gameInstance.pluginManager.fireEvent(event)
 
         if (!event.isCancelled) {
             applyDamage(event.damageDealt)
@@ -126,7 +126,7 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
 
     private fun handleDeath() {
         val entityDeathEvent = EntityDeathEvent(entity)
-        entity.world.gameLogic.pluginsManager.fireEvent(entityDeathEvent)
+        entity.world.gameInstance.pluginManager.fireEvent(entityDeathEvent)
 
         // Handles cases of controlled player death
         entity.traits[TraitControllable::class]?.let { ec ->
@@ -137,8 +137,8 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
                 // Serverside stuff
                 if (controller is Player && entity.world is WorldMaster) {
                     val event = PlayerDeathEvent(controller)
-                    entity.world.gameLogic.pluginsManager.fireEvent(event)
-                    (controller.controlledEntity?.world?.gameContext as? Server)?.broadcastMessage(event.deathMessage)
+                    entity.world.gameInstance.pluginManager.fireEvent(event)
+                    (controller.controlledEntity?.world?.gameInstance as? Host)?.broadcastMessage(event.deathMessage)
                 }
             }
         }
@@ -174,7 +174,7 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
         if (isDead) {
             deathDespawnTimer--
             if (deathDespawnTimer < 0) {
-                entity.world.removeEntity(entity)
+                entity.world.removeEntity(entity.id)
                 return
             }
         }

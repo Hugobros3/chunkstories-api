@@ -14,6 +14,4 @@ import xyz.chunkstories.api.client.IngameClient
  */
 interface WorldClient : World {
     val client: IngameClient
-
-    override val gameContext: IngameClient
 }

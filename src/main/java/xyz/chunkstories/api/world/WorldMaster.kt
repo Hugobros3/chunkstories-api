@@ -6,27 +6,13 @@
 
 package xyz.chunkstories.api.world
 
-import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.util.IterableIterator
-import xyz.chunkstories.api.util.concurrency.Fence
+import xyz.chunkstories.api.server.Host
 
 /** A 'master' world is one hosting the game logic and who runs the 'serverside'
  * plugins. It can be either a dedicated server or a singleplayer world.  */
 interface WorldMaster : World {
-    val players: Set<Player>
+    val host: Host
 
     /** Returns the folder where the world files are on disk.  */
     val folderPath: String
-
-    //fun spawnPlayer(player: Player)
-
-    fun getPlayerByName(playerName: String): Player?
-
-    /** Stops the logic thread that calls the tick() method. Returns a fence that
-     * traverses once that thread is effecitvely dead.  */
-    fun stopLogic(): Fence
-
-    /** Plays a soundEffect to all clients except once, typical use if sounds played
-     * locally by a player that can't suffer any lag for him but still need others
-     * to hear it as well  */
 }

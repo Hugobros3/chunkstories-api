@@ -6,7 +6,6 @@
 
 package xyz.chunkstories.api.content
 
-import xyz.chunkstories.api.GameContext
 import xyz.chunkstories.api.animation.Animation
 import xyz.chunkstories.api.content.mods.ModsManager
 import xyz.chunkstories.api.entity.EntityDefinition
@@ -27,9 +26,6 @@ import xyz.chunkstories.api.particles.ParticleType
 
 /** Encapsulates all the user-definable content available  */
 interface Content {
-    /** Returns the game taskInstance that owns this  */
-    val context: GameContext
-
     val animationsLibrary: AnimationsLibrary
 
     /** Returns the ModManager that was used to load this content  */
@@ -47,8 +43,6 @@ interface Content {
     val voxels: Voxels
 
     interface Voxels {
-
-        /** Returns the 'air' voxel ( No voxel data )  */
         val air: Voxel
 
         fun getVoxel(voxelName: String): Voxel?
@@ -91,7 +85,6 @@ interface Content {
     }
 
     val items: ItemsDefinitions
-
     interface ItemsDefinitions {
 
         fun getItemDefinition(itemName: String): ItemDefinition?
@@ -104,7 +97,6 @@ interface Content {
     }
 
     val entities: EntityDefinitions
-
     interface EntityDefinitions {
         fun getEntityDefinition(entityName: String): EntityDefinition?
 
@@ -116,26 +108,10 @@ interface Content {
     }
 
     val particles: ParticlesTypes
-
     interface ParticlesTypes {
         fun <T: ParticleType.Particle> getParticleType(string: String): ParticleType<T>?
 
         val all: Collection<ParticleType<*>>
-        val parent: Content
-
-        val logger: Logger
-    }
-
-    val packets: PacketDefinitions
-
-    interface PacketDefinitions {
-        fun getPacketByName(name: String): PacketDefinition?
-
-        @Throws(UnknowPacketException::class)
-        fun getPacketFromInstance(packet: Packet): PacketDefinition
-
-        val all: Collection<PacketDefinition>
-
         val parent: Content
 
         val logger: Logger

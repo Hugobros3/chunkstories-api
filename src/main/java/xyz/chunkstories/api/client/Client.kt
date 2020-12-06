@@ -6,16 +6,18 @@
 
 package xyz.chunkstories.api.client
 
-import xyz.chunkstories.api.GameContext
 import xyz.chunkstories.api.content.Content
+import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.graphics.GraphicsEngine
 import xyz.chunkstories.api.graphics.Window
-import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import xyz.chunkstories.api.gui.Gui
 import xyz.chunkstories.api.net.AuthenticationMethod
-import xyz.chunkstories.api.particles.ParticlesManager
+import xyz.chunkstories.api.player.IngamePlayer
+import xyz.chunkstories.api.player.PlayerID
+import xyz.chunkstories.api.player.SpectatingPlayer
 import xyz.chunkstories.api.plugin.PluginManager
 import xyz.chunkstories.api.util.configuration.Configuration
+import xyz.chunkstories.api.world.GameInstance
 import xyz.chunkstories.api.world.WorldClient
 
 /** The game client abstracted from a generic runtime perspective (not necessarily in game) */
@@ -32,26 +34,20 @@ interface Client {
     /** If we are ingame this will be set ! */
     val ingame: IngameClient?
 
-    /** Clientside configuration */
     val configuration: Configuration
 
     val user: ClientIdentity
-    // /** Changes the game to a new world  */
-    // fun changeWorld(world: WorldClient)
 }
 
 /** The game cient abstracted from a content/mod perspective. */
-interface IngameClient : Client, GameContext {
-    /** Returns a valid PlayerClient. */
+interface IngameClient : Client, GameInstance {
     val player: LocalPlayer
 
-    /** Returns the currently played world. */
-    val world: WorldClient
-
+    override val world: WorldClient
     override val pluginManager: PluginManager
 
-    val particlesManager: ParticlesManager // TODO move in world
-    val decalsManager: DecalsManager // TODO move in world
+    fun startPlayingAs_(entity: Entity): IngamePlayer
+    fun startSpectating_(): SpectatingPlayer
 
     /** Closes current world and exits to main menu  */
     fun exitToMainMenu()
@@ -62,7 +58,7 @@ interface IngameClient : Client, GameContext {
 
 interface ClientIdentity {
     val name : String
+    val id: PlayerID
 
     val authenticationMethod : AuthenticationMethod
-    // val uuid: UUID //TODO: Move to real UUIDs
 }

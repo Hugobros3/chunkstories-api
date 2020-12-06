@@ -17,11 +17,9 @@ import xyz.chunkstories.api.entity.traits.serializable.*
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.util.kotlin.toVec3f
 import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.WorldClient
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream

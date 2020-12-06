@@ -6,10 +6,7 @@
 
 package xyz.chunkstories.api.events
 
-abstract class Event {
-    abstract val listeners: EventListeners
-
-    /** Executed when the event has been passed to all listening plugins. May check
-     * if event was canceled if the implementation allows it  */
-    // public abstract void defaultBehaviour();
+abstract class Event
+abstract class CancellableEvent : Event() {
+    var isCancelled = false
 }

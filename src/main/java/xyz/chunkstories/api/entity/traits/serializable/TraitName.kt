@@ -14,7 +14,6 @@ import java.io.DataOutputStream
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldClient
 import xyz.chunkstories.api.world.WorldMaster
 

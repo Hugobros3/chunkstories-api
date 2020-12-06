@@ -7,39 +7,25 @@
 package xyz.chunkstories.api.world
 
 import org.joml.Vector3dc
-import xyz.chunkstories.api.GameContext
-import xyz.chunkstories.api.GameLogic
-import xyz.chunkstories.api.Location
-import xyz.chunkstories.api.content.Content
-import xyz.chunkstories.api.content.ContentTranslator
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
-import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.particles.ParticlesManager
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.sound.SoundManager
 import xyz.chunkstories.api.util.IterableIterator
 import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.world.cell.Cell
-import xyz.chunkstories.api.world.cell.FutureCell
-import xyz.chunkstories.api.world.chunk.Chunk
 import xyz.chunkstories.api.world.chunk.ChunkCell
-import xyz.chunkstories.api.world.chunk.ChunkHolder
 import xyz.chunkstories.api.world.chunk.WorldChunksManager
 import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.heightmap.WorldHeightmapsManager
-import xyz.chunkstories.api.world.region.Region
 import xyz.chunkstories.api.world.region.WorldRegionsManager
 
 /** DummyWorld doesn't exist. DummyWorld is immutable. DummyWorld is unique. You
  * can't prove the existence of the DummyWorld, but neither can you disprove it.
  * Don't mess with the forces at play here. You have been warned.  */
 class DummyWorld : World {
-    override fun getEntitiesInBox(box: Box): World.NearEntitiesIterator {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override val chunksManager: WorldChunksManager
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
@@ -47,50 +33,21 @@ class DummyWorld : World {
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override val heightmapsManager: WorldHeightmapsManager
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-
-    override// TODO Auto-generated method stub
-    val worldInfo: WorldInfo
-        get() = throw NotImplementedError()
+    override val properties: World.Properties
+        get() = TODO("Not yet implemented")
+    override val sky: World.Sky
+        get() = TODO("Not yet implemented")
 
     override// TODO Auto-generated method stub
     val generator: WorldGenerator
         get() = throw NotImplementedError()
+    override val gameInstance: GameInstance
+        get() = TODO("Not yet implemented")
+
 
     override// TODO Auto-generated method stub
-    val gameLogic: GameLogic
+    val entities: IterableIterator<Entity>
         get() = throw NotImplementedError()
-
-    override// TODO Auto-generated method stub
-    val gameContext: GameContext
-        get() = throw NotImplementedError()
-
-    override// TODO Auto-generated method stub
-    val allLoadedEntities: IterableIterator<Entity>
-        get() = throw NotImplementedError()
-
-    override// TODO Auto-generated method stub
-    // TODO Auto-generated method stub
-    var defaultSpawnLocation: Location
-        get() = throw NotImplementedError()
-        set(location) {
-
-        }
-
-    override// TODO Auto-generated method stub
-    // TODO Auto-generated method stub
-    var sunCycle: Int
-        get() = 0
-        set(time) {
-
-        }
-
-    override// TODO Auto-generated method stub
-    // TODO Auto-generated method stub
-    var weather: Float
-        get() = 0f
-        set(overcastFactor) {
-
-        }
 
     override// TODO Auto-generated method stub
     val ticksElapsed: Long
@@ -108,25 +65,9 @@ class DummyWorld : World {
     val soundManager: SoundManager
         get() = throw NotImplementedError()
 
-    override// TODO Auto-generated method stub
-    val contentTranslator: ContentTranslator
-        get() = throw NotImplementedError()
-
-    override// TODO Auto-generated method stub
-    val content: Content
-        get() = throw NotImplementedError()
-
     override val collisionsManager: WorldCollisionsManager
         get() = throw NotImplementedError()
 
-    override val maxHeight: Int
-        get() = 0
-
-    override val sizeInChunks: Int
-        get() = 0
-
-    override val worldSize: Double
-        get() = 0.0
 
     override fun addEntity(entity: Entity) {
         // TODO Auto-generated method stub
@@ -138,14 +79,17 @@ class DummyWorld : World {
         return false
     }
 
-    override fun removeEntityByUUID(uuid: Long): Boolean {
-        // TODO Auto-generated method stub
-        return false
+    override fun removeEntity(id: EntityID): Boolean {
+        TODO("Not yet implemented")
     }
 
-    override fun getEntityByUUID(uuid: Long): Entity? {
+    override fun getEntity(uuid: Long): Entity? {
         // TODO Auto-generated method stub
         return throw NotImplementedError()
+    }
+
+    override fun getEntitiesInBox(box: Box): World.NearEntitiesIterator {
+        TODO("Not yet implemented")
     }
 
     @Throws(WorldException::class)

@@ -8,6 +8,7 @@ package xyz.chunkstories.api.util;
 
 import java.util.Iterator;
 
+// TODO nuke
 /** Java silly spec workarround ( syntax sugar ) I want to be allowed to
  * 'for(Object o : iterator)'. */
 public interface IterableIterator<T> extends Iterator<T>, Iterable<T> {

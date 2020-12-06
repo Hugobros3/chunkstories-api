@@ -7,15 +7,10 @@
 package xyz.chunkstories.api.voxel.components
 
 import xyz.chunkstories.api.content.json.Json
-import java.io.DataInputStream
-import java.io.DataOutputStream
 import java.io.IOException
 
 import xyz.chunkstories.api.net.packets.PacketVoxelUpdate
 import xyz.chunkstories.api.server.RemotePlayer
-import xyz.chunkstories.api.world.cell.CellComponents
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 
 /**
  * Holds extra information on top of the 32 bits every getCell gets.

@@ -6,15 +6,12 @@
 
 package xyz.chunkstories.api.client
 
-import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.graphics.Window
+import xyz.chunkstories.api.player.Player
 
 interface LocalPlayer : Player {
     /** Returns the client playing  */
     val client: Client
-
-    /** Gives access to the input subsystem  */
-    override val inputsManager: ClientInputsManager
 
     /** Returns access to the game window  */
     val window: Window

@@ -7,20 +7,19 @@
 package xyz.chunkstories.api.converter;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import xyz.chunkstories.api.GameContext;
 import xyz.chunkstories.api.content.Asset;
 import xyz.chunkstories.api.converter.mappings.Mapper;
 import xyz.chunkstories.api.voxel.Voxel;
+import xyz.chunkstories.api.world.GameInstance;
 import xyz.chunkstories.api.world.cell.FutureCell;
 
+//TODO kotlinize
 /** Maps minecraft ids to chunkstories's */
 public class MinecraftBlocksTranslator {
 	public final int MINECRAFT_IDS_CAP = 256;
@@ -28,8 +27,8 @@ public class MinecraftBlocksTranslator {
 
 	private Mapper[] mappers = new Mapper[MINECRAFT_IDS_CAP * MINECRAFT_METADATA_SIZE];
 
-	public GameContext getContext() {
-		return context;
+	public GameInstance getGameInstance() {
+		return gameInstance;
 	}
 
 	enum Section
@@ -37,10 +36,10 @@ public class MinecraftBlocksTranslator {
 		NONE, MAPPERS, MAPPINGS,
 	}
 
-	private GameContext context;
+	private GameInstance gameInstance;
 
-	public MinecraftBlocksTranslator(GameContext context, Asset asset) throws IOException {
-		this.context = context;
+	public MinecraftBlocksTranslator(GameInstance gameInstance, Asset asset) throws IOException {
+		this.gameInstance = gameInstance;
 		BufferedReader reader = new BufferedReader(asset.reader());
 
 		Section currentSection = Section.MAPPINGS;
@@ -68,7 +67,7 @@ public class MinecraftBlocksTranslator {
 
 						try {
 							@SuppressWarnings("unchecked")
-							Class<? extends Mapper> mapperClass = (Class<? extends Mapper>) context.getContent().getModsManager().getClassByName(className);
+							Class<? extends Mapper> mapperClass = (Class<? extends Mapper>) gameInstance.getContent().getModsManager().getClassByName(className);
 							Constructor<? extends Mapper> mapperConstructor = mapperClass.getConstructor(Voxel.class);
 							customMappers.put(name, mapperConstructor);
 						} catch (Exception e) {
@@ -104,7 +103,7 @@ public class MinecraftBlocksTranslator {
 							chunkStoriesName = cs;
 						}
 
-						Voxel voxel = context.getContent().getVoxels().getVoxel(chunkStoriesName);
+						Voxel voxel = gameInstance.getContent().getVoxels().getVoxel(chunkStoriesName);
 						if (voxel == null) {
 							System.out.println("Error: Voxel '" + chunkStoriesName + "' is nowhere to be found in the loaded content.");
 							System.out.println("Skipping line : '" + line + "'.");

@@ -12,10 +12,9 @@ import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.plugin.PluginManager
 import xyz.chunkstories.api.workers.Tasks
 
-interface GameContext {
+interface GameContext_ {
     val content: Content
 
-    /** Accesses the pluginManager  */
     val pluginManager: PluginManager
 
     /** Returns an interface to schedule work on  */

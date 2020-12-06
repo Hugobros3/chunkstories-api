@@ -16,7 +16,6 @@ import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream

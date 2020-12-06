@@ -14,30 +14,19 @@ import xyz.chunkstories.api.content.json.asDouble
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.events.entity.EntityTeleportEvent
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.net.packets.PacketEntity
+import xyz.chunkstories.api.player.IngamePlayer
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldMaster
-import xyz.chunkstories.api.world.chunk.Chunk
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.util.concurrent.locks.ReentrantLock
 
-/** Holds the information about an entity whereabouts and a flag to mark it as
- * unspawned  */
+/** Holds the information about an entity whereabouts and a flag to mark it as unspawned  */
 class TraitLocation(entity: Entity, private val actualLocation: Location) : Trait(entity), TraitSerializable, TraitNetworked<TraitLocation.LocationUpdate> {
     override val traitName = "location"
 
     private val world: World = actualLocation.world
 
-    private val lock = ReentrantLock()
-
-    var chunk: Chunk? = null
-        private set
-
-    private var spawned = false
-    private var removed = false
 
     fun set(location: Location) {
         if (location.world !== this.world)
@@ -51,19 +40,9 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
     }
 
     operator fun set(x: Double, y: Double, z: Double) {
-        val event = EntityTeleportEvent(entity, Location(world, x, y, z))
-        entity.world.gameContext.pluginManager.fireEvent(event)
-
-        try {
-            lock.lock()
-            this.actualLocation.x = x
-            this.actualLocation.y = y
-            this.actualLocation.z = z
-
-            sanitize()
-        } finally {
-            lock.unlock()
-        }
+        this.actualLocation.x = x
+        this.actualLocation.y = y
+        this.actualLocation.z = z
 
         // Push updates to everyone subscribed to this
         // In client mode it means that the controlled entity has the server subscribed
@@ -82,16 +61,9 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
             return
         }
 
-        try {
-            lock.lock()
-            actualLocation.x = actualLocation.x() + dx
-            actualLocation.y = actualLocation.y() + dy
-            actualLocation.z = actualLocation.z() + dz
-
-            sanitize()/**/
-        } finally {
-            lock.unlock()
-        }
+        actualLocation.x = actualLocation.x() + dx
+        actualLocation.y = actualLocation.y() + dy
+        actualLocation.z = actualLocation.z() + dz
 
         sendMessageAllSubscribers(LocationUpdate(actualLocation.x, actualLocation.y, actualLocation.z))
     }
@@ -118,32 +90,22 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
     override fun readMessage(dis: DataInputStream): LocationUpdate =
             LocationUpdate(dis.readDouble(), dis.readDouble(), dis.readDouble())
 
-    override fun processMessage(message: LocationUpdate, from: Interlocutor) {
-        if (world is WorldMaster && from != entity.traits[TraitControllable::class]?.controller) {
-            //throw Exception("Security violation: Someone tried to update an entity they don't control !")
-            //Because of lag this might have been legit, so just reject it for now
-            return
+    override fun processMessage(message: LocationUpdate, player: IngamePlayer?) {
+        if (world is WorldMaster && player != entity.traits[TraitControllable::class]?.controller) {
+            throw Exception("Security violation: Someone tried to update an entity they don't control !")
         }
 
-        try {
-            lock.lock()
-            this.actualLocation.x = message.x
-            this.actualLocation.y = message.y
-            this.actualLocation.z = message.z
-
-            sanitize()
-        } finally {
-            lock.unlock()
-        }
+        this.actualLocation.x = message.x
+        this.actualLocation.y = message.y
+        this.actualLocation.z = message.z
 
         // Position updates received by the server should be told to everyone but the controller
         if (world is WorldMaster)
             sendMessageAllSubscribersButController(message)
     }
 
-    /** Prevents entities from going outside the world area and updates the
-     * parentHolder reference  */
-    private fun sanitize(): Boolean {
+    // TODO evaluate the need for all this
+    /*public fun sanitize(): Boolean {
         val worldSize = world.worldSize
 
         actualLocation.x = actualLocation.x() % worldSize
@@ -163,8 +125,8 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
         if (actualLocation.y < 0)
             actualLocation.y = 0.0
 
-        if (actualLocation.y > world.maxHeight)
-            actualLocation.y = world.maxHeight.toDouble()
+        //if (actualLocation.y > world.maxHeight)
+        //    actualLocation.y = world.maxHeight.toDouble()
 
         // Get local chunk co-ordinate
         val chunkX = actualLocation.x().toInt() shr 5
@@ -178,68 +140,23 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
         // Entities not in the world should never be added to it
         if (!spawned)
             return false
-
-        return if (chunk != null && chunk!!.chunkX == chunkX && chunk!!.chunkY == chunkY && chunk!!.chunkZ == chunkZ) {
-            false // Nothing to do !
-        } else {
-            if (chunk != null)
-                chunk!!.removeEntity(entity)
-
-            chunk = world.chunksManager.getChunk(chunkX, chunkY, chunkZ)
-            // When the region is loaded, add this entity to it.
-            if (chunk != null)
-            // && regionWithin.isDiskDataLoaded())
-                chunk!!.addEntity(entity)
-
-            true
-        }
-    }
+    }*/
 
     override fun tick() {
         if (get().x.isNaN() || get().y.isNaN() || get().z.isNaN()) {
-            world.gameContext.logger().warn("Entity $entity had invalid location: ${get()}, resetting to world spawn")
-            set(world.defaultSpawnLocation)
+            world.logger.warn("Entity $entity had invalid location: ${get()}, resetting to world spawn")
+            set(world.properties.spawn)
         }
         //Shouldn't be necessary !
         //sanitize()
     }
 
     fun onRemoval() {
-        try {
-            lock.lock()
-
-            if (chunk != null)
-                chunk!!.removeEntity(entity)
-
-            removed = true
-        } finally {
-            lock.unlock()
-        }
-
         // Tell anyone still subscribed to this entity to sod off
         entity.subscribers.toList().forEach { subscriber ->
             subscriber.pushPacket(PacketEntity.createKillerPacket(entity))
             subscriber.unsubscribe(entity)
         }
-    }
-
-    fun wasRemoved(): Boolean {
-        return removed
-    }
-
-    fun onSpawn() {
-        try {
-            lock.lock()
-            spawned = true
-
-            sanitize()
-        } finally {
-            lock.unlock()
-        }
-    }
-
-    fun hasSpawned(): Boolean {
-        return spawned
     }
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {

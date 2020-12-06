@@ -15,8 +15,6 @@ import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.TraitSight
 import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
-import xyz.chunkstories.api.events.player.voxel.PlayerVoxelModificationEvent
-import xyz.chunkstories.api.events.voxel.WorldModificationCause
 import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.graphics.MeshMaterial
 import xyz.chunkstories.api.graphics.representation.ModelInstance
@@ -37,8 +35,6 @@ import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.VoxelSide
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.cell.Cell
-import xyz.chunkstories.api.world.cell.DummyCell
-import xyz.chunkstories.api.world.cell.FutureCell
 
 /** An item that contains voxels  */
 open class ItemVoxel(definition: ItemDefinition) : Item(definition), WorldModificationCause {

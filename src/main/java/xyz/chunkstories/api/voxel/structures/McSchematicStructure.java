@@ -26,7 +26,7 @@ import io.xol.enklume.nbt.NBTag;
 
 import javax.annotation.Nullable;
 
-public class McSchematicStructure extends Structure {
+public class McSchematicStructure extends Prefab {
 
 	@Nullable
 	public static McSchematicStructure fromFile(File file, MinecraftBlocksTranslator translator) {
@@ -74,7 +74,7 @@ public class McSchematicStructure extends Structure {
 		NBTByteArray blocks = (NBTByteArray) root.getTag("Blocks");
 		NBTByteArray blocksdata = (NBTByteArray) root.getTag("Data");
 
-		Voxel air = translator.getContext().getContent().getVoxels().getAir();
+		Voxel air = translator.getGameInstance().getContent().getVoxels().getAir();
 
 		data = new AbstractCell[width * height * length];
 		FutureCell future = new FutureCell(new DummyWorld(), 0, 0, 0, air, 0, 0, 0);

@@ -6,10 +6,7 @@
 
 package xyz.chunkstories.api.entity
 
-import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import xyz.chunkstories.api.input.InputsManager
-import xyz.chunkstories.api.particles.ParticlesManager
-import xyz.chunkstories.api.sound.SoundManager
 import xyz.chunkstories.api.world.WorldUser
 
 /** The Controller is a special subscriber that don't receive normal tracking
@@ -18,9 +15,4 @@ interface Controller : Subscriber, WorldUser {
     val inputsManager: InputsManager
 
     var controlledEntity: Entity?
-
-    // TODO make those explicit shorthands...
-    // val soundManager: SoundManager
-    // val particlesManager: ParticlesManager
-    // val decalsManager: DecalsManager
 }

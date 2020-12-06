@@ -6,21 +6,17 @@
 
 package xyz.chunkstories.api.net.packets
 
-import xyz.chunkstories.api.client.net.ClientPacketsProcessor
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.serializable.TraitMessage
 import xyz.chunkstories.api.entity.traits.serializable.TraitNetworked
-import xyz.chunkstories.api.exceptions.UnknownComponentException
 import xyz.chunkstories.api.net.*
+import xyz.chunkstories.api.player.IngamePlayer
 import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.server.RemotePlayer
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 
 class PacketEntity : PacketWorld {
     private lateinit var entity: Entity
@@ -47,17 +43,11 @@ class PacketEntity : PacketWorld {
         fun createKillerPacket(entity: Entity) = PacketEntity(entity, true)
     }
 
-    @Throws(IOException::class)
-    override fun send(destinator: PacketDestinator, dos: DataOutputStream, context: PacketSendingContext) {
-        val entityUUID = entity.UUID
-        val entityTypeID = entity.world.contentTranslator.getIdForEntity(entity).toShort()
+    override fun send(dos: DataOutputStream) {
+        val entityID = entity.id
+        val entityTypeID = entity.world.gameInstance.contentTranslator.getIdForEntity(entity).toShort()
 
-        if (destinator !is Subscriber)
-            throw Exception("Why on earth")
-        //else
-        //    deleteEntity = deleteEntity or !entity.subscribers.contains(destinator)
-
-        dos.writeLong(entityUUID)
+        dos.writeLong(entityID)
         dos.writeShort(entityTypeID.toInt())
 
         dos.writeBoolean(killerPacket)
@@ -68,46 +58,43 @@ class PacketEntity : PacketWorld {
         }
     }
 
-    @Throws(IOException::class, UnknownComponentException::class)
-    override fun process(sender: PacketSender, dis: DataInputStream, processor: PacketReceptionContext) {
-        val entityUUID = dis.readLong()
+    override fun receive(dis: DataInputStream, player: Player?) {
+        val entityID = dis.readLong()
         val entityTypeID = dis.readShort()
 
-        val killerPacket = dis.readBoolean()
+        val removeEntity = dis.readBoolean()
 
         if (entityTypeID.toInt() == -1)
             return
 
-        val world = processor.world ?: return
-
-        var entity = world.getEntityByUUID(entityUUID)
+        var entity = world.getEntity(entityID)
         var freshlyCreatedEntity = false
 
         if (entity == null) {
-            if (world is WorldMaster && sender is RemotePlayer) {
-                (sender as Player).sendMessage("You are sending packets to the server about a removed entity. Ignoring those.")
+            if (world is WorldMaster) {
+                player!!.sendMessage("You are sending packets to the server about a removed entity. Ignoring those.")
                 return
-            } else if (!killerPacket) {
-                entity = world.contentTranslator.getEntityForId(entityTypeID.toInt())!!.newEntity(world) // This is technically
-                entity.UUID = entityUUID
+            } else if (!removeEntity) {
+                entity = world.gameInstance.contentTranslator.getEntityForId(entityTypeID.toInt())!!.newEntity(world) // This is technically
+                entity.id = entityID
                 freshlyCreatedEntity = true
             }
         }
 
-        if (!killerPacket) {
+        if (removeEntity) {
+            world.removeEntity(entityID)
+        } else {
             val traitId = dis.readInt()
             trait = entity!!.traits.byId[traitId]
             message = (trait as TraitNetworked<*>).readMessage(dis)
             @Suppress("UNCHECKED_CAST")
-            (trait as TraitNetworked<TraitMessage>).processMessage(message, sender as Interlocutor)
+            (trait as TraitNetworked<TraitMessage>).processMessage(message, player as? IngamePlayer)
 
             if (freshlyCreatedEntity) {
                 // Only the WorldMaster is allowed to spawn new entities in the world
-                if (processor is ClientPacketsProcessor)
-                    processor.world.addEntity(entity)
+                if (world is WorldMaster)
+                    world.addEntity(entity)
             }
-        } else {
-            world.removeEntity(entity!!)
         }
     }
 }

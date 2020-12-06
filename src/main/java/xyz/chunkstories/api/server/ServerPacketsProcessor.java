@@ -11,7 +11,7 @@ import xyz.chunkstories.api.player.Player;
 import xyz.chunkstories.api.world.WorldMaster;
 
 public interface ServerPacketsProcessor {
-	public Server getContext();
+	public Host getContext();
 
 	public WorldMaster getWorld();
 

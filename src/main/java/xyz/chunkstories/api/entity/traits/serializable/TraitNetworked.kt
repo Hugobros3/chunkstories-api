@@ -8,9 +8,9 @@ package xyz.chunkstories.api.entity.traits.serializable
 
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
-import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.net.packets.PacketEntity
-import xyz.chunkstories.api.server.RemotePlayer
+import xyz.chunkstories.api.player.IngamePlayer
+import xyz.chunkstories.api.world.WorldClient
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
@@ -21,7 +21,7 @@ interface TraitNetworked<M : TraitMessage> {
     @Throws(IOException::class)
     fun readMessage(dis: DataInputStream): M
 
-    fun processMessage(message: M, from: Interlocutor)
+    fun processMessage(message: M, player: IngamePlayer?)
 
     fun sendMessage(subscriber: Subscriber, message: M) {
         val packet = PacketEntity.createUpdatePacket(entity, this, message)
@@ -44,7 +44,9 @@ interface TraitNetworked<M : TraitMessage> {
 
     /** In the context of a server and a remote player acting as a controller, send a message to that player. Will not send a message to the local player in singleplayer. */
     fun sendMessageController(message: M) {
-        val controller = entity.traits[TraitControllable::class]?.controller as? RemotePlayer ?: return
+        if (entity.world is WorldClient)
+            return
+        val controller = entity.traits[TraitControllable::class]?.controller ?: return
         sendMessage(controller, message)
     }
 

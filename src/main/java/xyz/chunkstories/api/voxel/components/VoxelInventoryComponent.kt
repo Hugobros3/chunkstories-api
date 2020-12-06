@@ -8,18 +8,11 @@ package xyz.chunkstories.api.voxel.components
 
 import xyz.chunkstories.api.content.json.Json
 import xyz.chunkstories.api.content.json.asDict
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.IOException
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
 import xyz.chunkstories.api.net.packets.PacketInventoryPartialUpdate
 import xyz.chunkstories.api.server.RemotePlayer
-import xyz.chunkstories.api.world.WorldUser
-import xyz.chunkstories.api.world.cell.CellComponents
-import xyz.chunkstories.api.world.serialization.StreamSource
-import xyz.chunkstories.api.world.serialization.StreamTarget
 
 open class VoxelInventoryComponent(cell: CellComponents, width: Int, height: Int) : VoxelComponent(cell), InventoryOwner, InventoryCallbacks {
     val inventory: Inventory = Inventory(width, height, this, this)

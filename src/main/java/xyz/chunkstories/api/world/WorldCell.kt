@@ -6,8 +6,12 @@
 
 package xyz.chunkstories.api.world
 
-import xyz.chunkstories.api.world.cell.EditableCell
+import xyz.chunkstories.api.Location
+import xyz.chunkstories.api.world.cell.MutableCell
 
-interface WorldCell : EditableCell {
-    override val world: World
+interface WorldCell : MutableCell {
+    val world: World
+
+    val location: Location
+        get() = Location(world, x.toDouble(), y.toDouble(), z.toDouble())
 }
