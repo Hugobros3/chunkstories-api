@@ -8,7 +8,7 @@ package xyz.chunkstories.api.physics
 
 import org.joml.Vector3d
 import org.joml.Vector3dc
-import xyz.chunkstories.api.math.Math2.floor
+import xyz.chunkstories.api.math.MathUtils.floor
 
 import xyz.chunkstories.api.world.World
 import java.lang.Math.ceil

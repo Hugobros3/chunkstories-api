@@ -13,10 +13,6 @@ import java.util.Random
  *
  * Has a name, and contains properties you can query. */
 open class Definition(val name: String, val properties: Json.Dict) {
-    companion object {
-        private val random = Random()
-    }
-
     operator fun get(propertyName: String) = properties[propertyName]
 }
 

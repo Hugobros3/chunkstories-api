@@ -8,7 +8,7 @@ package xyz.chunkstories.api.util.configuration
 
 import xyz.chunkstories.api.GameContext
 import xyz.chunkstories.api.events.config.OptionSetEvent
-import xyz.chunkstories.api.math.Math2
+import xyz.chunkstories.api.math.MathUtils
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -87,7 +87,7 @@ class Configuration(val context: GameContext?, val file: File) {
 
     inner class OptionDoubleRange(name: String, defaultValue: Double, val minimumValue: Double, val maximumValue: Double, val granularity: Double) : OptionDouble(name, defaultValue) {
         override fun trySetting(value: Double): Boolean {
-            val clampedValue = Math2.clampd(value, minimumValue, maximumValue)
+            val clampedValue = MathUtils.clampd(value, minimumValue, maximumValue)
             val actuallySettingThisValue = if (granularity != 0.0) {
                 val rounded = Math.round(clampedValue / granularity).toDouble()
                 rounded * granularity

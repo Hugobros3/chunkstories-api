@@ -8,7 +8,6 @@ package xyz.chunkstories.api.entity.traits.serializable
 
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
-import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.net.Interlocutor
 import xyz.chunkstories.api.net.packets.PacketEntity
 import xyz.chunkstories.api.server.RemotePlayer

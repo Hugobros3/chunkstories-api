@@ -13,8 +13,8 @@ import org.joml.Matrix4fc
  * animation structure.  */
 interface Animator {
     /** Used to draw the debug bone armature  */
-    fun getBoneHierarchyTransformationMatrix(nameOfEndBone: String, animationTime: Double): Matrix4fc
+    fun getBoneHierarchyTransformationMatrix(nameOfEndBone: String, animationTime: Float): Matrix4fc
 
     /** Used to draw deformed mesh parts  */
-    fun getBoneHierarchyTransformationMatrixWithOffset(nameOfEndBone: String, animationTime: Double): Matrix4fc
+    fun getBoneHierarchyTransformationMatrixWithOffset(nameOfEndBone: String, animationTime: Float): Matrix4fc
 }

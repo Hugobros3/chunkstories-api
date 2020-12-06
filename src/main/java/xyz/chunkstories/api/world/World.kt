@@ -23,12 +23,9 @@ import xyz.chunkstories.api.voxel.Voxel
 import xyz.chunkstories.api.voxel.VoxelFormat
 import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.FutureCell
-import xyz.chunkstories.api.world.chunk.Chunk
 import xyz.chunkstories.api.world.chunk.ChunkCell
-import xyz.chunkstories.api.world.chunk.ChunkHolder
 import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.heightmap.WorldHeightmapsManager
-import xyz.chunkstories.api.world.region.Region
 import org.joml.Vector3dc
 import xyz.chunkstories.api.world.chunk.WorldChunksManager
 import xyz.chunkstories.api.world.region.WorldRegionsManager
@@ -110,13 +107,11 @@ interface World {
     /** Returns an iterator containing all the entities from within the box  */
     fun getEntitiesInBox(box: Box): NearEntitiesIterator
 
-    /** Returns an iterator containing all the loaded entities. Supposedly
-     * thread-safe  */
+    /** Returns an iterator containing all the loaded entities. Supposedly thread-safe */
     val allLoadedEntities: IterableIterator<Entity>
 
     interface NearEntitiesIterator : IterableIterator<Entity> {
-        /** Returns the distance of the last entity returned by next() to the center of
-         * the box  */
+        /** Returns the distance of the last entity returned by next() to the center of the box */
         fun distance(): Double
     }
 
@@ -190,8 +185,7 @@ interface World {
 
     fun pokeSimpleSilently(fvc: FutureCell)
 
-    /** Poke the raw data for a voxel getCell Takes a full 32-bit data format ( see
-     * [VoxelFormat])  */
+    /** Poke the raw data for a voxel getCell Takes a full 32-bit data format ( see [VoxelFormat])  */
     fun pokeRaw(x: Int, y: Int, z: Int, newVoxelData: Int)
 
     /** Poke the raw data for a voxel getCell Takes a full 32-bit data format ( see
@@ -208,3 +202,10 @@ interface World {
     val regionsManager: WorldRegionsManager
     val heightmapsManager: WorldHeightmapsManager
 }
+
+val World.animationTime: Float
+    get() {
+        val realWorldTimeTruncated = (System.nanoTime() % 1000_000_000_000)
+        val realWorldTimeMs = realWorldTimeTruncated / 1000_000
+        return (realWorldTimeMs / 1000.0f) * 1000.0f
+    }

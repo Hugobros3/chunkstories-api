@@ -21,6 +21,6 @@ interface Animation : Animator {
         val parent: SkeletonBone?
 
         /** The transformation matrix for this bone alone  */
-        fun getTransformationMatrix(animationTime: Double): Matrix4fc
+        fun getTransformationMatrix(animationTime: Float): Matrix4fc
     }
 }

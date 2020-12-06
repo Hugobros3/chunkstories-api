@@ -3,15 +3,14 @@
 // Check out README.md for more information
 // Website: http://chunkstories.xyz
 //
+package xyz.chunkstories.api.util.compatibility
 
-package xyz.chunkstories.api.util.compatibility;
-
-import xyz.chunkstories.api.math.HexTools;
+import xyz.chunkstories.api.math.intToHex
 
 /**
  * Compatibility layer for older Bukkit-based plugins ports
  */
-public enum ChatColor {
+enum class ChatColor(var hex: String) {
     BLACK("#000000"),
     WHITE("#FFFFFF"),
     LIGHT_PURPLE("#FF55FF"),
@@ -32,27 +31,16 @@ public enum ChatColor {
     BOLD(""),
     UNDERLINE(""),
     MAGIC(""),
-    RESET("#FFFFFF"),
-    ;
+    RESET("#FFFFFF");
 
-    String hex;
-
-    ChatColor(String hex) {
-        this.hex = hex;
-    }
-
-    public String toString() {
-        if (this.name().equals("MAGIC")) {
-            String color = "";
-            color += HexTools.intToHex((int) (Math.random() * 255));
-            color += HexTools.intToHex((int) (Math.random() * 255));
-            color += HexTools.intToHex((int) (Math.random() * 255));
-            return "#" + color;
+    override fun toString(): String {
+        if (name == "MAGIC") {
+            var color = ""
+            color += intToHex((Math.random() * 255).toInt())
+            color += intToHex((Math.random() * 255).toInt())
+            color += intToHex((Math.random() * 255).toInt())
+            return "#$color"
         }
-        return hex;
-    }
-
-    public static String stripColor(String string) {
-        return string;
+        return hex
     }
 }

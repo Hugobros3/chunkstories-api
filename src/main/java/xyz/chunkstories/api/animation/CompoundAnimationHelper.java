@@ -23,15 +23,15 @@ import xyz.chunkstories.api.animation.Animation.SkeletonBone;
 public abstract class CompoundAnimationHelper implements Animator {
 	/** Key of this class : returns whatever Animation to use with wich bone at wich
 	 * point, possibly depending of external factors of the implemting subclass */
-	public abstract Animation getAnimationPlayingForBone(String boneName, double animationTime);
+	public abstract Animation getAnimationPlayingForBone(String boneName, float animationTime);
 
 	/** Returns the local matrix to use for a bone, by default grabs it for the
 	 * playing animation, but you can change that for some effects */
-	public Matrix4fc getBoneTransformationMatrix(String boneName, double animationTime) {
+	public Matrix4fc getBoneTransformationMatrix(String boneName, float animationTime) {
 		return getAnimationPlayingForBone(boneName, animationTime).getBone(boneName).getTransformationMatrix(animationTime);
 	}
 
-	private final Matrix4fc getBoneHierarchyTransformationMatrixInternal(String boneName, double animationTime) {
+	private final Matrix4fc getBoneHierarchyTransformationMatrixInternal(String boneName, float animationTime) {
 		Animation animation = getAnimationPlayingForBone(boneName, animationTime);
 		SkeletonBone bone = animation.getBone(boneName);
 		// Out if null
@@ -57,18 +57,18 @@ public abstract class CompoundAnimationHelper implements Animator {
 	}
 
 	/** Returns a matrix to offset the rigged mesh */
-	public Matrix4fc getBoneHierarchyMeshOffsetMatrix(String boneName, double animationTime) {
+	public Matrix4fc getBoneHierarchyMeshOffsetMatrix(String boneName, float animationTime) {
 		Animation animation = getAnimationPlayingForBone(boneName, animationTime);
 		return animation.getOffsetMatrix(boneName);
 	}
 
 	/** Used to draw debug bone armature */
-	public Matrix4fc getBoneHierarchyTransformationMatrix(String nameOfEndBone, double animationTime) {
+	public Matrix4fc getBoneHierarchyTransformationMatrix(String nameOfEndBone, float animationTime) {
 		return getBoneHierarchyTransformationMatrixInternal(nameOfEndBone, animationTime);
 	}
 
 	/** Used to draw mesh parts in OpenGL */
-	public Matrix4fc getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, double animationTime) {
+	public Matrix4fc getBoneHierarchyTransformationMatrixWithOffset(String nameOfEndBone, float animationTime) {
 		Matrix4f matrix = new Matrix4f(getBoneHierarchyTransformationMatrix(nameOfEndBone, animationTime));
 
 		// Apply the offset matrix

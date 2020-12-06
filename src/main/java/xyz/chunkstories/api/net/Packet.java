@@ -14,9 +14,6 @@ import xyz.chunkstories.api.exceptions.PacketProcessingException;
 
 /** Packets are atomic data bits used to communicate over the network */
 public abstract class Packet {
-	boolean flag_req_reliability;
-	boolean flag_req_in_order_delivery;
-
 	public Packet() {
 
 	}

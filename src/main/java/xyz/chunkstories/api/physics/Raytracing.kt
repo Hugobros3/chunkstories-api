@@ -278,7 +278,7 @@ fun Box.intersect(origin: Vector3dc, direction: Vector3dc, invDirection: Vector3
 fun EntityHitbox.intersect(lineStart: Vector3dc, lineDirection: Vector3dc, invDirection: Vector3dc): BoxIntersection? {
     val realWorldTimeTruncated = (System.nanoTime() % 1000_000_000_000)
     val realWorldTimeMs = realWorldTimeTruncated / 1000_000
-    val animationTime = (realWorldTimeMs / 1000.0) * 1000.0
+    val animationTime = (realWorldTimeMs / 1000.0f) * 1000.0f
 
     val fromAABBToWorld = Matrix4f()
     if (this.animationTrait != null)
@@ -315,14 +315,10 @@ fun EntityHitbox.intersect(lineStart: Vector3dc, lineDirection: Vector3dc, invDi
     val lineDirectionTransformedInversed = Vector3d(1.0 / lineDirectionTransformed.x(), 1.0 / lineDirectionTransformed.y(), 1.0 / lineDirectionTransformed.z())
 
     // Actual computation
-    val oldstyleIntersection = this.lineIntersection(lineStart, lineDirection)
-
     val intersection = box.intersect(lineStartTransformed, lineDirectionTransformed, lineDirectionTransformedInversed)
+            ?: return null
 
     //println("$name os: ${oldstyleIntersection != null} ns: ${intersection != null} ${intersection?.tMin}")
-
-    if(intersection == null)
-        return null
 
     // Transform hitPoint back into world
     val hitPoint = intersection.hitPosition
