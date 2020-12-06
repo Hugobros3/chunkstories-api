@@ -8,9 +8,5 @@ package xyz.chunkstories.api.item.interfaces
 
 /** An interface for items that provide their own draw animation  */
 interface ItemCustomHoldingAnimation {
-    val customAnimationName: String
-
-    fun transformAnimationTime(originalTime: Double): Double {
-        return originalTime
-    }
+    //TODO rework this functionality
 }

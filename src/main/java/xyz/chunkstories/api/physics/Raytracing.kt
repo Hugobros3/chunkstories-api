@@ -11,6 +11,7 @@ import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.TraitHitboxes
+import xyz.chunkstories.api.world.animationTime
 import xyz.chunkstories.api.world.cell.Cell
 import kotlin.math.sqrt
 
@@ -276,13 +277,10 @@ fun Box.intersect(origin: Vector3dc, direction: Vector3dc, invDirection: Vector3
 }
 
 fun EntityHitbox.intersect(lineStart: Vector3dc, lineDirection: Vector3dc, invDirection: Vector3dc): BoxIntersection? {
-    val realWorldTimeTruncated = (System.nanoTime() % 1000_000_000_000)
-    val realWorldTimeMs = realWorldTimeTruncated / 1000_000
-    val animationTime = (realWorldTimeMs / 1000.0f) * 1000.0f
 
     val fromAABBToWorld = Matrix4f()
     if (this.animationTrait != null)
-        fromAABBToWorld.set(animationTrait!!.animatedSkeleton.getBoneHierarchyTransformationMatrix(name, animationTime))
+        fromAABBToWorld.set(animationTrait!!.animatedSkeleton.getBoneHierarchyTransformationMatrix(name, entity.world.animationTime))
 
     val worldPositionTransformation = Matrix4f()
 
