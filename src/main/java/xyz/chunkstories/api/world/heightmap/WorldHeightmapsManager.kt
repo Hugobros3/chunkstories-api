@@ -7,6 +7,7 @@
 package xyz.chunkstories.api.world.heightmap
 
 import xyz.chunkstories.api.Location
+import xyz.chunkstories.api.block.BlockType
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldUser
 import xyz.chunkstories.api.world.cell.Cell
@@ -55,7 +56,8 @@ interface WorldHeightmapsManager {
      * one user using it  */
     fun getHeightmapLocation(location: Location): Heightmap?
 
-    fun getHeightAtWorldCoordinates(worldX: Int, worldZ: Int): Int
+    fun getHeight(x: Int, z: Int): Int
+    fun getBlockType(x: Int, z: Int): BlockType
 
-    fun getTopCellAtWorldCoordinates(worldX: Int, worldZ: Int): Cell
+    //fun getTopCellAtWorldCoordinates(worldX: Int, worldZ: Int): Cell
 }

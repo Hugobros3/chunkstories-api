@@ -18,9 +18,11 @@ import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
 import xyz.chunkstories.api.physics.Box
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.util.kotlin.toVec3f
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldMaster
+import xyz.chunkstories.api.world.getCell
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import kotlin.math.abs
@@ -47,7 +49,7 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
         val velocity = Vector3d(entityVelocity.velocity)
 
         if (world is WorldMaster) {
-            val inWater = world.peek(location).voxel.liquid
+            val inWater = world.getCell(location)?.data?.blockType?.liquid ?: false
 
             val terminalVelocity = if (inWater) -0.25 else -0.5
             if (velocity.y() > terminalVelocity && !collisions.isOnGround)
@@ -91,7 +93,7 @@ class EntityDroppedItem(definition: EntityDefinition, world: World) : Entity(def
 
     companion object {
         fun spawn(item: Item, amount: Int, location: Location, initialVelocity: Vector3d = Vector3d(0.0)) {
-            val thrownItem = location.world.content.entities.getEntityDefinition("droppedItem")!!.newEntity<EntityDroppedItem>(location.world)
+            val thrownItem = location.world.gameInstance.content.entities.getEntityDefinition("droppedItem")!!.newEntity<EntityDroppedItem>(location.world)
             thrownItem.traitLocation.set(location)
             thrownItem.entityVelocity.setVelocity(initialVelocity)
             thrownItem.traits[TraitItemContainer::class]!!.let {
@@ -113,7 +115,7 @@ class TraitItemContainer(entity: Entity) : Trait(entity), TraitSerializable, Tra
     override fun serialize() = InventorySerialization.serializeItemAndAmount(item, amount)
 
     override fun deserialize(json: Json) {
-        val (item, amount) = InventorySerialization.deserializeItemAndAmount(entity.world.contentTranslator, json)
+        val (item, amount) = InventorySerialization.deserializeItemAndAmount(entity.world.gameInstance.contentTranslator, json)
         this.item = item
         this.amount = amount
     }
@@ -124,11 +126,11 @@ class TraitItemContainer(entity: Entity) : Trait(entity), TraitSerializable, Tra
         }
     }
 
-    override fun readMessage(dis: DataInputStream) = InventorySerialization.deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
+    override fun readMessage(dis: DataInputStream) = InventorySerialization.deserializeItemAndAmount(entity.world.gameInstance.contentTranslator, dis.readUTF().toJson()).let {
         DroppedItemUpdate(it.first, it.second)
     }
 
-    override fun processMessage(message: DroppedItemUpdate, from: Interlocutor) {
+    override fun processMessage(message: DroppedItemUpdate, player: Player?) {
         if (entity.world is WorldMaster)
             return
 

@@ -13,8 +13,8 @@ import xyz.chunkstories.api.client.Client
 import xyz.chunkstories.api.client.IngameClient
 import xyz.chunkstories.api.entity.traits.serializable.TraitRotation
 import xyz.chunkstories.api.physics.Frustrum
-import xyz.chunkstories.api.player.IngamePlayer
-import xyz.chunkstories.api.player.SpectatingPlayer
+import xyz.chunkstories.api.player.Player
+import xyz.chunkstories.api.player.PlayerState
 import xyz.chunkstories.api.util.kotlin.toVec3f
 
 //TODO PerspectiveCamera & OrthogonalCamera
@@ -60,14 +60,14 @@ fun Client.makeCamera(position: Vector3dc, direction: Vector3fc, up: Vector3fc, 
 
 val IngameClient.camera: Camera
     get() {
-        when(player) {
-            is IngamePlayer -> {
-                val entity = (player as IngamePlayer)?.entity
+        when(val state = player.state) {
+            is PlayerState.Ingame -> {
+                val entity = state.entity
                 val entityDirection = (entity.traits[TraitRotation::class]?.directionLookingAt?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
                 val up = (entity.traits[TraitRotation::class]?.upDirection?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
                 return makeCamera(entity.location, entityDirection, up, 90.0f)
             }
-            is SpectatingPlayer -> {
+            is PlayerState.Spectating -> {
                 // TODO handle spectating camera
             }
             else -> {}

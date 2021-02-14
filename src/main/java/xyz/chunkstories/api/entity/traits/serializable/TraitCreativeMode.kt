@@ -11,7 +11,8 @@ import xyz.chunkstories.api.content.json.asBoolean
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.voxel.MiningTool
+import xyz.chunkstories.api.block.MiningTool
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -27,12 +28,6 @@ class TraitCreativeMode(entity: Entity) : Trait(entity), TraitSerializable, Trai
         }
 
     companion object {
-        val CREATIVE_MODE: WorldModificationCause = object : WorldModificationCause {
-
-            override val name: String
-                get() = "Creative Mode"
-        }
-
         val CREATIVE_MODE_MINING_TOOL: MiningTool = object : MiningTool {
             override val miningEfficiency: Float = Float.POSITIVE_INFINITY
             override val toolTypeName: String = "hand"
@@ -47,7 +42,7 @@ class TraitCreativeMode(entity: Entity) : Trait(entity), TraitSerializable, Trai
 
     override fun readMessage(dis: DataInputStream) = CreativeModeUpdate(dis.readBoolean())
 
-    override fun processMessage(message: CreativeModeUpdate, from: Interlocutor) {
+    override fun processMessage(message: CreativeModeUpdate, player: Player?) {
         if(entity.world is WorldMaster) {
             return // players should use commands to toggle that rather
         }
@@ -57,7 +52,7 @@ class TraitCreativeMode(entity: Entity) : Trait(entity), TraitSerializable, Trai
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {
         // Inform the controller of his status
-        if(subscriber == entity.traits[TraitControllable::class]?.controller)
+        if(subscriber == entity.controller)
             sendMessage(subscriber, CreativeModeUpdate(enabled))
     }
 

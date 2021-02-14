@@ -13,6 +13,7 @@ import xyz.chunkstories.api.entity.traits.TraitCollidable
 import xyz.chunkstories.api.entity.traits.TraitHitboxes
 import xyz.chunkstories.api.world.animationTime
 import xyz.chunkstories.api.world.cell.Cell
+import xyz.chunkstories.api.world.cell.CellData
 import xyz.chunkstories.api.world.cell.translatedCollisionBoxes
 import kotlin.math.sqrt
 
@@ -20,7 +21,7 @@ data class RayQuery(val origin: Location,
                     val direction: Vector3dc,
                     val tMin: Double = 0.0,
                     val tMax: Double = 256.0,
-                    val voxelMask: (Cell) -> Boolean = { it.voxel.solid },
+                    val voxelMask: (CellData) -> Boolean = { it.blockType.solid },
                     val entityMask: (Entity) -> Boolean = { true }) {
     val invDir = Vector3d(1.0 / direction.x(), 1.0 / direction.y(), 1.0 / direction.z())
 }
@@ -102,6 +103,20 @@ fun RayQuery.trace(): RayResult {
     var tMinVoxel = Double.MAX_VALUE
     var bestVoxelHit: RayResult.Hit.VoxelHit? = null
 
+    fun bestHitSoFar(): RayResult {
+        if (tMinVoxel != Double.MAX_VALUE) {
+            if (tMinVoxel < tMinEntity) {
+                return bestVoxelHit!!
+            } else if (bestEntityHit != null) {
+                return bestEntityHit!!
+            }
+        }
+        if(tMinEntity != Double.MAX_VALUE) {
+            return bestEntityHit!!
+        }
+        return RayResult.NoHit(this)
+    }
+
     do {
         // DDA steps
         side = 0
@@ -164,14 +179,14 @@ fun RayQuery.trace(): RayResult {
             }
         }
 
-        cell = this.origin.world.peek(x, y, z)
-        val voxel = cell.voxel
+        cell = this.origin.world.getCell(x, y, z) ?: return bestHitSoFar()
+        val voxel = cell.data.blockType
 
-        if (this.voxelMask(cell)) {
-            if (voxel.isAir())
+        if (this.voxelMask(cell.data)) {
+            if (voxel.isAir)
                 continue
 
-            for (box in cell.translatedCollisionBoxes ?: emptyArray()) {
+            for (box in cell.translatedCollisionBoxes) {
                 val intersection = box.intersect(origin, direction, this.invDir)
                 if (intersection != null) {
                     //val distance = collisionPoint.distance(origin)
@@ -184,24 +199,13 @@ fun RayQuery.trace(): RayResult {
                     }
                 }
             }
-            if (tMinVoxel != Double.MAX_VALUE) {
-                if (tMinVoxel < tMinEntity) {
-                    return bestVoxelHit!!
-                } else if (bestEntityHit != null) {
-                    return bestEntityHit
-                }
-            }
+            return bestHitSoFar()
         }
 
         // distance += deltaDist[side];
 
     } while (voxelDelta[0] * voxelDelta[0] + voxelDelta[1] * voxelDelta[1] + voxelDelta[2] * voxelDelta[2] < this.tMax * this.tMax)
-
-    if(tMinEntity != Double.MAX_VALUE) {
-        return bestEntityHit!!
-    }
-
-    return RayResult.NoHit(this)
+    return bestHitSoFar()
 }
 
 data class BoxIntersection(val tMin: Double, val hitPosition: Vector3dc, val normal: Vector3dc)

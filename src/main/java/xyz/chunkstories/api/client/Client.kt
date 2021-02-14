@@ -12,9 +12,8 @@ import xyz.chunkstories.api.graphics.GraphicsEngine
 import xyz.chunkstories.api.graphics.Window
 import xyz.chunkstories.api.gui.Gui
 import xyz.chunkstories.api.net.AuthenticationMethod
-import xyz.chunkstories.api.player.IngamePlayer
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.player.PlayerID
-import xyz.chunkstories.api.player.SpectatingPlayer
 import xyz.chunkstories.api.plugin.PluginManager
 import xyz.chunkstories.api.util.configuration.Configuration
 import xyz.chunkstories.api.world.GameInstance
@@ -41,13 +40,13 @@ interface Client {
 
 /** The game cient abstracted from a content/mod perspective. */
 interface IngameClient : Client, GameInstance {
-    val player: LocalPlayer
+    val player: Player
 
     override val world: WorldClient
     override val pluginManager: PluginManager
 
-    fun startPlayingAs_(entity: Entity): IngamePlayer
-    fun startSpectating_(): SpectatingPlayer
+    fun startPlayingAs_(entity: Entity)
+    fun startSpectating_()
 
     /** Closes current world and exits to main menu  */
     fun exitToMainMenu()

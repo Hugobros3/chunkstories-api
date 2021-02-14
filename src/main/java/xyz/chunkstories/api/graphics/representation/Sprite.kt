@@ -6,7 +6,6 @@
 
 package xyz.chunkstories.api.graphics.representation
 
-import org.joml.Matrix4fc
 import org.joml.Vector3d
 import xyz.chunkstories.api.graphics.MeshMaterial
 import xyz.chunkstories.api.graphics.structs.IgnoreGLSL

@@ -16,6 +16,7 @@ import xyz.chunkstories.api.item.inventory.ItemPile
 import xyz.chunkstories.api.item.inventory.moveTo
 import xyz.chunkstories.api.net.packets.PacketInventoryMoveItemPile
 import xyz.chunkstories.api.player.Player
+import xyz.chunkstories.api.player.entityIfIngame
 import xyz.chunkstories.api.world.WorldClientNetworkedRemote
 import xyz.chunkstories.api.world.WorldMaster
 
@@ -89,7 +90,7 @@ fun transfer(from: InventorySlot, to: InventorySlot?, amount: Int, player: Playe
                 }
                 is InventorySlot.SummoningSlot -> {
                     if(to.nukesItems) {
-                        val world = player?.controlledEntity?.world
+                        val world = player?.entityIfIngame?.world
                         if (world == null || world is WorldMaster) {
                             sourcePile.amount -= amount
                         } else {
@@ -156,28 +157,26 @@ fun transfer(from: InventorySlot, to: InventorySlot?, amount: Int, player: Playe
     }
 }
 
-fun drop(pile: ItemPile, amount: Int, player: Player?) {
-    val playerEntity = player?.controlledEntity
+fun drop(itemPile: ItemPile, amount: Int, player: Player?) {
+    val playerEntity = player?.entityIfIngame
     val world = playerEntity?.world
 
-    // SP scenario, replicated logic in PacketInventoryMoveItemPile
     if (world == null) {
-        pile.amount -= amount
+        itemPile.amount -= amount
     } else if (world is WorldMaster) {
-        // For local item drops, we need to make sure we have a sutiable entity
-        val loc = playerEntity.location
-        val dropItemEvent = PlayerDropItemEvent(player, pile, amount, loc)
-        world.gameContext.pluginManager.fireEvent(dropItemEvent)
+        // For single player scenarios, this logic is replicated in PacketInventoryMoveItemPile
+        // TODO how about not doing that
 
-        if (!dropItemEvent.isCancelled) {
+        val event = PlayerDropItemEvent(player, itemPile, amount, playerEntity.location)
+        world.gameInstance.pluginManager.fireEvent(event)
+        if (!event.isCancelled) {
             val initialVelocity = playerEntity.traits[TraitRotation::class]?.directionLookingAt?.let { Vector3d(it).mul(0.1).add(0.0, 0.2, 0.0) } ?: Vector3d(0.0)
-            EntityDroppedItem.spawn(pile.item, amount, playerEntity.location, initialVelocity)
-
-            pile.amount -= amount
+            EntityDroppedItem.spawn(itemPile.item, amount, playerEntity.location, initialVelocity)
+            itemPile.amount -= amount
         }
     } else if (world is WorldClientNetworkedRemote) {
         // In MP scenario, move into /dev/null
-        val packetMove = PacketInventoryMoveItemPile(world, pile, pile.inventory, null, pile.x, pile.y, 0, 0, amount)
+        val packetMove = PacketInventoryMoveItemPile(world, itemPile, itemPile.inventory, null, itemPile.x, itemPile.y, 0, 0, amount)
         world.remoteServer.pushPacket(packetMove)
     }
 }

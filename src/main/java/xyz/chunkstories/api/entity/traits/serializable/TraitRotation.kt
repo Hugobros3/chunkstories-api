@@ -15,6 +15,7 @@ import xyz.chunkstories.api.content.json.asFloat
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -25,7 +26,7 @@ class TraitRotation(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
     var yaw = 0f
         private set(value) {
             if (value.isNaN()) {
-                entity.world.gameContext.logger().warn("Tried to set TraitRotation.x to NaN $entity")
+                entity.world.gameInstance.logger.warn("Tried to set TraitRotation.x to NaN $entity")
             } else {
                 field = value
             }
@@ -33,7 +34,7 @@ class TraitRotation(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
     var pitch = 0f
         private set(value) {
             if (value.isNaN()) {
-                entity.world.gameContext.logger().warn("Tried to set TraitRotation.y to NaN $entity")
+                entity.world.gameInstance.logger.warn("Tried to set TraitRotation.y to NaN $entity")
             } else {
                 field = value
             }
@@ -107,8 +108,8 @@ class TraitRotation(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
 
     override fun readMessage(dis: DataInputStream) = RotationUpdate(dis.readFloat(), dis.readFloat())
 
-    override fun processMessage(message: RotationUpdate, from: Interlocutor) {
-        if (entity.world is WorldMaster && from != entity.traits[TraitControllable::class]?.controller) {
+    override fun processMessage(message: RotationUpdate, player: Player?) {
+        if (entity.world is WorldMaster && player != entity.controller) {
             //throw Exception("Security violation: Someone tried to update an entity they don't control !")
             //Because of lag this might have been legit, so just reject it for now
             return

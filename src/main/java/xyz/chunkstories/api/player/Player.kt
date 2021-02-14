@@ -10,26 +10,32 @@ import xyz.chunkstories.api.Location
 import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
+import xyz.chunkstories.api.input.InputsManager
 import xyz.chunkstories.api.plugin.commands.CommandEmitter
 import java.util.*
 
 data class PlayerID(val uuid: UUID)
 
-/** Represents a player (Remote or Local) as the once calling shots */
 interface Player : CommandEmitter {
     override val name: String
+    val id: PlayerID
     val displayName: String
 
+    val state: PlayerState
+
+    val inputsManager: InputsManager
+
     /** Sends a text message to this player */
-    override fun sendMessage(msg: String)
+    override fun sendMessage(message: String)
 }
 
-/** A player currently acting as a certain entity */
-interface IngamePlayer : Player, Controller, Subscriber {
-    val entity: Entity
+sealed class PlayerState(val player: Player) {
+    class Ingame(player: Player, val entity: Entity) : PlayerState(player)
+    class Spectating(player: Player, val location: Location) : PlayerState(player)
 }
 
-/** A player simply spectating a map */
-interface SpectatingPlayer : Player, Subscriber {
-    val location: Location
-}
+val Player.entityIfIngame: Entity?
+    get() = when(val state = this.state) {
+        is PlayerState.Ingame -> state.entity
+        else -> null
+    }

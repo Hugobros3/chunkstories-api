@@ -44,20 +44,23 @@ object InventorySerialization {
         val width = json["width"].asInt!!
         val height = json["height"].asInt!!
 
-        if(inventory.width != width || inventory.height != height)
+        if (inventory.width != width || inventory.height != height)
             throw Exception("Mismatched inventory sizes")
 
         inventory.clear()
 
         val contents = json["contents"].asArray!!
-        for(entry in contents.elements) {
+        for (entry in contents.elements) {
             val entry = entry.asDict!!
             val x = entry["x"].asInt!!
             val y = entry["y"].asInt!!
             val amount = entry["amount"].asInt!!
 
-            val item = entry["itemId"].asInt?.let { contentTranslator.getItemForId(it)!!.newItem<Item>() } ?:
-            entry["itemName"].asString?.let { contentTranslator.content.items.getItemDefinition(it)?.newItem<Item>() ?: throw Exception("Missing item: $it") }!!
+            val item = entry["itemId"].asInt?.let { contentTranslator.getItemForId(it)!!.newItem<Item>() }
+                    ?: entry["itemName"].asString?.let {
+                        contentTranslator.content.items.getItemDefinition(it)?.newItem<Item>()
+                                ?: throw Exception("Missing item: $it")
+                    }!!
 
             item.deserialize(entry["itemData"].asDict!!)
 
@@ -80,8 +83,11 @@ object InventorySerialization {
     fun deserializeItemAndAmount(contentTranslator: ContentTranslator, json: Json): Pair<Item?, Int> {
         if (json is Json.Dict) {
             val amount = json["amount"].asInt!!
-            val item = json["itemId"].asInt?.let { contentTranslator.getItemForId(it)!!.newItem<Item>() } ?:
-            json["itemName"].asString?.let { contentTranslator.content.items.getItemDefinition(it)?.newItem<Item>() ?: throw Exception("Missing item: $it") }!!
+            val item = json["itemId"].asInt?.let { contentTranslator.getItemForId(it)!!.newItem<Item>() }
+                    ?: json["itemName"].asString?.let {
+                        contentTranslator.content.items.getItemDefinition(it)?.newItem<Item>()
+                                ?: throw Exception("Missing item: $it")
+                    }!!
 
             item.deserialize(json["itemData"].asDict!!)
             return Pair(item, amount)

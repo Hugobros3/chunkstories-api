@@ -16,6 +16,7 @@ import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -65,9 +66,8 @@ open class TraitInventory(entity: Entity, width: Int, height: Int, val publicCon
     }
 
     override fun readMessage(dis: DataInputStream): InventoryUpdate {
-        val contentTranslator = entity.world.contentTranslator
-        val type = dis.read()
-        return when (type) {
+        val contentTranslator = entity.world.gameInstance.contentTranslator
+        return when (dis.read()) {
             0 -> {
                 val x = dis.readInt()
                 val y = dis.readInt()
@@ -104,7 +104,7 @@ open class TraitInventory(entity: Entity, width: Int, height: Int, val publicCon
         }
     }
 
-    override fun processMessage(message: InventoryUpdate, from: Interlocutor) {
+    override fun processMessage(message: InventoryUpdate, player: Player?) {
         if(entity.world is WorldMaster)
             return
 
@@ -122,16 +122,16 @@ open class TraitInventory(entity: Entity, width: Int, height: Int, val publicCon
     }
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {
-        if(subscriber == entity.traits[TraitControllable::class]?.controller)
-            sendMessageController(InventoryUpdate.RefreshInventory(inventory.contents.map { InventoryUpdate.ItemInInventory(it.x, it.y, it.item, it.amount) }, entity.world.contentTranslator))
+        if(subscriber == entity.controller)
+            sendMessageController(InventoryUpdate.RefreshInventory(inventory.contents.map { InventoryUpdate.ItemInInventory(it.x, it.y, it.item, it.amount) }, entity.world.gameInstance.contentTranslator))
     }
 
     override fun refreshItemSlot(x: Int, y: Int, pileChanged: ItemPile?) {
-        sendMessageController(InventoryUpdate.RefreshSlot(x, y, pileChanged?.item, pileChanged?.amount ?: 0, entity.world.contentTranslator))
+        sendMessageController(InventoryUpdate.RefreshSlot(x, y, pileChanged?.item, pileChanged?.amount ?: 0, entity.world.gameInstance.contentTranslator))
     }
 
     override fun refreshCompleteInventory() {
-        sendMessageController(InventoryUpdate.RefreshInventory(inventory.contents.map { InventoryUpdate.ItemInInventory(it.x, it.y, it.item, it.amount) }, entity.world.contentTranslator))
+        sendMessageController(InventoryUpdate.RefreshInventory(inventory.contents.map { InventoryUpdate.ItemInInventory(it.x, it.y, it.item, it.amount) }, entity.world.gameInstance.contentTranslator))
     }
 
     override fun isAccessibleTo(entity: Entity): Boolean {
@@ -141,10 +141,10 @@ open class TraitInventory(entity: Entity, width: Int, height: Int, val publicCon
     override val inventoryName: String
         get() = entity.traits[TraitName::class]?.name ?: entity::class.java.simpleName
 
-    override fun serialize() = InventorySerialization.serializeInventory(inventory, entity.world.contentTranslator)
+    override fun serialize() = InventorySerialization.serializeInventory(inventory, entity.world.gameInstance.contentTranslator)
 
     override fun deserialize(json: Json) {
         val dict = json.asDict ?: return
-        InventorySerialization.deserializeInventory(inventory, entity.world.contentTranslator, dict)
+        InventorySerialization.deserializeInventory(inventory, entity.world.gameInstance.contentTranslator, dict)
     }
 }

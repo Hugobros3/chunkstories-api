@@ -11,7 +11,7 @@ package xyz.chunkstories.api.plugin.commands
 interface CommandEmitter {
     val name: String
 
-    fun sendMessage(msg: String)
+    fun sendMessage(message: String)
 
     fun hasPermission(permissionNode: String): Boolean
 }

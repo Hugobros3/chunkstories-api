@@ -13,6 +13,4 @@ import xyz.chunkstories.api.world.WorldUser
  * updates and can push changes to the controlled entity  */
 interface Controller : Subscriber, WorldUser {
     val inputsManager: InputsManager
-
-    var controlledEntity: Entity?
 }

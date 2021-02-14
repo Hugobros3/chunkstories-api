@@ -6,12 +6,12 @@
 
 package xyz.chunkstories.api.world.heightmap
 
+import xyz.chunkstories.api.block.BlockType
 import xyz.chunkstories.api.util.concurrency.Fence
 import xyz.chunkstories.api.world.WorldUser
 import xyz.chunkstories.api.world.cell.Cell
 
-/** Represents the topmost getCell for 256 * 256 area. X and Z coordinates match
- * those of regions  */
+/** Represents the topmost cell for 256 * 256 area. X and Z coordinates match those of regions  */
 interface Heightmap {
     /** Get the region-space X coordinate for the begining of this heightmap data  */
     val regionX: Int
@@ -23,13 +23,10 @@ interface Heightmap {
     val users: Set<WorldUser>
     fun unregisterUser(user: WorldUser): Boolean
 
-    /** Return the height of the topmost block or NO_DATA is no data is yet
-     * available  */
+    /** Return the height of the topmost block or -1 if unknown */
     fun getHeight(x: Int, z: Int): Int
-
-    fun getTopCell(x: Int, z: Int): Cell
-    fun setTopCell(data: Cell)
-
+    fun getBlockType(x: Int, z: Int): BlockType
+    //fun set(cell: Cell)
 
     sealed class State {
         open class Loading(val fence: Fence) : State()
@@ -41,9 +38,5 @@ interface Heightmap {
         class Saving(val fence: Fence) : Available()
 
         object Zombie : State()
-    }
-
-    companion object {
-        val NO_DATA = -1
     }
 }

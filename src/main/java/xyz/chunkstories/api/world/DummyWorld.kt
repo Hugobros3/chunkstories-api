@@ -6,17 +6,16 @@
 
 package xyz.chunkstories.api.world
 
-import org.joml.Vector3dc
+import org.slf4j.Logger
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.exceptions.world.WorldException
 import xyz.chunkstories.api.graphics.systems.dispatching.DecalsManager
 import xyz.chunkstories.api.particles.ParticlesManager
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.sound.SoundManager
-import xyz.chunkstories.api.util.IterableIterator
-import xyz.chunkstories.api.voxel.Voxel
+import xyz.chunkstories.api.block.structures.Prefab
+import xyz.chunkstories.api.entity.EntityID
 import xyz.chunkstories.api.world.cell.Cell
-import xyz.chunkstories.api.world.chunk.ChunkCell
+import xyz.chunkstories.api.world.cell.CellData
 import xyz.chunkstories.api.world.chunk.WorldChunksManager
 import xyz.chunkstories.api.world.generator.WorldGenerator
 import xyz.chunkstories.api.world.heightmap.WorldHeightmapsManager
@@ -33,9 +32,11 @@ class DummyWorld : World {
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override val heightmapsManager: WorldHeightmapsManager
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val properties: World.Properties
+    override val logger: Logger
         get() = TODO("Not yet implemented")
-    override val sky: World.Sky
+    override var properties: World.Properties = TODO()
+        get() = TODO("Not yet implemented")
+    override var sky: World.Sky
         get() = TODO("Not yet implemented")
 
     override// TODO Auto-generated method stub
@@ -46,7 +47,7 @@ class DummyWorld : World {
 
 
     override// TODO Auto-generated method stub
-    val entities: IterableIterator<Entity>
+    val entities: Sequence<Entity>
         get() = throw NotImplementedError()
 
     override// TODO Auto-generated method stub
@@ -69,17 +70,27 @@ class DummyWorld : World {
         get() = throw NotImplementedError()
 
 
-    override fun addEntity(entity: Entity) {
-        // TODO Auto-generated method stub
-
-    }
-
-    override fun removeEntity(entity: Entity): Boolean {
-        // TODO Auto-generated method stub
-        return false
+    override fun addEntity(entity: Entity): EntityID {
+        TODO("Not yet implemented")
     }
 
     override fun removeEntity(id: EntityID): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCell(x: Int, y: Int, z: Int): WorldCell? {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCellMut(x: Int, y: Int, z: Int): MutableWorldCell? {
+        TODO("Not yet implemented")
+    }
+
+    override fun setCellData(x: Int, y: Int, z: Int, data: CellData): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun pastePrefab(x: Int, y: Int, z: Int, prefab: Prefab): Boolean {
         TODO("Not yet implemented")
     }
 
@@ -88,87 +99,12 @@ class DummyWorld : World {
         return throw NotImplementedError()
     }
 
-    override fun getEntitiesInBox(box: Box): World.NearEntitiesIterator {
+    override fun getEntitiesInBox(box: Box): Sequence<Entity> {
         TODO("Not yet implemented")
     }
 
-    @Throws(WorldException::class)
-    override fun tryPeek(x: Int, y: Int, z: Int): ChunkCell {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    @Throws(WorldException::class)
-    override fun tryPeek(location: Vector3dc): ChunkCell {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun peek(x: Int, y: Int, z: Int): WorldCell {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun peek(location: Vector3dc): WorldCell {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun peekSimple(x: Int, y: Int, z: Int): Voxel {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun getVoxelsWithin(boundingBox: Box): IterableIterator<Cell> {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun peekRaw(x: Int, y: Int, z: Int): Int {
-        // TODO Auto-generated method stub
-        return 0
-    }
-
-    @Throws(WorldException::class)
-    override fun poke(x: Int, y: Int, z: Int, voxel: Voxel?, sunlight: Int, blocklight: Int, metadata: Int, cause: WorldModificationCause?): WorldCell {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun pokeSimpleSilently(x: Int, y: Int, z: Int, voxel: Voxel?, sunlight: Int, blocklight: Int, metadata: Int) {
-        // TODO Auto-generated method stub
-
-    }
-
-    override fun pokeRaw(x: Int, y: Int, z: Int, newVoxelData: Int) {
-        // TODO Auto-generated method stub
-
-    }
-
-    override fun pokeRawSilently(x: Int, y: Int, z: Int, newVoxelData: Int) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Throws(WorldException::class)
-    override fun poke(fvc: FutureCell, cause: WorldModificationCause?): Cell {
-        // TODO Auto-generated method stub
-        return throw NotImplementedError()
-    }
-
-    override fun pokeSimple(x: Int, y: Int, z: Int, voxel: Voxel?, sunlight: Int, blocklight: Int, metadata: Int) {
-        // TODO Auto-generated method stub
-
-    }
-
-    override fun pokeSimple(fvc: FutureCell) {
-        // TODO Auto-generated method stub
-
-    }
-
-    override fun pokeSimpleSilently(fvc: FutureCell) {
-        // TODO Auto-generated method stub
-
+    override fun getCellsInBox(box: Box): Sequence<Cell> {
+        TODO("Not yet implemented")
     }
 
     companion object {

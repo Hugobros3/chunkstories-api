@@ -15,8 +15,8 @@ import xyz.chunkstories.api.world.World
 object EntitySerialization {
     fun serializeEntity(entity: Entity) : Json {
         return Json.Dict(mapOf(
-                "uuid" to Json.Value.Text(entity.id.toString()),
-                "entityType" to Json.Value.Text(entity.definition.name),
+                "id" to Json.Value.Text(entity.id.toString()),
+                "type" to Json.Value.Text(entity.definition.name),
                 "traits" to Json.Dict(entity.traits.all().filterIsInstance<TraitSerializable>().map { Pair(it.traitName, it.serialize()) }.toMap())
         ))
     }
@@ -24,10 +24,10 @@ object EntitySerialization {
     fun deserializeEntity(world: World, json: Json) : Entity {
         if(json !is Json.Dict)
             throw Exception("Can't deserialize anything but a Dict into an Entity")
-        val uuid = json["uuid"].asString!!.toLong()
-        val entityType = world.content.entities.getEntityDefinition(json["entityType"].asString!!)!!
+        val uuid = json["id"].asString!!.toLong()
+        val entityType = world.gameInstance.content.entities.getEntityDefinition(json["type"].asString!!)!!
         val entity = entityType.newEntity<Entity>(world)
-        entity.UUID = uuid
+        entity.id = uuid
 
         for((name, traitJsonPayload) in json["traits"].asDict!!.elements) {
             val trait = entity.traits.all().find { it is TraitSerializable && it.traitName == name } as? TraitSerializable ?: continue

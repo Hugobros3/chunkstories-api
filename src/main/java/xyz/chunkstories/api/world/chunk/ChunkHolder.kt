@@ -30,9 +30,6 @@ interface ChunkHolder {
 
     val chunk: Chunk?
 
-    //TODO better
-    fun compressChunkData()
-
     sealed class State {
         /** The initial state, loading chunks can't happen until the underlying region is done loading! */
         object WaitForRegionInitialLoad : State()

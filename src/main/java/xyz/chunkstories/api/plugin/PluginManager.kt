@@ -7,7 +7,6 @@
 package xyz.chunkstories.api.plugin
 
 import xyz.chunkstories.api.events.Event
-import xyz.chunkstories.api.events.Listener
 import xyz.chunkstories.api.plugin.commands.Command
 import xyz.chunkstories.api.plugin.commands.CommandEmitter
 import xyz.chunkstories.api.plugin.commands.CommandHandler
@@ -22,7 +21,7 @@ interface PluginManager {
     fun findCommandUsingAlias(commandName: String): Command?
     fun dispatchCommand(emitter: CommandEmitter, commandName: String, arguments: Array<String>): Boolean
 
-    fun registerEventListener(listener: Listener, plugin: Plugin)
+    fun registerEventListener(listener: Any, plugin: Plugin)
     fun fireEvent(event: Event)
 
     // TODO ideally should be more secure

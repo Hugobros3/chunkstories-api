@@ -10,7 +10,7 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityDefinition
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.ItemDefinition
-import xyz.chunkstories.api.voxel.Voxel
+import xyz.chunkstories.api.block.BlockType
 
 /** This interface describes the world-specific mapping from named content definitions to integer IDs.  */
 interface ContentTranslator {
@@ -20,10 +20,10 @@ interface ContentTranslator {
     val content: Content
 
     /** Return the assignated ID for this declaration or -1 if it isn't a part of the current content  */
-    fun getIdForVoxel(voxel: Voxel?): Int
+    fun getIdForVoxel(voxel: BlockType?): Int
 
     /** Return the Voxel associated with that ID or null if the ID was outside of bounds  */
-    fun getVoxelForId(id: Int): Voxel?
+    fun getVoxelForId(id: Int): BlockType?
 
     /** Return the assignated ID for this declaration or -1 if it isn't a part of
      * the current content  */

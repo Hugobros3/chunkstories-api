@@ -6,8 +6,7 @@
 
 package xyz.chunkstories.api.util.configuration
 
-import xyz.chunkstories.api.GameContext
-import xyz.chunkstories.api.events.config.OptionSetEvent
+import com.sun.xml.internal.ws.api.pipe.Engine
 import xyz.chunkstories.api.math.MathUtils
 import java.io.File
 import java.io.FileReader
@@ -17,7 +16,7 @@ import java.util.*
 /** Chunk Stories offer a relatively fancy way of managing user-configurable options, by way of the
  * **Configurations** API. This API allows you to declare *Configurations*, that hold a bunch of *Options*
  * that can be modified accorded to the option's value type and range. */
-class Configuration(val context: GameContext?, val file: File) {
+class Configuration(val file: File) {
     private val properties = Properties()
 
     val optionsMap = mutableMapOf<String, Option<*>>()
@@ -50,18 +49,18 @@ class Configuration(val context: GameContext?, val file: File) {
         /** Try setting the value of that option to the argument. Will fire an
          * EventOptionSet, returns true when successful */
         open fun trySetting(value: T): Boolean {
-            val event = OptionSetEvent(this)
+            /*val event = OptionSetEvent(this)
             try {
-                context?.pluginManager?.fireEvent(event)
+                gameInstance?.pluginManager?.fireEvent(event)
             } catch (ignored: UnsupportedOperationException) {
             }
-            if (!event.isCancelled) {
+            if (!event.isCancelled) {*/
                 this.value = value
                 hooks.forEach { it.invoke(this) }
                 return true
-            }
+            //}
 
-            return false
+            //return false
         }
 
         fun addHook(hook: Option<T>.() -> Unit) = hooks.add(hook)

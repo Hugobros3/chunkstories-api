@@ -12,14 +12,12 @@ import xyz.chunkstories.api.util.IterableIterator
 /** A mod contains assets that add to or override the game's defaults.  */
 interface Mod {
     val modInfo: ModInfo
+    val hash: String
 
-    val mD5Hash: String
     /** Returns the asset corresponding to the provided path, matching the syntax
      * ./directory/subdirectory/asset.txt Returns only the version defined in this
      * mod. Returns null if the asset couln't be found  */
     fun getAssetByName(name: String): Asset?
 
-    /** Iterates over this mod's assets  */
-    val assets: Collection<Asset>
-
+    val assets: Sequence<Asset>
 }

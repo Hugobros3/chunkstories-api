@@ -11,17 +11,9 @@ import org.joml.Vector3dc
 
 import xyz.chunkstories.api.world.World
 
+// TODO make properly immutable
 /** Cartesian product of a world and a position within that world  */
 class Location(val world: World, x: Double, y: Double, z: Double) : Vector3d(x, y, z) {
-
     constructor(world: World, position: Vector3dc) : this(world, position.x(), position.y(), position.z())
-
     constructor(location: Location) : this(location.world, location.x, location.y, location.z)
-
-    fun set(loc: Location) {
-        if (loc.world !== this.world)
-            throw RuntimeException("You can't change the world of a location.")
-
-        super.set(loc)
-    }
 }

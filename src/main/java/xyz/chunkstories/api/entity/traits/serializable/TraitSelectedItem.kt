@@ -16,6 +16,7 @@ import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -62,7 +63,7 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
     override fun readMessage(dis: DataInputStream): SelectedItemUpdate {
         val type = dis.read()
         return when(type) {
-            0 -> InventorySerialization.deserializeItemAndAmount(entity.world.contentTranslator, dis.readUTF().toJson()).let {
+            0 -> InventorySerialization.deserializeItemAndAmount(entity.world.gameInstance.contentTranslator, dis.readUTF().toJson()).let {
                 SelectedItemUpdate.ServerToClientsUpdate(it.first, it.second)
             }
             1 -> SelectedItemUpdate.ControllerUpdate(dis.readInt())
@@ -70,7 +71,7 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
         }
     }
 
-    override fun processMessage(message: SelectedItemUpdate, from: Interlocutor) {
+    override fun processMessage(message: SelectedItemUpdate, player: Player?) {
         when(message) {
             is SelectedItemUpdate.ServerToClientsUpdate -> {
                 if(entity.world is WorldMaster)
@@ -80,14 +81,14 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
                 inventory.setItemAt(0, 0, message.item, message.amount, true)
             }
             is SelectedItemUpdate.ControllerUpdate -> {
-                if(from == entity.traits[TraitControllable::class]?.controller)
+                if(player == entity.controller)
                     selectedSlot = message.slot
             }
         }
     }
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {
-        if(subscriber is Controller && subscriber == entity.traits[TraitControllable::class]?.controller) {
+        if(subscriber is Controller && subscriber == entity.controller) {
             sendMessage(subscriber, SelectedItemUpdate.ControllerUpdate(selectedSlot))
         } else {
             sendMessage(subscriber, SelectedItemUpdate.ServerToClientsUpdate(selectedItem?.item, selectedItem?.amount ?: 0))

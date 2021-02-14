@@ -14,6 +14,7 @@ import xyz.chunkstories.api.content.json.asDouble
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -86,8 +87,8 @@ class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
         }
     }
 
-    override fun processMessage(message: VelocityUpdate, from: Interlocutor) {
-        if (entity.world is WorldMaster && from != entity.traits[TraitControllable::class]?.controller) {
+    override fun processMessage(message: VelocityUpdate, player: Player?) {
+        if (entity.world is WorldMaster && player != entity.controller) {
             //throw Exception("Security violation: Someone tried to update an entity they don't control !")
             //Because of lag this might have been legit, so just reject it for now
             return
@@ -117,7 +118,7 @@ class TraitVelocity(entity: Entity) : Trait(entity), TraitSerializable, TraitNet
 
     override fun tick() {
         if (realVelocity.x.isNaN() || realVelocity.y.isNaN() || realVelocity.z.isNaN()) {
-            entity.world.gameContext.logger().warn("Entity $entity had invalid velocity: $realVelocity, resetting to zero")
+            entity.world.gameInstance.logger.warn("Entity $entity had invalid velocity: $realVelocity, resetting to zero")
             realVelocity.set(0.0, 0.0, 0.0)
         }
     }

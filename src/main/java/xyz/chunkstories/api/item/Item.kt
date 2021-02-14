@@ -34,7 +34,7 @@ open class Item(val definition: ItemDefinition) {
      *
      * @return false if the item doesn't handle the input, true if it does
      */
-    open fun onControllerInput(entity: Entity, pile: ItemPile, input: Input, controller: Controller): Boolean = false
+    open fun onControllerInput(entity: Entity, itemPile: ItemPile, input: Input, controller: Controller): Boolean = false
 
     /**
      * Use : determine if two stacks can be merged together, should be overriden

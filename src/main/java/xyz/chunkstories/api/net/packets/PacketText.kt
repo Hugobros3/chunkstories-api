@@ -10,7 +10,7 @@ import xyz.chunkstories.api.player.Player
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
-abstract class PacketText : Packet {
+open class PacketText : Packet {
     lateinit var text: String
 
     constructor()

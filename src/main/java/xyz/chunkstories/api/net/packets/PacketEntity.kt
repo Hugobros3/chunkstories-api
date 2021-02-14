@@ -11,7 +11,6 @@ import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.serializable.TraitMessage
 import xyz.chunkstories.api.entity.traits.serializable.TraitNetworked
 import xyz.chunkstories.api.net.*
-import xyz.chunkstories.api.player.IngamePlayer
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldMaster
@@ -88,7 +87,7 @@ class PacketEntity : PacketWorld {
             trait = entity!!.traits.byId[traitId]
             message = (trait as TraitNetworked<*>).readMessage(dis)
             @Suppress("UNCHECKED_CAST")
-            (trait as TraitNetworked<TraitMessage>).processMessage(message, player as? IngamePlayer)
+            (trait as TraitNetworked<TraitMessage>).processMessage(message, player)
 
             if (freshlyCreatedEntity) {
                 // Only the WorldMaster is allowed to spawn new entities in the world

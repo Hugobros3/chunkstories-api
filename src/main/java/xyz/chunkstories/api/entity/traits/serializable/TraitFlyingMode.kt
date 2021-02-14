@@ -12,6 +12,7 @@ import xyz.chunkstories.api.content.json.asDict
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -59,7 +60,7 @@ class TraitFlyingMode(entity: Entity) : Trait(entity), TraitSerializable, TraitN
         }
     }
 
-    override fun processMessage(message: FlyModeUpdate, from: Interlocutor) {
+    override fun processMessage(message: FlyModeUpdate, player: Player?) {
         when (message) {
             is FlyModeUpdate.SetAllow -> {
                 if (entity.world is WorldMaster) {
@@ -77,7 +78,7 @@ class TraitFlyingMode(entity: Entity) : Trait(entity), TraitSerializable, TraitN
     }
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {
-        if(subscriber == entity.traits[TraitControllable::class]?.controller) {
+        if(subscriber == entity.controller) {
             sendMessageController(FlyModeUpdate.SetAllow(isAllowed))
             sendMessageController(FlyModeUpdate.SetFlying(isFlying))
         }

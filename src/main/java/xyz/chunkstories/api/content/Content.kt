@@ -9,90 +9,52 @@ package xyz.chunkstories.api.content
 import xyz.chunkstories.api.animation.Animation
 import xyz.chunkstories.api.content.mods.ModsManager
 import xyz.chunkstories.api.entity.EntityDefinition
-import xyz.chunkstories.api.exceptions.net.UnknowPacketException
 import xyz.chunkstories.api.item.ItemDefinition
-import xyz.chunkstories.api.net.Packet
-import xyz.chunkstories.api.net.PacketDefinition
-import xyz.chunkstories.api.voxel.Voxel
-import xyz.chunkstories.api.voxel.materials.VoxelMaterial
-import xyz.chunkstories.api.voxel.textures.VoxelTexture
+import xyz.chunkstories.api.block.BlockType
 import xyz.chunkstories.api.world.generator.WorldGeneratorDefinition
 import org.slf4j.Logger
+import xyz.chunkstories.api.block.BlockTexture
 import xyz.chunkstories.api.crafting.Recipe
 import xyz.chunkstories.api.graphics.representation.Model
 import xyz.chunkstories.api.gui.inventory.InventorySlot
 import xyz.chunkstories.api.loot.LootTable
 import xyz.chunkstories.api.particles.ParticleType
 
-/** Encapsulates all the user-definable content available  */
 interface Content {
     val animationsLibrary: AnimationsLibrary
-
-    /** Returns the ModManager that was used to load this content  */
     val modsManager: ModsManager
 
-    /** Obtains an Asset using it's name string More advanced options for obtaining
-     * assets are avaible using the ModsManager class  */
+    /**
+     * Obtains an Asset using its name string
+     * More advanced options for obtaining assets are available using the ModsManager class.
+     */
     fun getAsset(assetName: String): Asset?
 
-    /** Reloads everything. Warning: might not be appropriate as this will reload
-     * classes you will most likely have instanced into objects, causing weird
-     * errors if you do this while in a world.  */
+    /**
+     * Reloads everything.
+     * Warning: might not be appropriate as this will reload classes you will most likely have instanced into objects, causing weird errors if you do this while in a world.
+     * */
     fun reload()
 
-    val voxels: Voxels
-
-    interface Voxels {
-        val air: Voxel
-
-        fun getVoxel(voxelName: String): Voxel?
-
-        val all: Collection<Voxel>
-
-        val parent: Content
-
-        val textures: VoxelTextures
-
-        interface VoxelTextures {
-            val defaultVoxelTexture: VoxelTexture
-
-            val all: Collection<VoxelTexture>
-
-            /** Looks for a voxel texture, if it fails it returns the default texture  */
-            fun get(voxelTextureName: String): VoxelTexture
-
-            val parent: Voxels
-
-            val logger: Logger
-        }
-
-        val materials: VoxelMaterials
-
-        interface VoxelMaterials {
-
-            val defaultMaterial: VoxelMaterial
-
-            fun getVoxelMaterial(materialName: String): VoxelMaterial?
-
-            val all: Collection<VoxelMaterial>
-
-            val parent: Content
-
-            val logger: Logger
-        }
-
+    val blockTypes: BlockTypes
+    interface BlockTypes {
+        val air: BlockType
+        operator fun get(name: String): BlockType?
+        val all: Sequence<BlockType>
+        val content: Content
         val logger: Logger
+
+        fun getTexture(name: String): BlockTexture?
+        val defaultTexture: BlockTexture
     }
 
     val items: ItemsDefinitions
     interface ItemsDefinitions {
-
         fun getItemDefinition(itemName: String): ItemDefinition?
 
         val all: Collection<ItemDefinition>
 
         val parent: Content
-
         val logger: Logger
     }
 

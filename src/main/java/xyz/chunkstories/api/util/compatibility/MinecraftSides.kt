@@ -6,7 +6,7 @@
 
 package xyz.chunkstories.api.util.compatibility
 
-import xyz.chunkstories.api.voxel.VoxelSide
+import xyz.chunkstories.api.block.BlockSide
 
 // Vanilla mc sides (stairs)
 // 1 = cs_RIGHT / mc_WEST | 3
@@ -18,28 +18,28 @@ import xyz.chunkstories.api.voxel.VoxelSide
  * Returns the Chunk Stories side from the minecraft metadata of the following
  * objects, no top/bottom direction allowed
  */
-fun getSideMcStairsChestFurnace(mcSide: Int): VoxelSide {
+fun getSideMcStairsChestFurnace(mcSide: Int): BlockSide {
     when (mcSide) {
-        2 -> return VoxelSide.BACK
-        3 -> return VoxelSide.FRONT
-        4 -> return VoxelSide.RIGHT
-        5 -> return VoxelSide.LEFT
+        2 -> return BlockSide.BACK
+        3 -> return BlockSide.FRONT
+        4 -> return BlockSide.RIGHT
+        5 -> return BlockSide.LEFT
     }
 
-    return VoxelSide.FRONT
+    return BlockSide.FRONT
 }
 
 /**
  * Returns the Chunk Stories side from the minecraft metadata of the following
  * objects, no top/bottom direction allowed
  */
-fun getSideMcDoor(mcSide: Int): VoxelSide {
+fun getSideMcDoor(mcSide: Int): BlockSide {
     when (mcSide) {
-        0 -> return VoxelSide.LEFT
-        1 -> return VoxelSide.BACK
-        2 -> return VoxelSide.RIGHT
-        3 -> return VoxelSide.FRONT
+        0 -> return BlockSide.LEFT
+        1 -> return BlockSide.BACK
+        2 -> return BlockSide.RIGHT
+        3 -> return BlockSide.FRONT
     }
 
-    return VoxelSide.FRONT
+    return BlockSide.FRONT
 }

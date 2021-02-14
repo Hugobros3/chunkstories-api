@@ -19,9 +19,7 @@ import xyz.chunkstories.api.events.entity.EntityDamageEvent
 import xyz.chunkstories.api.events.entity.EntityDeathEvent
 import xyz.chunkstories.api.events.player.PlayerDeathEvent
 import xyz.chunkstories.api.physics.EntityHitbox
-import xyz.chunkstories.api.player.IngamePlayer
 import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.server.Host
 import xyz.chunkstories.api.sound.SoundSource
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
@@ -32,7 +30,7 @@ import java.io.DataOutputStream
 open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitHealth.HealthUpdate> {
     override val traitName = "health"
 
-    val maxHealth : Float = entity.definition["maxHealth"].asFloat ?: 100.0f
+    val maxHealth: Float = entity.definition["maxHealth"].asFloat ?: 100.0f
     var health: Float = entity.definition["startHealth"].asFloat ?: 100.0f
         set(value) {
             val wasAliveBefore = this.health > 0.0
@@ -66,8 +64,8 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
 
     override fun readMessage(dis: DataInputStream) = HealthUpdate(dis.readFloat())
 
-    override fun processMessage(message: HealthUpdate, player: IngamePlayer?) {
-        if(entity.world is WorldMaster) {
+    override fun processMessage(message: HealthUpdate, player: Player?) {
+        if (entity.world is WorldMaster) {
             return
         }
 
@@ -75,7 +73,7 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
     }
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {
-        if(subscriber == entity.traits[TraitControllable::class]?.controller)
+        if (subscriber == entity.controller)
             sendMessageController(HealthUpdate(health))
     }
 
@@ -129,17 +127,12 @@ open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, Trait
         entity.world.gameInstance.pluginManager.fireEvent(entityDeathEvent)
 
         // Handles cases of controlled player death
-        entity.traits[TraitControllable::class]?.let { ec ->
-            val controller = ec.controller
-            if (controller != null) {
-                controller.controlledEntity = null
-
-                // Serverside stuff
-                if (controller is Player && entity.world is WorldMaster) {
-                    val event = PlayerDeathEvent(controller)
-                    entity.world.gameInstance.pluginManager.fireEvent(event)
-                    (controller.controlledEntity?.world?.gameInstance as? Host)?.broadcastMessage(event.deathMessage)
-                }
+        val controller = entity.controller
+        if (controller != null && controller is Player) {
+            if (entity.world is WorldMaster) {
+                val event = PlayerDeathEvent(controller)
+                entity.world.gameInstance.pluginManager.fireEvent(event)
+                entity.world.gameInstance.broadcastMessage(event.deathMessage)
             }
         }
 

@@ -14,9 +14,7 @@ import xyz.chunkstories.api.content.json.asDouble
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
-import xyz.chunkstories.api.net.packets.PacketEntity
-import xyz.chunkstories.api.player.IngamePlayer
-import xyz.chunkstories.api.world.World
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldMaster
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -25,13 +23,9 @@ import java.io.DataOutputStream
 class TraitLocation(entity: Entity, private val actualLocation: Location) : Trait(entity), TraitSerializable, TraitNetworked<TraitLocation.LocationUpdate> {
     override val traitName = "location"
 
-    private val world: World = actualLocation.world
-
-
     fun set(location: Location) {
-        if (location.world !== this.world)
+        if (location.world !== entity.world)
             throw RuntimeException("Entities can't teleport between worlds directly.")
-
         set(location as Vector3dc)
     }
 
@@ -90,8 +84,8 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
     override fun readMessage(dis: DataInputStream): LocationUpdate =
             LocationUpdate(dis.readDouble(), dis.readDouble(), dis.readDouble())
 
-    override fun processMessage(message: LocationUpdate, player: IngamePlayer?) {
-        if (world is WorldMaster && player != entity.traits[TraitControllable::class]?.controller) {
+    override fun processMessage(message: LocationUpdate, player: Player?) {
+        if (entity.world is WorldMaster && player != entity.controller) {
             throw Exception("Security violation: Someone tried to update an entity they don't control !")
         }
 
@@ -100,62 +94,14 @@ class TraitLocation(entity: Entity, private val actualLocation: Location) : Trai
         this.actualLocation.z = message.z
 
         // Position updates received by the server should be told to everyone but the controller
-        if (world is WorldMaster)
+        if (entity.world is WorldMaster)
             sendMessageAllSubscribersButController(message)
     }
 
-    // TODO evaluate the need for all this
-    /*public fun sanitize(): Boolean {
-        val worldSize = world.worldSize
-
-        actualLocation.x = actualLocation.x() % worldSize
-        actualLocation.z = actualLocation.z() % worldSize
-
-        // Loop arround the world
-        if (actualLocation.x() < 0)
-            actualLocation.x = actualLocation.x() + worldSize
-        else if (actualLocation.x() > worldSize)
-            actualLocation.x = actualLocation.x() % worldSize
-
-        if (actualLocation.z() < 0)
-            actualLocation.z = actualLocation.z() + worldSize
-        else if (actualLocation.z() > worldSize)
-            actualLocation.z = actualLocation.z() % worldSize
-
-        if (actualLocation.y < 0)
-            actualLocation.y = 0.0
-
-        //if (actualLocation.y > world.maxHeight)
-        //    actualLocation.y = world.maxHeight.toDouble()
-
-        // Get local chunk co-ordinate
-        val chunkX = actualLocation.x().toInt() shr 5
-        val chunkY = actualLocation.y().toInt() shr 5
-        val chunkZ = actualLocation.z().toInt() shr 5
-
-        // Don't touch updates once the entity was removed
-        if (removed /* !entity.exists() */)
-            return false
-
-        // Entities not in the world should never be added to it
-        if (!spawned)
-            return false
-    }*/
-
     override fun tick() {
         if (get().x.isNaN() || get().y.isNaN() || get().z.isNaN()) {
-            world.logger.warn("Entity $entity had invalid location: ${get()}, resetting to world spawn")
-            set(world.properties.spawn)
-        }
-        //Shouldn't be necessary !
-        //sanitize()
-    }
-
-    fun onRemoval() {
-        // Tell anyone still subscribed to this entity to sod off
-        entity.subscribers.toList().forEach { subscriber ->
-            subscriber.pushPacket(PacketEntity.createKillerPacket(entity))
-            subscriber.unsubscribe(entity)
+            entity.world.logger.warn("Entity $entity had invalid location: ${get()}, resetting to world spawn")
+            set(entity.world.properties.spawn)
         }
     }
 

@@ -11,17 +11,14 @@ import xyz.chunkstories.api.player.PlayerID
 import xyz.chunkstories.api.world.GameInstance
 
 interface Host : GameInstance {
-    val players: Set<Player>
+    val players: Sequence<Player>
 
     var permissionsManager: PermissionsManager
 
-    fun getPlayer(name: String): Player?
+    fun getPlayer(playerName: String): Player?
     fun getPlayer(id: PlayerID): Player?
 
     fun Player.disconnect(disconnectMessage: String)
 
     fun broadcastMessage(message: String)
-
-    @Deprecated("TODO move to implementation")
-    fun reloadConfig()
 }

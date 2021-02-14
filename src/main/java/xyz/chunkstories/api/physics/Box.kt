@@ -66,11 +66,10 @@ data class Box protected constructor(val min: Vector3d, val max: Vector3d) {
         for(x in minx..maxx) {
             for(y in miny..maxy) {
                 for(z in minz..maxz) {
-                    val cell = world.peek(x, y, z)
-                    if(cell.voxel.solid) {
-                        val cbs = cell.translatedCollisionBoxes ?: continue
-                        for (cb in cbs) {
-                            if (cb.collidesWith(this))
+                    val cell = world.getCell(x, y, z) ?: continue
+                    if(cell.data.blockType.solid) {
+                        for (blockCollisionBox in cell.translatedCollisionBoxes) {
+                            if (blockCollisionBox.collidesWith(this))
                                 return true
                         }
                     }

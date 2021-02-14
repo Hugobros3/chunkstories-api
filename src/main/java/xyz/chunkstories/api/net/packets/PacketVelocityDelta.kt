@@ -10,8 +10,8 @@ import org.joml.Vector3dc
 import xyz.chunkstories.api.client.IngameClient
 import xyz.chunkstories.api.entity.traits.serializable.TraitVelocity
 import xyz.chunkstories.api.net.PacketWorld
-import xyz.chunkstories.api.player.IngamePlayer
 import xyz.chunkstories.api.player.Player
+import xyz.chunkstories.api.player.entityIfIngame
 import xyz.chunkstories.api.util.VoidAction
 import xyz.chunkstories.api.world.World
 import java.io.DataInputStream
@@ -39,12 +39,7 @@ class PacketVelocityDelta : PacketWorld {
 
     override fun receive(dis: DataInputStream, player: Player?) {
         val delta = Vector3d(dis.readDouble(), dis.readDouble(), dis.readDouble())
-        val entity = ((world.gameInstance as IngameClient).player as? IngamePlayer)?.entity
-
-        // TODO use new style
-        entity?.traits?.with(TraitVelocity::class.java, VoidAction { ev: TraitVelocity ->
-            println("Debug: received velocity delta $delta")
-            ev.addVelocity(delta)
-        })
+        val entity = (world.gameInstance as IngameClient).player.entityIfIngame ?: return
+        entity.traits[TraitVelocity::class]?.addVelocity(delta)
     }
 }

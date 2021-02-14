@@ -8,6 +8,8 @@ package xyz.chunkstories.api.sound
 import org.joml.Vector3dc
 import org.joml.Vector3fc
 
+data class Sound(val expression: String)
+
 typealias SoundSourceID = Long
 
 interface SoundSource {
@@ -35,10 +37,10 @@ interface SoundManager {
     fun playSoundEffect(soundEffect: String): SoundSource? =
             this.playSoundEffect(soundEffect, SoundSource.Mode.NORMAL, null, 1.0f, 1.0f, 1.0f, 100.0f)
 
-    fun playSoundEffect(soundEffect: String, mode: SoundSource.Mode?, position: Vector3dc?, pitch: Float, gain: Float): SoundSource? =
+    fun playSoundEffect(soundEffect: String, mode: SoundSource.Mode, position: Vector3dc?, pitch: Float, gain: Float): SoundSource? =
             this.playSoundEffect(soundEffect, mode, position, pitch, gain, 5f, 25f)
 
-    fun playSoundEffect(soundEffect: String, mode: SoundSource.Mode?, position: Vector3dc? = null, pitch: Float, gain: Float, attenuationStart: Float = 5f, attenuationEnd: Float = 25f): SoundSource?
+    fun playSoundEffect(soundEffect: String, mode: SoundSource.Mode, position: Vector3dc? = null, pitch: Float, gain: Float, attenuationStart: Float = 5f, attenuationEnd: Float = 25f): SoundSource?
 
     fun getSoundSource(id: SoundSourceID): SoundSource?
 

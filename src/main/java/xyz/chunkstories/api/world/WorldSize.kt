@@ -20,19 +20,17 @@ constructor(@JvmField val sizeInChunks: Int, val description: String) {
     leading to enormous map sizes ( in the order of 10Gbs to 100Gbs ) when fully explored. */
     HUGE(2048, "64x64km");
 
-    @JvmField
-    val maskForChunksCoordinates: Int = sizeInChunks - 1
-    @JvmField
-    val bitlengthOfHorizontalChunksCoordinates: Int = (Math.log(sizeInChunks.toDouble()) / Math.log(2.0)).toInt()
+    @JvmField val maskForChunksCoordinates: Int = sizeInChunks - 1
+    @JvmField val bitlengthOfHorizontalChunksCoordinates: Int = (Math.log(sizeInChunks.toDouble()) / Math.log(2.0)).toInt()
 
     //TODO make those configurable as well ?
-    @JvmField
-    val heightInChunks = 32
-    @JvmField
-    val bitlengthOfVerticalChunksCoordinates = 5
+    @JvmField val heightInChunks = 32
+    @JvmField val bitlengthOfVerticalChunksCoordinates = 5
+
+    @JvmField val heightInBlocks = heightInChunks * 32
+    @JvmField val squareSizeInBlocks = sizeInChunks * 32
 
     companion object {
-
         val allSizes: String
             get() {
                 var sizes = ""

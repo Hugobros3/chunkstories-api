@@ -23,13 +23,13 @@ abstract class TraitSight(entity: Entity) : Trait(entity) {
 
     fun getLookingAt(reach: Double): RayResult {
         val entityMask = { other: Entity -> other != entity && other.traits[TraitCollidable::class]?.selectable != false}
-        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.voxel.isAir() && (!it.voxel.liquid) }, entityMask)
+        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.blockType.isAir && (!it.blockType.liquid) }, entityMask)
         return query.trace()
     }
 
     fun getSelectableBlockLookingAt(reach: Double) : Cell? {
         val entityMask = { other: Entity -> other != entity && other.traits[TraitCollidable::class]?.selectable != false}
-        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.voxel.isAir() && (!it.voxel.liquid) }, entityMask)
+        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { !it.blockType.isAir && (!it.blockType.liquid) }, entityMask)
         return when(val hit = query.trace()) {
             is RayResult.Hit.VoxelHit -> hit.cell
             else -> null
@@ -38,7 +38,7 @@ abstract class TraitSight(entity: Entity) : Trait(entity) {
 
     fun getSolidBlockLookingAt(reach: Double) : Cell? {
         val entityMask = { other: Entity -> other != entity && other.traits[TraitCollidable::class]?.selectable != false}
-        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { it.voxel.solid }, entityMask)
+        val query = RayQuery(headLocation, lookingAt, 0.0, reach, { it.blockType.solid }, entityMask)
         return when(val hit = query.trace()) {
             is RayResult.Hit.VoxelHit -> hit.cell
             else -> null

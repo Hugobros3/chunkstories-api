@@ -7,11 +7,14 @@
 package xyz.chunkstories.api.world
 
 import xyz.chunkstories.api.Location
+import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.MutableCell
 
-interface WorldCell : MutableCell {
+interface WorldCell : Cell {
     val world: World
 
     val location: Location
         get() = Location(world, x.toDouble(), y.toDouble(), z.toDouble())
 }
+
+interface MutableWorldCell : MutableCell, WorldCell

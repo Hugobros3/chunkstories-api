@@ -14,6 +14,7 @@ import java.io.DataOutputStream
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldClient
 import xyz.chunkstories.api.world.WorldMaster
 
@@ -36,7 +37,7 @@ class TraitName(entity: Entity) : Trait(entity), TraitSerializable, TraitNetwork
         return Json.Value.Text(name)
     }
 
-    override fun processMessage(message: NameUpdate, from: Interlocutor) {
+    override fun processMessage(message: NameUpdate, player: Player?) {
         if(entity.world is WorldClient) {
             name = message.name
         }

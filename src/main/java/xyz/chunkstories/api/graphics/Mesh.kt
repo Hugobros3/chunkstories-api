@@ -8,9 +8,7 @@ package xyz.chunkstories.api.graphics
 
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.security.MessageDigest
 import java.util.*
-
 
 data class Mesh(val vertices: Int, val attributes: List<MeshAttributeSet>, val material: MeshMaterial, val boneIds: Map<String, Int>?) {
     // For simplicity and speed we assume each mesh is different

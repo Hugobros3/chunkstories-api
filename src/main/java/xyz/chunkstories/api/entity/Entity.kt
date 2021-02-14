@@ -15,7 +15,6 @@ import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.util.*
 import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.serialization.StreamTarget
 import java.util.*
 import kotlin.reflect.KClass
 import java.util.HashSet
@@ -38,14 +37,11 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
     var initialized = false
         private set(value) = if(!value) throw Exception("Can't de-initialize an entity!") else field = value
 
-    @JvmField
     val traits : Traits = Traits()
-
-    @JvmField
     val traitLocation = TraitLocation(this, Location(world, .0, .0, .0))
 
-    @JvmField
     val subscribers = Subscribers()
+    var controller: Controller? = null
 
     internal fun finalizeInit() {
         if (initialized)
@@ -259,10 +255,6 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
                 return true
             }
             return false
-        }
-
-        fun isRegistered(subscriber: StreamTarget): Boolean {
-            return subscribers.contains(subscriber)
         }
 
         fun all(): Set<Subscriber> {

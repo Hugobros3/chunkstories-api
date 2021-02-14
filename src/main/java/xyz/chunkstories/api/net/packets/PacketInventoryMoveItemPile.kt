@@ -7,12 +7,9 @@
 package xyz.chunkstories.api.net.packets
 
 import org.joml.Vector3d
-import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityDroppedItem
 import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
-import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.entity.traits.serializable.TraitRotation
-import xyz.chunkstories.api.entity.traits.serializable.TraitVelocity
 import xyz.chunkstories.api.events.player.PlayerDropItemEvent
 import xyz.chunkstories.api.events.player.PlayerMoveItemEvent
 import xyz.chunkstories.api.events.player.PlayerSpawnItemInInventoryEvent
@@ -22,11 +19,11 @@ import xyz.chunkstories.api.exceptions.UndefinedItemTypeException
 import xyz.chunkstories.api.item.Item
 import xyz.chunkstories.api.item.inventory.*
 import xyz.chunkstories.api.net.*
-import xyz.chunkstories.api.server.ServerPacketsProcessor.ServerPlayerPacketsProcessor
+import xyz.chunkstories.api.player.Player
+import xyz.chunkstories.api.player.entityIfIngame
 import xyz.chunkstories.api.world.World
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.io.IOException
 
 class PacketInventoryMoveItemPile : PacketWorld {
     private lateinit var itemPile: ItemPile
@@ -52,77 +49,64 @@ class PacketInventoryMoveItemPile : PacketWorld {
         this.amount = amount
     }
 
-    @Throws(IOException::class)
-    override fun send(destinator: PacketDestinator, stream: DataOutputStream, context: PacketSendingContext) {
+    override fun send(dos: DataOutputStream) {
         // Describe the move
-        stream.writeInt(sourceX)
-        stream.writeInt(sourceY)
-        stream.writeInt(destX)
-        stream.writeInt(destY)
+        dos.writeInt(sourceX)
+        dos.writeInt(sourceY)
+        dos.writeInt(destX)
+        dos.writeInt(destY)
 
-        stream.writeBoolean(destroy)
-        stream.writeInt(amount)
+        dos.writeBoolean(destroy)
+        dos.writeInt(amount)
 
         // Describe the inventories
-        writeInventoryHandle(stream, sourceInventory)
-        writeInventoryHandle(stream, destinationInventory)
+        writeInventoryHandle(dos, sourceInventory)
+        writeInventoryHandle(dos, destinationInventory)
 
         // Describe the itemPile if we are trying to spawn an item from nowhere
         if (sourceInventory == null || sourceInventory!!.owner == null) {
             //itemPile!!.item.save(stream)
-            itemPile.saveIntoStream(context.world.contentTranslator, stream)
+            itemPile.saveIntoStream(world.gameInstance.contentTranslator, dos)
         }
     }
 
-    @Throws(IOException::class)
-    override fun process(sender: PacketSender, stream: DataInputStream, processor: PacketReceptionContext) {
-        if (processor !is ServerPlayerPacketsProcessor) {
-            processor.logger().warn(
-                    "Received a " + this.javaClass.simpleName + " but this GameContext isn't providen with a packet processor made to deal with it")
-            return
-        }
-
-        val player = processor.player
-        val playerEntity = player.controlledEntity
+    override fun receive(dis: DataInputStream, player: Player?) {
+        val playerEntity = player?.entityIfIngame
 
         if (playerEntity == null) {
-            processor.logger().error("Received a move item packet from a player without a controlled entity, ignoring.")
+            world.logger.error("Received a move item packet from a player without a controlled entity, ignoring.")
             return
         }
 
         val world = playerEntity.world
 
-        val sourceX = stream.readInt()
-        val sourceY = stream.readInt()
-        val destX = stream.readInt()
-        val destY = stream.readInt()
+        val sourceX = dis.readInt()
+        val sourceY = dis.readInt()
+        val destX = dis.readInt()
+        val destY = dis.readInt()
 
-        val destroy = stream.readBoolean()
-        val amount = stream.readInt()
+        val destroy = dis.readBoolean()
+        val amount = dis.readInt()
 
-        val sourceInventory = obtainInventoryByHandle(stream, processor)
-        val destinationInventory = obtainInventoryByHandle(stream, processor)
+        val sourceInventory = obtainInventoryByHandle(dis, world)
+        val destinationInventory = obtainInventoryByHandle(dis, world)
 
         var item: Item? = null
 
         // If this pile is spawned from the void
         if (sourceInventory == null) {
             try {
-                item = obtainItemPileFromStream(world.contentTranslator, stream).first
+                item = obtainItemPileFromStream(world.gameInstance.contentTranslator, dis).first
             } catch (e: NullItemException) {
-                // This ... isn't supposed to happen
-                processor.logger().info("User $sender is trying to spawn a null ItemPile for some reason.")
+                world.logger.info("$player is trying to spawn a null ItemPile for some reason.")
             } catch (e: UndefinedItemTypeException) {
-                // This is slightly more problematic
-                processor.logger().warn(e.message)
-                // e.printStackTrace(processor.getLogger().getPrintWriter());
+                world.logger.warn(e.message)
             }
 
         } else {
             item = sourceInventory.getItemPileAt(sourceX, sourceY)?.item
         }
 
-        // Check access
         if (sourceInventory?.isAccessibleTo(playerEntity) == false) {
             player.sendMessage("You don't have access to the source inventory.")
             return
@@ -134,20 +118,19 @@ class PacketInventoryMoveItemPile : PacketWorld {
         }
 
         val sourceItemPile = sourceInventory?.getItemPileAt(sourceX, sourceY)
-        val entity: Entity by lazy { player.controlledEntity ?: throw Exception("You need to be controlling an entity to drop an item to the world !") }
 
-        // Check using event
         val event = when {
             sourceItemPile != null -> when {
                 destinationInventory != null -> PlayerMoveItemEvent(player, sourceItemPile, destinationInventory, destX, destY, amount)
-                else -> PlayerDropItemEvent(player, sourceItemPile, amount, entity.location)
+                else -> PlayerDropItemEvent(player, sourceItemPile, amount, playerEntity.location)
             }
             else -> when {
                 destinationInventory != null -> PlayerSpawnItemInInventoryEvent(player, item!!, amount, destinationInventory, destX, destY)
-                else -> PlayerSpawnItemOnGroundEvent(player, item!!, amount, entity.location)
+                else -> PlayerSpawnItemOnGroundEvent(player, item!!, amount, playerEntity.location)
             }
         }
-        world.gameContext.pluginManager.fireEvent(event)
+
+        world.gameInstance.pluginManager.fireEvent(event)
 
         if (!event.isCancelled) {
             // Restrict item spawning
@@ -169,19 +152,9 @@ class PacketInventoryMoveItemPile : PacketWorld {
                 // TODO or not ? Maybe the cancellable event deal can prevent this
 
                 // If we're pulling this out of an inventory ( and not /dev/null ), we need to
-                val loc = playerEntity.location
                 sourceItemPile?.let { it.amount -= amount }
 
                 if (!destroy) {
-                    /*val droppedItemEntity = world.content.entities.getEntityDefinition("groundItem")!!.newEntity<EntityDroppedItem>(world)
-                    droppedItemEntity.location = loc
-                    droppedItemEntity.traits[TraitInventory::class]?.inventory?.addItem(item!!, amount)
-
-                    val initVelocity = playerEntity.traits[TraitRotation::class]?.directionLookingAt?.let { Vector3d(it).mul(0.1).add(0.0, 0.2, 0.0) }
-                    if(initVelocity != null)
-                        droppedItemEntity.traits[TraitVelocity::class]?.addVelocity(initVelocity)
-
-                    loc.world.addEntity(droppedItemEntity)*/
                     val initialVelocity = playerEntity.traits[TraitRotation::class]?.directionLookingAt?.let { Vector3d(it).mul(0.1).add(0.0, 0.2, 0.0) } ?: Vector3d(0.0)
                     EntityDroppedItem.spawn(item!!, amount, playerEntity.location, initialVelocity)
                 }
