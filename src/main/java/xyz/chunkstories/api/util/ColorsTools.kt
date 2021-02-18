@@ -3,6 +3,7 @@
 // Check out README.md for more information
 // Website: http://chunkstories.xyz
 //
+
 package xyz.chunkstories.api.util
 
 import xyz.chunkstories.api.math.hexToInt

@@ -3,6 +3,7 @@
 // Check out README.md for more information
 // Website: http://chunkstories.xyz
 //
+
 package xyz.chunkstories.api.net.packets
 
 import xyz.chunkstories.api.net.PacketWorld
