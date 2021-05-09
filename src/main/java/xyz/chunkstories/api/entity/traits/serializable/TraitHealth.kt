@@ -30,8 +30,8 @@ import java.io.DataOutputStream
 open class TraitHealth(entity: Entity) : Trait(entity), TraitSerializable, TraitNetworked<TraitHealth.HealthUpdate> {
     override val traitName = "health"
 
-    val maxHealth: Float = entity.definition["maxHealth"].asFloat ?: 100.0f
-    var health: Float = entity.definition["startHealth"].asFloat ?: 100.0f
+    val maxHealth: Float = entity.definition.properties["maxHealth"].asFloat ?: 100.0f
+    var health: Float = entity.definition.properties["startHealth"].asFloat ?: 100.0f
         set(value) {
             val wasAliveBefore = this.health > 0.0
             field = value

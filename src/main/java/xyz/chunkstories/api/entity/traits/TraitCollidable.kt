@@ -21,7 +21,7 @@ open class TraitCollidable(entity: Entity) : Trait(entity) {
     var collidesWithEntities: Boolean
 
     init {
-        val collisions = entity.definition["collisions"]?.asDict
+        val collisions = entity.definition.properties["collisions"]?.asDict
         collidesWithEntities = collisions?.get("withOtherEntities")?.asBoolean ?: false
         selectable = collisions?.get("selectable")?.asBoolean ?: true
     }

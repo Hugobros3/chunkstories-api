@@ -9,9 +9,6 @@ package xyz.chunkstories.api.entity.traits
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 
-/**
-
- */
 abstract class TraitRenderable<T : Entity>(entity: T) : Trait(entity) {
     override val traitName = "renderer"
 

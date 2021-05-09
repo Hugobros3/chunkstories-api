@@ -17,7 +17,7 @@ import xyz.chunkstories.api.player.PlayerID
 import xyz.chunkstories.api.plugin.PluginManager
 import xyz.chunkstories.api.util.configuration.Configuration
 import xyz.chunkstories.api.world.GameInstance
-import xyz.chunkstories.api.world.WorldClient
+import xyz.chunkstories.api.world.World
 
 /** The game client abstracted from a generic runtime perspective (not necessarily in game) */
 interface Client {
@@ -38,11 +38,11 @@ interface Client {
     val user: ClientIdentity
 }
 
-/** The game cient abstracted from a content/mod perspective. */
+/** The game client abstracted from a content/mod perspective. */
 interface IngameClient : Client, GameInstance {
     val player: Player
 
-    override val world: WorldClient
+    override val world: World
     override val pluginManager: PluginManager
 
     fun startPlayingAs_(entity: Entity)

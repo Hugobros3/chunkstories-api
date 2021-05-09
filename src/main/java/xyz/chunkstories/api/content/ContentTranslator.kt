@@ -20,7 +20,7 @@ interface ContentTranslator {
     val content: Content
 
     /** Return the assignated ID for this declaration or -1 if it isn't a part of the current content  */
-    fun getIdForVoxel(voxel: BlockType?): Int
+    fun getIdForVoxel(voxel: BlockType): Int
 
     /** Return the Voxel associated with that ID or null if the ID was outside of bounds  */
     fun getVoxelForId(id: Int): BlockType?
@@ -38,12 +38,12 @@ interface ContentTranslator {
 
     /** Return the assignated ID for this declaration or -1 if it isn't a part of
      * the current content  */
-    fun getIdForEntity(definition: EntityDefinition?): Int
+    fun getIdForEntity(definition: EntityDefinition): Int
 
-    /** Shortcut to getIdForItem(entity.getDeclaration())  */
+    /** Shortcut to getIdForItem(entity.getDeclaration()) */
     fun getIdForEntity(entity: Entity): Int
 
     /** Return the EntityDefinition associated with that ID or null if the ID was
-     * outside of bounds  */
+     * outside of bounds */
     fun getEntityForId(id: Int): EntityDefinition?
 }

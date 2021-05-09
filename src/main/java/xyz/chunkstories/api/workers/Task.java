@@ -7,10 +7,8 @@
 package xyz.chunkstories.api.workers;
 
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
-import xyz.chunkstories.api.exceptions.tasks.CancelledTaskException;
 import xyz.chunkstories.api.util.concurrency.Fence;
 
 public abstract class Task implements Fence {

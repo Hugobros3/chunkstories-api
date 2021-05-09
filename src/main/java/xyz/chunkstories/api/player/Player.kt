@@ -7,9 +7,7 @@
 package xyz.chunkstories.api.player
 
 import xyz.chunkstories.api.Location
-import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
-import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.input.InputsManager
 import xyz.chunkstories.api.plugin.commands.CommandEmitter
 import java.util.*
@@ -29,9 +27,10 @@ interface Player : CommandEmitter {
     override fun sendMessage(message: String)
 }
 
-sealed class PlayerState(val player: Player) {
-    class Ingame(player: Player, val entity: Entity) : PlayerState(player)
-    class Spectating(player: Player, val location: Location) : PlayerState(player)
+sealed class PlayerState {
+    object None : PlayerState()
+    class Ingame(val entity: Entity) : PlayerState()
+    class Spectating(val location: Location) : PlayerState()
 }
 
 val Player.entityIfIngame: Entity?

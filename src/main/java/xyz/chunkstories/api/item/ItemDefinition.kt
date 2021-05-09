@@ -7,14 +7,13 @@
 package xyz.chunkstories.api.item
 
 import xyz.chunkstories.api.content.Content
-import xyz.chunkstories.api.content.Definition
 import xyz.chunkstories.api.content.json.Json
 import xyz.chunkstories.api.content.json.asInt
 import xyz.chunkstories.api.content.json.asString
 import xyz.chunkstories.api.util.kotlin.initOnce
 import java.lang.reflect.Constructor
 
-class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properties: Json.Dict) : Definition(name, properties) {
+class ItemDefinition(val store: Content.ItemsDefinitions, val name: String, val properties: Json.Dict) {
     /** When added to the game content, either by being loaded explicitly or programatically, will be set to an integer
      * value. Attempting to manually override/set this identifier yourself will result in a house fire. */
     var assignedId: Int by initOnce()
@@ -27,7 +26,7 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
     val maxStackSize: Int
 
     init {
-        clazz = this["class"].asString?.let {
+        clazz = properties["class"].asString?.let {
             store.parent.modsManager.getClassByName(it)?.let {
                 if (Item::class.java.isAssignableFrom(it))
                     it as Class<Item>
@@ -42,9 +41,9 @@ class ItemDefinition(val store: Content.ItemsDefinitions, name: String, properti
             throw Exception("Your custom class, $clazz, lacks the correct Item(ItemDefinition) constructor.")
         }
 
-        slotsWidth = this["slotsWidth"].asInt ?: 1
-        slotsHeight = this["slotsHeight"].asInt ?: 1
-        maxStackSize = this["maxStackSize"].asInt ?: 64
+        slotsWidth = properties["slotsWidth"].asInt ?: 1
+        slotsHeight = properties["slotsHeight"].asInt ?: 1
+        maxStackSize = properties["maxStackSize"].asInt ?: 64
     }
 
     fun <I : Item> newItem() = (constructor.newInstance(this)!! as I)!!

@@ -17,7 +17,7 @@ import xyz.chunkstories.api.item.inventory.moveTo
 import xyz.chunkstories.api.net.packets.PacketInventoryMoveItemPile
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.player.entityIfIngame
-import xyz.chunkstories.api.world.WorldClientNetworkedRemote
+import xyz.chunkstories.api.world.WorldSub
 import xyz.chunkstories.api.world.WorldMaster
 
 /** Logic helper to deal with the insanity of 'virtual' grid slots (ie not mapped to a real inventory slot) */
@@ -174,7 +174,7 @@ fun drop(itemPile: ItemPile, amount: Int, player: Player?) {
             EntityDroppedItem.spawn(itemPile.item, amount, playerEntity.location, initialVelocity)
             itemPile.amount -= amount
         }
-    } else if (world is WorldClientNetworkedRemote) {
+    } else if (world is WorldSub) {
         // In MP scenario, move into /dev/null
         val packetMove = PacketInventoryMoveItemPile(world, itemPile, itemPile.inventory, null, itemPile.x, itemPile.y, 0, 0, amount)
         world.remoteServer.pushPacket(packetMove)

@@ -9,8 +9,6 @@ package xyz.chunkstories.api.math
 import org.joml.Matrix4f
 import org.joml.Vector3d
 
-/* This file is part of the ChunkStories WIP API. Licensing is yet to be
- * decided, please check out the github page for up-to date information. */
 /** Hopefully hi-performance matrix class, replacing and using bits from LWJGL2
  * utility library  */
 class Quaternion4d {

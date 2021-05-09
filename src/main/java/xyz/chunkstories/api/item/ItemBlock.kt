@@ -42,7 +42,7 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
     val blockType: BlockType
 
     init {
-        blockType = store[definition["block"].asString ?: throw Exception("ItemBlock '${definition.name}' missing a 'block' definition !")]!!
+        blockType = store[definition.properties["block"].asString ?: throw Exception("ItemBlock '${definition.name}' missing a 'block' definition !")]!!
     }
 
     override fun getTextureName(): String {

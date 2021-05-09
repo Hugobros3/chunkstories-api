@@ -6,6 +6,7 @@
 
 package xyz.chunkstories.api.net.packets
 
+import xyz.chunkstories.api.client.Client
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.item.inventory.Inventory
 import xyz.chunkstories.api.item.inventory.obtainInventoryByHandle
@@ -14,7 +15,6 @@ import xyz.chunkstories.api.net.*
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.player.entityIfIngame
 import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.WorldClient
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
@@ -36,8 +36,9 @@ class PacketOpenInventory : PacketWorld {
     override fun receive(dis: DataInputStream, player: Player?) {
         val inventory = obtainInventoryByHandle(dis, world) ?: error("Can't find inventory to open!")
 
-        if (world is WorldClient) {
-            val client = world.client
+        val instance = world.gameInstance
+        if (instance is Client) {
+            val client = instance.ingame ?: return
             val currentControlledEntity = client.player.entityIfIngame ?: return
 
             val ownInventory = currentControlledEntity.traits[TraitInventory::class]?.inventory

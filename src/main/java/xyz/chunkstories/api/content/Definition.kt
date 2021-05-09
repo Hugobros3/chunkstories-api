@@ -6,15 +6,7 @@
 
 package xyz.chunkstories.api.content
 
-import xyz.chunkstories.api.content.json.Json
 import java.util.Random
-
-/** Describes a user-definable piece of content, usually loaded from a configuration file.
- *
- * Has a name, and contains properties you can query. */
-open class Definition(val name: String, val properties: Json.Dict) {
-    operator fun get(propertyName: String) = properties[propertyName]
-}
 
 val random = ThreadLocal.withInitial { Random() }
 
