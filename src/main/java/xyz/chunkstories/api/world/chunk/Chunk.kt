@@ -6,6 +6,7 @@
 
 package xyz.chunkstories.api.world.chunk
 
+import xyz.chunkstories.api.block.BlockAdditionalData
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.world.MutableWorldCell
 import xyz.chunkstories.api.world.World
@@ -14,9 +15,13 @@ import xyz.chunkstories.api.world.region.Region
 
 interface ChunkCell : WorldCell {
     val chunk: Chunk
+    val additionalData: Map<String, BlockAdditionalData>
 }
 
-interface MutableChunkCell : ChunkCell, MutableWorldCell
+interface MutableChunkCell : ChunkCell, MutableWorldCell {
+    fun registerAdditionalData(name: String, data: BlockAdditionalData)
+    fun unregisterAdditionalData(name: String): Boolean
+}
 
 /** Contains 32x32x32 voxels worth of data  */
 interface Chunk {

@@ -14,6 +14,7 @@ import xyz.chunkstories.api.item.inventory.*
 import xyz.chunkstories.api.net.packets.PacketInventoryPartialUpdate
 import xyz.chunkstories.api.block.BlockAdditionalData
 import xyz.chunkstories.api.player.Player
+import xyz.chunkstories.api.world.GameInstance
 import xyz.chunkstories.api.world.WorldMaster
 import xyz.chunkstories.api.world.chunk.ChunkCell
 
@@ -49,11 +50,11 @@ open class BlockInventory(cell: ChunkCell, width: Int, height: Int) : BlockAddit
         return true
     }
 
-    override fun deserialize(json: Json) {
-        InventorySerialization.deserializeInventory(inventory, cell.world.gameInstance.contentTranslator, json.asDict ?: return)
+    override fun deserialize(gameInstance: GameInstance, json: Json) {
+        InventorySerialization.deserializeInventory(inventory, gameInstance.contentTranslator, json.asDict ?: return)
     }
 
-    override fun serialize(): Json? {
-        return InventorySerialization.serializeInventory(inventory, cell.world.gameInstance.contentTranslator, false)
+    override fun serialize(gameInstance: GameInstance): Json? {
+        return InventorySerialization.serializeInventory(inventory, gameInstance.contentTranslator, false)
     }
 }

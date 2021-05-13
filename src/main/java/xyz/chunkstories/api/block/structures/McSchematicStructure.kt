@@ -56,8 +56,8 @@ fun loadMinecraftSchematicPrefab(root: NBTCompound, translator: MinecraftBlocksT
     }
     val air = translator.gameInstance.content.blockTypes.air
 
-    val mapped = MutablePodCellData(air, 0, 0, 0, mutableListOf())
-    val cells = Array(width * height * length) { PrefabCell(-1, -1, -1, MutablePodCellData(air, 0, 0, 0, mutableListOf())) }
+    val mapped = MutablePodCellData(air, 0, 0, 0)
+    val cells = Array(width * height * length) { PrefabCell(-1, -1, -1, MutablePodCellData(air, 0, 0, 0)) }
 
     val blocks = root.getTag("Blocks") as NBTByteArray
     val blocksdata = root.getTag("Data") as NBTByteArray
@@ -65,8 +65,12 @@ fun loadMinecraftSchematicPrefab(root: NBTCompound, translator: MinecraftBlocksT
         for (y in 0 until height) {
             for (x in 0 until width) {
                 val mcindex = (y * length + z) * width + x
-                translator.getMapper(blocks.data[mcindex].toInt(), blocksdata.data[mcindex].toInt())?.output(blocks.data[mcindex].toInt(), blocksdata.data[mcindex], mapped)
-                        ?: mapped.apply { blockType = air; sunlightLevel = 0; blocklightLevel = 0; extraData = 0; additionalData.clear() }
+                translator.getMapper(blocks.data[mcindex].toInt(), blocksdata.data[mcindex].toInt())?.output(blocks.data[mcindex].toInt(), blocksdata.data[mcindex], mapped) ?: mapped.apply {
+                    blockType = air;
+                    sunlightLevel = 0;
+                    blocklightLevel = 0;
+                    extraData = 0;
+                }
                 cells[x + y * width + z * width * height] = PrefabCell(x, y, z, mapped)
             }
         }

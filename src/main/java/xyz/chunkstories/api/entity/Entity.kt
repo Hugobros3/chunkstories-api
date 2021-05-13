@@ -7,12 +7,14 @@
 package xyz.chunkstories.api.entity
 
 import xyz.chunkstories.api.Location
+import xyz.chunkstories.api.client.IngameClient
 import xyz.chunkstories.api.entity.traits.Trait
 import xyz.chunkstories.api.entity.traits.serializable.TraitLocation
 import xyz.chunkstories.api.entity.traits.serializable.TraitNetworked
 import xyz.chunkstories.api.net.packets.PacketEntity
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.player.Player
+import xyz.chunkstories.api.player.entityIfIngame
 import xyz.chunkstories.api.util.*
 import xyz.chunkstories.api.world.World
 import java.util.*
@@ -164,6 +166,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
 
         /** Tries to find a trait matching this type, executes some action on it and
          * returns the result. Returns null if no such trait was found.  */
+        @Deprecated("Bloat")
         fun <T : Trait, R> tryWith(traitType: Class<T>, action: ReturnsAction<T, R>): R? {
             val trait = map[traitType] as? T?
             return if (trait != null) {
@@ -172,6 +175,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         }
 
         /** Enables to use Kotlin-style syntax */
+        @Deprecated("Bloat")
         fun <T: Trait, R> tryWith(traitClass: KClass<T>, action: T.() -> R) = tryWith(traitClass.java, ReturnsAction<T, R> {
             it?.let(action)
         })
@@ -210,15 +214,16 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
             it.apply(action)
         })
 
+        @Deprecated("Redundant")
         fun byId(): Array<Trait> = byId
-
+        @Deprecated("Redundant")
         fun all(): Set<Trait> = set
 
         override fun toString(): String {
             var ok = ""
-            for (trait in all())
+            for (trait in set)
                 ok += "(" + safename(trait.javaClass) + ", " + trait.id + ")" + ", "
-            return all()!!.size.toString() + "{" + ok + "}"
+            return set.size.toString() + "{" + ok + "}"
         }
 
         private fun safename(klass: Class<*>): String {
@@ -235,7 +240,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
         fun register(subscriber: Subscriber): Boolean {
             // If it didn't already contain the subscriber ...
             return if (add(subscriber)) {
-                traits.all().forEach { if (it is TraitNetworked<*>) it.whenSubscriberRegisters(subscriber) }
+                traits.set.forEach { if (it is TraitNetworked<*>) it.whenSubscriberRegisters(subscriber) }
                 true
             } else false
         }
@@ -244,7 +249,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
          * when he unsubscribe() to this entity  */
         fun unregister(subscriber: Subscriber): Boolean {
             if (remove(subscriber)) {
-                traits.all().forEach { if (it is TraitNetworked<*>) it.whenSubscriberUnregisters(subscriber) }
+                traits.set.forEach { if (it is TraitNetworked<*>) it.whenSubscriberUnregisters(subscriber) }
 
                 subscriber.pushPacket(PacketEntity.createKillerPacket(this@Entity))
 
@@ -272,3 +277,6 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
 
     fun getTranslatedBoundingBox() = Box(getBoundingBox()).translate(location)
 }
+
+val Entity.isPlayerCharacter: Boolean
+    get() = this == (this.world.gameInstance as? IngameClient)?.player?.entityIfIngame

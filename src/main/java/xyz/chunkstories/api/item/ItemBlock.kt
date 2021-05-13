@@ -46,13 +46,13 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
     }
 
     override fun getTextureName(): String {
-        return "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, PodCellData(blockType, 0, 0, 15, emptyList())), BlockSide.FRONT).name + ".png"
+        return "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, PodCellData(blockType, 0, 0, 15)), BlockSide.FRONT).name + ".png"
     }
 
     override fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         //val customMaterial = MeshMaterial("cubeMaterial", mapOf("albedoTexture" to getTextureName(pile)))
         val customMaterials = BlockSide.values().map { side ->
-            val textureName = "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, PodCellData(blockType, 0, 0, 15, emptyList())), side).name + ".png"
+            val textureName = "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, PodCellData(blockType, 0, 0, 15)), side).name + ".png"
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)
         }.toMap()

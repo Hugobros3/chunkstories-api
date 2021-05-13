@@ -45,6 +45,7 @@ interface Content {
         val logger: Logger
 
         fun getTexture(name: String): BlockTexture?
+        fun getTextureOrDefault(name: String) = getTexture(name) ?: defaultTexture
         val defaultTexture: BlockTexture
     }
 

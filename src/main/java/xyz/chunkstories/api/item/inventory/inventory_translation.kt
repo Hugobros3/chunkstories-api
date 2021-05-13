@@ -11,6 +11,7 @@ import xyz.chunkstories.api.block.components.BlockInventory
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.serializable.TraitInventory
 import xyz.chunkstories.api.world.World
+import xyz.chunkstories.api.world.chunk.ChunkCell
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
@@ -65,8 +66,8 @@ fun obtainInventoryByHandle(stream: DataInputStream, world: World): Inventory? {
 
         val traitName = stream.readUTF()
 
-        val cell = world.getCell(x, y, z) ?: return null
-        val inventory = cell.data.additionalData.find { it.name == traitName }
+        val cell = world.getCell(x, y, z) as? ChunkCell ?: return null
+        val inventory = cell.additionalData[traitName]
         if (inventory is BlockInventory) {
             return inventory.inventory
         }

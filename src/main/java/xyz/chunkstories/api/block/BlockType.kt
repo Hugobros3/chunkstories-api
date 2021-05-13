@@ -26,11 +26,11 @@ import xyz.chunkstories.api.graphics.representation.Model
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.sound.Sound
 import xyz.chunkstories.api.util.kotlin.initOnce
-import xyz.chunkstories.api.world.MutableWorldCell
+import xyz.chunkstories.api.world.GameInstance
 import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.CellData
-import xyz.chunkstories.api.world.cell.MutableCellData
 import xyz.chunkstories.api.world.chunk.ChunkCell
+import xyz.chunkstories.api.world.chunk.MutableChunkCell
 import java.io.IOException
 
 typealias BlockID = Int
@@ -52,6 +52,9 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
 
     open val lootTable: BlockLootTable by lazy { createLootTable() }
 
+    val mineUsing: String = definition["mineUsing"].asString ?: "nothing_in_particular"
+    val miningDifficulty: Double = definition["miningDifficulty"].asDouble ?: 1.0
+
     val textures: Array<BlockTexture> = Array(6) { content.blockTypes.getTexture(name) ?: content.blockTypes.defaultTexture }
     val representation: BlockRepresentation
 
@@ -61,7 +64,7 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
     val isAir get() = content.blockTypes.air.sameKind(this)
 
     init {
-        representation = loadRepresentation(definition)
+        representation = loadRepresentation()
 
         /*/** Sets a custom voxel material */
         (definition["material"]?.asString ?: name).let {
@@ -73,48 +76,22 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
 
     /** Called after a voxel was successfully placed. Use to initialize additional data.
      * If you want to customize the behavior when attempting to place the block, please subclass ItemVoxel */
-    open fun whenPlaced(cell: ChunkCell) {
+    open fun whenPlaced(cell: MutableChunkCell) {
         // Do nothing
     }
 
     /** Called when removing a block from the world or replacing it with something different. Return false to prevent. */
-    open fun onRemove(cell: ChunkCell): Boolean {
+    open fun onRemove(cell: MutableChunkCell): Boolean {
         return true
     }
 
-    /** Called when any of the metadata, block_light or sun_light values of the cell are being touched. Return false to prevent. */
-    open fun onModification(cell: ChunkCell, newData: MutableCellData): Boolean {
-        return true
-    }
-
-    open fun tick(cell: ChunkCell) {
+    open fun tick(cell: MutableChunkCell) {
         // Do nothing
     }
 
     /** Return 'true' to stop this input propagating */
-    open fun onInteraction(entity: Entity, cell: ChunkCell, input: Input): Boolean {
+    open fun onInteraction(entity: Entity, cell: MutableChunkCell, input: Input): Boolean {
         return false
-    }
-
-    /** Must be in [0, 15] */
-    open fun getEmittedLightLevel(cellData: CellData): LightLevel {
-        // By default the light output is the one defined in the type, you can change it depending on the provided data
-        // Context-sensitive light levels (ie depending on adjacent blocks) are not supported
-        return emittedLightLevel
-    }
-
-    @Deprecated("idk about this fam")
-    open fun getTexture(cell: Cell, side: BlockSide): BlockTexture {
-        // By default we don't care about taskInstance, we give the same texture to everyone
-        return textures[side.ordinal]
-    }
-
-    open fun getLightLevelModifier(cellData: CellData, neighborData: CellData, side: BlockSide): LightLevel {
-        return if (opaque) 15 else shadingLightLevel
-    }
-
-    open fun isFaceOpaque(cell: Cell, side: BlockSide): Boolean {
-        return opaque
     }
 
     fun getTranslatedCollisionBoxes(cell: Cell): Array<Box> {
@@ -155,7 +132,7 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
     }
 
     // TODO move this elsewhere
-    fun breakBlock(cell: MutableWorldCell, player: Player?, tool: MiningTool?) {
+    fun breakBlock(cell: MutableChunkCell, player: Player?, tool: MiningTool?) {
         if (tool != null) assert(player != null)
 
         val location = cell.location
@@ -178,7 +155,7 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
             }
         }
 
-        cell.data.additionalData.clear()
+        // cell.data.additionalData.clear()
         cell.data.extraData = 0
         cell.data.blocklightLevel = 0
         cell.data.sunlightLevel = 0
@@ -188,7 +165,7 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
     }
 
     /** Returns what's dropped when a cell using this voxel type is destroyed  */
-    open fun getLoot(cell: Cell, tool: MiningTool): List<Pair<Item, Int>> {
+    open fun getLoot(cell: ChunkCell, tool: MiningTool): List<Pair<Item, Int>> {
         if (isAir)
             return emptyList()
         return lootTable.spawn(tool)
@@ -199,12 +176,56 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
         return fromJson(definition["drops"] ?: Json.Value.Bool(true), content, default)
     }
 
+    open fun loadRepresentation(): BlockRepresentation {
+        definition["model"].asString?.let {
+            val model = content.models[it]
+
+            return BlockRepresentation.Custom {
+                addModel(model)
+            }
+        }
+        /** Sets all 6 sides of the voxel with one texture */
+        definition["texture"]?.asString?.let { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures.fill(tex) }
+        val textures_ = definition["textures"]?.asDict
+        if (textures_ != null) {
+            /** Sets all 4 horizontal sides of the voxel with the same texture */
+            textures_["sides"]?.asString?.let { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures.fill(tex, 0, 4) }
+
+            /** Code for setting each side */
+            textures_["top"]?.asString?.let    { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.TOP.ordinal]    = tex }
+            textures_["left"]?.asString?.let   { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.LEFT.ordinal]   = tex }
+            textures_["right"]?.asString?.let  { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.RIGHT.ordinal]  = tex }
+            textures_["front"]?.asString?.let  { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.FRONT.ordinal]  = tex }
+            textures_["back"]?.asString?.let   { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.BACK.ordinal]   = tex }
+            textures_["bottom"]?.asString?.let { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.BOTTOM.ordinal] = tex }
+        }
+        return BlockRepresentation.Cube
+    }
+
+    /** Must be in [0, 15] */
+    open fun getEmittedLightLevel(cellData: CellData): LightLevel {
+        // By default the light output is the one defined in the type, you can change it depending on the provided data
+        // Context-sensitive light levels (ie depending on adjacent blocks) are not supported
+        return emittedLightLevel
+    }
+
+    @Deprecated("idk about this fam")
+    open fun getTexture(cell: Cell, side: BlockSide): BlockTexture {
+        // By default we don't care about taskInstance, we give the same texture to everyone
+        return textures[side.ordinal]
+    }
+
+    open fun getLightLevelModifier(cellData: CellData, neighborData: CellData, side: BlockSide): LightLevel {
+        return if (opaque) 15 else shadingLightLevel
+    }
+
+    open fun isFaceOpaque(cell: Cell, side: BlockSide): Boolean {
+        return opaque
+    }
+
     override fun toString(): String {
         return "[Voxel name:$name]"
     }
-
-    val mineUsing: String = definition["mineUsing"].asString ?: "nothing_in_particular"
-    val miningDifficulty: Double = definition["miningDifficulty"].asDouble ?: 1.0
 
     /*data class Material_(val name: String, properties: Json.Dict) {
         val walkingSounds: String = properties["walkingSounds"].asString ?: "error"
@@ -220,6 +241,10 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
 abstract class BlockAdditionalData(val cell: ChunkCell) {
     val name: String = javaClass.simpleName
     open val serializationName = name
+
+    /** Should this data be sent on the wire to players on network servers ? */
+    open val replicate: Boolean
+        get() = true
 
     /** Pushes the component to every client subscribed to the chunk owning this voxel  */
     /*fun pushComponentEveryone() {
@@ -237,10 +262,10 @@ abstract class BlockAdditionalData(val cell: ChunkCell) {
     }*/
 
     @Throws(IOException::class)
-    abstract fun serialize(): Json?
+    abstract fun serialize(gameInstance: GameInstance): Json?
 
     @Throws(IOException::class)
-    abstract fun deserialize(json: Json)
+    abstract fun deserialize(gameInstance: GameInstance, json: Json)
 }
 
 enum class BlockSide constructor(val dx: Int, val dy: Int, val dz: Int) {
@@ -270,32 +295,6 @@ data class BlockTexture(
         /** Set N for N frames of animation, otherwise zero */
         val animationFrames: Int
 )
-
-fun BlockType.loadRepresentation(definition: Json.Dict): BlockRepresentation {
-    definition["model"].asString?.let {
-        val model = content.models[it]
-
-        return BlockRepresentation.Custom {
-            addModel(model)
-        }
-    }
-    /** Sets all 6 sides of the voxel with one texture */
-    definition["texture"]?.asString?.let { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures.fill(tex) }
-    val textures_ = definition["textures"]?.asDict
-    if (textures_ != null) {
-        /** Sets all 4 horizontal sides of the voxel with the same texture */
-        textures_["sides"]?.asString?.let { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures.fill(tex, 0, 4) }
-
-        /** Code for setting each side */
-        textures_["top"]?.asString?.let    { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.TOP.ordinal]    = tex }
-        textures_["left"]?.asString?.let   { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.LEFT.ordinal]   = tex }
-        textures_["right"]?.asString?.let  { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.RIGHT.ordinal]  = tex }
-        textures_["front"]?.asString?.let  { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.FRONT.ordinal]  = tex }
-        textures_["back"]?.asString?.let   { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.BACK.ordinal]   = tex }
-        textures_["bottom"]?.asString?.let { val tex = content.blockTypes.getTexture(it) ?: return@let ; textures[BlockSide.BOTTOM.ordinal] = tex }
-    }
-    return BlockRepresentation.Cube
-}
 
 sealed class BlockRepresentation {
     object Cube : BlockRepresentation()

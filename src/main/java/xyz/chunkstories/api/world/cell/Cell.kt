@@ -8,7 +8,6 @@ package xyz.chunkstories.api.world.cell
 
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.block.BlockType
-import xyz.chunkstories.api.block.BlockAdditionalData
 
 interface CellData {
     val blockType: BlockType
@@ -18,7 +17,6 @@ interface CellData {
 
     /** Warning: only the 8 lower bits are used/saved */
     val extraData: Int
-    val additionalData: List<BlockAdditionalData>
 }
 
 interface MutableCellData : CellData {
@@ -28,13 +26,6 @@ interface MutableCellData : CellData {
     override var blocklightLevel: Int
 
     override var extraData: Int
-    override val additionalData: MutableList<BlockAdditionalData>
-}
-
-inline fun <reified T: BlockAdditionalData>CellData.get(): T? {
-    val name = T::class.simpleName
-    val d = additionalData.find { it.name == name }
-    return if (d == null) null else d as T
 }
 
 interface Cell {
