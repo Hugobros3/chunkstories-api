@@ -259,8 +259,11 @@ enum class BlockSide constructor(val dx: Int, val dy: Int, val dz: Int) {
     }
 }
 
+typealias BlockTextureID = Int
+
 data class BlockTexture(
         val name: String,
+        val id: BlockTextureID,
         val averagedColor: Vector4fc,
         /** How many blocks does this texture span  */
         val textureScale: Int,
@@ -296,7 +299,7 @@ fun BlockType.loadRepresentation(definition: Json.Dict): BlockRepresentation {
 
 sealed class BlockRepresentation {
     object Cube : BlockRepresentation()
-    class Custom(val drawRoutine: (RenderInterface.(Cell) -> Unit)? = null) : BlockRepresentation() {
+    class Custom(val drawRoutine: (RenderInterface.(Cell) -> Unit)) : BlockRepresentation() {
         interface RenderInterface {
             fun addModel(model: Model, transformation: Matrix4f? = null, materialsOverrides: Map<Int, MeshMaterial> = emptyMap())
         }

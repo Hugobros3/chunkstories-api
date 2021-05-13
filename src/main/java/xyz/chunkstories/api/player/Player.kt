@@ -29,8 +29,14 @@ interface Player : CommandEmitter {
 
 sealed class PlayerState {
     object None : PlayerState()
-    class Ingame(val entity: Entity) : PlayerState()
-    class Spectating(val location: Location) : PlayerState()
+    class Ingame(val entity: Entity) : PlayerState() {
+        override val location: Location?
+            get() = entity.location
+    }
+    class Spectating(override var location: Location) : PlayerState()
+
+    open val location: Location?
+        get() = null
 }
 
 val Player.entityIfIngame: Entity?

@@ -61,3 +61,6 @@ interface WorldHeightmapsManager {
 
     //fun getTopCellAtWorldCoordinates(worldX: Int, worldZ: Int): Cell
 }
+
+fun WorldHeightmapsManager.getHeight(loc: Location) = getHeight(loc.x.toInt(), loc.y.toInt())
+fun WorldHeightmapsManager.getBlockType(loc: Location) = getBlockType(loc.x.toInt(), loc.y.toInt())

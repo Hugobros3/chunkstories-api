@@ -6,6 +6,7 @@
 
 package xyz.chunkstories.api.client
 
+import xyz.chunkstories.api.Engine
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.graphics.GraphicsEngine
@@ -20,7 +21,7 @@ import xyz.chunkstories.api.world.GameInstance
 import xyz.chunkstories.api.world.World
 
 /** The game client abstracted from a generic runtime perspective (not necessarily in game) */
-interface Client {
+interface Client: Engine {
     val gameWindow: Window
     val graphics: GraphicsEngine
     val gui: Gui
@@ -39,6 +40,7 @@ interface Client {
 }
 
 /** The game client abstracted from a content/mod perspective. */
+// TODO make ingame client not a client
 interface IngameClient : Client, GameInstance {
     val player: Player
 
