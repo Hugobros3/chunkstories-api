@@ -8,10 +8,17 @@ package xyz.chunkstories.api.block.structures
 
 import org.joml.Vector3i
 import xyz.chunkstories.api.world.cell.*
+import xyz.chunkstories.api.world.chunk.Chunk
 
 class PrefabCell(x: Int, y: Int, z: Int, data: MutableCellData) : MutablePodCell(x, y, z, data)
 
 open class Prefab(val size: Vector3i, protected val offset: Vector3i, protected val cells: Array<PrefabCell>)
+
+abstract class CustomPrefab(size: Vector3i, offset: Vector3i) : Prefab(size, offset, emptyArray()) {
+    abstract fun paste(chunk: Chunk, position: Vector3i, flags: PrefabPasteFlags = PrefabPasteFlags())
+}
+
+data class PrefabPasteFlags(val overwriteAir: Boolean = false, val ignoreOffset: Boolean = false)
 
 //TODO move to implementation
     /*fun paste(world: World, position: Vector3i?, flags: Int) {

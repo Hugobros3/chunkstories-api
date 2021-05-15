@@ -8,6 +8,7 @@ package xyz.chunkstories.api.world.chunk
 
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.world.World
+import xyz.chunkstories.api.world.cell.CellData
 import xyz.chunkstories.api.world.region.Region
 
 /** A fake chunk, for all the non-reality fans Also, might be usefull when
@@ -39,6 +40,14 @@ class DummyChunk : Chunk {
     }
 
     override fun getCellMut(x: Int, y: Int, z: Int): MutableChunkCell {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCellData(x: Int, y: Int, z: Int): CellData {
+        TODO("Not yet implemented")
+    }
+
+    override fun setCellData(x: Int, y: Int, z: Int, data: CellData): Boolean {
         TODO("Not yet implemented")
     }
 }

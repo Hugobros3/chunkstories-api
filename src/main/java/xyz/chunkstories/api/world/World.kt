@@ -27,6 +27,7 @@ import xyz.chunkstories.api.net.PacketWorld
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.server.Host
 import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.MutableCellData
 import xyz.chunkstories.api.world.chunk.WorldChunksManager
 import xyz.chunkstories.api.world.region.WorldRegionsManager
 

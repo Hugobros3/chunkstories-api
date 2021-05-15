@@ -56,21 +56,25 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
     val miningDifficulty: Double = definition["miningDifficulty"].asDouble ?: 1.0
 
     val textures: Array<BlockTexture> = Array(6) { content.blockTypes.getTexture(name) ?: content.blockTypes.defaultTexture }
-    val representation: BlockRepresentation
+
+    lateinit var representation: BlockRepresentation private set
 
     //TODO remove variants from here and plainly assign them different ids?
-    val variants: List<ItemDefinition>
+    lateinit var variants: List<ItemDefinition> private set
 
     val isAir get() = content.blockTypes.air.sameKind(this)
 
     init {
-        representation = loadRepresentation()
-
+        // TODO rewrite materials system
         /*/** Sets a custom voxel material */
         (definition["material"]?.asString ?: name).let {
             voxelMaterial = store.materials.getVoxelMaterial(it) ?: store.materials.defaultMaterial
         }*/
+    }
 
+    fun finalizeInit() {
+        assert(!::representation.isInitialized)
+        representation = loadRepresentation()
         variants = enumerateVariants(content.items)
     }
 

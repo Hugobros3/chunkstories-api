@@ -10,10 +10,7 @@ import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.chunk.Chunk
 
 class BlankWorldGenerator(type: WorldGeneratorDefinition, world: World) : WorldGenerator(type, world) {
+    override fun generateWorldSlice(chunks: Array<PreChunk>) { }
 
-    override fun generateWorldSlice(chunks: Array<Chunk>) {
-        /*for (chunkY in chunks.indices) {
-            generateChunk(chunks[chunkY])
-        }*/
-    }
+    override fun generateWorldSlicePhaseII(chunks: Array<Chunk>) { }
 }

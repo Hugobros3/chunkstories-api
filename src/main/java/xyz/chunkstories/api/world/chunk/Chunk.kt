@@ -11,6 +11,7 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.world.MutableWorldCell
 import xyz.chunkstories.api.world.World
 import xyz.chunkstories.api.world.WorldCell
+import xyz.chunkstories.api.world.cell.CellData
 import xyz.chunkstories.api.world.region.Region
 
 interface ChunkCell : WorldCell {
@@ -39,4 +40,7 @@ interface Chunk {
 
     fun getCell(x: Int, y: Int, z: Int): ChunkCell
     fun getCellMut(x: Int, y: Int, z: Int): MutableChunkCell
+
+    fun getCellData(x: Int, y: Int, z: Int): CellData
+    fun setCellData(x: Int, y: Int, z: Int, data: CellData): Boolean
 }
