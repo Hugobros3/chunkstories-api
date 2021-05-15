@@ -39,9 +39,7 @@ interface Client: Engine {
     val user: ClientIdentity
 }
 
-/** The game client abstracted from a content/mod perspective. */
-// TODO make ingame client not a client
-interface IngameClient : Client, GameInstance {
+interface IngameClient : GameInstance {
     override val engine: Client
 
     val player: Player

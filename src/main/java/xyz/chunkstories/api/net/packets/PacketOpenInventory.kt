@@ -38,14 +38,14 @@ class PacketOpenInventory : PacketWorld {
 
         val instance = world.gameInstance
         if (instance is Client) {
-            val client = instance.ingame ?: return
-            val currentControlledEntity = client.player.entityIfIngame ?: return
+            val ingameClient = instance.ingame ?: return
+            val currentControlledEntity = ingameClient.player.entityIfIngame ?: return
 
             val ownInventory = currentControlledEntity.traits[TraitInventory::class]?.inventory
             if (ownInventory != null)
-                client.gui.openInventories(ownInventory, inventory)
+                instance.gui.openInventories(ownInventory, inventory)
             else
-                client.gui.openInventories(inventory)
+                instance.gui.openInventories(inventory)
         }
     }
 

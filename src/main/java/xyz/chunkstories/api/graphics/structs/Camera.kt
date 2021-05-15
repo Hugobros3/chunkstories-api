@@ -65,12 +65,12 @@ val IngameClient.camera: Camera
                 val entity = state.entity
                 val entityDirection = (entity.traits[TraitRotation::class]?.directionLookingAt?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
                 val up = (entity.traits[TraitRotation::class]?.upDirection?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
-                return makeCamera(entity.location, entityDirection, up, 90.0f)
+                return engine.makeCamera(entity.location, entityDirection, up, 90.0f)
             }
             is PlayerState.Spectating -> {
                 // TODO handle spectating camera
             }
             else -> {}
         }
-        return makeCamera(world.properties.spawn, Vector3f(1f, 0f, 0f), Vector3f(0.0f, 0.0f, 1.0f), 90.0f)
+        return engine.makeCamera(world.properties.spawn, Vector3f(1f, 0f, 0f), Vector3f(0.0f, 0.0f, 1.0f), 90.0f)
     }

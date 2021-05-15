@@ -49,11 +49,10 @@ interface World {
     val generator: WorldGenerator
 
     var sky: Sky
-    // TODO make immutable
     data class Sky(
-            var timeOfDay: Float,
-            var overcast: Float,
-            var raining: Float
+            val timeOfDay: Float,
+            val overcast: Float,
+            val raining: Float
     )
 
     val ticksElapsed: Long

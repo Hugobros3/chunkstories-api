@@ -44,8 +44,8 @@ class MinecraftBlocksTranslator(val gameInstance: GameInstance, asset: Asset) {
         val reader = BufferedReader(asset.reader())
         var currentSection = Section.MAPPINGS
         val customMappers: MutableMap<String, Constructor<out Mapper>> = HashMap()
-        var line: String
-        while (reader.readLine().also { line = it } != null) {
+        var line: String = ""
+        while (reader.readLine().let { line = it ?: return@let false; true }) {
             if (!line.startsWith("#") && line.isNotEmpty()) {
                 if (line.startsWith("_")) {
                     val sectionName = line.substring(1)
