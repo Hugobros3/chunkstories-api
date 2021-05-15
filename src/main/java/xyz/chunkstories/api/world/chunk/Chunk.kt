@@ -42,5 +42,5 @@ interface Chunk {
     fun getCellMut(x: Int, y: Int, z: Int): MutableChunkCell
 
     fun getCellData(x: Int, y: Int, z: Int): CellData
-    fun setCellData(x: Int, y: Int, z: Int, data: CellData): Boolean
+    fun setCellData(x: Int, y: Int, z: Int, data: CellData)
 }

@@ -10,7 +10,7 @@ import xyz.chunkstories.api.events.CancellableEvent
 import xyz.chunkstories.api.block.MiningTool
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.world.WorldCell
-import xyz.chunkstories.api.world.cell.MutableCellData
+import xyz.chunkstories.api.world.cell.CellData
 
 data class PlayerMineBlockEvent(val player: Player, val cell: WorldCell, val tool: MiningTool) : CancellableEvent()
-data class PlayerPlaceBlockEvent(val player: Player, val cell: WorldCell, val newData: MutableCellData) : CancellableEvent()
+data class PlayerPlaceBlockEvent(val player: Player, val cell: WorldCell, var newData: CellData) : CancellableEvent()

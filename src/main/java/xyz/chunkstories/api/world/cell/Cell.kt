@@ -19,15 +19,6 @@ interface CellData {
     val extraData: Int
 }
 
-interface MutableCellData : CellData {
-    override var blockType: BlockType
-
-    override var sunlightLevel: Int
-    override var blocklightLevel: Int
-
-    override var extraData: Int
-}
-
 interface Cell {
     val x: Int
     val y: Int
@@ -37,7 +28,7 @@ interface Cell {
 }
 
 interface MutableCell : Cell {
-    override val data: MutableCellData
+    override var data: CellData
 }
 
 /** Returns an array (possibly 0-sized) of collision boxes translated to the actual position of the block */

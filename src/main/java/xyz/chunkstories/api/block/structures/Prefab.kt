@@ -10,7 +10,7 @@ import org.joml.Vector3i
 import xyz.chunkstories.api.world.cell.*
 import xyz.chunkstories.api.world.chunk.Chunk
 
-class PrefabCell(x: Int, y: Int, z: Int, data: MutableCellData) : MutablePodCell(x, y, z, data)
+class PrefabCell(x: Int, y: Int, z: Int, data: CellData) : PodCell(x, y, z, data)
 
 open class Prefab(val size: Vector3i, protected val offset: Vector3i, protected val cells: Array<PrefabCell>)
 

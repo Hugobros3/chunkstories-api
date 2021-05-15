@@ -27,7 +27,6 @@ import xyz.chunkstories.api.net.PacketWorld
 import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.server.Host
 import xyz.chunkstories.api.world.cell.CellData
-import xyz.chunkstories.api.world.cell.MutableCellData
 import xyz.chunkstories.api.world.chunk.WorldChunksManager
 import xyz.chunkstories.api.world.region.WorldRegionsManager
 
@@ -50,9 +49,9 @@ interface World {
 
     var sky: Sky
     data class Sky(
-            val timeOfDay: Float,
-            val overcast: Float,
-            val raining: Float
+            val timeOfDay: Float = 0.0f,
+            val overcast: Float = 0.0f,
+            val raining: Float = 0.0f
     )
 
     val ticksElapsed: Long

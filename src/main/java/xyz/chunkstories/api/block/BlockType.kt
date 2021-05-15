@@ -29,6 +29,7 @@ import xyz.chunkstories.api.util.kotlin.initOnce
 import xyz.chunkstories.api.world.GameInstance
 import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.CellData
+import xyz.chunkstories.api.world.cell.PodCellData
 import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.MutableChunkCell
 import java.io.IOException
@@ -158,13 +159,7 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
                 }
             }
         }
-
-        // cell.data.additionalData.clear()
-        cell.data.extraData = 0
-        cell.data.blocklightLevel = 0
-        cell.data.sunlightLevel = 0
-        cell.data.blockType = world.gameInstance.content.blockTypes.air
-
+        cell.data = PodCellData(blockType = world.gameInstance.content.blockTypes.air)
         //TODO spawnBlockDestructionParticles(location, world)
     }
 

@@ -51,12 +51,11 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
 
     override fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         //val customMaterial = MeshMaterial("cubeMaterial", mapOf("albedoTexture" to getTextureName(pile)))
-        val customMaterials = BlockSide.values().map { side ->
+        val customMaterials = BlockSide.values().associate { side ->
             val textureName = "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, PodCellData(blockType, 0, 0, 15)), side).name + ".png"
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)
-        }.toMap()
-
+        }
 
         val representation = ModelInstance(store.content.models["voxels/blockmodels/cube/cube.dae"], ModelPosition(worldPosition).apply {
             matrix.scale(0.35f)
@@ -109,7 +108,7 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
 
             // TODO handle overwriting blocks likes grass and such
             if (targetCell.data.blockType.isAir) {
-                val data = prepareNewBlockData(pointedCell, side, entity, hit) ?: return true
+                var data: CellData = prepareNewBlockData(pointedCell, side, entity, hit) ?: return true
 
                 // Player events mod
                 if (controller is Player) {
@@ -121,6 +120,7 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
                     if (event.isCancelled)
                         return true
 
+                    data = event.newData
                     entity.world.soundManager.playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, targetCell.location, 1.0f, 1.0f)
                 }
 
@@ -138,17 +138,11 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
         return false
     }
 
-    open fun prepareNewBlockData(adjacentCell: Cell, adjacentCellSide: BlockSide, placingEntity: Entity, hit: RayResult.Hit.VoxelHit): MutableCellData? {
-        val data = MutablePodCellData(blockType, extraData = 0)
-
-        // Opaque blocks overwrite the original light with zero.
-        if (blockType.opaque) {
-            data.blocklightLevel = 0
-            data.sunlightLevel = 0
-        }
+    open fun prepareNewBlockData(adjacentCell: Cell, adjacentCellSide: BlockSide, placingEntity: Entity, hit: RayResult.Hit.VoxelHit): PodCellData? {
+        var data = PodCellData(blockType, extraData = 0)
 
         // Glowy stuff should glow
-        data.blocklightLevel = blockType.getEmittedLightLevel(data)
+        data = data.copy(blocklightLevel = blockType.getEmittedLightLevel(data))
 
         return data
     }

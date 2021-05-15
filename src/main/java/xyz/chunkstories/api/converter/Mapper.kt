@@ -9,16 +9,16 @@ package xyz.chunkstories.api.converter
 import io.xol.enklume.MinecraftRegion
 import xyz.chunkstories.api.block.BlockType
 import xyz.chunkstories.api.world.World
-import xyz.chunkstories.api.world.cell.MutableCellData
+import xyz.chunkstories.api.world.cell.CellData
 
 /** Is used to write out the corresponding voxel type to a Minecraft block  */
 abstract class Mapper(protected val blockType: BlockType) {
-    abstract fun output(minecraftId: Int, minecraftMeta: Byte, output: MutableCellData)
+    abstract fun output(minecraftId: Int, minecraftMeta: Byte): CellData
 }
 
 /** For blocks that have some fancy properties we need to consider, like doors or signs. */
 abstract class NonTrivialMapper(blockType: BlockType?) : Mapper(blockType!!) {
-    override fun output(minecraftId: Int, minecraftMeta: Byte, output: MutableCellData) {
+    override fun output(minecraftId: Int, minecraftMeta: Byte): CellData {
         throw UnsupportedOperationException()
     }
 
