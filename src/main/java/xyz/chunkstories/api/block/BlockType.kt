@@ -29,7 +29,6 @@ import xyz.chunkstories.api.util.kotlin.initOnce
 import xyz.chunkstories.api.world.GameInstance
 import xyz.chunkstories.api.world.cell.Cell
 import xyz.chunkstories.api.world.cell.CellData
-import xyz.chunkstories.api.world.cell.PodCellData
 import xyz.chunkstories.api.world.chunk.ChunkCell
 import xyz.chunkstories.api.world.chunk.MutableChunkCell
 import java.io.IOException
@@ -39,7 +38,6 @@ typealias LightLevel = Int
 
 @Suppress("LeakingThis")
 open class BlockType(val name: String, val definition: Json.Dict, val content: Content) {
-    var assignedId : BlockID by initOnce()
     open var solid = definition["solid"].asBoolean ?: true
     open var liquid = definition["liquid"].asBoolean ?: false
     /** Does this block completely hides adjacent ones (and can we just skip rendering those hidden faces) ? */
@@ -159,7 +157,7 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
                 }
             }
         }
-        cell.data = PodCellData(blockType = world.gameInstance.content.blockTypes.air)
+        cell.data = CellData(blockType = world.gameInstance.content.blockTypes.air)
         //TODO spawnBlockDestructionParticles(location, world)
     }
 

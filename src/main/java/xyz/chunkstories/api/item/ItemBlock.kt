@@ -11,7 +11,6 @@ import org.joml.Vector3i
 import org.joml.Vector4f
 import xyz.chunkstories.api.content.Content
 import xyz.chunkstories.api.content.json.asString
-import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.traits.TraitSight
 import xyz.chunkstories.api.entity.traits.serializable.TraitCreativeMode
@@ -39,20 +38,16 @@ import xyz.chunkstories.api.world.cell.*
 /** An item that contains voxels  */
 open class ItemBlock(definition: ItemDefinition) : Item(definition) {
     private val store: Content.BlockTypes = definition.store.parent.blockTypes
-    val blockType: BlockType
-
-    init {
-        blockType = store[definition.properties["block"].asString ?: throw Exception("ItemBlock '${definition.name}' missing a 'block' definition !")]!!
-    }
+    val blockType: BlockType = store[definition.properties["block"].asString ?: throw Exception("ItemBlock '${definition.name}' missing a 'block' definition !")]!!
 
     override fun getTextureName(): String {
-        return "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, PodCellData(blockType, 0, 0, 15)), BlockSide.FRONT).name + ".png"
+        return "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, CellData(blockType, 15, 0, 0)), BlockSide.FRONT).name + ".png"
     }
 
     override fun buildRepresentation(worldPosition: Matrix4f, representationsGobbler: RepresentationsGobbler) {
         //val customMaterial = MeshMaterial("cubeMaterial", mapOf("albedoTexture" to getTextureName(pile)))
         val customMaterials = BlockSide.values().associate { side ->
-            val textureName = "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, PodCellData(blockType, 0, 0, 15)), side).name + ".png"
+            val textureName = "voxels/textures/" + blockType.getTexture(PodCell(0, 0, 0, CellData(blockType, 15, 0, 0)), side).name + ".png"
             val material = MeshMaterial("cubeMaterial$side", mapOf("albedoTexture" to textureName))
             Pair(side.ordinal, material)
         }
@@ -71,7 +66,7 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
         }
     }
 
-    override fun onControllerInput(entity: Entity, itemPile: ItemPile, input: Input, controller: Controller): Boolean {
+    override fun onPlayerInput(entity: Entity, itemPile: ItemPile, input: Input, player: Player): Boolean {
         if (entity.world is WorldMaster && input.name == "mouse.right") {
             val isEntityCreativeMode = entity.traits[TraitCreativeMode::class]?.enabled ?: false
 
@@ -110,19 +105,16 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
             if (targetCell.data.blockType.isAir) {
                 var data: CellData = prepareNewBlockData(pointedCell, side, entity, hit) ?: return true
 
-                // Player events mod
-                if (controller is Player) {
-                    val event = PlayerPlaceBlockEvent(controller, targetCell, data)
+                val event = PlayerPlaceBlockEvent(player, targetCell, data)
 
-                    // Anyone has objections ?
-                    entity.world.gameInstance.pluginManager.fireEvent(event)
+                // Anyone has objections ?
+                entity.world.gameInstance.pluginManager.fireEvent(event)
 
-                    if (event.isCancelled)
-                        return true
+                if (event.isCancelled)
+                    return true
 
-                    data = event.newData
-                    entity.world.soundManager.playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, targetCell.location, 1.0f, 1.0f)
-                }
+                data = event.newData
+                entity.world.soundManager.playSoundEffect("sounds/gameplay/voxel_place.ogg", Mode.NORMAL, targetCell.location, 1.0f, 1.0f)
 
                 entity.world.setCellData(x, y, z, data)
 
@@ -138,8 +130,8 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
         return false
     }
 
-    open fun prepareNewBlockData(adjacentCell: Cell, adjacentCellSide: BlockSide, placingEntity: Entity, hit: RayResult.Hit.VoxelHit): PodCellData? {
-        var data = PodCellData(blockType, extraData = 0)
+    open fun prepareNewBlockData(adjacentCell: Cell, adjacentCellSide: BlockSide, placingEntity: Entity, hit: RayResult.Hit.VoxelHit): CellData? {
+        var data = CellData(blockType, extraData = 0)
 
         // Glowy stuff should glow
         data = data.copy(blocklightLevel = blockType.getEmittedLightLevel(data))

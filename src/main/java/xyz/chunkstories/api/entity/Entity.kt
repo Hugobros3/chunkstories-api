@@ -43,7 +43,7 @@ abstract class Entity(val definition: EntityDefinition, val world: World) {
     val traitLocation = TraitLocation(this, Location(world, .0, .0, .0))
 
     val subscribers = Subscribers()
-    var controller: Controller? = null
+    var controller: Player? = null
 
     internal fun finalizeInit() {
         if (initialized)

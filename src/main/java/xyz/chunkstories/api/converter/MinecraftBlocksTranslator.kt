@@ -10,7 +10,6 @@ import xyz.chunkstories.api.world.GameInstance
 import xyz.chunkstories.api.content.Asset
 import xyz.chunkstories.api.block.BlockType
 import xyz.chunkstories.api.world.cell.CellData
-import xyz.chunkstories.api.world.cell.PodCellData
 import java.io.BufferedReader
 import java.util.HashMap
 import java.lang.Exception
@@ -36,7 +35,7 @@ class MinecraftBlocksTranslator(val gameInstance: GameInstance, asset: Asset) {
 
     internal inner class TrivialMapper(voxel: BlockType, var metadata: Int) : Mapper(voxel) {
         override fun output(minecraftId: Int, minecraftMeta: Byte): CellData {
-            return PodCellData(
+            return CellData(
                     blockType = blockType,
                     extraData = metadata
             )

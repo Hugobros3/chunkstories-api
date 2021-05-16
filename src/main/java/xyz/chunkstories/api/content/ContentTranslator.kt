@@ -6,6 +6,7 @@
 
 package xyz.chunkstories.api.content
 
+import xyz.chunkstories.api.block.BlockID
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.EntityDefinition
 import xyz.chunkstories.api.item.Item
@@ -20,10 +21,11 @@ interface ContentTranslator {
     val content: Content
 
     /** Return the assignated ID for this declaration or -1 if it isn't a part of the current content  */
-    fun getIdForVoxel(voxel: BlockType): Int
-
+    fun getIdForVoxel(voxel: BlockType): BlockID
     /** Return the Voxel associated with that ID or null if the ID was outside of bounds  */
-    fun getVoxelForId(id: Int): BlockType?
+    fun getVoxelForId(id: BlockID): BlockType?
+    val BlockType.assignedId: BlockID
+        get() = getIdForVoxel(this)
 
     /** Return the assignated ID for this declaration or -1 if it isn't a part of
      * the current content  */

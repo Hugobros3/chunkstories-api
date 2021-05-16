@@ -9,13 +9,13 @@ package xyz.chunkstories.api.item
 import org.joml.Matrix4f
 import org.joml.Vector4f
 import xyz.chunkstories.api.content.json.Json
-import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.graphics.MeshMaterial
 import xyz.chunkstories.api.graphics.representation.Sprite
 import xyz.chunkstories.api.graphics.systems.dispatching.RepresentationsGobbler
 import xyz.chunkstories.api.input.Input
 import xyz.chunkstories.api.item.inventory.ItemPile
+import xyz.chunkstories.api.player.Player
 import xyz.chunkstories.api.util.kotlin.toVec3d
 import xyz.chunkstories.api.util.kotlin.toVec3f
 import xyz.chunkstories.api.util.kotlin.toVec4d
@@ -34,7 +34,7 @@ open class Item(val definition: ItemDefinition) {
      *
      * @return false if the item doesn't handle the input, true if it does
      */
-    open fun onControllerInput(entity: Entity, itemPile: ItemPile, input: Input, controller: Controller): Boolean = false
+    open fun onPlayerInput(entity: Entity, itemPile: ItemPile, input: Input, player: Player): Boolean = false
 
     /**
      * Use : determine if two stacks can be merged together, should be overriden

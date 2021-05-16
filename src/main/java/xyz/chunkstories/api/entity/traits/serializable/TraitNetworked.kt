@@ -10,7 +10,7 @@ import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.net.packets.PacketEntity
 import xyz.chunkstories.api.player.Player
-import xyz.chunkstories.api.world.WorldSub
+import xyz.chunkstories.api.server.RemotePlayer
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
@@ -42,12 +42,11 @@ interface TraitNetworked<M : TraitMessage> {
         }
     }
 
-    /** In the context of a server and a remote player acting as a controller, send a message to that player. Will not send a message to the local player in singleplayer. */
+    /** In the context of a server and a remote player acting as a controller, send a message to that player. Will not send a message to the local player in SP mode. */
     fun sendMessageController(message: M) {
-        if (entity.world is WorldSub)
-            return
-        val controller = entity.controller ?: return
-        sendMessage(controller, message)
+        val remotePlayer = entity.controller as? RemotePlayer ?: return
+        val packet = PacketEntity.createUpdatePacket(entity, this, message)
+        remotePlayer.pushPacket(packet)
     }
 
     fun whenSubscriberRegisters(subscriber: Subscriber)

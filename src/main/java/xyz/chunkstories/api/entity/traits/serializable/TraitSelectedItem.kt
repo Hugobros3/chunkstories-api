@@ -10,7 +10,6 @@ import xyz.chunkstories.api.content.json.Json
 import xyz.chunkstories.api.content.json.asInt
 import xyz.chunkstories.api.content.json.stringSerialize
 import xyz.chunkstories.api.content.json.toJson
-import xyz.chunkstories.api.entity.Controller
 import xyz.chunkstories.api.entity.Entity
 import xyz.chunkstories.api.entity.Subscriber
 import xyz.chunkstories.api.entity.traits.Trait
@@ -88,7 +87,7 @@ class TraitSelectedItem(entity: Entity, traitInventory: TraitInventory) : Trait(
     }
 
     override fun whenSubscriberRegisters(subscriber: Subscriber) {
-        if(subscriber is Controller && subscriber == entity.controller) {
+        if(subscriber == entity.controller) {
             sendMessage(subscriber, SelectedItemUpdate.ControllerUpdate(selectedSlot))
         } else {
             sendMessage(subscriber, SelectedItemUpdate.ServerToClientsUpdate(selectedItem?.item, selectedItem?.amount ?: 0))

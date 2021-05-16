@@ -9,15 +9,15 @@ package xyz.chunkstories.api.world.cell
 import xyz.chunkstories.api.physics.Box
 import xyz.chunkstories.api.block.BlockType
 
-interface CellData {
-    val blockType: BlockType
+data class CellData(
+    val blockType: BlockType,
 
-    val sunlightLevel: Int
-    val blocklightLevel: Int
+    val sunlightLevel: Int = 0,
+    val blocklightLevel: Int = 0,
 
     /** Warning: only the 8 lower bits are used/saved */
-    val extraData: Int
-}
+    val extraData: Int = 0
+)
 
 interface Cell {
     val x: Int

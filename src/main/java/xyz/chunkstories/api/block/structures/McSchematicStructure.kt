@@ -11,7 +11,7 @@ import io.xol.enklume.nbt.NBTFile.CompressionScheme
 import org.joml.Vector3i
 import xyz.chunkstories.api.content.Asset
 import xyz.chunkstories.api.converter.MinecraftBlocksTranslator
-import xyz.chunkstories.api.world.cell.PodCellData
+import xyz.chunkstories.api.world.cell.CellData
 import java.io.File
 import java.io.IOException
 import java.util.zip.GZIPInputStream
@@ -56,7 +56,7 @@ fun loadMinecraftSchematicPrefab(root: NBTCompound, translator: MinecraftBlocksT
     }
     val air = translator.gameInstance.content.blockTypes.air
 
-    val cells = Array(width * height * length) { PrefabCell(-1, -1, -1, PodCellData(air, 0, 0, 0)) }
+    val cells = Array(width * height * length) { PrefabCell(-1, -1, -1, CellData(air, 0, 0, 0)) }
 
     val blocks = root.getTag("Blocks") as NBTByteArray
     val blocksdata = root.getTag("Data") as NBTByteArray
@@ -65,7 +65,7 @@ fun loadMinecraftSchematicPrefab(root: NBTCompound, translator: MinecraftBlocksT
             for (x in 0 until width) {
                 val mcindex = (y * length + z) * width + x
                 val mapper = translator.getMapper(blocks.data[mcindex].toInt(), blocksdata.data[mcindex].toInt())
-                val mapped = mapper?.output(blocks.data[mcindex].toInt(), blocksdata.data[mcindex]) ?: PodCellData(
+                val mapped = mapper?.output(blocks.data[mcindex].toInt(), blocksdata.data[mcindex]) ?: CellData(
                     blockType = air,
                     sunlightLevel = 0,
                     blocklightLevel = 0,

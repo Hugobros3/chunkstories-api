@@ -19,7 +19,7 @@ interface Player : CommandEmitter {
     val id: PlayerID
     val displayName: String
 
-    val state: PlayerState
+    var state: PlayerState
 
     val inputsManager: InputsManager
 
