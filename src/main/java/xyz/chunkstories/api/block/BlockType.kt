@@ -112,7 +112,7 @@ open class BlockType(val name: String, val definition: Json.Dict, val content: C
 
     protected open fun enumerateVariants(itemStore: Content.ItemsDefinitions): List<ItemDefinition> {
         val map = mutableMapOf<String, Json>(
-                "voxel" to Json.Value.Text(name),
+                "block" to Json.Value.Text(name),
                 "class" to Json.Value.Text(ItemBlock::class.java.canonicalName!!)
         )
 

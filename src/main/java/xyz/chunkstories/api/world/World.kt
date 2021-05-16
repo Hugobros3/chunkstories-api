@@ -81,6 +81,9 @@ interface World {
     val heightmapsManager: WorldHeightmapsManager
 
     val logger: Logger
+
+    // fun doBlocking(function: () -> Unit)
+    // fun doNonBlocking(function: () -> Unit)
 }
 
 fun World.getCell(location: Location): WorldCell? { assert(location.world == this) ; return getCell(location.x.toInt(), location.y.toInt(), location.z.toInt()) }

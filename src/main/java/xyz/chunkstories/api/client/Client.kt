@@ -47,9 +47,6 @@ interface IngameClient : GameInstance {
     override val world: World
     override val pluginManager: PluginManager
 
-    fun startPlayingAs_(entity: Entity)
-    fun startSpectating_()
-
     /** Closes current world and exits to main menu  */
     fun exitToMainMenu()
 

@@ -11,6 +11,7 @@ import xyz.chunkstories.api.util.kotlin.inverse
 import org.joml.*
 import xyz.chunkstories.api.client.Client
 import xyz.chunkstories.api.client.IngameClient
+import xyz.chunkstories.api.entity.traits.TraitCamera
 import xyz.chunkstories.api.entity.traits.serializable.TraitRotation
 import xyz.chunkstories.api.physics.Frustrum
 import xyz.chunkstories.api.player.Player
@@ -63,6 +64,9 @@ val IngameClient.camera: Camera
         when(val state = player.state) {
             is PlayerState.Ingame -> {
                 val entity = state.entity
+                val traitCamera = entity.traits[TraitCamera::class]
+                if (traitCamera != null)
+                    return traitCamera.camera
                 val entityDirection = (entity.traits[TraitRotation::class]?.directionLookingAt?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
                 val up = (entity.traits[TraitRotation::class]?.upDirection?.toVec3f() ?: Vector3f(0.0f, 0.0f, 1.0f))
                 return engine.makeCamera(entity.location, entityDirection, up, 90.0f)
