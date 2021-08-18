@@ -28,10 +28,10 @@ apply plugin: 'maven'
 apply plugin: 'kotlin'
 
 //TODO Make version depend on Git ?
-version = '203'
+version = '2.0.3'
 
 group = 'xyz.chunkstories'
-description = 'API for the game \'Chunk Stories\''
+description = 'API and core data structures to write mods against'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -43,7 +43,6 @@ spotless {
 	}
 
 	kotlin {
-		//indentWithTabs()
 		licenseHeaderFile 'codequality/header-include-notice.txt'
 	}
 }
