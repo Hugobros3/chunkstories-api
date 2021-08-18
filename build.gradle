@@ -13,7 +13,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'de.johni0702.gradle:gradle-ecj-plugin:1.1-JAVA9'
+		//classpath 'de.johni0702.gradle:gradle-ecj-plugin:1.1-JAVA9'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
 }
@@ -75,7 +75,7 @@ configurations {
 dependencies {
 	api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 	api group: 'org.joml', name: 'joml', version: '1.9.3'
-	api group: 'io.xol.enklume', name: 'enklume', version: 100
+	api group: 'io.xol.enklume', name: 'enklume', version: '1.1.0'
 	api group: 'org.slf4j', name: 'slf4j-api', version: '1.7.9'
 
 	implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
