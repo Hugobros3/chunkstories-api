@@ -14,9 +14,9 @@ To learn more about Chunk Stories in general, please [read the readme of the mai
 
 ## Setup
 
-Nothing in particular to do. Gradle handles the dependencies for you.
+Nothing in particular to do. Gradle handles most dependencies for you.
 
-[Enklume](https://github.com/Hugobros3/Enklume) is our homegrown Minecraft Anvil file format library. Artifacts are in our repository, you don't have to worry about it.
+[Enklume](https://github.com/Hugobros3/Enklume) is our homegrown Minecraft Anvil file format library. You'll need that too. Clone it, do `gradlew install` and you're good :)
 
 ## Gradle Tasks
 
@@ -26,7 +26,7 @@ Nothing in particular to do. Gradle handles the dependencies for you.
 
  * To lean how to play the game and register an account, please visit http://chunkstories.xyz
  * You can find a lot more information on the game wiki, including guides to writing mods, at http://chunkstories.xyz/wiki/
- * You can find videos and dev logs on the lead developper youtube channel: http://youtube.com/Hugobros3
+ * You can find videos and dev logs on the lead developer Youtube channel: http://youtube.com/Hugobros3
  * We have a discord where anyone can discuss with the devs: https://discord.gg/wudd4pe
  * You can get support either by opening a issue on this project or by visiting the subreddit over at https://reddit.com/r/chunkstories
 

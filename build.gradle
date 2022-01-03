@@ -3,32 +3,29 @@
  * Collection of interfaces forming an API and the skeleton of the chunkstories project.
  */
 
+// TODO port this garbage to kts
+
 buildscript {
-	ext.kotlin_version = '1.3.50'
+	ext.kotlin_version = '1.6.10'
 
 	repositories {
-		//mavenLocal()
-		mavenCentral()	
-		maven { url "http://maven.xol.io/repository/public/" }
+		mavenCentral()
 	}
 
 	dependencies {
-		//classpath 'de.johni0702.gradle:gradle-ecj-plugin:1.1-JAVA9'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 	}
 }
 
 plugins {
 	id "com.diffplug.gradle.spotless" version "3.14.0"
+	id "java"
+	id "java-library"
+	id "maven"
+	id "org.jetbrains.kotlin.jvm" version "1.6.10"
 }
 
-apply plugin: 'java'
-apply plugin: 'java-library'
-apply plugin: 'maven'
-apply plugin: 'kotlin'
-
-//TODO Make version depend on Git ?
-version = '2.0.3'
+version = '2.0.4'
 
 group = 'xyz.chunkstories'
 description = 'API and core data structures to write mods against'
@@ -55,9 +52,6 @@ repositories {
 
 compileJava {
 	options.encoding = 'utf-8'
-
-	//Do we need this ?
-	//options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
 jar {
