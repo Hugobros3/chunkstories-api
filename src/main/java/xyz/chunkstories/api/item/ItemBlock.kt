@@ -78,6 +78,7 @@ open class ItemBlock(definition: ItemDefinition) : Item(definition) {
                     is RayResult.Hit.VoxelHit -> {
                         return@let hit as RayResult.Hit.VoxelHit // Kotlin is buggy: if I remove this cast it fails
                     }
+                    else -> {}
                 }
 
                 return@let null
