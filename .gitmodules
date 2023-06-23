@@ -1,0 +1,3 @@
+[submodule "enklume"]
+	path = enklume
+	url = ../enklume
