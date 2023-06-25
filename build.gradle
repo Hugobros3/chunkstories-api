@@ -22,6 +22,7 @@ plugins {
 	id "java"
 	id "java-library"
 	id "org.jetbrains.kotlin.jvm" version "1.8.10"
+	id "maven-publish"
 }
 
 version = '2.0.4'
@@ -46,6 +47,14 @@ description = 'API and core data structures to write mods against'
 repositories {
 	mavenLocal()
 	mavenCentral()
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			from components.java
+		}
+	}
 }
 
 compileJava {
