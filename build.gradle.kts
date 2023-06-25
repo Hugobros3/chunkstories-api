@@ -43,7 +43,7 @@ jar.apply {
 compileJava.options.debugOptions.debugLevel = "source,lines,vars"
 
 dependencies {
-	api(group = "org.joml", name = "joml", version = "1.9.3")
+	api(group = "org.joml", name = "joml", version = "1.10.5")
 	api(group = "org.slf4j", name = "slf4j-api", version = "1.7.9")
 	api(project(":enklume"))
 
